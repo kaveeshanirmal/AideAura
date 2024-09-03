@@ -11,4 +11,6 @@ class Home extends Controller
     {
         $this->view('home');
     }
+
+    
 }

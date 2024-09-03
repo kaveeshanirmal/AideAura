@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="<?=ROOT?>/assets/css/navbar.css">
-<header class="header">
+<div class="header">
     <div class="logo-container">
         <img src="<?=ROOT?>/assets/images/logo.png" alt="logo" id="logo">
     </div>
@@ -14,4 +14,4 @@
         <img class="icon" src="<?=ROOT?>/assets/images/profile_icon.svg" alt="profile logo">
         <img class="icon" src="<?=ROOT?>/assets/images/bell_icon.svg" alt="notifications logo">
     </div>
-</header>
+</div>
