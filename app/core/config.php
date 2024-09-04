@@ -1,6 +1,7 @@
 <?php
 
-define('ROOT', 'http://localhost/AideAura/public');
+define('ROOT', 'http://localhost/AideAura');
+define('ROOT_PATH', dirname(__DIR__, 2));
 
 //database config
 define('DBNAME', 'aide_aura');
