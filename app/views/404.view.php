@@ -28,6 +28,6 @@
 <body>
     <h1>View File Not Found</h1>
     <p>Sorry, the requested view file could not be found.</p>
-    <a href="<?=ROOT?>/home">Return to Home</a>
+    <a href="<?=ROOT?>/public/home">Return to Home</a>
 </body>
 </html>

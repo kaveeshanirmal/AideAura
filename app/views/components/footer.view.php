@@ -6,7 +6,7 @@ define('ROOT', 'http://localhost/AideAura/public');
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
-<link rel="stylesheet" href="<?=ROOT?>/assets/css/footer.css">
+<link rel="stylesheet" href="<?=ROOT?>/public/<?=ROOT?>/assets/css/footer.css">
 <div class="footer-body">
     <footer class="footer">
         <div class="footer-content">

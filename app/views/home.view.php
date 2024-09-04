@@ -13,12 +13,14 @@
 
 <body>
     <!-- Navbar -->
-        <?php include './components/navbar.view.php'; ?>
+    <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
+
+
 
     <!--Enter Content Here-->
         
 
     <!-- Footer -->
-        <?php include './components/footer.view.php'; ?>
+        <?php include '../app/views/components/footer.view.php'; ?>
 </body>
 </html>
