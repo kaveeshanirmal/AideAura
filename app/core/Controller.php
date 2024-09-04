@@ -4,7 +4,7 @@ class Controller
 {
     public function view($name)
     {
-        $filename = "../app/views/".$name.".view.php";
+        $filename = "../views".$name.".view.php";
         
         if(file_exists($filename))
         {
@@ -12,7 +12,7 @@ class Controller
         }
         else
         {
-            require "../app/views/404.view.php";
+            require "../views/404.view.php";
         }
     }
 

@@ -2,6 +2,7 @@
     
 session_start();
 
+require_once "../app/core/config.php";
 require "../app/core/init.php";
 
 $app = new App();   //instantiation of the App class in prder to call load controller method
