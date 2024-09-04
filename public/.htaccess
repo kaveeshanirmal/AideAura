@@ -1,7 +1,6 @@
 # Turn on URL rewriting
 RewriteEngine On
 
-# Accept loading of actual files and directories
 # Accept loading of actual files and                
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
