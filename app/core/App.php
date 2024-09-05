@@ -2,7 +2,7 @@
 
 class App
 {
-    //default controller and method
+    // Default controller and method
     private $controller = 'Home';
     private $method = 'index';
 
@@ -12,15 +12,14 @@ class App
         $URL = explode('/', trim($URL, '/'));
         return $URL;
     }
-    
+
     public function loadController()
     {
         $URL = $this->splitURL();
 
-        $filename = "../app/controllers/".ucfirst($URL[0]).".php";
-        
-        // select controller
-        if(file_exists($filename))
+        // Select controller
+        $filename = "../app/controllers/" . ucfirst($URL[0]) . ".php";
+        if (file_exists($filename))
         {
             require $filename;
             $this->controller = ucfirst($URL[0]);
@@ -33,16 +32,19 @@ class App
 
         $controller = new $this->controller;
 
-        // select method
-        if(!empty($URL[1]))
+        // Select method
+        if (!empty($URL[1]))
         {
-            if(method_exists($controller, $URL[1]))
+            if (method_exists($controller, $URL[1]))
             {
                 $this->method = $URL[1];
             }
         }
 
-        call_user_func_array([$controller, $this->method], $URL);
+        // Remove the controller and method from the $URL array
+        $params = array_slice($URL, 2);
+
+        // Call the method with the parameters
+        call_user_func_array([$controller, $this->method], $params);
     }
 }
-

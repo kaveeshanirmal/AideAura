@@ -6,4 +6,9 @@ class PROFILE extends Controller
     {
         $this->view('profile');
     }
+
+    public function personalInfo()
+    {
+        $this->view('personalInfo');
+    }
 }

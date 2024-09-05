@@ -11,7 +11,11 @@
     </nav>
     <div class="right-section">
         <button class="reg-btn">Register</button>
-        <img class="icon" src="<?=ROOT?>/public/assets/images/profile_icon.svg" alt="profile logo">
+        <img class="icon" id="profile-toggle" src="<?=ROOT?>/public/assets/images/profile_icon.svg" alt="profile logo">
         <img class="icon" src="<?=ROOT?>/public/assets/images/bell_icon.svg" alt="notifications logo">
     </div>
 </div>
+
+<!-- menubar -->
+<?php include(ROOT_PATH . '/app/views/components/menubar.view.php');
+
