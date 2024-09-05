@@ -15,9 +15,10 @@ body {
 
 .signup-form-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
+    width: 100%;
+    max-width: 600px; /* Adjusted width */
 }
 
 .signup-form {
@@ -25,7 +26,7 @@ body {
     border-radius: 8px;
     padding: 40px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 500px; /* Adjusted width */
+    max-width: 400px; /* Adjusted width */
     width: 100%;
     text-align: left;
 }
@@ -84,6 +85,11 @@ body {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    font-size: 12px;
+}
+.checkbox-group a{
+    color: #007bff;
+    text-decoration: none;
 }
 
 .checkbox-group input {
@@ -118,14 +124,15 @@ body {
 }
 
 .image-section {
-    margin-left: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 500px; /* Adjusted size */
+    width: 100%;
 }
 
 .signup-image {
-    max-width: 80%; /* Adjusted size */
+    max-width: 100%;
     height: auto;
     border-radius: 50%;
 }
@@ -163,18 +170,18 @@ body {
     }
 
     .image-section {
-        margin-left: 0;
+        margin-left: 30px;
         margin-top: 20px;
     }
 
     .signup-image {
-        max-width: 70%;
+        max-width: 90%;
     }
 }
 
 @media (max-width: 480px) {
     .signup-form {
-        padding: 20px;
+        padding: 30px;
     }
 
     .greeting {

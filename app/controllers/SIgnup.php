@@ -11,6 +11,4 @@ class Signup extends Controller
     {
         $this->view('signup');
     }
-
-    
 }
