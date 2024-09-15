@@ -5,6 +5,14 @@ body {
     background-color: #f4f4f4;
 }
 
+select {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+
 .container {
     display: flex;
     justify-content: center;

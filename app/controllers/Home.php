@@ -6,11 +6,5 @@ class Home extends Controller
     {
         $this->view('home');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('home');
-    }
-
-    
 }
+

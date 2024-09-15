@@ -7,15 +7,23 @@
         <a href="<?=ROOT?>/public/home">Home</a>
         <a href="<?=ROOT?>/public/about">About</a>
         <a href="<?=ROOT?>/public/contact">Contact</a>
-        <a href="<?=ROOT?>/public/login">Login</a>
+        <?php if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) : ?>
+            <a href="<?=ROOT?>/public/login">Login</a>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) : ?>
+            <a href="<?=ROOT?>/public/login/logout">Logout</a>
+        <?php endif; ?>
     </nav>
     <div class="right-section">
-        <button class="reg-btn">Register</button>
-        <img class="icon" id="profile-toggle" src="<?=ROOT?>/public/assets/images/profile_icon.svg" alt="profile logo">
-        <img class="icon" src="<?=ROOT?>/public/assets/images/bell_icon.svg" alt="notifications logo">
+        <?php if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) : ?>
+            <button class="reg-btn" onclick="window.location.href='<?=ROOT?>/public/signup'">Register</button>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) : ?>
+            <img class="icon" id="profile-toggle" src="<?=ROOT?>/public/assets/images/profile_icon.svg" alt="profile logo">
+            <img class="icon" src="<?=ROOT?>/public/assets/images/bell_icon.svg" alt="notifications logo">
+        <?php endif; ?>
     </div>
 </div>
 
 <!-- menubar -->
-<?php include(ROOT_PATH . '/app/views/components/menubar.view.php');
-
+<?php include(ROOT_PATH . '/app/views/components/menubar.view.php'); ?>

@@ -20,11 +20,7 @@ Trait Database
 
         if($check)
         {
-            return $stm->fetchAll(PDO::FETCH_OBJ);
-            if(is_array($result) && count($result) == 1)
-            {
-                return $result;
-            }
+            return true;
         }
         
         return false;

@@ -11,10 +11,18 @@
     <div class="container">
         <div class="login-form">
             <h2 class="greeting">Welcome back!</h2>
-            <form action="#" method="POST">
+            <form action="<?=ROOT?>/public/login" method="POST">
                 <div class="input-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Enter your email address">
+                    <label for="role">I am a</label>
+                        <select name="role" name="role">
+                            <option value="customer">Customer</option>
+                            <option value="worker">Worker</option>
+                        </select>
+                </div>
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <!-- <input type="text" id="email" placeholder="Enter username"> -->
                 </div>
                 <div class="input-group">
                     <div class="label-wrapper">
@@ -22,7 +30,8 @@
                         <a href="resetpassword" class="forgot-password">Forgot password?</a>
                     </div>
                     <div class="password-wrapper">
-                        <input type="password" id="password" placeholder="Enter your password">
+                        <input type="password" name="password" placeholder="Password" required>
+                        <!-- <input type="password" id="password" placeholder="Enter your password"> -->
                         <span class="toggle-password"><i class="fas fa-eye"></i></span>
                     </div>
                 </div>
@@ -48,3 +57,12 @@
     </script>
 </body>
 </html>
+
+
+
+<!-- <h2>Login</h2>
+<form action="<?=ROOT?>/public/home/login" method="POST">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form> -->

@@ -9,6 +9,11 @@ Trait Model
         $this->table = $table;
     }
 
+    public function getTable()
+    {
+        return $this->table;
+    }
+
     // Select all rows from the table
     public function all()
     {
