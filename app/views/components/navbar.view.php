@@ -1,3 +1,4 @@
+<!-- navbar -->
 <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/navbar.css">
 <div class="header">
     <div class="logo-container">
@@ -10,9 +11,6 @@
         <?php if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) : ?>
             <a href="<?=ROOT?>/public/login">Login</a>
         <?php endif; ?>
-        <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) : ?>
-            <a href="<?=ROOT?>/public/login/logout">Logout</a>
-        <?php endif; ?>
     </nav>
     <div class="right-section">
         <?php if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) : ?>
@@ -24,6 +22,4 @@
         <?php endif; ?>
     </div>
 </div>
-
-<!-- menubar -->
 <?php include(ROOT_PATH . '/app/views/components/menubar.view.php'); ?>

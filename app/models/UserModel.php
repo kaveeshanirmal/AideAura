@@ -7,7 +7,7 @@ class UserModel
     // Method to register a new user
     public function register($data, $role)
     {
-        if ($role=== 'worker') {
+        if ($role === 'worker') {
             $this->setTable('worker'); // Set the table to 'workers'
         } else {
             $this->setTable('customer'); // Set the table to 'customers'
@@ -27,10 +27,8 @@ class UserModel
             $this->setTable('customer'); // Set the table to 'customers'
         }
 
-        // Construct the SQL query without placeholders for table name
         $query = "SELECT * FROM " . $this->getTable() . " WHERE username = :username LIMIT 1";
 
-        // Fetch the row as an object using the username as a bound parameter
         $user = $this->get_row($query, ['username' => $username]);
 
         // Check if a user is found
@@ -41,6 +39,21 @@ class UserModel
         return false; // No user found
     }
 
-    
+    // Method to update user information
+    public function updateUserInfo($id, $data, $role)
+    {
+        if ($role === 'worker') {
+            $this->setTable('worker'); // Set the table to 'workers'
+        } else {
+            $this->setTable('customer'); // Set the table to 'customers'
+        }
 
+        // If password is being updated, hash it
+        if (isset($data['passwordHash'])) {
+            $data['passwordHash'] = password_hash($data['passwordHash'], PASSWORD_BCRYPT);
+        }
+
+        // Update the user information using the ID
+        return $this->update($id, $data);
+    }
 }

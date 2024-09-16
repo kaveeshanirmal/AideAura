@@ -22,30 +22,30 @@
                     </div>
                     <div class="input-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" placeholder="Enter your name">
+                        <input type="text" name="name" placeholder="Enter your name" required>
                     </div>
                     <div class="input-group">
                         <label for="username">Username</label>
-                        <input type="text" name="username" placeholder="Enter your username">
+                        <input type="text" name="username" placeholder="Enter your username" required>
                     </div>
                     <div class="input-group">
                         <label for="address">Address</label>
-                        <input type="text" name="address" placeholder="Enter your address">
+                        <input type="text" name="address" placeholder="Enter your address" required>
                     </div>
                     <div class="input-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" name="phone" placeholder="07x xxxx xxx">
+                        <input type="tel" name="phone" placeholder="07x xxxx xxx" required>
                     </div>
                     <div class="input-group">
                         <label for="email">Email Address</label>
-                        <input type="email" name="email" placeholder="Enter your email address">
+                        <input type="email" name="email" placeholder="Enter your email address" required>
                     </div>
                     <div class="input-group">
                         <div class="label-wrapper">
                             <label for="password">Password</label>
                         </div>
                         <div class="password-wrapper">
-                            <input type="password" name="password" placeholder="Enter your password">
+                            <input type="password" name="password" placeholder="Enter your password" required>
                             <span class="toggle-password"><i class="fas fa-eye"></i></span>
                         </div>
                     </div>
@@ -54,12 +54,12 @@
                             <label for="confirm-password">Confirm Password</label>
                         </div>
                         <div class="password-wrapper">
-                            <input type="password" name="confirm-password" placeholder="Confirm your password">
+                            <input type="password" name="confirm-password" placeholder="Confirm your password" required>
                             <span class="toggle-password"><i class="fas fa-eye"></i></span>
                         </div>
                     </div>
                     <div class="checkbox-group">
-                        <input type="checkbox" name="terms">
+                        <input type="checkbox" name="terms" required>
                         <label for="terms">Accept all <a href="#">Terms of Use & Privacy Policy</a>.</label>
                     </div>
                     <button type="submit" class="signup-button">Sign up</button>
