@@ -1,15 +1,15 @@
 <?php
 
-class ResetPasswordEnd extends Controller
+class PaymentDetail extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('resetpasswordend');
+        $this->view('paymentdetail');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('resetpasswordend');
+        $this->view('paymentdetail');
     }
 
     

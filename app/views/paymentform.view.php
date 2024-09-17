@@ -14,7 +14,7 @@
     <main>
         <section class="payment-form">
             <h1>Enter Your Card Details</h1>
-            <form>
+            <form action="paymentproceed1">
                 <div class="payment-method">
                     <label for="payment-method">Payment Method</label>
                     <div class="card-logos">

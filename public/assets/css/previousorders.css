@@ -1,0 +1,174 @@
+/* General styles remain unchanged */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navigation buttons */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.back-button, .see-more-button {
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Order grid */
+.order-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+}
+
+/* Order card */
+.order-card {
+    background-color: #D0F0C0;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 20px;
+}
+
+/* Order header alignment */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.rate-now-button {
+    background-color: #7f5539;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+/* Order details */
+.order-details {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.service-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.service-type {
+    font-weight: bold;
+    color: #333;
+}
+
+.price-breakdown {
+    padding-top: 5px;
+    margin-top: 10px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.amount-header {
+    font-weight: bold;
+}
+
+.price-row hr {
+    margin: 0;
+}
+
+.top-line{
+    margin-bottom: 10px;
+   // margin-left: 20%;
+    width: 20%;
+    height: 2px;
+    border: none;
+    border-top: 1px solid #333;
+}
+
+.bottom-line {
+        margin-bottom: 10px;
+   // margin-left: 20%;
+    width: 20%;
+    height: 2px;
+    border: none;
+    border-top: 2px solid #333;
+
+   
+}
+
+.middle-line {
+    width: 20%;
+    height: 2px;
+    border: none;
+    border-top: 2px solid #333;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+/* Paid button */
+.paid-button {
+    background-color: #7f5539;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 30%;
+    display: block;
+    margin: 20px auto 0;
+    text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .order-grid {
+        grid-template-columns: 1fr;
+    }
+}
