@@ -33,14 +33,14 @@
                     </div>
                     <div class="order-details">
                         <div class="price-breakdown">
-                            <div class="price-row">
+                            <div class="price-row amount-header">
                                 <span></span>
                                 <span>Amount(Rs)</span>
                             </div>
-                            <!-- <div class="price-row">
+                            <div class="price-row">
                                 <span></span>
-                                <hr>
-                            </div>          -->
+                                <hr class="top-line">
+                            </div>
                             <div class="price-row">
                                 <span>Order Price</span>
                                 <span>35000.00</span>
@@ -49,14 +49,18 @@
                                 <span>Discount</span>
                                 <span>-1500.00</span>
                             </div>
+                            <div class="price-row">
+                                <span></span>
+                                <hr class="middle-line">
+                            </div>
                             <div class="price-row total">
                                 <span>Total price</span>
                                 <span>33500.00</span>
                             </div>
-                           <!-- <div class="price-row">
+                            <div class="price-row">
                                 <span></span>
-                                <hr>
-                            </div>     -->
+                                <hr class="bottom-line">
+                            </div>
                         </div>
                     </div>
                     <button class="paid-button">✓ Paid</button>
