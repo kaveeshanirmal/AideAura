@@ -105,7 +105,7 @@ body {
 .signup-link {
     margin-top: 20px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .signup-link a {
@@ -147,7 +147,7 @@ body {
     .input-group label,
     .forgot-password,
     .login-button {
-        font-size: 13px;
+        font-size: 11px;
     }
 
     .login-button {
@@ -156,7 +156,7 @@ body {
     }
 
     .signup-link {
-        font-size: 13px;
+        font-size: 11px;
     }
 
     .image-section {
@@ -182,7 +182,7 @@ body {
     .input-group label,
     .forgot-password,
     .login-button {
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .login-button {
@@ -191,7 +191,7 @@ body {
     }
 
     .signup-link {
-        font-size: 12px;
+        font-size: 8px;
     }
 
     .login-image {

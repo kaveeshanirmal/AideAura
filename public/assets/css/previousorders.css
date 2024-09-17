@@ -1,0 +1,149 @@
+/* General styles remain unchanged */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navigation buttons remain unchanged */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.back-button,
+.see-more-button {
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Order grid remains unchanged */
+.order-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+}
+
+/* Updated Order card */
+.order-card {
+    background-color: #D0F0C0; /* Light green background to match the desired design */
+    border-radius: 15px; /* Increased for more rounded corners */
+    padding: 20px; /* Increased padding */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Slightly stronger shadow for depth */
+    margin: 20px;
+}
+
+/* Order header alignment */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    width: 40px; /* Slightly larger icon */
+    height: 40px;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.1em; /* Slightly larger font */
+    color: #333; /* Darker text color for better readability */
+}
+
+.rate-now-button {
+    background-color: #7f5539; /* Updated color to match first image */
+    color: white;
+    border: none;
+    padding: 8px 15px; /* Increased padding */
+    border-radius: 10px; /* Slightly more rounded button */
+    cursor: pointer;
+    font-size: 0.9em; /* Reduced font size */
+}
+
+/* Updated order details */
+.order-details {
+    background-color: white;
+    border-radius: 10px; /* More rounded corners */
+    padding: 15px; /* Increased padding */
+    margin-bottom: 10px;
+}
+
+.service-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.service-type {
+    font-weight: bold;
+    color: #333; /* Darker text color */
+}
+
+.price-breakdown {
+   // border-top: 1px solid #ddd;
+    padding-top: 5px;
+    margin-top: 10px; /* Increased spacing above */
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px; /* Increased margin for cleaner spacing */
+    color: #333; /* Darker text color */
+}
+
+.price-row hr{
+    width : 35%;
+    border: none;
+    border-top: 1px solid black;
+    margin-left: 75%;
+
+}
+
+.total {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333; /* Darker text color for visibility */
+}
+
+/* Updated Paid button */
+.paid-button {
+    background-color: #7f5539; /* Updated button color to match first image */
+    color: white;
+    border: none;
+    padding: 10px 15px; /* Larger padding for bigger button */
+    border-radius: 10px;
+    cursor: pointer;
+    width: 30%; /* Larger width */
+    display: block;
+    margin: 0 auto; /* Center button */
+    text-align: center; /* Center text inside button */
+}
+
+/* Responsive design remains unchanged */
+@media (max-width: 768px) {
+    .order-grid {
+        grid-template-columns: 1fr;
+    }
+}
