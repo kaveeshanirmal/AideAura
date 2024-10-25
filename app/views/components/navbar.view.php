@@ -18,8 +18,9 @@
         <?php endif; ?>
         <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) : ?>
             <img class="icon" id="profile-toggle" src="<?=ROOT?>/public/assets/images/profile_icon.svg" alt="profile logo">
-            <img class="icon" src="<?=ROOT?>/public/assets/images/bell_icon.svg" alt="notifications logo">
+            <img class="icon" id="notification-bell" src="<?=ROOT?>/public/assets/images/bell_icon.svg" alt="notifications logo">
         <?php endif; ?>
     </div>
 </div>
-<?php include(ROOT_PATH . '/app/views/components/menubar.view.php'); ?>
+<?php include ROOT_PATH . '/app/views/components/menubar.view.php'; ?>
+<?php include ROOT_PATH . '/app/views/components/notificationPanel.view.php'; ?>

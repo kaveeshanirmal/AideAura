@@ -3,6 +3,8 @@ body {
     padding: 0;
     font-family: "Poppins", sans-serif;
     background-color: #f4f4f4;
+    background-image: url(../images/signup-bg.png);
+    background-size: cover;
 }
 
 .container {
@@ -29,6 +31,61 @@ body {
     max-width: 400px; /* Adjusted width */
     width: 100%;
     text-align: left;
+}
+
+.signup-form-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.worker-btn,
+.customer-btn {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.worker-btn:hover,
+.customer-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.image-label {
+    display: flex;
+    flex-direction: column; /* Stack image and label vertically */
+    align-items: center; /* Center-align image and label together */
+    width: 100%;
+    max-width: 200px; /* Adjust this based on desired size */
+    text-align: center;
+}
+
+.label-text {
+    margin-top: 8px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bolder;
+    line-height: 1.2;
+}
+
+.service-btn {
+    width: 100px; /* Set a uniform width for images */
+    height: 100px;
+    border-radius: 50%; /* Maintain circular shape */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.selected {
+    border: 7px solid #4caf50;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .greeting {

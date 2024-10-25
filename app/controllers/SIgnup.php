@@ -12,22 +12,38 @@ class Signup extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Sanitize and collect user inputs
-            $data = [
+            $role = $_POST['role']; // Role can be 'customer' or 'worker'
+
+            if ($role == 'customer')
+            {    
+                $data = [
                 'name' => trim($_POST['name']),
                 'username' => trim($_POST['username']),
                 'address' => trim($_POST['address']),
                 'phoneNo' => trim($_POST['phone']),
                 'email' => trim($_POST['email']),
                 'passwordHash' => $_POST['password'], // Password will be hashed in UserModel
-            ];
-            $role = $_POST['role']; // Role can be 'customer' or 'worker'
+                ];
+            }
+            else
+            {
+                $data = [
+                'name' => trim($_POST['name']),
+                'username' => trim($_POST['username']),
+                'address' => trim($_POST['address']),
+                'phoneNo' => trim($_POST['phone']),
+                'email' => trim($_POST['email']),
+                'passwordHash' => $_POST['password'], // Password will be hashed in UserModel
+                'servicesOffer' => isset($_POST['serviceType']) ? $_POST['serviceType'] : '',
+                ];
+            }
 
             // Register the user
             if ($this->userModel->register($data, $role)) {
                 header('Location: ' . ROOT . '/public/login'); // Redirect to login page after successful registration
                 exit();
             } else {
-                // You can implement error handling here
+                // implement error handling here
                 echo "Registration failed!";
             }
         }
