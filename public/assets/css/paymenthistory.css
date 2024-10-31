@@ -160,6 +160,12 @@ h2 {
     text-align: center;
 }
 
+.white-clock {
+    width: 1px;
+    height: 2px;
+    margin: 1px;
+}
+
 .pay-now-button:hover, .paid-button:hover {
     background-color: #8a6647;
 }
