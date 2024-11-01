@@ -85,6 +85,9 @@
                                 <img src="assets/images/user_icon.png" alt="User Icon" class="user-icon">
                                 <span class="user-name">Ms. Anna Smith</span>
                             </div>
+                            <div class="rating">
+                            <button class="see-more-buttonupdate">Rate Now &gt;</button>
+                            </div>
                         </div>
                         <div class="service-info">
                             <span class="service-type">Cleaner</span>

@@ -109,6 +109,29 @@ h2 {
     color: #333;
 }
 
+.rate-now-special-button {
+    background-color: #7f5539;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+
+
+
+}
+
+.rating button{
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+
+}
 /* Order details */
 .order-details {
     background-color: white;
