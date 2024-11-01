@@ -66,9 +66,7 @@
                             </div>
                             </div>
                         </div>
-                        <button class="pay-now-button">
-                        <img src="assets/images/white_clock.png" alt="User Icon" class="white-clock">Pending
-                    </button>
+                        <button class="pay-now-button">Pay Now</button>
                     </div>
                     <?php endfor; ?>
                 </div>
