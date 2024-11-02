@@ -45,16 +45,30 @@
                                     <span>35,000.00</span>
                                 </div>
                                 <div class="price-row">
+                                <span></span>
+                                <hr class="top-line">
+                            </div>
+                                <div class="price-row">
                                     <span>Discount</span>
                                     <span>-1,500.00</span>
                                 </div>
+                                <div class="price-row">
+                                <span></span>
+                                <hr class="middle-line">
+                            </div>
                                 <div class="price-row total">
                                     <span>Total Price</span>
                                     <span>33,500.00</span>
                                 </div>
+                                <div class="price-row">
+                                <span></span>
+                                <hr class="bottom-line">
+                            </div>
                             </div>
                         </div>
-                        <button class="pay-now-button">Pay Now</button>
+                        <button class="pay-now-button">
+                        <img src="assets/images/r.png" alt="Pending Clock" class="section-icon">
+                        pending!</button>
                     </div>
                     <?php endfor; ?>
                 </div>
