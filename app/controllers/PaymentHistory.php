@@ -6,9 +6,11 @@ class PaymentHistory extends Controller
     {
         $this->view('paymenthistory');
     }
-
+    
     public function edit($a = '', $b = '', $c = '')
     {
         $this->view('paymenthistory');
     }   
+
 }
+
