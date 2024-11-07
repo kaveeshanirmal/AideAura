@@ -1,9 +1,9 @@
 .job-container {
-    padding: 20px;
+    padding: 30px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 8% 0% 5% 5%;
 }
-
+ 
 /* Back Button Styles */
 .back-btn {
     display: inline-flex;
@@ -13,7 +13,8 @@
     padding: 8px 16px;
     border-radius: 5px;
     text-decoration: none;
-    margin-bottom: 20px;
+    margin-bottom: 37px;
+    margin-left: 2%;
     cursor: pointer;
     border: none;
 }
@@ -27,8 +28,11 @@
 .pending-title {
     display: flex;
     align-items: center;
+    display-items: center;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 37px;
+    margin-left: 40%;
+
 }
 
 .pending-icon {
@@ -54,6 +58,7 @@
     background-color: #FFF9E6;
     border-radius: 10px;
     padding: 20px;
+    margin: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -121,7 +126,9 @@
 /* Action Buttons */
 .card-actions {
     display: flex;
-    gap: 15px;
+    gap: 30%;
+    width: 80%;
+    margin-left: 12%;
 }
 
 .accept-btn, .decline-btn {
@@ -155,7 +162,12 @@
     }
 
     .card-actions {
-        flex-direction: column;
+        flex-direction: row;
+        width: 40%;
+        margin-left: 30%;
+    }
+    .job-container {
+        margin-top: 30%
     }
 }
 

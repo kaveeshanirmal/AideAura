@@ -20,7 +20,7 @@
 
     <!-- Pending Jobs Title -->
     <div class="pending-title">
-        <img src="assets/images/pending-icon.png" alt="Pending" class="pending-icon">
+        <img src="assets/images/vector.png" alt="Pending" class="pending-icon">
         <h2>Pending Jobs</h2>
     </div>
 
@@ -30,7 +30,7 @@
             <div class="job-card">
                 <div class="card-header">
                     <div class="user-info">
-                        <img src="assets/images/user-icon.png" alt="User" class="user-icon">
+                        <img src="assets/images/user_icon.png" alt="User" class="user-icon">
                         <span>Mr.Samuwel John</span>
                     </div>
                     <button class="rating-btn">Rating/Reviews ›</button>
