@@ -1,0 +1,235 @@
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #FFF9E6;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 260px;
+    background-color: #FFF9E6;
+    padding: 20px;
+    border-right: 1px solid #E5E5E5;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.profile-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.profile-info p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.nav-item.active {
+    background-color: #FFE4B5;
+}
+
+.nav-item:hover {
+    background-color: #FFE4B5;
+}
+
+.logout {
+    margin-top: auto;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #FFF;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-title {
+    font-size: 32px;
+    color: #FF8C00;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.role-badge {
+    background-color: #8B4513;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.notification-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+/* Table Styles */
+.table-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.rates-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.rates-table th {
+    background-color: #E5E5E5;
+    padding: 15px;
+    text-align: left;
+}
+
+.rates-table td {
+    padding: 15px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.rates-table tr:nth-child(even) {
+    background-color: #F9F9F9;
+}
+
+.update-btn {
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-btn:hover {
+    background-color: #FF7400;
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.per-page {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination select {
+    padding: 5px 10px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    background-color: #E5E5E5;
+}
+
+.prev-btn,
+.next-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.prev-btn:disabled,
+.next-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Icons */
+[class^="icon-"] {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #E5E5E5;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* Additional Utility Classes */
+.text-right {
+    text-align: right;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.w-full {
+    width: 100%;
+}
