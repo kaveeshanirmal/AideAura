@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQs and Reach Us</title>
+    <title>payment rates</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantpayrate.css">
 </head>
 <body>
@@ -13,51 +12,14 @@
 
 <main>
 <div class="dashboard-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="profile-section">
-            <img src="assets/images/user_icon.png" alt="Profile" class="profile-image">
-            <div class="profile-info">
-                <h3>Moda Tharindu</h3>
-                <p>+94 77 8475154</p>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-item active">
-                <i class="icon-reports"></i>
-                Reports
-            </a>
-            <a href="#" class="nav-item">
-                <i class="icon-payment-rates"></i>
-                Payment Rates
-            </a>
-            <a href="#" class="nav-item">
-                <i class="icon-payment-history"></i>
-                Payment History
-            </a>
-            <a href="#" class="nav-item">
-                <i class="icon-help"></i>
-                Help
-            </a>
-            <a href="#" class="nav-item logout">
-                <i class="icon-logout"></i>
-                Logout
-            </a>
-        </nav>
-    </div>
+   
+    <!-- Navbar -->
+    <?php include(ROOT_PATH . '/app/views/components/accountant_side_bar.view.php'); ?>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="header">
-            <h1 class="dashboard-title">Dashboard</h1>
-            <div class="header-right">
-                <div class="role-badge">Accountant</div>
-                <button class="notification-btn">
-                    <i class="icon-notification"></i>
-                </button>
-            </div>
-        </div>
+
+    <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
 
         <!-- Table Section -->
         <div class="table-container">

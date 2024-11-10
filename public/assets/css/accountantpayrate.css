@@ -1,112 +1,18 @@
 /* Dashboard Container */
 .dashboard-container {
     display: flex;
-    min-height: 100vh;
+   // min-height: 100vh;
     background-color: #FFF9E6;
+    margin: 0px;
+    padding: 0px;
 }
 
-/* Sidebar Styles */
-.sidebar {
-    width: 260px;
-    background-color: #FFF9E6;
-    padding: 20px;
-    border-right: 1px solid #E5E5E5;
-}
-
-.profile-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 40px;
-}
-
-.profile-image {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.profile-info h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.profile-info p {
-    margin: 5px 0 0;
-    font-size: 14px;
-    color: #666;
-}
-
-/* Sidebar Navigation */
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    text-decoration: none;
-    color: #333;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-}
-
-.nav-item.active {
-    background-color: #FFE4B5;
-}
-
-.nav-item:hover {
-    background-color: #FFE4B5;
-}
-
-.logout {
-    margin-top: auto;
-}
 
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 20px;
+    padding: 0px;
     background-color: #FFF;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.dashboard-title {
-    font-size: 32px;
-    color: #FF8C00;
-    margin: 0;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.role-badge {
-    background-color: #8B4513;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-}
-
-.notification-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
 }
 
 /* Table Styles */
@@ -114,6 +20,9 @@
     background-color: white;
     border-radius: 10px;
     padding: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+
 }
 
 .rates-table {
@@ -203,12 +112,6 @@
 @media (max-width: 768px) {
     .dashboard-container {
         flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #E5E5E5;
     }
 
     .table-container {
