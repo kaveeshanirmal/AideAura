@@ -14,29 +14,20 @@ class Signup extends Controller
             // Sanitize and collect user inputs
             $role = $_POST['role']; // Role can be 'customer' or 'worker'
 
-            if ($role == 'customer')
-            {    
-                $data = [
-                'name' => trim($_POST['name']),
+            $data = [
+                'firstName' => trim($_POST['firstName']),
+                'lastName' => trim($_POST['lastName']),
                 'username' => trim($_POST['username']),
                 'address' => trim($_POST['address']),
-                'phoneNo' => trim($_POST['phone']),
+                'phone' => trim($_POST['phone']),
                 'email' => trim($_POST['email']),
-                'passwordHash' => $_POST['password'], // Password will be hashed in UserModel
-                ];
+                'password' => $_POST['password'], // Password will be hashed in UserModel
+            ];
+            
+            if ($role != 'customer') {
+                $data['servicesOffer'] = isset($_POST['serviceType']) ? $_POST['serviceType'] : '';
             }
-            else
-            {
-                $data = [
-                'name' => trim($_POST['name']),
-                'username' => trim($_POST['username']),
-                'address' => trim($_POST['address']),
-                'phoneNo' => trim($_POST['phone']),
-                'email' => trim($_POST['email']),
-                'passwordHash' => $_POST['password'], // Password will be hashed in UserModel
-                'servicesOffer' => isset($_POST['serviceType']) ? $_POST['serviceType'] : '',
-                ];
-            }
+            
 
             // Register the user
             if ($this->userModel->register($data, $role)) {
