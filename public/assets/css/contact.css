@@ -20,7 +20,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    //adding: 2rem;
 }
 
 .contact-form {
@@ -30,7 +30,7 @@ main {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
     max-width: 478.2px;
     max-hight: 590px;
-    margin: 50px auto; /* Centering the form */
+    margin: 160px auto; /* Centering the form */
     text-align: center;
 }
 
@@ -80,7 +80,7 @@ main {
 @media (max-width: 768px) {
     .contact-form {
         padding: 20px 30px 20px 20px; /* Adjust right padding for smaller screens */
-        margin: 20px auto;
+        margin: 240px auto 150px;
     }
 
     .contact-form h1 {

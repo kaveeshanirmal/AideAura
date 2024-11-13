@@ -6,7 +6,7 @@
 }
 
 .order-details {
-    max-width: 500px;
+    max-width: 700px;
     margin: 2rem 1.5rem;
     padding: 1.2rem 1.3rem;
     box-sizing: border-box;
@@ -21,8 +21,8 @@
 
 /* Main content styles */
 main {
-    max-width: 600px;
-    margin: 2rem auto;
+    max-width: 800px;
+    margin-top: 30%;
     padding: 1rem 1rem;
     box-sizing: border-box;
     align-items: center;
@@ -150,13 +150,13 @@ h1 {
 }
 
 .span1{
-margin-right: 50%;
+    margin-right: 50%;
 }
 
 .span2{
-margin-left: 16.4%;
-margin-right: 0%;
-align-item: right;
+    margin-right: 0%;
+    margin-left: 16.4%;
+    align-item: right;
 }
 
 @media (max-width: 617px){
@@ -167,6 +167,9 @@ align-item: right;
       .span2{
       margin-left: 4.57%;
       }
+
+      main {
+        margin-top: 30% 5% 5% 5%;
 }
 
 @media (max-width: 503px){

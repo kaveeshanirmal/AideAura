@@ -1,0 +1,138 @@
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+   // min-height: 100vh;
+    background-color: #FFEFD5;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 0px;
+    background-color: #FFF;
+}
+
+/* Table Styles */
+.table-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+
+}
+
+.rates-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.rates-table th {
+    background-color: #E5E5E5;
+    padding: 15px;
+    text-align: left;
+}
+
+.rates-table td {
+    padding: 15px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.rates-table tr:nth-child(even) {
+    background-color: #F9F9F9;
+}
+
+.update-btn {
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.update-btn:hover {
+    background-color: #FF7400;
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.per-page {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination select {
+    padding: 5px 10px;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    background-color: #E5E5E5;
+}
+
+.prev-btn,
+.next-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.prev-btn:disabled,
+.next-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Icons */
+[class^="icon-"] {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* Additional Utility Classes */
+.text-right {
+    text-align: right;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.w-full {
+    width: 100%;
+}

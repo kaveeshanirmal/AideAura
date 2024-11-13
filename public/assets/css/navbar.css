@@ -73,7 +73,7 @@ body {
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
-        padding: 1rem;
+        //padding: 1rem;
     }
 
     .navlinks {
