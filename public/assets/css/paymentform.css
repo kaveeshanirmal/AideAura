@@ -13,6 +13,7 @@ body {
 
 /* Main section styles */
 main {
+    margin-top: 6%;
     font-family: Arial, sans-serif;
     background-color: var(--primary-color);
     min-height: calc(100vh - 200px); /* Adjust to fit remaining viewport height */
@@ -147,5 +148,20 @@ main {
 
     .payment-form h1 {
         font-size: 22px;
+    }
+}
+
+@media (max-width: 711px) {
+    .payment-form {
+        padding: 20px 30px; /* Adjust padding for smaller screens */
+        margin: 20px auto;
+    }
+
+    .payment-form h1 {
+        font-size: 22px;
+    }
+
+    main {
+        margin-top: 25%;
     }
 }

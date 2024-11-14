@@ -1,13 +1,6 @@
-/* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .order-details {
     max-width: 700px;
-    margin: 2rem 1.5rem;
+    //margin: 2rem 1.5rem;
     padding: 1.2rem 1.3rem;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
@@ -22,9 +15,9 @@
 /* Main content styles */
 main {
     max-width: 800px;
-    margin-top: 30%;
-    padding: 1rem 1rem;
-    box-sizing: border-box;
+    margin: 5% 0% 5% 18%;
+    padding: 5%;
+    //box-sizing: border-box;
     align-items: center;
     justify-content: center;
     border-radius: 13px;
@@ -58,6 +51,8 @@ h1 {
     padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border: 1px solid black; /* Add black border around the card */
+    margin: 30px;
+
 }
 
 .user-info {
@@ -96,7 +91,7 @@ h1 {
    //display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
-    margin-left: 79%;
+    margin-left: 82%;
 }
 
 .price-rowlast {
@@ -120,7 +115,7 @@ h1 {
 }
 
 .full-line {
-    width: 27%; /* Full width line */
+    width: 23%; /* Full width line */
     border: none;
     border-top: 1px solid black;
     margin: 5px 5x;
@@ -150,34 +145,51 @@ h1 {
 }
 
 .span1{
-    margin-right: 50%;
+    margin-right: 58.6%;
 }
 
 .span2{
     margin-right: 0%;
-    margin-left: 16.4%;
+    margin-left: 18.4%;
     align-item: right;
 }
 
-@media (max-width: 617px){
+@media (max-width: 1036px){
       .span1{
-        margin-right: 49.5%;
+        margin-right: 59.7%;
+      }
+
+      .span2{
+      margin-left: 15.57%;
+      }
+      main {
+        margin: 20% 0% 10% 4%;
+        // top right bottom left
+      }
+}
+@media (max-width: 875px){
+      .span1{
+        margin-right: 58.7%;
       }
 
       .span2{
       margin-left: 4.57%;
       }
-
       main {
-        margin-top: 30% 5% 5% 5%;
+        margin: 20% 0% 10% 4%;
+        // top right bottom left
+      }
 }
+@media (max-width: 770px){
+      .span1{
+        margin-right: 59.7%;
+      }
 
-@media (max-width: 503px){
-    .span1{
-      margin-right: 49.5%;
-    }
-
-    .span2{
-    margin-left: 4.57%;
-    }
+      .span2{
+      margin-left: 4.57%;
+      }
+      main {
+        margin: 30% 0% 10% 4%;
+        // top right bottom left
+      }
 }
