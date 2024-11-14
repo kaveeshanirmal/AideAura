@@ -6,6 +6,11 @@ body {
     padding: 0;
 }
 
+main {
+    margin-top: 7%;
+    margin-bottom: 5%;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -42,7 +47,7 @@ body {
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 20px;
+    margin: 30px;
 }
 
 /* Order header alignment */
@@ -166,9 +171,31 @@ body {
     text-align: center;
 }
 
+.pay-now-button {
+    background-color: #7f5539;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 30%;
+    display: block;
+    margin: 20px auto 0;
+    text-align: center;
+}
+
+.white-clock {
+    height : 15px;
+    width : 15px;
+    margin-right: 2px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .order-grid {
         grid-template-columns: 1fr;
+    }
+    main{
+        margin-top: 23%;
     }
 }

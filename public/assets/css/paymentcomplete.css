@@ -19,6 +19,7 @@ main {
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    margin-top: 5%;
 }
 
 .contact-form {
@@ -72,5 +73,8 @@ main {
 
     .contact-form h1 {
         font-size: 28px;
+    }
+    main{
+        margin-top: 20%;
     }
 }

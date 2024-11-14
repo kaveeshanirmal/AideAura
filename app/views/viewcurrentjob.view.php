@@ -10,7 +10,7 @@
     <!-- Navbar -->
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php');?>
 
-<main  style="margin-top: 180px;">
+<main>
 <!-- Back Button -->
 <div class="back-button">
     <button onclick="history.back()"><i class="arrow-left"></i> Back</button>

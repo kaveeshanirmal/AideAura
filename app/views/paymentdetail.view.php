@@ -29,7 +29,7 @@
                 </div>
                 <div class="price-breakdown">
                     <div class="price-row123">
-                        <span>Amount(Rs)</span>
+                        <span class="span2">Amount(Rs)</span>
                         <hr class="small-line">
                     </div>
                     <div class="price-row">
