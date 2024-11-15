@@ -13,13 +13,6 @@
             <h2 class="greeting">Welcome back!</h2>
             <form action="<?=ROOT?>/public/login" method="POST">
                 <div class="input-group">
-                    <label for="role">I am a</label>
-                        <select name="role" name="role">
-                            <option value="customer">Customer</option>
-                            <option value="worker">Worker</option>
-                        </select>
-                </div>
-                <div class="input-group">
                     <label for="username">Username</label>
                     <input type="text" name="username" placeholder="Username" required>
                     <!-- <input type="text" id="email" placeholder="Enter username"> -->

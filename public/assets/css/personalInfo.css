@@ -1,75 +1,171 @@
+/* personalInfo.css */
+
+body {
+    font-family: "Arial", sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container for the form */
 .main-content {
-    flex-grow: 1;
-    padding: 40px;
-    background-color: #fff;
+    margin-top: 90px;
+    margin-bottom: 10px;
+    max-width: 800px;
+    width: 90%;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    text-align: center;
 }
 
-h1 {
-    font-size: 24px;
-    margin-bottom: 30px;
+.main-content h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 25px;
 }
 
+/* Form layout styling */
 .personal-info-form {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
 }
 
-.form-group {
+/* Profile image section as single column */
+.profile-image-group {
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.form-group label {
+/* Profile image styling */
+#profileImageDisplay {
     display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin: 0 auto 15px;
+    transition: box-shadow 0.3s ease;
 }
 
-.form-group input {
+#profileImageDisplay:hover {
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.4);
+}
+
+/* Two-column form styling */
+.form-group {
+    flex: 1 1 calc(50% - 20px);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.personal-info-form label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.personal-info-form input[type="text"],
+.personal-info-form input[type="email"],
+.personal-info-form input[type="file"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f8f8f8;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
+.personal-info-form input[type="text"]:focus,
+.personal-info-form input[type="email"]:focus {
+    border-color: #4a90e2;
+    background-color: #fff;
+    outline: none;
 }
 
-.edit-btn {
-    background-color: #e0a84c;
-    color: #fff;
-}
-
-.edit-btn:hover {
-    background-color: #d3953b;
-}
-
-.submit-btn {
-    background-color: #4CAF50;
-    color: #fff;
-    margin-right: 10px;
-}
-
-.submit-btn:hover {
-    background-color: #45a049;
-}
-
-.cancel-btn {
-    background-color: #f44336;
-    color: #fff;
-}
-
-.cancel-btn:hover {
-    background-color: #da190b;
+.personal-info-form input[readonly] {
+    background-color: #f0f0f0;
+    color: #777;
 }
 
 .hidden {
     display: none;
+}
+
+/* Button group styling */
+.button-group {
+    flex: 1 1 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #4a90e2;
+}
+
+.edit-btn:hover {
+    background-color: #357abd;
+}
+
+.submit-btn {
+    background-color: #28a745;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    .main-content {
+        margin-top: 155px;
+    }
+
+    .form-group {
+        flex: 1 1 100%;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
 }
