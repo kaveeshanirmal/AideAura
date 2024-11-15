@@ -48,7 +48,7 @@ class UserModel
                 $role = $this->get_row($query, ['name' => $roleName]);
                 
                 if ($role) {
-                    $roleIDs[] = $role['roleID']; // Collect the roleID if found
+                    $roleIDs[] = $role->roleID; // Collect the roleID if found
                 }
             }
 
@@ -90,32 +90,55 @@ class UserModel
 
         // Check if a user is found
         if ($user) {
-            return $user[0]; // Return the first result if found
+
+            // Get role-specific data if the user was found
+            if ($user->role === 'customer') {
+                $this->setTable('customer');
+                $query = "SELECT * FROM customer WHERE userID = :userID";
+                $roleData = $this->get_row($query, ['userID' => $user->userID]);
+            } elseif ($user->role === 'worker') {
+                $this->setTable('worker');
+                $query = "SELECT * FROM worker WHERE userID = :userID";
+                $roleData = $this->get_row($query, ['userID' => $user->userID]);
+            }
+            // Merge the role-specific data with the user data
+            if ($roleData) {
+                $user = (object) array_merge((array) $user, (array) $roleData);
+            }
+
+            return $user;
         }
 
         return false; // No user found
     }
 
     // Update user information
-    public function updateUserInfo($id, $data, $role)
+    public function updateUserInfo($id, $data)
     {
         $this->setTable('users'); // Update user information in the 'users' table
 
-        // If password is being updated, hash it
-        if (isset($data['password'])) {
-            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-        }
-
         // Update the 'users' table
-        $this->update($id, $data, 'userID');
+        $userData = [
+            'firstName' => $data->firstName,
+            'lastName' => $data->lastName,
+            'username' => $data->username,
+            'email' => $data->email,
+            'phone' => $data->phone,
+        ];
+        $this->update($id, $userData, 'userID');
 
         // Update 'worker' or 'customer' table based on the role
-        if ($role === 'worker') {
-            $this->setTable('worker');
-            return $this->update($id, $data, 'userID');
-        } elseif ($role === 'customer') {
+        $roleData = [
+            'address' => $data->address,
+            'profileImage' => $data->profileImage,
+        ];
+
+        if ($_SESSION['role'] === 'worker') {
+            $this->setTable('worker'); 
+            return $this->update($id, $roleData, 'userID');
+        } elseif ($_SESSION['role'] === 'customer') {
             $this->setTable('customer');
-            return $this->update($id, $data, 'userID');
+            return $this->update($id, $roleData, 'userID');
         }
 
         return false; // Update failed

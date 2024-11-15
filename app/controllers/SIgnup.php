@@ -25,8 +25,9 @@ class Signup extends Controller
             ];
             
             if ($role != 'customer') {
-                $data['servicesOffer'] = isset($_POST['serviceType']) ? $_POST['serviceType'] : '';
+                $data['servicesOffer'] = isset($_POST['serviceType']) ? explode(',', $_POST['serviceType']) : [];
             }
+            
             
 
             // Register the user
