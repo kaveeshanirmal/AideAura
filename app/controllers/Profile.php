@@ -32,9 +32,10 @@ class PROFILE extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            // Set default profile image path
+            // Retrieve existing user data
             $data = $this->userModel->findUserByUsername($_SESSION['username']);
             $profileImagePath = $data->profileImage;
+            $password = $data->password;
 
             // Handle image upload
             if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
@@ -74,6 +75,7 @@ class PROFILE extends Controller
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'username' => $username,
+                'password' => $password,
                 'profileImage' => $profileImagePath,
                 'email' => $email,
                 'phone' => $phone,

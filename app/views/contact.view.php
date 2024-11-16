@@ -13,7 +13,7 @@
     <!-- Main Content -->
     <main>
         <section class="contact-form">
-            <h1>Contact With Us</h1>
+            <h1>Contact Us</h1>
             <form>
                 <input type="text" placeholder="Your Name" required>
                 <input type="email" placeholder="Your Email" required>
