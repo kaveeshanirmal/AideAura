@@ -122,6 +122,7 @@ class UserModel
             'firstName' => $data->firstName,
             'lastName' => $data->lastName,
             'username' => $data->username,
+            'password' => $data->password,
             'email' => $data->email,
             'phone' => $data->phone,
         ];
