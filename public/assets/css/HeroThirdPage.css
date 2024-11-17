@@ -6,7 +6,7 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-.container {
+.container-3 {
   height: 100vh;
   width: 100%;
   display: flex;
@@ -31,7 +31,7 @@
   object-fit: cover;
   border-radius: 50%;
 }
-.testimonial .slide {
+.testimonial .slide-3 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,18 +40,18 @@
   height: 100%;
   width: 100%;
 }
-.slide p {
+.slide-3 p {
   text-align: center;
   padding: 0 160px;
   font-size: 14px;
   font-weight: 400;
   color: #cebaba;
 }
-.slide .quote-icon {
+.slide-3 .quote-icon {
   font-size: 30px;
   color: #ffffff;
 }
-.slide .details {
+.slide-3 .details {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,7 +90,7 @@
   background-color: #ffffffcc;
 }
 @media screen and (max-width: 768px) {
-  .slide p {
+  .slide-3 p {
     padding: 0 20px;
   }
   .nav-btn {
