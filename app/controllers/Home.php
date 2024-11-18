@@ -6,5 +6,24 @@ class Home extends Controller
     {
         $this->view('HeroSection');
     }
+
+    public function isSignedIn()
+    {
+        if (isset($_SESSION['loggedIn'])) {
+            if ($_SESSION['role'] == "customer") {
+                // worker finding page
+                header('Location: ' . ROOT . '/public/home');
+            } else if ($_SESSION['role'] == "worker") {
+                // worker dashboard
+                header('Location: ' . ROOT . '/public/home');
+            } else {
+                // admin dashboard
+                header('Location: ' . ROOT . '/public/home');
+            }
+        } else {
+            // login page
+            header('Location: ' . ROOT . '/public/login');
+        }
+    }
 }
 
