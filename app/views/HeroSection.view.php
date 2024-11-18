@@ -35,7 +35,7 @@
                         Experience trustworthy care for all your household work<br>with the best quality and reasonable prices
                     </h2>
                 </div>
-                <button class="glow-button-1">Find a Worker</button>
+                <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/isSignedIn'">Find a Worker</button>
                 <div class="background-1"></div>
             </section>
         </div>

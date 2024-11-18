@@ -44,4 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         });
     }
+
+    function handleHeroButton() {
+    }
 });
