@@ -1,3 +1,4 @@
+
 <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
 <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/bookingHistory.css">
 <div id="booking-body">

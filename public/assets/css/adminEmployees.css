@@ -1,0 +1,223 @@
+/* Main Layout */
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+    //min-height: 100vh;
+    background-color: #FFF9E6;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    //display: flex;
+    flex: 1;
+    margin-bottom: 10px;
+    background-color: #FFF;
+    box-sizing: border-box;
+}
+
+.content-area {
+    //flex: 1;
+    padding: 16px;
+    background-color: #fff;
+}
+
+/* Employee Controls */
+.employee-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px;
+}
+
+.search-filters {
+    display: flex;
+    gap: 24px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group label {
+    white-space: nowrap;
+}
+
+.role-select,
+.status-select {
+    width: 150%;
+}
+
+.employee-input,
+.role-select,
+.status-select,
+.id-input,
+.email-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.add-employee-btn {
+    padding: 8px 16px;
+    background-color: #00FF00;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Employee Details */
+.employee-details {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    align-items: center;
+    padding: 16px;
+}
+
+.search-btn {
+    padding: 8px 24px;
+    background-color: #e2e2e2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Table Styles */
+.table-container {
+    background-color: white;
+    border-radius: 8px;
+    overflow-x: auto;
+    padding: 16px;
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.employee-table th,
+.employee-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.employee-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.employee-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.status-active {
+    color: #FF0000;
+    font-weight: 500;
+}
+
+.update-btn,
+.delete-btn {
+    padding: 6px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+}
+
+.update-btn i {
+    color: #666;
+}
+
+.delete-btn i {
+    color: #FF0000;
+}
+
+.update-btn:hover,
+.delete-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .search-filters {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .employee-details {
+        flex-wrap: wrap;
+    }
+    
+    .input-group {
+        width: 100%;
+    }
+    
+    .employee-input,
+    .role-select,
+    .status-select,
+    .id-input,
+    .email-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+        order: 1;
+        width: 100%;
+    }
+
+    .dashboard-header {
+        order: 2;
+        width: 100%;
+    }
+
+    .main-content {
+        order: 3;
+        width: 100%;
+    }
+
+    .employee-controls,
+    .employee-details,
+    .table-container {
+        padding: 15px;
+    }
+}
+
+
+/* Form Controls */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    padding-right: 32px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #FF8C00;
+}
+
+/* Hover Effects */
+.add-employee-btn:hover {
+    background-color: #00DD00;
+}
+
+.search-btn:hover {
+    background-color: #d0d0d0;
+}

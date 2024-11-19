@@ -3,22 +3,21 @@
     justify-content: space-between;
     align-items: center;
     //margin-bottom: 30px;
-    background-color: #FFF9E6;
-    height: 8.5%;
-    padding: 8px;
-    margin: 0px;
+    background-color: #E5FFE1;
+    height: 12.5%;
+    padding: 5px;
 
-}
-
-.dashboard-title {
-    font-size: 60px;
-    color: #FF8C00;
-    margin-left: 20px;
 }
 
 a {
     text-decoration: none;
     color: inherit;
+}
+
+.dashboard-title {
+    font-size: 60px;
+    color: #FF8C00;
+    margin: 40.2px 0px 40.2px 20px;
 }
 
 .header-right {
@@ -30,7 +29,7 @@ a {
 .role-badge {
     background-color: #8B4513;
     color: white;
-    padding: 4px 16px;
+    padding: 8px 16px;
     border-radius: 20px;
 }
 
@@ -38,11 +37,11 @@ a {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .bellIcon {
-    height: 25px;
-    weight: 25px;
+    height: 30px;
+    weight: 30px;
     margin-right: 20px;
   }
