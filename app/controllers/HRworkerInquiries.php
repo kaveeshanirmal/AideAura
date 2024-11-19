@@ -1,14 +1,14 @@
 <?php
 
-class FinanceMDashPayrate extends Controller
+class HRworkerInquiries extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('financeMpayrate');
+        $this->view('hrWorkerInquiries');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('financeMpayrate');
+        $this->view('hrWorkerInquiries');
     } 
 }

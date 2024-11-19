@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="<?=ROOT?>/public/assets/css/admin_sidebar.css">
+<!-- Sidebar -->
+ <div class="sidebar">
+        <div class="profile-section">
+            <img src="assets/images/user_icon.png" alt="Profile" class="profile-image">
+            <div class="profile-info">
+                <h3>Moda Tharindu</h3>
+                <p>+94 77 8475154</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="<?=ROOT?>/public/adminReports" class="nav-item active">
+                <i class="icon-reports"></i>
+                <img src="assets/images/Report.png" alt="Profile" class="sidebar-image">
+                Reports
+            </a>
+            <a href="<?=ROOT?>/public/adminWorkerProfile" class="nav-item">
+                 <i class="icon-reports"></i>
+                <img src="assets/images/worker-profile.png" alt="Profile" class="sidebar-image">
+               Worker Profiles
+            </a>
+            <a href="<?=ROOT?>/public/adminEmployees" class="nav-item">
+                <i class="icon-reports"></i>
+                <img src="assets/images/Admin.png" alt="Profile" class="sidebar-image">
+                Employees
+            </a>
+            <a href="<?=ROOT?>/public/adminRoles" class="nav-item">
+                <i class="icon-reports"></i>
+                <img src="assets/images/Roles.png" alt="Profile" class="sidebar-image">
+                Roles
+            </a>
+            <a href="<?=ROOT?>/public/adminPayrate" class="nav-item">
+                <i class="icon-payment-rates"></i>
+                <img src="assets/images/Currency Exchange.png" alt="Profile" class="sidebar-image">
+                Payment Rates
+            </a>
+            <a href="<?=ROOT?>/public/adminPaymentHistory" class="nav-item">
+                <i class="icon-payment-history"></i>
+                <img src="assets/images/order history.png" alt="Profile" class="sidebar-image">
+                Payment History
+            </a>
+            <a href="<?=ROOT?>/public/adminWorkerInquiries" class="nav-item">
+                <i class="icon-help"></i>
+                <img src="assets/images/help-icon.png" alt="Profile" class="sidebar-image">
+                Worker Inquiries
+            </a>
+            <a href="<?=ROOT?>/public/login" class="nav-item logout">
+                <i class="icon-logout"></i>
+                <img src="assets/images/logout-icon.png" alt="Profile" class="sidebar-image">
+                Logout
+            </a>
+        </nav>
+    </div>

@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Rates</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/financeMPaymentHistory.css">
+    <title>Payment History</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPaymentHistory.css">
 </head>
 <body>
 <div class="main-container">
-    <?php
-    include(ROOT_PATH . '/app/views/components/financeM_side_bar.view.php'); 
-    ?>
+<?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
+
     
     <div class="content-container">
-        <?php
-        include(ROOT_PATH . '/app/views/components/financeM_navbar.view.php');
-        ?>
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+
 
         <main class="content-wrapper">
             <!-- Customer Payments Section -->

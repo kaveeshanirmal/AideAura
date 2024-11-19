@@ -1,10 +1,10 @@
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    background-color: #FFEFD5;
-    height: 15%;
+    align-items: center; 
+    margin-bottom: 5px;
+    background-color: #FFEEFD;
+    height: 10.5%;
     padding: 5px;
 
 }
@@ -12,7 +12,12 @@
 .dashboard-title {
     font-size: 60px;
     color: #FF8C00;
-    margin-left: 20px;
+    margin: 40.2px 0px 40.2px 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .header-right {
@@ -40,18 +45,3 @@
     weight: 30px;
     margin-right: 20px;
   }
-
-  @media (max-width: 768px) {
-    .dashboard-title {
-        margin-right: 15px;
-    }
-    .bellIcon {
-        margin-left: 0px;
-    }
-    .role-badge {
-        margin-right: 0px;
-    }
-    .header-right {
-        gap: 10px;
-    }
-}

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?=ROOT?>/public/assets/css/financeM_sidebar.css">
+<link rel="stylesheet" href="<?=ROOT?>/public/assets/css/OPM_sidebar.css">
 <!-- Sidebar -->
  <div class="sidebar">
         <div class="profile-section">
@@ -10,27 +10,22 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a href="#" class="nav-item active">
-                <i class="icon-reports"></i>
-                <img src="assets/images/document.png" alt="Profile" class="sidebar-image">
-                Reports
-            </a>
-            <a href="#" class="nav-item">
+            <a href="<?=ROOT?>/public/opmWorkerSchedules" class="nav-item">
                 <i class="icon-payment-rates"></i>
-                <img src="assets/images/Currency Exchange.png" alt="Profile" class="sidebar-image">
-                Payment Rates
+                <img src="assets/images/worker-schedule.png" alt="Profile" class="sidebar-image">
+                Worker Schedules
             </a>
-            <a href="#" class="nav-item">
+            <a href="<?=ROOT?>/public/opmSpecialRequests" class="nav-item">
                 <i class="icon-payment-history"></i>
-                <img src="assets/images/order history.png" alt="Profile" class="sidebar-image">
-                Payment History
+                <img src="assets/images/verification-request.png" alt="Profile" class="sidebar-image">
+                Special Requests
             </a>
-            <a href="#" class="nav-item">
+            <a href="<?=ROOT?>/public/opmComplaintManagement" class="nav-item">
                 <i class="icon-help"></i>
                 <img src="assets/images/help-icon.png" alt="Profile" class="sidebar-image">
-                Help
+               Complaints
             </a>
-            <a href="#" class="nav-item logout">
+            <a href="<?=ROOT?>/public/login" class="nav-item logout">
                 <i class="icon-logout"></i>
                 <img src="assets/images/logout-icon.png" alt="Profile" class="sidebar-image">
                 Logout

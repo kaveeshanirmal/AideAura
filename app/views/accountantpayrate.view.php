@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>payment rates</title>
+    <title>Accountant payment rates</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantpayrate.css">
 </head>
 <body>
 
 <!-- Navbar -->
-
-<main>
 <div class="dashboard-container">
    
-    <!-- Navbar -->
+    <!-- Sidebar -->
     <?php include(ROOT_PATH . '/app/views/components/accountant_side_bar.view.php'); ?>
 
     <!-- Main Content -->
