@@ -85,7 +85,7 @@ h2 {
 .bullet {
     margin-right: 10px;
     font-size: 1.2rem;
-    color: #4a90e2;
+    color: #d3b860;
     transition: transform 0.3s ease;
 }
 
@@ -111,6 +111,49 @@ h2 {
     font-size: 14px;
     margin-top: 1rem;
     text-align: center;
+}
+
+#quick-links-set {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+
+.quick-link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+}
+
+.quick-link {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.quick-link:hover {
+    border: 2px solid #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.quick-link-label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.quick-link-container:hover .quick-link-label {
+    color: #007bff;
 }
 
 /* Responsive Adjustments */
