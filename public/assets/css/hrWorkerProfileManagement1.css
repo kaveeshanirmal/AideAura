@@ -18,6 +18,7 @@
     gap: 30px;
     margin-bottom: 30px;
     margin-left: 10%;
+    margin-top: 5%;
 }
 
 .back-button {
@@ -25,6 +26,8 @@
     text-decoration: none;
     color: #333;
     cursor: pointer;
+    height: 2%;
+    width: 2%;
 }
 
 .worker-header {

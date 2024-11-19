@@ -100,7 +100,7 @@
 
             <div class="action-buttons">
                     <button class="btn update">Update</button>
-                    <button class="btn schedule"> <a href="hrWorkerSchedules">Availability schedule </a> </button>
+                    <button class="btn schedule"> <a href="hrWorkerProfileSchedule">Availability schedule </a> </button>
                     <button class="btn certificates"> <a href="hrWorkerProfileManagement2"> Certificates </a> </button>
                 </div>
 
