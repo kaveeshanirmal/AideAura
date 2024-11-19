@@ -10,27 +10,22 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a href="#" class="nav-item active">
+            <a href="<?=ROOT?>/public/accountantReports" class="nav-item active">
                 <i class="icon-reports"></i>
-                <img src="assets/images/document.png" alt="Profile" class="sidebar-image">
+                <img src="assets/images/Report.png" alt="Profile" class="sidebar-image">
                 Reports
             </a>
-            <a href="#" class="nav-item">
+            <a href="<?=ROOT?>/public/accountantpayrate" class="nav-item">
                 <i class="icon-payment-rates"></i>
                 <img src="assets/images/Currency Exchange.png" alt="Profile" class="sidebar-image">
                 Payment Rates
             </a>
-            <a href="#" class="nav-item">
+            <a href="<?=ROOT?>/public/accountantPaymentHistory" class="nav-item">
                 <i class="icon-payment-history"></i>
-                <img src="assets/images/order history.png" alt="Profile" class="sidebar-image">
+                <img src="assets/images/paymentHistory_icon.png" alt="Profile" class="sidebar-image">
                 Payment History
             </a>
-            <a href="#" class="nav-item">
-                <i class="icon-help"></i>
-                <img src="assets/images/help-icon.png" alt="Profile" class="sidebar-image">
-                Help
-            </a>
-            <a href="#" class="nav-item logout">
+            <a href="<?=ROOT?>/public/login" class="nav-item logout">
                 <i class="icon-logout"></i>
                 <img src="assets/images/logout-icon.png" alt="Profile" class="sidebar-image">
                 Logout

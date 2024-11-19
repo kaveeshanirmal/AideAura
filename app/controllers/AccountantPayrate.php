@@ -1,14 +1,14 @@
 <?php
 
-class PreviousOrders extends Controller
+class AccountantPayrate extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('previousorders');
+        $this->view('accountantpayrate');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('previousorders');
+        $this->view('accountantpayrate');
     } 
 }

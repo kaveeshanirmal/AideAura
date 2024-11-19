@@ -4,22 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>payment rates</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/financeMpayrate.css">
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPayrate.css">
 </head>
 <body>
 
 <!-- Navbar -->
-
-<main>
 <div class="dashboard-container">
    
-    <!-- Navbar -->
-    <?php include(ROOT_PATH . '/app/views/components/financeM_side_bar.view.php'); ?>
+    <!-- Sidebar -->
+    <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
 
     <!-- Main Content -->
     <main class="main-content">
 
-    <?php include(ROOT_PATH . '/app/views/components/financeM_navbar.view.php'); ?>
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
 
         <!-- Table Section -->
         <div class="table-container">

@@ -2,7 +2,7 @@
 .dashboard-container {
     display: flex;
    // min-height: 100vh;
-    background-color: #FFEFD5;
+    background-color: #FFF9E6;
     margin: 0px;
     padding: 0px;
 }
@@ -20,8 +20,8 @@
     background-color: white;
     border-radius: 10px;
     padding: 20px;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 15%;
+    margin-right: 15%;
 
 }
 
@@ -116,10 +116,12 @@
 
     .table-container {
         overflow-x: auto;
+        margin-left: 10%;
+        margin-right: 10%;
     }
 
     .pagination {
-        flex-direction: column;
+        flex-direction: row;
         gap: 15px;
     }
 }

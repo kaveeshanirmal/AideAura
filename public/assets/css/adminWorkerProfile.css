@@ -1,0 +1,149 @@
+/* General Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #FFF9E6;
+    margin: 0px;
+    padding: 0px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 0px;
+    background-color: #FFF;
+    //margin-left: 260px; /* Adjust based on your sidebar width */
+}
+
+/* Search Container */
+.search-container {
+    margin: 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.search-container label {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    margin-left: 15%;
+}
+
+.search-input {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px;
+    background-color: #fff;
+}
+
+/* Workers List */
+.workers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.worker-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e5f3e9;
+    padding: 12px 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.worker-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.worker-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.worker-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.worker-avatar img {
+    width: 30px;
+    height: 30px;
+}
+
+.worker-details h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.worker-details p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.arrow-icon {
+    font-size: 24px;
+    color: #666;
+}
+
+.arrow-icon a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0;
+        //padding: 10px;
+    }
+
+    .search-container {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 10%;
+    }
+
+    .search-input {
+        width: 50%;
+    }
+}
+
+/* Custom Scrollbar */
+.workers-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.workers-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.workers-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.workers-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -1,14 +1,14 @@
 <?php
 
-class PreviousOrders extends Controller
+class AdminPaymentHistory extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('previousorders');
+        $this->view('adminPaymentHistory');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('previousorders');
+        $this->view('adminPaymentHistory');
     } 
 }

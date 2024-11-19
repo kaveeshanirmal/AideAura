@@ -2,7 +2,7 @@
 .sidebar {
     margin-top: 0px;
     width: 200px;
-    background-color: #FFF9E6;
+    background-color: #FFEEFD;
     padding: 20px;
     border-right: 1px solid #E5E5E5;
 }
@@ -65,7 +65,7 @@
 }
 
 .logout {
-    margin-top: 100%;
+    margin-top: auto;
 }
 
 /* Responsive Design */
