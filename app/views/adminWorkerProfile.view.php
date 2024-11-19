@@ -42,7 +42,7 @@
                     echo '<p>' . htmlspecialchars($worker['role']) . '</p>';
                     echo '</div>';
                     echo '</div>';
-                    echo '<div class="arrow-icon"> <a href="<?=ROOT?>/public/hrWorkerProfileManagement1">  > </a> </div>';
+                    echo '<div class="arrow-icon"> <a href="/hrWorkerProfileManagement1">  > </a> </div>';
                     echo '</div>';
                 }
                 ?>

@@ -25,7 +25,7 @@
                 <img src="assets/images/verification-request.png" alt="Profile" class="sidebar-image">
                 Verification Requests
             </a>
-            <a href="<?=ROOT?>/public/hrWorkerProfileManagement" class="nav-item">
+            <a href="<?=ROOT?>/public/hrWorkerInquiries" class="nav-item">
                 <i class="icon-help"></i>
                 <img src="assets/images/help-icon.png" alt="Profile" class="sidebar-image">
                Worker Inquiries

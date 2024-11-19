@@ -26,7 +26,7 @@
                     <div class="inquiry-card">
                         <div class="inquiry-header">
                             <div class="user-info">
-                                <img src="/assets/profile-icon.png" alt="Profile" class="profile-image">
+                                <img src="assets/images/user_icon.png" alt="Profile" class="profile-image">
                                 <div class="user-details">
                                     <h3>MR. Kamal Rupasinghe</h3>
                                     <div class="timestamp">
