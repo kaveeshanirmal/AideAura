@@ -12,10 +12,12 @@ class Home extends Controller
         if (isset($_SESSION['loggedIn'])) {
             if ($_SESSION['role'] == "customer") {
                 // worker finding page
-                header('Location: ' . ROOT . '/public/home');
+                // header('Location: ' . ROOT . '/public/home');
+                $this->view('EmployeeFindingScreen');
             } else if ($_SESSION['role'] == "worker") {
                 // worker dashboard
-                header('Location: ' . ROOT . '/public/home');
+                // header('Location: ' . ROOT . '/public/home');
+                $this->view('EmployeeFindingScreen');
             } else {
                 // admin dashboard
                 header('Location: ' . ROOT . '/public/home');
