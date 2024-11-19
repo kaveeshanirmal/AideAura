@@ -33,7 +33,7 @@ class Login extends Controller
                     header('Location: ' . ROOT . '/public/home');
                 } else {
                     // Admin and other dashboards
-                    // header('Location: ' . ROOT . '/public/home');
+                    header('Location: ' . ROOT . '/public/AdminReports');
                 }
             } else {
                 // Handle invalid login attempt
