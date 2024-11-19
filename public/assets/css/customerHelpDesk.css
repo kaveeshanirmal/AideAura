@@ -1,0 +1,144 @@
+.helpdesk-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+h1,
+h2 {
+    color: #333;
+}
+
+.contact-section {
+    margin-bottom: 30px;
+}
+
+.contact-methods {
+    display: flex;
+    gap: 20px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item img {
+    width: 30px;
+}
+
+.submit-issue {
+    margin-bottom: 30px;
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.submit-issue .form-group {
+    margin-bottom: 15px;
+}
+
+.submit-issue label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.submit-issue input,
+.submit-issue textarea,
+.submit-issue select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.submit-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.report-payment-issue {
+    margin-bottom: 30px;
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.report-payment-issue .form-group {
+    margin-bottom: 15px;
+}
+
+.report-payment-issue label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.report-payment-issue input, .report-payment-issue textarea, .report-payment-issue select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.knowledge-base {
+    background: #e7f3ff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.payment-faqs {
+    background: #e7f3ff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.kb-articles {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.kb-article {
+    background: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1;
+    min-width: 250px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kb-article h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.kb-article p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.kb-article a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.kb-article a:hover {
+    text-decoration: underline;
+}
