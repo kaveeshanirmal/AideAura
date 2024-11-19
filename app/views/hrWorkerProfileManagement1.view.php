@@ -12,7 +12,7 @@
        <main class="main-content">
         <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
             <div class="back-header">
-                <a href="hr-dashboard.php" class="back-button">‹</a>
+                <a href="hrWorkerProfileManagement" class="back-button">‹</a>
                 <div class="worker-header">
                     <div class="worker-avatar">
                         <img src="assets/images/user_icon.png" alt="Worker Avatar">
@@ -100,8 +100,8 @@
 
             <div class="action-buttons">
                     <button class="btn update">Update</button>
-                    <button class="btn schedule">Availability schedule</button>
-                    <button class="btn certificates">Certificates</button>
+                    <button class="btn schedule"> <a href="hrWorkerProfileSchedule">Availability schedule </a> </button>
+                    <button class="btn certificates"> <a href="hrWorkerProfileManagement2"> Certificates </a> </button>
                 </div>
 
         </main>
