@@ -2,7 +2,7 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    background-color: #FFF9E6;
+    background-color: #FFF;
     margin: 0px;
     padding: 0px;
 }
@@ -11,6 +11,7 @@
     flex-grow: 1;
     padding: 0px;
     background-color: #FFF;
+    margin: 7% 3% 3% 3%;
     //margin-left: 260px; /* Adjust based on your sidebar width */
 }
 
@@ -115,8 +116,7 @@
     }
 
     .main-content {
-        margin-left: 0;
-        //padding: 10px;
+        margin: 30% 3% 3% 3%;
     }
 
     .search-container {

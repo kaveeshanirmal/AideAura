@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPM Worker Complaints</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/opmComplaintManagement.css">
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/opmSpecialRequests.css">
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/OPM_sidebar.view.php'); ?>
-
+        <!-- Navbar Component -->
+        <?php include(ROOT_PATH . '/app/views/components/OPM_navbar.view.php');  ?>
         <div class="main-content">
-            <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/OPM_navbar.view.php');  ?>
-
             <div class="dashboard-container">
                 <!-- Tabs Section -->
                 <div class="tabs-container">

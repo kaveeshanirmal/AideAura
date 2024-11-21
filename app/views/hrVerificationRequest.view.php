@@ -9,14 +9,9 @@
 <body>
 
 <div class="dashboard-container">
-<?php include(ROOT_PATH . '/app/views/components/HR_side_bar.view.php'); ?>
+<?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
     <!-- Main Content -->
     <main class="main-content">
-    <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
-
-
-
-
 <div class="content-wrapper">      
     <div class="verification-list">
         <?php

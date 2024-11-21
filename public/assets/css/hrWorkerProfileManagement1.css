@@ -8,6 +8,8 @@
 .main-content {
     flex-grow: 1;
     padding: 0px;
+    margin: 6% 3% 3% 3%;
+
     //margin-left: 260px; /* Adjust based on your sidebar width */
 }
 
@@ -111,6 +113,12 @@
     margin-bottom: 40px;
     justify-content: center;
 }
+.action-buttons a{  
+    text-decoration: none;
+    color: inherit;
+}
+
+
 
 .btn {
     padding: 10px 20px;
@@ -148,8 +156,7 @@
     }
 
     .main-content {
-        margin-left: 0;
-        //padding: 10px;
+        margin: 30% 3% 3% 3%;
     }
 
     .details-grid {

@@ -2,8 +2,8 @@
 .dashboard-container {
     display: flex;
     flex-direction: row;
-    //min-height: 100vh;
-    background-color: #FFF9E6;
+    min-height: 100vh;
+    background-color: #FFF;
     margin: 0;
     padding: 0;
 }
@@ -11,9 +11,14 @@
 .main-content {
     //display: flex;
     flex: 1;
-    margin-bottom: 10px;
     background-color: #FFF;
     box-sizing: border-box;
+    margin: 7% 3% 3% 3%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .content-area {
@@ -187,12 +192,17 @@
     .main-content {
         order: 3;
         width: 100%;
+        margin: 30% 3% 3% 3%;
     }
 
     .employee-controls,
     .employee-details,
     .table-container {
         padding: 15px;
+    }
+
+    .add-employee-btn {
+        margin-right: 25px;
     }
 }
 

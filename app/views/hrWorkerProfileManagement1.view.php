@@ -8,9 +8,8 @@
 </head>
 <body>
     <div class="dashboard-container">
-    <?php include(ROOT_PATH . '/app/views/components/HR_side_bar.view.php'); ?>
-       <main class="main-content">
         <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
+       <main class="main-content">
             <div class="back-header">
                 <a href="hrWorkerProfileManagement" class="back-button">‹</a>
                 <div class="worker-header">

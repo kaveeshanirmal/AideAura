@@ -1,11 +1,13 @@
 .container {
     display: flex;
     min-height: 100vh;
-    background-color: #fff;
+    background-color: #f8f9fa;
 }
 
 .main-content {
     flex: 1;
+    margin: 8% 3% 3% 3%;
+    background-color: #f8f9fa;
 }
 
 .dashboard-title {
@@ -147,7 +149,7 @@
     }
     
     .main-content {
-       // padding: 1rem;
+        margin: 30% 3% 3% 3%;
     }
     
     .tabs-container {

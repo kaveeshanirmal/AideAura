@@ -7,12 +7,19 @@
 
 .main-content {
     flex: 1;
+    margin: 7% 3% 3% 3%;
+    background-color: #FFF;
     //margin-left: 250px; /* Adjust based on your sidebar width */
     //padding: 20px;
 }
 
 .content-wrapper {
     padding: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 /* Employee Form Container */
@@ -99,8 +106,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        margin-left: 0;
-    }
+        margin: 30% 3% 3% 3%;    }
 
     .employee-form-container {
         padding: 20px;
@@ -114,6 +120,10 @@
 
     .form-input,
     .form-select {
-        width: 100%;
+        width: 80%;
+    }
+
+    .form-select {
+        width: 85%;
     }
 }

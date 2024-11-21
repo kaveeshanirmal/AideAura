@@ -2,15 +2,16 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    background-color: #FFF9E6;
+    background-color: #f8f9fa;
     margin: 0px;
     padding: 0px;
 }
 
 .main-content {
     flex-grow: 1;
-    padding: 0px;
-    background-color: #FFF;
+    //padding: 0px;
+    background-color: #f8f9fa;
+    margin: 7% 3% 3% 3%;
     //margin-left: 260px; /* Adjust based on your sidebar width */
 }
 
@@ -115,7 +116,8 @@
     }
 
     .main-content {
-        margin-left: 0;
+       // margin-left: 0;
+        margin: 30% 3% 3% 3%; 
         //padding: 10px;
     }
 

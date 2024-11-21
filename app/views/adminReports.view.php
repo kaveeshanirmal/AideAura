@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
+    <title>Admin - Reports</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminReports.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
         <div class="main-content">
-            <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
-
             <div class="content-area">
                 <div class="filter-section">
                     <div class="input-group">

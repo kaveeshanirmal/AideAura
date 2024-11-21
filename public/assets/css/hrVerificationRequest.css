@@ -2,7 +2,7 @@
 .dashboard-container {
     display: flex;
    // min-height: 100vh;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 0px;
 }
 
@@ -11,12 +11,13 @@
 .main-content {
     flex: 1;
     padding: 0px;
-    background-color: #fff\\;
+    background-color: #ffffff;
+    margin: 7% 3% 3% 3%;
 }
 
 /* Content Wrapper */
 .content-wrapper {
-    flex: 1;0
+    flex: 1;
     padding: 45px 24px 24px 24px;
     background-color: #fff;
     min-height: calc(100vh - 64px);
@@ -27,7 +28,7 @@
 .verification-list {
     max-width: 1200px;
     margin: 0 auto;
-    margin-top: 5%;
+    margin-top: %;
 }
 
 /* Verification Card */
@@ -42,7 +43,6 @@
     transition: all 0.3s ease;
     max-width: 75%;
     margin-left: 10%;
-    margin-right: 10%;
 }
 
 .verification-card:hover {
@@ -201,6 +201,11 @@
     .dashboard-container {
         flex-direction: column;
     }
+
+    .main-content {
+        margin: 30% 3% 3% 3%;
+    }
+
 
     .verification-card {
         flex-direction: column;

@@ -7,6 +7,7 @@
 .main-content {
      flex: 1;
    // padding: 20px;
+   margin: 8% 3% 3% 3%;
 }
 
 .dashboard-title {
@@ -21,14 +22,14 @@
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 5%;
+    margin: 0% 5% 5% 5%;
 }
 
 .back-header {
     display: flex;
     align-items: center;
     gap: 30px;
-    margin-bottom: 30px;
+    //margin-bottom: 30px;
     margin-left: 10%;
 }
 
@@ -38,6 +39,10 @@
     font-size: 1.5rem;
     cursor: pointer;
     margin-bottom: 1rem;
+}
+.back-button a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .back-icon {
@@ -132,6 +137,7 @@
     
     .main-content {
         padding: 1rem;
+        margin: 28% 3% 3% 3%;
     }
     
     .profile-section {

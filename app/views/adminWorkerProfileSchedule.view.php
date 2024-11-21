@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Dashboard - Worker Scheduling</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/hrAvailabilitySchedule.css">
+    <title>Admin - Worker Scheduling</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/hrWorkerProfileSchedule.css">
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/HR_side_bar.view.php'); ?>
-
+        <!-- Navbar Component -->
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
         <div class="main-content">
-            <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
-
             <div class="dashboard-container">
                 <div class="scheduling-controls">
-
+                <button class="back-button">
+                    <span class="back-icon"><a href="adminWorkerProfile1" class="back-button">  < </a>
+                    </span>
+                </button>
                     <div class="view-controls">
                         <button class="view-btn">Days</button>
                         <button class="view-btn active">Weeks</button>

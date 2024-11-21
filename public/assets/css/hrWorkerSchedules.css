@@ -10,6 +10,7 @@
     flex: 1;
     padding: 0px;
     background-color: #FFF;
+    margin: 7% 3% 3% 3%;
 }
 
 .dashboard-container{
@@ -186,7 +187,7 @@ td {
     }
     
     .main-content {
-       // padding: 1rem;
+        margin: 30% 3% 3% 3%;
     }
     
     .field-group {

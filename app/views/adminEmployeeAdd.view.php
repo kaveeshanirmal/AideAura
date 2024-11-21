@@ -3,18 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Add Employee</title>
+    <title>Admin - Add Employee</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployeeAdd.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Include your existing sidebar component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-
-        <div class="main-content">
             <!-- Include your existing navbar component -->
             <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
-
+        <div class="main-content">
             <div class="content-wrapper">
                 <div class="employee-form-container">
                     <form action="process_employee.php" method="POST" class="employee-form">

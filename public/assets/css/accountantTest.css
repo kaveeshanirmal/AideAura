@@ -3,7 +3,6 @@
     display: flex;
     min-height: 100vh;
     overflow: hidden;
-    background-color: #f8f9fa;
 }
 
 
@@ -12,14 +11,15 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 7% 3% 3% 3%;
+    background-color: #fff
 }
 
 /* Content Wrapper */
 .content-wrapper {
     padding: 24px;
-    background-color: #f8f9fa;
+    background-color: #fff;
     flex: 1;
+    margin: 9% 0% 5% 0% 
 }
 
 /* Payment Section */
@@ -138,11 +138,6 @@
     .table-footer {
         flex-direction: column;
         gap: 12px;
-    }
-
-    .content-container {
-        margin: 30% 3% 3% 3%;
-
     }
 
     .pagination {

@@ -10,15 +10,9 @@
 
 <!-- Navbar -->
 <div class="dashboard-container">
-   
-    <!-- Sidebar -->
-    <?php include(ROOT_PATH . '/app/views/components/accountant_side_bar.view.php'); ?>
-
+    <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
     <!-- Main Content -->
     <main class="main-content">
-
-    <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
-
         <!-- Table Section -->
         <div class="table-container">
             <table class="rates-table">

@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accountant Payment History</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantPaymentHistory.css">
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantTest.css">
 </head>
 <body>
 <div class="main-container">
-        <?php
-        include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php');
-        ?>
+    
     <div class="content-container">
+        <?php
+        include(ROOT_PATH . '/app/views/components/accountant_Test_navbar.view.php');
+        ?>
+
         <main class="content-wrapper">
             <!-- Customer Payments Section -->
             <div class="payment-section">

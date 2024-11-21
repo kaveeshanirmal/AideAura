@@ -1,23 +1,23 @@
 .dashboard-container {
     display: flex;
     flex-direction: row;
-    background-color: #FFF9E6;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
 }
 
 .main-content {
     flex: 1;
-    margin-bottom: 10px;
+    margin: 7% 3% 3% 3%;
     //padding: 16px;
-    background-color: #FFF;
+    background-color: #f8f9fa;
     //max-width: calc(100% - 300px);
     box-sizing: border-box;
 }
 
 .content-area {
     padding: 16px;
-    background-color: #fff;
+    background-color: #f8f9fa;
 }
 
 /* Filter Section */
@@ -98,6 +98,10 @@
 @media (max-width: 768px) {
     .dashboard-container {
         flex-direction: column;
+    }
+
+    .main-content {
+        margin: 30% 3% 3% 3%;    
     }
 
     .generate-btn {

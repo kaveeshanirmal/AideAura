@@ -8,13 +8,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/HR_side_bar.view.php'); ?>
-
+        <!-- Navbar Component -->
+        <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
         <div class="main-content">
-            <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
-
             <div class="dashboard-container">
                 <div class="scheduling-controls">
                 <div class="field-group">

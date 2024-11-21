@@ -9,11 +9,8 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/accountant_side_bar.view.php'); ?>
-
+        <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
         <div class="main-content">
-            <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
-
             <div class="content-area">
                 <div class="filter-section">
                     <div class="input-group">

@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Worker Profile Management2</title>
+    <title>Admin - Worker Profile Management2</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerProfile2.css">
 </head>
 <body>
     <div class="container">
         <!-- Sidebar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-        
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>      
         <div class="main-content">
             <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
-
             <div class="dashboard-container">
            <div class="back-header">
                 <button class="back-button">
-                    <span class="back-icon"><a href="hr-dashboard.php" class="back-button"> < </a>
+                    <span class="back-icon"><a href="adminWorkerProfile1" class="back-button"> < </a>
                     </span>
                 </button>
                 <div class="profile-header">

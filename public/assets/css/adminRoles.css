@@ -2,11 +2,13 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    background-color: #FFF;
+    background-color: #f8f9fa;
 }
 
 .main-content {
     flex: 1;
+    margin: 7% 3% 3% 3%;
+    background-color: #f8f9fa;
     //margin-left: 250px; /* Adjust based on your sidebar width */
     //padding: 20px;
 }
@@ -54,12 +56,17 @@
     margin-bottom: 20px;
 }
 
+.roles-header a{
+    text-decoration: none;
+    color: inherit;
+}
+
 .add-role-btn {
     background-color: #00FF1A;
     color: black;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
     font-weight: bold;
 }
@@ -123,7 +130,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        margin-left: 0;
+        margin: 30% 3% 3% 3%;  
     }
 
     .roles-list {

@@ -2,12 +2,13 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    background-color:  #fff;
+    background-color:  #f8f9fa;
 }
 
 .main-content {
     flex-grow: 1;
-    padding: 0px;
+    background-color: #f8f9fa;
+    margin: 7% 3% 3% 3%;
     //margin-left: 260px; /* Adjust based on your sidebar width */
 }
 
@@ -38,6 +39,11 @@
     max-width: 45%;
     margin-left: 10%;
 
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .worker-avatar {
@@ -147,6 +153,7 @@
     .main-content {
         margin-left: 0;
         //padding: 10px;
+        margin: 30% 3% 3% 3%; 
     }
 
     .details-grid {

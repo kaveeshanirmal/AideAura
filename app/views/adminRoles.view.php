@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Roles</title>
+    <title>Admin - Roles</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminRoles.css">
     <!-- Include any other CSS files you need -->
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Include your existing sidebar component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
         <div class="main-content">
             <!-- Include your existing navbar component -->
-            <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
-
             <div class="content-wrapper">
                 <div class="roles-section">
                     <div class="roles-header">

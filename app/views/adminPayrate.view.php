@@ -3,22 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>payment rates</title>
+    <title>Admin - payment rates</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPayrate.css">
 </head>
 <body>
 
 <!-- Navbar -->
 <div class="dashboard-container">
-   
     <!-- Sidebar -->
-    <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
     <!-- Main Content -->
     <main class="main-content">
-
-    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
-
         <!-- Table Section -->
         <div class="table-container">
             <table class="rates-table">

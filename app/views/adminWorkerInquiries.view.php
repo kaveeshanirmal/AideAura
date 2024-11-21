@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Dashboard - Worker Inquiries</title>
+    <title>Admin - Worker Inquiries</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerInquiries.css">
 </head>
 <body>
     <div class="container">
-    <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-        
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?> 
         <div class="main-content">
             <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
-
             <div class="dashboard-container">                
                 <!-- Tabs Section -->
                 <div class="tabs-container">

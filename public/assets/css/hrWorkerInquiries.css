@@ -8,7 +8,7 @@
 
 .main-content {
     flex: 1;
-   // padding: 20px;
+    margin: 7% 3% 3% 3%;
 }
 
 .dashbord-container { 
@@ -156,7 +156,7 @@
     }
     
     .main-content {
-        padding: 1rem;
+        margin: 30% 3% 3% 3%;
     }
     
     .tabs-container {

@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Worker Profils</title>
+    <title>Admin - Worker Profils</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerProfile.css">
 </head>
 <body>
     <div class="dashboard-container">
-    <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
         <main class="main-content">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
-
             <div class="search-container">
                     <label for="workerField">Select the Worker Field:</label>
                     <select id="worker-field" class="search-input">
@@ -42,7 +39,7 @@
                     echo '<p>' . htmlspecialchars($worker['role']) . '</p>';
                     echo '</div>';
                     echo '</div>';
-                    echo '<div class="arrow-icon"> <a href="/hrWorkerProfileManagement1">  > </a> </div>';
+                    echo '<div class="arrow-icon"> <a href="adminWorkerProfile1">  > </a> </div>';
                     echo '</div>';
                 }
                 ?>

@@ -1,15 +1,15 @@
 .container {
     display: flex;
     min-height: 100vh;
-    background-color: #fff;
     margin: 0px;
     padding: 0px;
+    background-color: #f8f9fa;
 }
 
 .main-content {
     flex: 1;
-    padding: 0px;
-    background-color: #FFF;
+    margin: 7% 3% 3% 3%;
+    background-color: #f8f9fa;
 }
 
 .dashboard-container{
@@ -186,7 +186,7 @@ td {
     }
     
     .main-content {
-       // padding: 1rem;
+        margin: 30% 3% 3% 3%;
     }
     
     .field-group {

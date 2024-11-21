@@ -8,13 +8,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/OPM_sidebar.view.php'); ?>
-
+        <!-- Navbar Component -->
+        <?php include(ROOT_PATH . '/app/views/components/OPM_navbar.view.php');  ?>
         <div class="main-content">
-            <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/OPM_navbar.view.php');  ?>
-
             <div class="dashboard-container">
                 <!-- Tabs Section -->
                 <div class="tabs-container">

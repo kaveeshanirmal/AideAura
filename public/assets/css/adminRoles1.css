@@ -2,11 +2,13 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
-    background-color: #FFFF;
+    background-color: #f8f9fa;
 }
 
 .main-content {
     flex: 1;
+    margin: 7% 3% 3% 3%;
+    background-color: #f8f9fa;
    // margin-left: 250px; /* Adjust based on your sidebar width */
     //padding: 20px;
 }
@@ -106,11 +108,16 @@
     color: black;
     padding: 10px 40px;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
     transition: background-color 0.3s ease;
+}
+
+.add-btn a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .add-btn:hover {
@@ -125,10 +132,14 @@
     box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
 }
 
+.form-input,.form-textarea {
+    max-width: 95%;
+ }
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        margin-left: 0;
+        margin: 30% 3% 3% 3%;  
     }
 
     .role-form-container {
@@ -141,7 +152,7 @@
         align-items: flex-start;
     }
 
-    .form-input {
-        max-width: 100%;
+    .form-input,.form-textarea {
+       max-width: 95%;
     }
 }

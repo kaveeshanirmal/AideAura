@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Add Role</title>
+    <title>Admin - Add Role</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminRoles1.css">
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Include your existing sidebar component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
         <div class="main-content">
             <!-- Include your existing navbar component -->
-            <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
-
             <div class="content-wrapper">
                 <div class="role-form-container">
                     <form action="process_role.php" method="POST" class="role-form">

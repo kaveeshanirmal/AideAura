@@ -8,12 +8,9 @@
 </head>
 <body>
     <div class="container">
-    <?php include(ROOT_PATH . '/app/views/components/HR_side_bar.view.php'); ?>
-        
+        <!-- Navbar Component -->
+        <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php'); ?>
         <div class="main-content">
-            <!-- Navbar Component -->
-            <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php'); ?>
-
             <div class="dashboard-container">                
                 <!-- Tabs Section -->
                 <div class="tabs-container">

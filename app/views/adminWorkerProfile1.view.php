@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Worker Profile1</title>
+    <title>Admin - Worker Profile1</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerProfile1.css">
 </head>
 <body>
     <div class="dashboard-container">
-    <?php include(ROOT_PATH . '/app/views/components/admin_sidebar.view.php'); ?>
-       <main class="main-content">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
+    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
+    <main class="main-content">
             <div class="back-header">
-                <a href="hr-dashboard.php" class="back-button">‹</a>
+                <a href="adminWorkerProfile" class="back-button">‹</a>
                 <div class="worker-header">
                     <div class="worker-avatar">
                         <img src="assets/images/user_icon.png" alt="Worker Avatar">
@@ -100,8 +99,8 @@
 
             <div class="action-buttons">
                     <button class="btn update">Update</button>
-                    <button class="btn schedule">Availability schedule</button>
-                    <button class="btn certificates">Certificates</button>
+                    <button class="btn schedule"><a href="adminWorkerProfileSchedule">Availability schedule</a></button>
+                    <button class="btn certificates"><a href="adminWorkerProfile2">Certificates</a></button>
                 </div>
 
         </main>

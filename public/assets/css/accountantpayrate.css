@@ -1,8 +1,8 @@
 /* Dashboard Container */
 .dashboard-container {
     display: flex;
-   //min-height: 100vh;
-    background-color: #FFF9E6;
+    min-height: 100vh;
+    background-color: #f8f9fa;
    // margin: 0px;
    //as padding: 0px;
 }
@@ -11,7 +11,8 @@
 .main-content {
     flex: 1;
     padding: 0px;
-    background-color: #FFF;
+    background-color: #f8f9fa;
+    margin: 7% 3% 3% 3%;
 }
 
 /* Table Styles */
@@ -113,6 +114,10 @@
 @media (max-width: 768px) {
     .dashboard-container {
         flex-direction: column;
+    }
+
+    .main-content {
+        margin: 30% 3% 3% 3%;
     }
 
     .table-container {
