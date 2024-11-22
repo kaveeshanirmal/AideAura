@@ -106,7 +106,8 @@ a {
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        margin: 30% 3% 3% 3%;    }
+        margin: 30% 3% 3% 3%;    
+    }
 
     .employee-form-container {
         padding: 20px;
