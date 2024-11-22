@@ -22,5 +22,13 @@
         <?php endif; ?>
     </div>
 </div>
-<?php include ROOT_PATH . '/app/views/components/menubar.view.php'; ?>
+<!-- conditionally add worker or customer menubar -->
+<?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) : ?>
+    <?php if ($_SESSION['role'] == 'worker') : ?>
+        <?php include ROOT_PATH . '/app/views/components/workerMenubar.view.php'; ?>
+    <?php else : ?>
+        <?php include ROOT_PATH . '/app/views/components/customerMenubar.view.php'; ?>
+    <?php endif; ?>
+<?php endif; ?>
+<!-- notification panel -->
 <?php include ROOT_PATH . '/app/views/components/notificationPanel.view.php'; ?>

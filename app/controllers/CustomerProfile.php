@@ -1,6 +1,6 @@
 <?php
 
-class PROFILE extends Controller
+class CustomerProfile extends Controller
 {
     private $userModel;
 
