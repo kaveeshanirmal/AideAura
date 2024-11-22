@@ -4,11 +4,11 @@ class AdminWorkerInquiries extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('adminWorkerInquiries');
+        $this->view('admin/adminWorkerInquiries');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('adminWorkerInquiries');
+        $this->view('admin/adminWorkerInquiries');
     } 
 }

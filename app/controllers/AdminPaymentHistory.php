@@ -4,11 +4,11 @@ class AdminPaymentHistory extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('adminPaymentHistory');
+        $this->view('admin/adminPaymentHistory');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('adminPaymentHistory');
+        $this->view('admin/adminPaymentHistory');
     } 
 }

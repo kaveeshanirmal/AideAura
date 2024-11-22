@@ -4,11 +4,11 @@ class OPMcomplaintManagement extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('opmComplaintManagement');
+        $this->view('opm/opmComplaintManagement');
     }
 
     public function edit($a = '', $b = '', $c = '')
     {
-        $this->view('opmComplaintManagement');
+        $this->view('opm/opmComplaintManagement');
     } 
 }
