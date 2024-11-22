@@ -26,8 +26,23 @@
             <?php endforeach; ?>
         </div>
 
-        <h2>Reach us</h2>
-        <p class="contact-info">Contact us for more information.</p>
+        <h2>More ways we can help</h2>
+        <div id="quick-links-set">
+            <div class="quick-link-container">
+                <a href="<?=ROOT?>/public/customerHelpDesk/operationalHelp">
+                    <img src="<?=ROOT?>/public/assets/images/operational-logo.png" alt="Help Image 1" class="quick-link">
+                </a>
+                <span class="quick-link-label">Operational Help</span>
+            </div>
+            <div class="quick-link-container">
+                <a href="<?=ROOT?>/public/customerHelpDesk/paymentHelp">
+                    <img src="<?=ROOT?>/public/assets/images/payment-logo.png" alt="Help Image 2" class="quick-link">
+                </a>
+                <span class="quick-link-label">Payment Help</span>
+            </div>
+        </a>
+        </div>
+
     </div>
 
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
