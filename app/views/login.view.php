@@ -11,11 +11,17 @@
     <div class="container">
         <div class="login-form">
             <h2 class="greeting">Welcome back!</h2>
+            <!-- Error message display -->
+            <?php if (isset($data['error'])) : ?>
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span class="error-text"><?= htmlspecialchars($data['error']) ?></span>
+                </div>
+            <?php endif; ?>
             <form action="<?=ROOT?>/public/login" method="POST">
                 <div class="input-group">
                     <label for="username">Username</label>
                     <input type="text" name="username" placeholder="Username" required>
-                    <!-- <input type="text" id="email" placeholder="Enter username"> -->
                 </div>
                 <div class="input-group">
                     <div class="label-wrapper">
@@ -24,7 +30,6 @@
                     </div>
                     <div class="password-wrapper">
                         <input type="password" name="password" placeholder="Password" required>
-                        <!-- <input type="password" id="password" placeholder="Enter your password"> -->
                         <span class="toggle-password"><i class="fas fa-eye"></i></span>
                     </div>
                 </div>
@@ -47,15 +52,10 @@
             this.querySelector('i').classList.toggle('fa-eye');
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
+        document.querySelector('form').addEventListener('submit', function() {
+            document.querySelector('.login-button').disabled = true;
+        });
+
     </script>
 </body>
 </html>
-
-
-
-<!-- <h2>Login</h2>
-<form action="<?=ROOT?>/public/home/login" method="POST">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-</form> -->
