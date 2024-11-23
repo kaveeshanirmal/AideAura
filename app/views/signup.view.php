@@ -9,11 +9,12 @@
     <script src="assets/js/signup.js" defer></script>
 </head>
 <body>
+    <?php include(ROOT_PATH . '/app/views/components/signupNavbar.view.php'); ?>
     <div class="container">
         <form action="<?=ROOT?>/public/signup" method="POST" onsubmit="validatepassword()">
         <div class="signup-form-container">
-            <h2>I'm a</h2>
             <div class="signup-form">
+                <h3>I'm a</h3>
                 <!-- two images as buttons -->
                 <div class="signup-form-btn">
                     <div class="image-label">
@@ -29,5 +30,6 @@
         </div>
         </form>
     </div>
+    <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 </body>
 </html>
