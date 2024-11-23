@@ -1,0 +1,158 @@
+.service-form-modal {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.service-form-header {
+    padding-left: 10px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.service-form-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.question {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+
+.message {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #454646;
+}
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    margin: 20px 0;
+}
+
+.option:hover {
+    border-color: #4c9ebe;
+}
+
+.option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    padding: 0 10px;
+    white-space: nowrap;
+    min-width: 100px;
+}
+
+.option span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    position: relative;
+    text-align: center;
+}
+
+.option:hover span {
+    background-color: #e6f7fc;
+    border-color: #4c9ebe;
+    color: #333;
+}
+
+.option input:checked + span {
+    background-color: #e6f7fc;
+    border-color: #4c9ebe;
+    border-width: 3px;
+    color: #333;
+    font-weight: bold;
+    padding-right: 40px;
+    height: 40px;
+}
+
+.option input:checked + span::after {
+    content: "\f058";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    width: 20px;
+    height: 20px;
+    background-color: #4c9ebe;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) scale(1.2);
+}
+
+.done-btn {
+    background-color: #4c9ebe;
+    color: white;
+    padding: 10px 30px; /* Adjusted padding to ensure it fits */
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%; /* Ensure button width adjusts properly */
+    margin-top: 20px;
+    float: right; /* Aligns the button to the right */
+    bottom: 0;
+}
+
+/* .footerForms {
+            width: 100%;
+            height: 90px;
+            padding: 16px;
+            display: flex;
+            box-sizing: border-box;
+            bottom: 0;
+            left: 0;
+        }*/

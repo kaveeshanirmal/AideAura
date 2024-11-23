@@ -2,7 +2,7 @@
 function openModal(button) {
     const modalOverlay = document.getElementById("modal-overlay");
     const modalBody = document.getElementById("modal-body");
-    
+
     // Check if modal elements exist
     if (!modalOverlay || !modalBody) {
         console.error("Modal elements not found");
@@ -13,34 +13,28 @@ function openModal(button) {
 
     // Map service types to their respective PHP files
     const serviceForms = {
-       //cooking.php services
-        "home-style-food": "../serviceForms/home_style_food.php",
-        "dishwashing": "../serviceForms/dishwashing.php",
-
-        //nanny.php services
-        "0-2-months": "../serviceForms/0-2-months.php",
-        "2-12-months": "../serviceForms/2-12-months.php",
-        "1-2-years": "../serviceForms/1-2-years.php",
-        "2-4-years": "../serviceForms/2-4-years.php",
-        "MoreThan4": "../serviceForms/MoreThan4.php"
-
+        "home-style-food": `${ROOT}/public/test/getForm/home-style-food`, // Use backticks for template literals
+        dishwashing: `${ROOT}/public/test/getForm/dishwashing`,
+        // Add other service URLs here
     };
 
     const formUrl = serviceForms[serviceType];
 
     if (formUrl) {
         fetch(formUrl)
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            .then((response) => {
+                if (!response.ok)
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 return response.text();
             })
-            .then(html => {
+            .then((html) => {
                 modalBody.innerHTML = html; // Load the form into the modal
                 modalOverlay.classList.add("show"); // Show the modal overlay
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Error loading form:", error);
-                modalBody.innerHTML = "<p>Unable to load form. Please try again later.</p>";
+                modalBody.innerHTML =
+                    "<p>Unable to load form. Please try again later.</p>";
                 modalOverlay.classList.add("show"); // Show modal with error message
             });
     } else {
