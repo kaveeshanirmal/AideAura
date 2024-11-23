@@ -50,12 +50,7 @@ body {
 
 @media (max-width: 768px) {
     .header {
-        flex-direction: column;
-        //padding: 1rem;
-    }
+        flex-direction: row;
 
-    .right-section {
-        width: 100%;
-        justify-content: space-between;
     }
 }
