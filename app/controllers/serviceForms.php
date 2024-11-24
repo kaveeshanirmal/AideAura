@@ -1,6 +1,6 @@
 <?php
 
-class Test extends Controller
+class serviceForms extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {

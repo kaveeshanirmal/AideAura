@@ -13,8 +13,8 @@ function openModal(button) {
 
     // Map service types to their respective PHP files
     const serviceForms = {
-        "home-style-food": `${ROOT}/public/test/getForm/home-style-food`, // Use backticks for template literals
-        dishwashing: `${ROOT}/public/test/getForm/dishwashing`,
+        "home-style-food": `${ROOT}/public/serviceForms/getForm/home-style-food`, // Use backticks for template literals
+        "dishwashing": `${ROOT}/public/serviceForms/getForm/dishwashing`,
         // Add other service URLs here
     };
 
