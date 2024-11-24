@@ -1,0 +1,214 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+    --text-color: #2c3e50;
+    --accent-color: #34495e;
+    --hover-color: #2980b9;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: "Arial", "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    background: var(--background);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.schedule-container {
+    margin-top: 90px;
+    margin-bottom: 10px;
+    max-width: 800px;
+    width: 800px;
+    padding: 40px 30px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.edit-btn,
+.add-schedule-btn,
+.save-changes-btn,
+.cancel-changes-btn {
+    align-self: center;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.edit-btn:hover,
+.add-schedule-btn:hover,
+.save-changes-btn:hover,
+.cancel-changes-btn:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-changes-btn {
+    background-color: #e74c3c;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.schedule-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.schedule-table tr:last-child td {
+    border-bottom: none;
+}
+
+.schedule-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.schedule-table tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.3s ease;
+}
+
+.error-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.error-modal {
+    background-color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.error-name {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+}
+
+.error-list {
+    list-style-type: none;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.close-overlay-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.close-overlay-btn:hover {
+    background-color: var(--hover-color);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .schedule-container {
+        width: 98%;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .schedule-table {
+        font-size: 0.9rem;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 0.75rem;
+    }
+
+    .edit-btn,
+    .add-schedule-btn,
+    .save-changes-btn,
+    .cancel-changes-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .schedule-container {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .schedule-table {
+        font-size: 0.8rem;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 0.5rem;
+    }
+
+    .edit-btn,
+    .add-schedule-btn,
+    .save-changes-btn,
+    .cancel-changes-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
