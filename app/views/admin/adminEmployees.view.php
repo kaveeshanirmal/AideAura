@@ -3,182 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Add Employee</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployeeAdd.css">
+    <title>Admin - Employee Management</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployees.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
-
-        <!-- Include your existing navbar component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
-        
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>  
         <div class="main-content">
-            <div class="content-wrapper">
-                <div class="employee-form-container">
-                    <form action="<?=ROOT?>/public/AdminEmployeeAdd/store" method="POST" class="employee-form" id="employeeForm">
-                        <div id="formMessage" class="form-message"></div> <!-- Message container -->
-
-                        <div class="form-group">
-                            <label for="name">Name :</label>
-                            <input type="text" id="name" name="name" placeholder="Mr. Kamal Gunarathne" class="form-input" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email :</label>
-                            <input type="email" id="email" name="email" placeholder="kmgnth123@gamil.com" class="form-input" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="contact">Contact :</label>
-                            <input type="tel" id="contact" name="contact" placeholder="078 956 4738" class="form-input" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="role">Role :</label>
-                            <select id="role" name="role" class="form-select" required>
-                                <option value="Accountant">Accountant</option>
-                                <option value="HR Manager">HR Manager</option>
-                                <option value="Operational Manager">Operational Manager</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                        <label for="password">Password :</label>
-                        <div class="password-container">
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                placeholder="AdminKamal738" 
-                                class="form-input" 
-                                required>
-                            <span class="toggle-password" id="togglePassword">&#128065;</span>
-                        </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="date">Date :</label>
-                            <input type="date" id="date" name="date" class="form-input" required>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="add-btn">Add Employee</button>
-                        </div>
-                    </form>
+            <div class="employee-controls">
+                <div class="search-filters">
+                    <div class="input-group">
+                        <label>Role:</label>
+                        <select id="employeeRole" class="role-select">
+                            <option value="HR Manager">HR Manager</option>
+                            <option value="Finance Manager">Finance Manager</option>
+                            <option value="Operational Manager">Operational Manager</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Status:</label>
+                        <select id="employeeStatus" class="status-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
                 </div>
+
+                <button class="add-employee-btn">
+                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
+                </button>
+            </div>
+
+            <div class="employee-details">
+                <div class="input-group">
+                    <label>Employee ID:</label>
+                    <input type="text" id="employeeId" class="id-input">
+                </div>
+                <div class="input-group">
+                    <label>Email:</label>
+                    <input type="email" id="employeeEmail" class="email-input">
+                </div>
+                <div class="search-btn-container">
+                    <button class="search-btn" onclick="searchEmployees()">Search</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="employee-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Email Address</th>
+                            <th>Contact</th>
+                            <th>Password</th>
+                            <th>Date Of Hire</th>
+                            <th>Status</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTableBody">
+                        <?php foreach ($employees as $employee): ?>
+                        <tr data-id="<?= htmlspecialchars($employee['id']) ?>">
+                            <td><?= htmlspecialchars($employee['id']) ?></td>
+                            <td><?= htmlspecialchars($employee['name']) ?></td>
+                            <td><?= htmlspecialchars($employee['role']) ?></td>
+                            <td><?= htmlspecialchars($employee['email']) ?></td>
+                            <td><?= htmlspecialchars($employee['contact']) ?></td>
+                            <td><?= htmlspecialchars($employee['password']) ?></td>
+                            <td><?= htmlspecialchars($employee['date_of_hire']) ?></td>
+                            <td><span class="status-<?= strtolower($employee['status']) ?>"><?= htmlspecialchars($employee['status']) ?></span></td>
+                            <td>
+                                <button class="update-btn" onclick="showUpdateModal('<?= $employee['id'] ?>')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="delete-btn" onclick="deleteEmployee('<?= $employee['id'] ?>')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeUpdateModal()">&times;</span>
+            <h2>Update Employee</h2>
+            <form id="updateForm">
+                <input type="hidden" id="updateEmployeeId">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="updateName">
+                </div>
+                <div class="form-group">
+                    <label>Role:</label>
+                    <select id="updateRole">
+                        <option value="Accountant">Accountant</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Developer">Developer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="updateEmail">
+                </div>
+                <div class="form-group">
+                    <label>Contact:</label>
+                    <input type="text" id="updateContact">
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <select id="updateStatus">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <button type="button" onclick="updateEmployee()">Update</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-    const form = document.getElementById('employeeForm');
-    const notification = document.getElementById('notification');
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordField = document.getElementById('password');
 
-    const showNotification = (message, type) => {
-        // Set message and type
-        notification.textContent = message;
-        notification.className = `notification ${type} show`;
+      // Print the employees array from the backend
+       const employees = <?= json_encode($employees, JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS) ?>;
+       console.log('Employees:', employees);
 
-        // Hide the notification after 3 seconds
-        setTimeout(() => {
-            notification.className = 'notification hidden';
-        }, 3000);
-    };
-
-    // Form validation function
-    const validateForm = () => {
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const contact = document.getElementById('contact').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const date = document.getElementById('date').value;
-
-        // Name validation
-        const nameRegex = /^[a-zA-Z\s]+$/;
-        if (!name || !nameRegex.test(name)) {
-            showNotification('Name must contain only letters and spaces.', 'error');
-            return false;
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
-            showNotification('Please enter a valid email address.', 'error');
-            return false;
-        }
-
-        // Contact validation
-        const contactRegex = /^[0-9]{10}$/;
-        if (!contact || !contactRegex.test(contact)) {
-            showNotification('Contact number must be exactly 10 digits.', 'error');
-            return false;
-        }
-
-        // Password validation
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        if (!password || !passwordRegex.test(password)) {
-            showNotification(
-                'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
-                'error'
-            );
-            return false;
-        }
-
-        // Date validation
-        const currentDate = new Date().toISOString().split('T')[0];
-        if (!date || date > currentDate) {
-            showNotification('Date cannot be in the future.', 'error');
-            return false;
-        }
-
-        return true; // All validations passed
-    };
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!validateForm()) {
-            return; // Stop form submission if validation fails
-        }
-
-        const formData = new FormData(form);
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
+        // Search employees
+        function searchEmployees() {
+            const params = new URLSearchParams({
+                name: document.getElementById('employeeName').value,
+                role: document.getElementById('employeeRole').value,
+                email: document.getElementById('employeeEmail').value,
+                status: document.getElementById('employeeStatus').value,
+                id: document.getElementById('employeeId').value
             });
 
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                showNotification(result.message, 'success'); // Success notification
-                setTimeout(() => {
-                    window.location.href = '<?=ROOT?>/public/AdminEmployees';
-                }, 2000);
-            } else {
-                showNotification(result.message, 'error'); // Error notification
-            }
-        } catch (error) {
-            showNotification('An error occurred. Please try again.', 'error');
-            console.error('Error:', error);
+            fetch(`<?=ROOT?>/public/adminEmployees/search?${params}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('employeeTableBody');
+                    tbody.innerHTML = '';
+                    
+                    data.forEach(employee => {
+                        const row = `
+                            <tr data-id="${employee.id}">
+                                <td>${employee.id}</td>
+                                <td>${employee.name}</td>
+                                <td>${employee.role}</td>
+                                <td>${employee.email}</td>
+                                <td>${employee.contact}</td>
+                                <td>${employee.password}</td>
+                                <td>${employee.date_of_hire}</td>
+                                <td><span class="status-${employee.status.toLowerCase()}">${employee.status}</span></td>
+                                <td>
+                                    <button class="update-btn" onclick="showUpdateModal('${employee.id}')">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="delete-btn" onclick="deleteEmployee('${employee.id}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
         }
-    });
 
+        // Show update modal
+        function showUpdateModal(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            const cells = row.getElementsByTagName('td');
 
-    togglePassword.addEventListener('click', () => {
-        // Toggle the password field type
-        const type = passwordField.type === 'password' ? 'text' : 'password';
-        passwordField.type = type;
+            document.getElementById('updateEmployeeId').value = id;
+            document.getElementById('updateName').value = cells[1].textContent;
+            document.getElementById('updateRole').value = cells[2].textContent;
+            document.getElementById('updateEmail').value = cells[3].textContent;
+            document.getElementById('updateContact').value = cells[4].textContent;
+            document.getElementById('updateStatus').value = cells[7].textContent;
 
-        // Change the icon based on the visibility
-        togglePassword.textContent = type === 'password' ? '\uD83D\uDC41' : '\uD83D\uDC41\u200D\uD83D\uDDE8'; // Plain vs. strikethrough eye
-    });
-</script>
+            document.getElementById('updateModal').style.display = 'block';
+        }
 
+        // Close update modal
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+        }
 
+        // Update employee
+        function updateEmployee() {
+            const id = document.getElementById('updateEmployeeId').value;
+            const data = {
+                id: id,
+                name: document.getElementById('updateName').value,
+                role: document.getElementById('updateRole').value,
+                email: document.getElementById('updateEmail').value,
+                contact: document.getElementById('updateContact').value,
+                status: document.getElementById('updateStatus').value
+            };
 
+            fetch('<?=ROOT?>/public/adminEmployees/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    closeUpdateModal();
+                    searchEmployees(); // Refresh the table
+                } else {
+                    alert('Update failed');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Delete employee
+        function deleteEmployee(id) {
+            if (confirm('Are you sure you want to delete this employee?')) {
+                fetch('<?=ROOT?>/public/adminEmployees/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: id })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        searchEmployees(); // Refresh the table
+                    } else {
+                        alert('Delete failed');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+
+        // Add event listeners for real-time search
+        document.querySelectorAll('.search-filters input, .search-filters select, .employee-details input')
+            .forEach(element => {
+                element.addEventListener('input', debounce(searchEmployees, 500));
+            });
+
+        // Debounce function to prevent too many requests
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
 </body>
 </html>

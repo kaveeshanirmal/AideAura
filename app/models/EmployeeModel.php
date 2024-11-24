@@ -1,66 +1,122 @@
 <?php
 
-class EmployeeModel
-{
-    use Model; // Use the Model trait
+class EmployeeModel {
+    use Model;
 
-    // Register a new admin/employee (already working well, no changes)
-    public function AddAdmins($data, $role)
-    {
-        $this->setTable('employees'); // Set the table to 'employees'
-
+    // Add admin/employee (existing method, unchanged)
+    public function AddAdmins($data) {
+        $this->setTable('employees');
+        
         $userData = [
             'name' => $data['name'],
+            'role' => $data['role'],
             'email' => $data['email'],
             'contact' => $data['contact'],
-            'role' => $role,
-            'password' => $data['password'], // Password is already hashed 
+            'password' => $data['password'],
             'dateOfHire' => $data['date'],
         ];
-
+        
         return $this->insert($userData);
     }
 
-    // Search employees by name, role, email, ID, or status
-    public function searchEmployees($filters)
-    {
-        $this->setTable('employees'); // Ensure the table is set
+    // Get all employees with ordering
+    public function getAllEmployees() {
+        $this->setTable('employees');
+        return $this->all(); // No SQL is passed here.
+    }
+
+
+    public function testConnection() {
+        $this->setTable('employees');
+        $query = "SELECT * FROM employees LIMIT 1";
+        return $this->get_all($query);
+    }
+
+    /*
+    // Updated search method to handle frontend filters
+    public function searchEmployees($filters) {
+        $this->setTable('employees');
+        
         $conditions = [];
         $params = [];
-
-        foreach ($filters as $key => $value) {
-            if (!empty($value)) {
-                $conditions[] = "$key LIKE :$key";
-                $params[$key] = "%$value%"; // Use wildcard for partial match
-            }
+        
+        // Build search conditions based on filters
+        if (!empty($filters['role'])) {
+            $conditions[] = "role LIKE :role";
+            $params['role'] = "%" . trim($filters['role']) . "%";
+        }
+        
+        if (!empty($filters['email'])) {
+            $conditions[] = "email LIKE :email";
+            $params['email'] = "%" . trim($filters['email']) . "%";
+        }
+        
+        if (!empty($filters['status'])) {
+            $conditions[] = "status LIKE :status";
+            $params['status'] = "%" . trim($filters['status']) . "%";
+        }
+        
+        if (!empty($filters['employeeID'])) {
+            $conditions[] = "employeeID LIKE :employeeID";
+            $params['employeeID'] = "%" . trim($filters['employeeID']) . "%";
         }
 
         $sql = "SELECT * FROM employees";
         if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
+            $sql .= " WHERE " . implode(' OR ', $conditions);
         }
-
+        
+        // Add ordering to ensure consistent results
+        $sql .= " ORDER BY employeeID DESC";
+        
         return $this->query($sql, $params);
     }
 
-    // Get all employees
-    public function getAllEmployees()
-    {
-        $this->setTable('employees'); // Ensure the table is set
-        return $this->all();
+
+    // Updated update method with validation
+    public function updateEmployee($employeeID, $data) {
+        $this->setTable('employees');
+        
+        // Validate required fields
+        $requiredFields = ['name', 'email', 'role', 'status'];
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field]) || empty(trim($data[$field]))) {
+                return false;
+            }
+        }
+        
+        // Validate email format
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        
+        // Clean and prepare data for update
+        $updateData = [
+            'name' => trim($data['name']),
+            'email' => trim($data['email']),
+            'role' => trim($data['role']),
+            'status' => trim($data['status'])
+        ];
+        
+        // Add contact if provided
+        if (isset($data['contact']) && !empty($data['contact'])) {
+            $updateData['contact'] = trim($data['contact']);
+        }
+        
+        return $this->update($employeeID, $updateData, 'employeeID');
     }
 
-    // Update employee details
-    public function updateEmployee($id, $data)
-    {
-        $this->setTable('employees'); // Ensure the table is set
-        return $this->update($id, $data, 'id');
+    // Updated delete method with validation
+    public function deleteEmployee($employeeID) {
+        $this->setTable('employees');
+        
+        // Check if employee exists before deletion
+        $employee = $this->find($employeeID);
+        if (!$employee) {
+            return false;
+        }
+        
+        return $this->delete($employeeID, 'employeeID');
     }
-
-    // Delete employee by ID
-    public function deleteEmployee($id)
-    {
-        $this->setTable('employees'); // Ensure the table is set
-        return $this->delete($id, 'id');
-    }
+ */
 }

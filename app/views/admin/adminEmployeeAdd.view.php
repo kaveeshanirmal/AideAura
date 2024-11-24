@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label for="role">Role :</label>
                             <select id="role" name="role" class="form-select" required>
-                                <option value="Accountant">Accountant</option>
+                                <option value="Finance Manager">Finance Manager</option>
                                 <option value="HR Manager">HR Manager</option>
                                 <option value="Operational Manager">Operational Manager</option>
                             </select>
@@ -118,7 +118,7 @@
         }
 
         // Password validation
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,}$/;
         if (!password || !passwordRegex.test(password)) {
             showNotification(
                 'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
@@ -129,8 +129,8 @@
 
         // Date validation
         const currentDate = new Date().toISOString().split('T')[0];
-        if (!date || date > currentDate) {
-            showNotification('Date cannot be in the future.', 'error');
+        if (!date) {
+            showNotification('Date is required', 'error');
             return false;
         }
 

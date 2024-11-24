@@ -32,7 +32,7 @@ class AdminEmployeeAdd extends Controller
                 'date' => trim($_POST['date']),
             ];
     
-            $result = $this->employeeModel->AddAdmins($data, $data['role']);
+            $result = $this->employeeModel->AddAdmins($data);
     
             if ($result) {
                 echo json_encode(['status' => 'success', 'message' => 'Employee added successfully!']);
@@ -44,6 +44,7 @@ class AdminEmployeeAdd extends Controller
         }
         exit;
     }
+
     
 }
 ?>
