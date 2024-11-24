@@ -3,169 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Employee Management</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployees.css">
-    <!-- Include Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Admin - Add Employee</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployeeAdd.css">
 </head>
 <body>
+    <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
-    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>  
+
+        <!-- Include your existing navbar component -->
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+        
         <div class="main-content">
-                <div class="employee-controls">
-                    <div class="search-filters">
-                        <div class="input-group">
-                            <label>Employee Name:</label>
-                            <input type="text" value="Mr.Kamal Gunarathne" class="employee-input">
+            <div class="content-wrapper">
+                <div class="employee-form-container">
+                    <form action="<?=ROOT?>/public/AdminEmployeeAdd/store" method="POST" class="employee-form" id="employeeForm">
+                        <div id="formMessage" class="form-message"></div> <!-- Message container -->
+
+                        <div class="form-group">
+                            <label for="name">Name :</label>
+                            <input type="text" id="name" name="name" placeholder="Mr. Kamal Gunarathne" class="form-input" required>
                         </div>
-                        <div class="input-group">
-                            <label>Role:</label>
-                            <select class="role-select">
-                                <option selected>Accountant</option>
-                                <option>Manager</option>
-                                <option>Developer</option>
+
+                        <div class="form-group">
+                            <label for="email">Email :</label>
+                            <input type="email" id="email" name="email" placeholder="kmgnth123@gamil.com" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">Contact :</label>
+                            <input type="tel" id="contact" name="contact" placeholder="078 956 4738" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Role :</label>
+                            <select id="role" name="role" class="form-select" required>
+                                <option value="Accountant">Accountant</option>
+                                <option value="HR Manager">HR Manager</option>
+                                <option value="Operational Manager">Operational Manager</option>
                             </select>
                         </div>
-                        <div class="input-group">
-                            <label>Status:</label>
-                            <select class="status-select">
-                                <option selected>Active</option>
-                                <option>Inactive</option>
-                            </select>
+
+                        <div class="form-group">
+                        <label for="password">Password :</label>
+                        <div class="password-container">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                placeholder="AdminKamal738" 
+                                class="form-input" 
+                                required>
+                            <span class="toggle-password" id="togglePassword">&#128065;</span>
                         </div>
-                    </div>
+                        </div>
 
-                    <button class="add-employee-btn">
-                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
-                    </button>
-                </div>
+                        <div class="form-group">
+                            <label for="date">Date :</label>
+                            <input type="date" id="date" name="date" class="form-input" required>
+                        </div>
 
-                <div class="employee-details">
-                    <div class="input-group">
-                        <label>Employee ID:</label>
-                        <input type="text" value="#158963257" class="id-input" readonly>
-                    </div>
-                    <div class="input-group">
-                        <label>Email:</label>
-                        <input type="email" value="kamal1234@gamil.com" class="email-input">
-                    </div>
-                    <div class="search-btn-container">
-                        <button class="search-btn">Search</button>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table class="employee-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Email Address</th>
-                                <th>Contact</th>
-                                <th>Password</th>
-                                <th>Date Of Hire</th>
-                                <th>Status</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#158963257</td>
-                                <td>Mr.Kamal Gunarathne</td>
-                                <td>Accountant</td>
-                                <td>kamal1234@gamil.com</td>
-                                <td>0758964501</td>
-                                <td>KamGun#543</td>
-                                <td>2024.8.17</td>
-                                <td><span class="status-active">Active</span></td>
-                                <td>
-                                    <button class="update-btn">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete-btn">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tbody>
-                            <tr>
-                                <td>#158963257</td>
-                                <td>Mr.Kamal Gunarathne</td>
-                                <td>Accountant</td>
-                                <td>kamal1234@gamil.com</td>
-                                <td>0758964501</td>
-                                <td>KamGun#543</td>
-                                <td>2024.8.17</td>
-                                <td><span class="status-active">Active</span></td>
-                                <td>
-                                    <button class="update-btn">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete-btn">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tbody>
-                            <tr>
-                                <td>#158963257</td>
-                                <td>Mr.Kamal Gunarathne</td>
-                                <td>Accountant</td>
-                                <td>kamal1234@gamil.com</td>
-                                <td>0758964501</td>
-                                <td>KamGun#543</td>
-                                <td>2024.8.17</td>
-                                <td><span class="status-active">Active</span></td>
-                                <td>
-                                    <button class="update-btn">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete-btn">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tbody>
-                            <tr>
-                                <td>#158963257</td>
-                                <td>Mr.Kamal Gunarathne</td>
-                                <td>Accountant</td>
-                                <td>kamal1234@gamil.com</td>
-                                <td>0758964501</td>
-                                <td>KamGun#543</td>
-                                <td>2024.8.17</td>
-                                <td><span class="status-active">Active</span></td>
-                                <td>
-                                    <button class="update-btn">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete-btn">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                    </table>
+                        <div class="form-actions">
+                            <button type="submit" class="add-btn">Add Employee</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+    const form = document.getElementById('employeeForm');
+    const notification = document.getElementById('notification');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+
+    const showNotification = (message, type) => {
+        // Set message and type
+        notification.textContent = message;
+        notification.className = `notification ${type} show`;
+
+        // Hide the notification after 3 seconds
+        setTimeout(() => {
+            notification.className = 'notification hidden';
+        }, 3000);
+    };
+
+    // Form validation function
+    const validateForm = () => {
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const contact = document.getElementById('contact').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const date = document.getElementById('date').value;
+
+        // Name validation
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (!name || !nameRegex.test(name)) {
+            showNotification('Name must contain only letters and spaces.', 'error');
+            return false;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            showNotification('Please enter a valid email address.', 'error');
+            return false;
+        }
+
+        // Contact validation
+        const contactRegex = /^[0-9]{10}$/;
+        if (!contact || !contactRegex.test(contact)) {
+            showNotification('Contact number must be exactly 10 digits.', 'error');
+            return false;
+        }
+
+        // Password validation
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!password || !passwordRegex.test(password)) {
+            showNotification(
+                'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
+                'error'
+            );
+            return false;
+        }
+
+        // Date validation
+        const currentDate = new Date().toISOString().split('T')[0];
+        if (!date || date > currentDate) {
+            showNotification('Date cannot be in the future.', 'error');
+            return false;
+        }
+
+        return true; // All validations passed
+    };
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return; // Stop form submission if validation fails
+        }
+
+        const formData = new FormData(form);
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                showNotification(result.message, 'success'); // Success notification
+                setTimeout(() => {
+                    window.location.href = '<?=ROOT?>/public/AdminEmployees';
+                }, 2000);
+            } else {
+                showNotification(result.message, 'error'); // Error notification
+            }
+        } catch (error) {
+            showNotification('An error occurred. Please try again.', 'error');
+            console.error('Error:', error);
+        }
+    });
+
+
+    togglePassword.addEventListener('click', () => {
+        // Toggle the password field type
+        const type = passwordField.type === 'password' ? 'text' : 'password';
+        passwordField.type = type;
+
+        // Change the icon based on the visibility
+        togglePassword.textContent = type === 'password' ? '\uD83D\uDC41' : '\uD83D\uDC41\u200D\uD83D\uDDE8'; // Plain vs. strikethrough eye
+    });
+</script>
+
+
+
 </body>
 </html>
