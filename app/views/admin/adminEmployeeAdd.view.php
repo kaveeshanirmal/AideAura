@@ -12,7 +12,7 @@
 
         <!-- Include your existing navbar component -->
         <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
-        
+
         <div class="main-content">
             <div class="content-wrapper">
                 <div class="employee-form-container">
@@ -20,46 +20,45 @@
                         <div id="formMessage" class="form-message"></div> <!-- Message container -->
 
                         <div class="form-group">
-                            <label for="name">Name :</label>
-                            <input type="text" id="name" name="name" placeholder="Mr. Kamal Gunarathne" class="form-input" required>
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Kamal" class="form-input" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email :</label>
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Gunarathne" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" placeholder="kamal.g" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
                             <input type="email" id="email" name="email" placeholder="kmgnth123@gamil.com" class="form-input" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="contact">Contact :</label>
+                            <label for="contact">Contact:</label>
                             <input type="tel" id="contact" name="contact" placeholder="078 956 4738" class="form-input" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="role">Role :</label>
+                            <label for="role">Role:</label>
                             <select id="role" name="role" class="form-select" required>
-                                <option value="Finance Manager">Finance Manager</option>
-                                <option value="HR Manager">HR Manager</option>
+                                <option value="Finance Manager">FinanceManager</option>
+                                <option value="HR Manager">hrManager</option>
                                 <option value="Operational Manager">Operational Manager</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                        <label for="password">Password :</label>
-                        <div class="password-container">
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                placeholder="AdminKamal738" 
-                                class="form-input" 
-                                required>
-                            <span class="toggle-password" id="togglePassword">&#128065;</span>
-                        </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="date">Date :</label>
-                            <input type="date" id="date" name="date" class="form-input" required>
+                            <label for="password">Password:</label>
+                            <div class="password-container">
+                                <input type="password" id="password" name="password" placeholder="AdminKamal738" class="form-input" required>
+                                <span class="toggle-password" id="togglePassword">&#128065;</span>
+                            </div>
                         </div>
 
                         <div class="form-actions">
@@ -72,113 +71,96 @@
     </div>
 
     <script>
-    const form = document.getElementById('employeeForm');
-    const notification = document.getElementById('notification');
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordField = document.getElementById('password');
+        const form = document.getElementById('employeeForm');
+        const notification = document.getElementById('notification');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
 
-    const showNotification = (message, type) => {
-        // Set message and type
-        notification.textContent = message;
-        notification.className = `notification ${type} show`;
+        const showNotification = (message, type) => {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
 
-        // Hide the notification after 3 seconds
-        setTimeout(() => {
-            notification.className = 'notification hidden';
-        }, 3000);
-    };
+            setTimeout(() => {
+                notification.className = 'notification hidden';
+            }, 3000);
+        };
 
-    // Form validation function
-    const validateForm = () => {
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const contact = document.getElementById('contact').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const date = document.getElementById('date').value;
+        const validateForm = () => {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('contact').value.trim();
+            const password = document.getElementById('password').value.trim();
 
-        // Name validation
-        const nameRegex = /^[a-zA-Z\s]+$/;
-        if (!name || !nameRegex.test(name)) {
-            showNotification('Name must contain only letters and spaces.', 'error');
-            return false;
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
-            showNotification('Please enter a valid email address.', 'error');
-            return false;
-        }
-
-        // Contact validation
-        const contactRegex = /^[0-9]{10}$/;
-        if (!contact || !contactRegex.test(contact)) {
-            showNotification('Contact number must be exactly 10 digits.', 'error');
-            return false;
-        }
-
-        // Password validation
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,}$/;
-        if (!password || !passwordRegex.test(password)) {
-            showNotification(
-                'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
-                'error'
-            );
-            return false;
-        }
-
-        // Date validation
-        const currentDate = new Date().toISOString().split('T')[0];
-        if (!date) {
-            showNotification('Date is required', 'error');
-            return false;
-        }
-
-        return true; // All validations passed
-    };
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!validateForm()) {
-            return; // Stop form submission if validation fails
-        }
-
-        const formData = new FormData(form);
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-            });
-
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                showNotification(result.message, 'success'); // Success notification
-                setTimeout(() => {
-                    window.location.href = '<?=ROOT?>/public/AdminEmployees';
-                }, 2000);
-            } else {
-                showNotification(result.message, 'error'); // Error notification
+            if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+                showNotification('First name must contain only letters and spaces.', 'error');
+                return false;
             }
-        } catch (error) {
-            showNotification('An error occurred. Please try again.', 'error');
-            console.error('Error:', error);
-        }
-    });
 
+            if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+                showNotification('Last name must contain only letters and spaces.', 'error');
+                return false;
+            }
 
-    togglePassword.addEventListener('click', () => {
-        // Toggle the password field type
-        const type = passwordField.type === 'password' ? 'text' : 'password';
-        passwordField.type = type;
+            if (!username) {
+                showNotification('Username is required.', 'error');
+                return false;
+            }
 
-        // Change the icon based on the visibility
-        togglePassword.textContent = type === 'password' ? '\uD83D\uDC41' : '\uD83D\uDC41\u200D\uD83D\uDDE8'; // Plain vs. strikethrough eye
-    });
-</script>
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showNotification('Please enter a valid email address.', 'error');
+                return false;
+            }
 
+            if (!/^[0-9]{10}$/.test(contact)) {
+                showNotification('Contact number must be exactly 10 digits.', 'error');
+                return false;
+            }
 
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,}$/.test(password)) {
+                showNotification(
+                    'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
+                    'error'
+                );
+                return false;
+            }
 
+            return true;
+        };
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!validateForm()) return;
+
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    showNotification(result.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '<?=ROOT?>/public/AdminEmployees';
+                    }, 2000);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('An error occurred. Please try again.', 'error');
+            }
+        });
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+            togglePassword.textContent = type === 'password' ? '\uD83D\uDC41' : '\uD83D\uDC41\u200D\uD83D\uDDE8';
+        });
+    </script>
 </body>
 </html>

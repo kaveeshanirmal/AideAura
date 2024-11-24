@@ -2,49 +2,57 @@
 
 class AdminEmployeeAdd extends Controller
 {
-    private $employeeModel;
+    private $userModel;
 
     public function __construct()
     {
-        $this->employeeModel = new EmployeeModel();
+        $this->userModel = new UserModel(); // Instantiate UserModel
     }
 
     public function index($a = '', $b = '', $c = '')
     {
         $data = [
-            'pageTitle' => 'Add Employee',
+            'pageTitle' => 'Add User',
             'action' => 'add',
         ];
-        $this->view('admin/adminEmployeeAdd', $data);
+        $this->view('admin/adminEmployeeAdd', $data); // Load the appropriate view
     }
 
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST = filter_input_array(INPUT_POST);
-    
+
+            // Determine the role (e.g., 'worker' or 'customer') based on the form input
+            $role = trim($_POST['role']);
+            
+            // Prepare data based on the role
             $data = [
-                'name' => trim($_POST['name']),
+                'firstName' => trim($_POST['firstName']),
+                'lastName' => trim($_POST['lastName']),
+                'username' => trim($_POST['username']),
                 'email' => trim($_POST['email']),
-                'contact' => trim($_POST['contact']),
-                'role' => trim($_POST['role']),
-                'password' => password_hash(trim($_POST['password']), PASSWORD_DEFAULT), // Hashing the password
-                'date' => trim($_POST['date']),
+                'phone' => trim($_POST['phone']),
+                'password' => trim($_POST['password']),
+                'address' => trim($_POST['address']),
             ];
-    
-            $result = $this->employeeModel->AddAdmins($data);
-    
+
+            // For workers, include the services they offer
+            if ($role === 'worker' && isset($_POST['servicesOffer'])) {
+                $data['servicesOffer'] = $_POST['servicesOffer']; // Array of job roles
+            }
+
+            $result = $this->userModel->register($data, $role); // Register the user
+
             if ($result) {
-                echo json_encode(['status' => 'success', 'message' => 'Employee added successfully!']);
+                echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to add employee. Please try again.']);
+                echo json_encode(['status' => 'error', 'message' => 'Failed to add user. Please try again.']);
             }
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
         }
         exit;
     }
-
-    
 }
 ?>
