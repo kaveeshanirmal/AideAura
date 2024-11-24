@@ -17,20 +17,70 @@
                 <button class="back-button">&lt; Back</button>
                 <button class="see-more-button">See more &gt;</button>
             </div>
+
+            <div class="order-grid">
+                    <?php for ($i = 0; $i < 2; $i++) : ?>
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="user-info">
+                                <img src="assets/images/user_icon.png" alt="User Icon" class="user-icon">
+                                <span class="user-name">Mr. Samuwel John</span>
+                            </div>
+                        </div>
+                        <div class="service-info">
+                            <span class="service-type">Cleaner</span>
+                            <span class="order-date">10 August 2024</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="price-breakdown">
+                                <div class="price-row">
+                                    <span>Order Price</span>
+                                    <span>35,000.00</span>
+                                </div>
+                                <div class="price-row">
+                                <span></span>
+                                <hr class="top-line">
+                                </div>
+                                <div class="price-row">
+                                    <span>Discount</span>
+                                    <span>-1,500.00</span>
+                                </div>
+                                <div class="price-row">
+                                <span></span>
+                                <hr class="middle-line">
+                                </div>
+                                <div class="price-row total">
+                                    <span>Total Price</span>
+                                    <span>33,500.00</span>
+                                </div>
+                                <div class="price-row">
+                                <span></span>
+                                <hr class="bottom-line">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="pay-now-button">
+                        <img src="assets/images/white_clock.png" alt="User Icon" class="white-clock"> Pay Now
+                    </button>
+                    </div>
+                    <?php endfor; ?>
+                </div>
+
             <div class="order-grid">
                 <?php for ($i = 0; $i < 4; $i++) : ?>
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="user-info">
-                            <img src="assets/images/user_icon.png" alt="User Icon" class="user-icon">
-                            <span class="user-name">Mr.Samuwel John</span>
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="user-info">
+                                <img src="assets/images/user_icon.png" alt="User Icon" class="user-icon">
+                                <span class="user-name">Mr.Samuwel John</span>
+                            </div>
+                            <button class="rate-now-button">Rate Now &gt;</button>
                         </div>
-                        <button class="rate-now-button">Rate Now &gt;</button>
-                    </div>
-                    <div class="service-info">
-                        <span class="service-type">Cleaner</span>
-                        <span class="order-date">10 August 2024</span>
-                    </div>
+                        <div class="service-info">
+                            <span class="service-type">Cleaner</span>
+                            <span class="order-date">10 August 2024</span>
+                        </div>
+                        
                     <div class="order-details">
                         <div class="price-breakdown">
                             <div class="price-row amount-header">
@@ -67,6 +117,7 @@
                 </div>
                 <?php endfor; ?>
             </div>
+
         </div>
     </main>
 

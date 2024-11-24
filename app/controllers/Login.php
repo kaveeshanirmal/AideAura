@@ -13,16 +13,16 @@ class Login extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Collect and sanitize user input
             $username = trim($_POST['username']);
-            $passwordHash = $_POST['password'];
-            $role = $_POST['role'];
+            $password = $_POST['password'];
 
             // Find the user by username
-            $user = $this->userModel->findUserByUsername($username, $role);
+            $user = $this->userModel->findUserByUsername($username);
+            $role = $user->role;
             // Check if the user exists and the password is correct
-            if ($user && password_verify($passwordHash, $user->passwordHash)) {
+            if ($user && password_verify($password, $user->password)) {
                 // Set session variables
                 $_SESSION['loggedIn'] = true;
-                $_SESSION['user_id'] = $user->id;
+                $_SESSION['userID'] = $user->userID;
                 $_SESSION['username'] = $user->username;
                 $_SESSION['role'] = $role;
 
@@ -32,7 +32,8 @@ class Login extends Controller
                 } elseif ($role === 'worker') {
                     header('Location: ' . ROOT . '/public/home');
                 } else {
-                    header('Location: ' . ROOT . '/public/home');
+                    // Admin and other dashboards
+                    header('Location: ' . ROOT . '/public/AdminReports');
                 }
             } else {
                 // Handle invalid login attempt

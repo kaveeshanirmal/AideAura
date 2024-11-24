@@ -3,6 +3,7 @@
 Trait Model
 {
     use Database;
+
     // Set the table name dynamically
     public function setTable($table)
     {
@@ -18,7 +19,7 @@ Trait Model
     public function all()
     {
         $query = "SELECT * FROM {$this->table}";
-        return $this->query($query);
+        return $this->get_all($query);
     }
 
     // Select the first row with a specific ID
@@ -34,6 +35,19 @@ Trait Model
         $keys = array_keys($data);
         $query = "INSERT INTO {$this->table} (" . implode(',', $keys) . ") VALUES (:" . implode(',:', $keys) . ")";
         return $this->query($query, $data);
+    }
+
+    // Insert a new row into the table and return the ID
+    public function insertAndGetId($data)
+    {
+        $keys = array_keys($data);
+        $query = "INSERT INTO {$this->table} (" . implode(',', $keys) . ") VALUES (:" . implode(',:', $keys) . ")";
+
+        // Execute the query
+        $result = $this->query($query, $data);
+
+        // Return the last inserted ID using the $pdo connection
+        return $result ? $this->getLastInsertId() : false;
     }
 
     // Update a row in the table

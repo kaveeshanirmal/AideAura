@@ -1,0 +1,132 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    flex: 1;
+    margin: 7% 3% 3% 3%;
+    //padding: 16px;
+    background-color: #f8f9fa;
+    //max-width: calc(100% - 300px);
+    box-sizing: border-box;
+}
+
+.content-area {
+    padding: 16px;
+    background-color: #f8f9fa;
+}
+
+/* Filter Section */
+.filter-section {
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+.filter-section-second {
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
+    font-size: 14px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.worker-input, .date-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.generate-btn {
+    padding: 8px 8px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin: 20px 0px 20px 0px;
+    cursor: pointer;
+}
+
+.export-btn {
+    padding: 8px 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin: 20px 0px 20px 0px;
+    cursor: pointer;
+}
+
+/* Charts Grid */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.chart-card {
+    background: f8f9fa;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin: 30% 3% 3% 3%;    
+    }
+
+    .generate-btn {
+        margin-top: 20px;
+    }
+
+    .bottom-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .worker-input,
+    .date-input {
+        width: 100%;
+    }
+
+    .chart-card {
+        max-height: auto; /* Allow flexibility on smaller screens */
+    }
+        .charts-grid {
+            grid-template-columns: 1fr; /* Single column for smaller screens */
+        }
+    }

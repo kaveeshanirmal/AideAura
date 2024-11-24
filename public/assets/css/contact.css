@@ -1,6 +1,6 @@
 :root {
     --primary-color: #7f5539;
-    --secondary-color: #DA4B92;
+    --secondary-color: #d8a841;
     --text-color: #333;
     --background-color: #f5f5f5;
 }
@@ -8,15 +8,17 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
+    background-image: url(../images/signup-bg.png);
+    background-size: cover;
     color: var(--text-color);
 }
 
 /* Main section styles */
 main {
     font-family: Arial, sans-serif;
-    background-color: var(--primary-color);
-    min-height: calc(100vh - 200px); /* Adjust to fit remaining viewport height */
+    min-height: calc(
+        100vh - 200px
+    ); /* Adjust to fit remaining viewport height */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,8 +31,8 @@ main {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
     max-width: 478.2px;
-    max-hight: 590px;
-    margin: 50px auto; /* Centering the form */
+    max-height: 590px;
+    margin: 160px auto; /* Centering the form */
     text-align: center;
 }
 
@@ -67,7 +69,7 @@ main {
 }
 
 .contact-form button:hover {
-    background-color: #d6336c; /* Darker pink on hover */
+    background-color: #d69d33; /* Darker pink on hover */
 }
 
 /* Textarea specific styles */
@@ -80,7 +82,7 @@ main {
 @media (max-width: 768px) {
     .contact-form {
         padding: 20px 30px 20px 20px; /* Adjust right padding for smaller screens */
-        margin: 20px auto;
+        margin: 240px auto 150px;
     }
 
     .contact-form h1 {

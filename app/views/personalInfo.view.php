@@ -13,8 +13,12 @@
             <input type="file" id="profileImage" name="profileImage" accept="image/*" class="hidden">
         </div>
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="<?= htmlspecialchars($user->name) ?>" readonly>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" value="<?= htmlspecialchars($user->firstName) ?>" readonly>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" value="<?= htmlspecialchars($user->lastName) ?>" readonly>
         </div>
         <div class="form-group">
             <label for="username">Username</label>
@@ -26,7 +30,7 @@
         </div>
         <div class="form-group">
             <label for="phone">Mobile Number</label>
-            <input type="text" id="phone" name="phone" value="<?= htmlspecialchars($user->phoneNo) ?>" readonly>
+            <input type="text" id="phone" name="phone" value="<?= htmlspecialchars($user->phone) ?>" readonly>
         </div>
         <div class="form-group">
             <label for="address">Home Address</label>

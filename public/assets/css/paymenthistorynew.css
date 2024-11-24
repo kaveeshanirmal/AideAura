@@ -198,4 +198,8 @@ body {
     .order-grid {
         grid-template-columns: 1fr;
     }
+
+    main {
+        margin-top: 13%;
+    }
 }

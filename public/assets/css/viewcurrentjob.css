@@ -1,0 +1,133 @@
+/* Container Styles */
+.job-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+main {
+    margin-top: 120px;
+}
+/* Back Button Styles */
+.back-button {
+    margin: 10px;
+}
+
+.back-button button {
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 30px;
+    //margin-top: 20px;
+}
+
+.arrow-left {
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(135deg);
+}
+
+/* Job Card Styles */
+.job-card {
+    background-color: #FDF5E6;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 40px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.rating-button {
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.job-dates {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+/* Job Details Styles */
+.job-details {
+    background-color: #E6E6E6;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.detail-row {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.detail-row:last-child {
+    margin-bottom: 0;
+}
+
+.label {
+    min-width: 120px;
+    font-weight: bold;
+}
+
+.value {
+    flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .job-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .job-dates {
+        flex-direction: column;
+        gap: 5px;
+    }
+    main{
+        margin-top:  180px;
+    }
+    .back-button button {
+        //margin-left: 30px;
+        margin-top: 35px;
+        margin-bottom: 0px;
+    }
+}

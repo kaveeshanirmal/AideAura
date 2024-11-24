@@ -1,6 +1,6 @@
 <?php
 
-class PROFILE extends Controller
+class CustomerProfile extends Controller
 {
     private $userModel;
 
@@ -16,20 +16,13 @@ class PROFILE extends Controller
     public function personalInfo()
     {
         // Check if the user is logged in
-        if (!isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['userID'])) {
             header('Location: ' . ROOT . '/public/login'); // Redirect to login if not logged in
             exit;
         }
 
-        // Fetch the user data based on role
-        if ($_SESSION['role'] == 'customer') {
-            $data = $this->userModel->findUserByUsername($_SESSION['username'], 'customer');
-        } elseif ($_SESSION['role'] == 'worker') {
-            $data = $this->userModel->findUserByUsername($_SESSION['username'], 'worker');
-        } else {
-            echo "Invalid user role!";
-            exit;
-        }
+        // Fetch the user data
+        $data = $this->userModel->findUserByUsername($_SESSION['username']);
 
         // Load the view and pass the user data to it
         $this->view('personalInfo', ['user' => $data]);
@@ -38,6 +31,11 @@ class PROFILE extends Controller
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Retrieve existing user data
+            $data = $this->userModel->findUserByUsername($_SESSION['username']);
+            $profileImagePath = $data->profileImage;
+            $password = $data->password;
 
             // Handle image upload
             if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
@@ -64,7 +62,8 @@ class PROFILE extends Controller
             }
 
             //collect and sanitize user input
-            $name = trim($_POST['name']);
+            $firstName = trim($_POST['firstName']);
+            $lastName = trim($_POST['lastName']);
             $username = trim($_POST['username']);
             $email = trim($_POST['email']);
             $phone = $_POST['phone'];
@@ -73,30 +72,34 @@ class PROFILE extends Controller
             // Perform validation checks here...
 
             $data = [
-                'name' => $name,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
                 'username' => $username,
+                'password' => $password,
                 'profileImage' => $profileImagePath,
                 'email' => $email,
-                'phoneNo' => $phone,
+                'phone' => $phone,
                 'address' => $address
             ];
-
-            $role = $_SESSION['role'];
+            // Converting dataarray to object
+            $data = (object) $data;
 
             // Update user information in the database
-            $userId = $_SESSION['user_id'];
-            $result = $this->userModel->updateUserInfo($userId, $data, $role);
+            $userId = $_SESSION['userID'];
+            $result = $this->userModel->updateUserInfo($userId, $data);
 
             if ($result) {
                 $_SESSION['message'] = "Profile updated successfully!";
                 $_SESSION['message_type'] = "success";
+                echo "Profile updated successfully!";
             } else {
                 $_SESSION['message'] = "Failed to update profile. Please try again.";
                 $_SESSION['message_type'] = "error";
+                echo "Failed to update profile. Please try again.";
             }
 
             // Redirect back to the profile page
-            header("Location: " . ROOT . "/public/profile/personalInfo");
+            // header("Location: " . ROOT . "/public/profile/personalInfo");
             exit();
         }
     }
