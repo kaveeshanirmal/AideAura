@@ -9,7 +9,6 @@
 <body>
     <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
-
         <!-- Include your existing navbar component -->
         <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
 

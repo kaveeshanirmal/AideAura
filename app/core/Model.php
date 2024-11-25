@@ -19,6 +19,7 @@ Trait Model
     public function all()
     {
         $query = "SELECT * FROM {$this->table}";
+        error_log("Executing query: " . $query);
         return $this->get_all($query);
     }
 

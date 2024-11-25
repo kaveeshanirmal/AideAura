@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,10 @@
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployees.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>  
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
         <div class="main-content">
             <div class="employee-controls">
                 <div class="search-filters">
@@ -29,12 +31,10 @@
                         </select>
                     </div>
                 </div>
-
                 <button class="add-employee-btn">
                     <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
                 </button>
             </div>
-
             <div class="employee-details">
                 <div class="input-group">
                     <label>Employee ID:</label>
@@ -48,19 +48,19 @@
                     <button class="search-btn" onclick="searchEmployees()">Search</button>
                 </div>
             </div>
-
             <div class="table-container">
                 <table class="employee-table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Role</th>
-                            <th>Email Address</th>
-                            <th>Contact</th>
                             <th>Password</th>
-                            <th>Date Of Hire</th>
-                            <th>Status</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Date of Hire</th>
                             <th>Update</th>
                             <th>Delete</th>
                         </tr>
@@ -69,13 +69,14 @@
                         <?php foreach ($employees as $employee): ?>
                         <tr data-id="<?= htmlspecialchars($employee['id']) ?>">
                             <td><?= htmlspecialchars($employee['id']) ?></td>
-                            <td><?= htmlspecialchars($employee['name']) ?></td>
+                            <td><?= htmlspecialchars($employee['username']) ?></td>
+                            <td><?= htmlspecialchars($employee['first_name']) ?></td>
+                            <td><?= htmlspecialchars($employee['last_name']) ?></td>
                             <td><?= htmlspecialchars($employee['role']) ?></td>
-                            <td><?= htmlspecialchars($employee['email']) ?></td>
-                            <td><?= htmlspecialchars($employee['contact']) ?></td>
                             <td><?= htmlspecialchars($employee['password']) ?></td>
-                            <td><?= htmlspecialchars($employee['date_of_hire']) ?></td>
-                            <td><span class="status-<?= strtolower($employee['status']) ?>"><?= htmlspecialchars($employee['status']) ?></span></td>
+                            <td><?= htmlspecialchars($employee['phone']) ?></td>
+                            <td><?= htmlspecialchars($employee['email']) ?></td>
+                            <td><?= htmlspecialchars($employee['hire_date']) ?></td>
                             <td>
                                 <button class="update-btn" onclick="showUpdateModal('<?= $employee['id'] ?>')">
                                     <i class="fas fa-sync-alt"></i>
@@ -93,52 +94,12 @@
             </div>
         </div>
     </div>
-
-    <!-- Update Modal -->
-    <div id="updateModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeUpdateModal()">&times;</span>
-            <h2>Update Employee</h2>
-            <form id="updateForm">
-                <input type="hidden" id="updateEmployeeId">
-                <div class="form-group">
-                    <label>Name:</label>
-                    <input type="text" id="updateName">
-                </div>
-                <div class="form-group">
-                    <label>Role:</label>
-                    <select id="updateRole">
-                        <option value="Accountant">Accountant</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Developer">Developer</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" id="updateEmail">
-                </div>
-                <div class="form-group">
-                    <label>Contact:</label>
-                    <input type="text" id="updateContact">
-                </div>
-                <div class="form-group">
-                    <label>Status:</label>
-                    <select id="updateStatus">
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div>
-                <button type="button" onclick="updateEmployee()">Update</button>
-            </form>
-        </div>
-    </div>
-
     <script>
 
       // Print the employees array from the backend
-       const employees = <?= json_encode($employees, JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS) ?>;
-       console.log('Employees:', employees);
-
+      const employees = <?php echo json_encode($employees, JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS); ?>;
+      console.log('Employees:', employees);
+      
         // Search employees
         function searchEmployees() {
             const params = new URLSearchParams({
