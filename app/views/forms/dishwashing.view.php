@@ -56,7 +56,7 @@
                 
             </form>
         </div>
-        <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
     </div>
    
 </body>

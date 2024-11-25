@@ -107,7 +107,7 @@
         </div>
         
         <!-- Move footer inside modal but after content -->
-        <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
     </div>
     <script>
         // Pass PHP data to JavaScript
