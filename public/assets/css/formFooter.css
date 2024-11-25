@@ -1,22 +1,22 @@
 /* Footer container styling */
 .form-footer {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    background-color: white;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box; /* Include padding in width calculation */
+        position: relative;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: white;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* form-Footer table styling */
 .form-footer-table {
     width: 90%; /* Ensure the table width is responsive */
-    display: none; /* Table is hidden by default */
+    display: table !important; 
     text-align: center;
     box-sizing: border-box; /* Ensure padding and borders are included in width */
 }
@@ -88,26 +88,4 @@
     }
 }
 
-/* Alert message styling */
-.alert-message {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 30px;
-    background-color: #e6f7fc;
-    color: #333;
-    border: 3px solid #4c9ebe;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    z-index: 10000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
 
-.alert-message.show {
-    opacity: 1;
-    visibility: visible;
-}

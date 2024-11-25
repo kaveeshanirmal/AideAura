@@ -22,10 +22,9 @@
 <body>
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
     <div class="service-container">
-        
-        <!-- Include the header inside the div box -->
         <?php include(ROOT_PATH . '/app/views/forms/header.view.php'); ?>
         
+        <!-- Step 1: Service Selection -->
         <div class="content" id="step1-content">
             <div class="gender-container">
                 <label class="label-gender" for="gender-button">Gender</label>
@@ -41,7 +40,7 @@
             <div class="mandatory-message">Home-style food service is mandatory.</div>
 
             <!-- Home-style food card -->
-            <div class="service-card">
+            <div class="service-card" data-service="home-style-food">
                 <div class="column column-1">
                     <img src="https://www.webstaurantstore.com/uploads/blog/2022/9/chef-cracking-an-egg-while-preparing-food-in-restaurant.jpg" alt="Home-style food">
                 </div>
@@ -55,7 +54,9 @@
                     <div class="rating">
                         <i class="fas fa-star"></i> 4.9
                     </div>
-                    <button class="add-button" data-service="home-style-food" onclick="openModal(this)">+</button>
+                    <div class="button-container">
+                        <button class="add-button" data-service="home-style-food" onclick="openModal(this)">+</button>
+                    </div>
                 </div>
             </div>
 
@@ -82,11 +83,15 @@
             </div>
         </div>
 
-        <!-- step 2 working hours -->
-        <?php include(ROOT_PATH . '/app/views/forms/workSchedule.view.php'); ?>
+        <!-- Step 2: Work Schedule -->
+        <div class="content" id="step2-content">
+            <div class="schedule-container">
+                <?php include(ROOT_PATH . '/app/views/forms/workSchedule.view.php'); ?>
+            </div>
+        </div>
 
-        <!-- Summary Content (Step 3) -->
-        <div class="content" id="step3-content" style="display: none;">
+        <!-- Step 3: Summary -->
+        <div class="content" id="step3-content">
             <div class="summary-container">
                 <label class="service-name">Booking Summary</label>
                 
@@ -120,18 +125,18 @@
         </div>
 
         <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
-        
     </div>
     
     <!-- Modal Overlay -->
-    <div id="modal-overlay" class="hidden">
+    <div id="modal-overlay">
         <div class="modal-content">
             <button class="close-button" onclick="closeModal()">×</button>
-            <div id="modal-body" >
-                <!-- Content dynamically loaded via PHP -->
+            <div id="modal-body">
+                <!-- Content will be loaded here -->
+            </div>
         </div>
     </div>
-    </div>
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
+    <script src="<?=ROOT?>/public/assets/js/formHeader1.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+//booking form
 document.addEventListener('DOMContentLoaded', function() {
     const doneButton = document.getElementById('next-button');
     const alertMessage = document.getElementById('alert-message');

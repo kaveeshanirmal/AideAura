@@ -19,7 +19,7 @@
 
         <!-- Form Container -->
         <div class="service-form-content">
-            <form action="SubmitHome_style_food.php" method="post">
+            <form id="homeStyleForm" class="service-form" onsubmit="event.preventDefault(); handleFormSubmit();">
 
                 <!-- people -->
                 <label class="question">How many people are there at home?</label>
@@ -58,15 +58,15 @@
 
                 <div class="options-container">
                     <label class="option">
-                        <input type="radio" name="meals" value="1" required>
+                        <input type="radio" name="meals" value="Breakfast & Lunch" required>
                         <span>Breakfast & Lunch</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="meals" value="2">
+                        <input type="radio" name="meals" value="Dinner">
                         <span>Dinner</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="meals" value="3">
+                        <input type="radio" name="meals" value="All 3 meals">
                         <span>All 3 meals(breakfast + Lunch + Dinner)</span>
                     </label>
                 </div>
@@ -77,11 +77,11 @@
 
                 <div class="options-container">
                     <label class="option">
-                        <input type="radio" name="preference" value="1" required>
+                        <input type="radio" name="preference" value="veg" required>
                         <span>Veg food only</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="preference" value="2">
+                        <input type="radio" name="preference" value="veg+non-veg">
                         <span>Veg + Non-Veg</span>
                     </label>
 
@@ -106,9 +106,14 @@
             </form>
         </div>
         
+        <!-- Move footer inside modal but after content -->
+        <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
     </div>
-    <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
-
+    <script>
+        // Pass PHP data to JavaScript
+        const PRICING_DATA = <?php echo json_encode($pricingData); ?>;
+    </script>
 </body>
 
 </html>
+

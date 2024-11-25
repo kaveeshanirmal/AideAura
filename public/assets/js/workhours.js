@@ -1,3 +1,4 @@
+//booking form
 document.addEventListener('DOMContentLoaded', function() {
     // Counter elements
     const minusBtn = document.querySelector('.minus-btn');
