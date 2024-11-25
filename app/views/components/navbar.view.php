@@ -2,7 +2,9 @@
 <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/navbar.css">
 <div class="header">
     <div class="logo-container">
-        <img src="<?=ROOT?>/public/assets/images/logo.png" alt="logo" id="logo">
+        <a href="<?=ROOT?>/public/home">
+            <img src="<?=ROOT?>/public/assets/images/logo.png" alt="logo" id="logo">
+        </a>
     </div>
     <nav class="navlinks">
         <a href="<?=ROOT?>/public/home">Home</a>

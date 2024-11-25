@@ -75,11 +75,9 @@ class UserModel
         ];
         $this->insert($customerData);
     }
-
+    return true;
     return $userID; // Return the userID of the newly created user
 }
-
-
     // Find a user by username (for login)
     public function findUserByUsername($username)
     {
