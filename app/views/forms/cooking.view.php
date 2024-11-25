@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Service</title>
-    <!-- Font Awesome for the checkmark icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/forms/services.css">
     
+    <style>
+        body {
+            background-image: url('<?=ROOT?>/public/assets/images/booking_bg.jpg');
+        }
+    </style>
+    
     <script src="<?=ROOT?>/public/assets/js/modal.js" defer></script>
+    <script src="<?=ROOT?>/public/assets/js/workhours.js" defer></script>
     <script>
         const ROOT = "<?php echo ROOT; ?>";
     </script>
-
-
 </head>
 <body>
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
@@ -22,7 +26,7 @@
         <!-- Include the header inside the div box -->
         <?php include(ROOT_PATH . '/app/views/forms/header.view.php'); ?>
         
-        <div class="content">
+        <div class="content" id="step1-content">
             <div class="gender-container">
                 <label class="label-gender" for="gender-button">Gender</label>
                 <button class="gender-button">
@@ -78,8 +82,43 @@
             </div>
         </div>
 
+        <!-- step 2 working hours -->
+        <?php include(ROOT_PATH . '/app/views/forms/workSchedule.view.php'); ?>
 
-        <!-- Include the footer inside the div box -->
+        <!-- Summary Content (Step 3) -->
+        <div class="content" id="step3-content" style="display: none;">
+            <div class="summary-container">
+                <label class="service-name">Booking Summary</label>
+                
+                <div class="summary-card">
+                    <div class="summary-section">
+                        <h3>Selected Services</h3>
+                        <div class="summary-item">
+                            <span>Home-style Food</span>
+                            <span>Rs. 30,000/month</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-section">
+                        <h3>Schedule Details</h3>
+                        <div class="summary-item">
+                            <span>Working Hours</span>
+                            <span>7:00 AM - 2:00 PM</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Starting Date</span>
+                            <span>Selected Date</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-total">
+                        <span>Total Monthly Cost</span>
+                        <span>Rs. 30,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
         
     </div>

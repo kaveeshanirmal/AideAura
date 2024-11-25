@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Dishwashing Service</title>
-    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/dishwashing.css">
+    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/serviceForms.css">
     <script src="<?=ROOT?>/public/assets/js/modal.js" defer></script>
 </head>
 

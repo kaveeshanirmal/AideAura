@@ -87,3 +87,27 @@
         font-size: 10px; /* Adjust font size in the row for estimate */
     }
 }
+
+/* Alert message styling */
+.alert-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background-color: #e6f7fc;
+    color: #333;
+    border: 3px solid #4c9ebe;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.alert-message.show {
+    opacity: 1;
+    visibility: visible;
+}

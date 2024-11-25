@@ -30,3 +30,34 @@ backArrow.addEventListener("click", function () {
 
 // Initialize the header state
 updateHeader();
+
+// Add this to your existing formHeader1.js
+function showStep(stepNumber) {
+    // Hide all content divs
+    document.querySelectorAll('.content').forEach(content => {
+        content.style.display = 'none';
+    });
+
+    // Show the current step's content
+    document.getElementById(`step${stepNumber}-content`).style.display = 'block';
+}
+
+// Modify your existing step change handlers
+nextButton.addEventListener('click', function() {
+    if (step < 3) {
+        step++;
+        updateHeader();
+        showStep(step);
+    }
+});
+
+backArrow.addEventListener('click', function() {
+    if (step > 1) {
+        step--;
+        updateHeader();
+        showStep(step);
+    }
+});
+
+// Initialize first step
+showStep(1);

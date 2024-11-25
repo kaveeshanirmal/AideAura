@@ -15,20 +15,65 @@
         </tr>
     </table>
 </div>
+
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
         const nextButton = document.getElementById('next-button');
-        const footerTable = document.getElementById('footer-table');
+        const footerTable = document.getElementById('form-footer-table');
+        const contents = document.querySelectorAll('.content');
+        const headerTitle = document.getElementById('header-title');
+        let currentStep = 1;
 
-        // Show the footer table when the page loads (change this logic if needed)
-        window.addEventListener('load', function() {
-            footerTable.style.display = 'table'; // Make the table visible
-        });
+        function updateUI(stepNumber) {
+            // Update content visibility
+            contents.forEach((content, index) => {
+                content.style.display = (index + 1 === stepNumber) ? 'block' : 'none';
+            });
 
-        // Move to the next step when the Next button is clicked
+            // Update header title
+            switch(stepNumber) {
+                case 1:
+                    headerTitle.textContent = "Select a Service";
+                    break;
+                case 2:
+                    headerTitle.textContent = "Select the Working Hours & Starting Date";
+                    break;
+                case 3:
+                    headerTitle.textContent = "Booking Summary";
+                    break;
+            }
+
+            // Update button text
+            nextButton.textContent = stepNumber === 3 ? 'Done' : 'Next';
+
+            // Update progress bar
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = `${(stepNumber / 3) * 100}%`;
+
+            // Show/hide back arrow
+            const backArrow = document.getElementById('back-arrow');
+            backArrow.style.visibility = stepNumber === 1 ? 'hidden' : 'visible';
+        }
+
+        // Initialize UI
+        footerTable.style.display = 'table';
+        updateUI(currentStep);
+
+        // Handle next button clicks
         nextButton.addEventListener('click', function() {
-            if (step < 3) {
-                step++;
-                window.updateHeader(); // Update the header dynamically
+            if (currentStep < 3) {
+                currentStep++;
+                updateUI(currentStep);
             }
         });
+
+        // Handle back arrow clicks
+        const backArrow = document.getElementById('back-arrow');
+        backArrow.addEventListener('click', function() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI(currentStep);
+            }
+        });
+    });
 </script>

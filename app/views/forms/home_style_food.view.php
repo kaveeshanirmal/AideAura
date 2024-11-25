@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Home-Style Food Service</title>
-    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/home_style_food.css">
+    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/serviceForms.css">
     <script src="<?=ROOT?>/public/assets/js/modal.js" defer></script>
 </head>
 
@@ -91,13 +91,13 @@
                 <label class="question">Do you have dog(s) ?</label>
                 <label class="message">Select 1 out of 2 options</label>
 
-                <div class="options-container">
+                <div class="options-container small-options">
                     <label class="option">
-                        <input type="radio" name="dogs" value="1" required>
+                        <input type="radio" name="dogs" value="yes" required>
                         <span>Yes</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="dogs" value="2" >
+                        <input type="radio" name="dogs" value="no">
                         <span>No</span>
                     </label>
 
@@ -108,7 +108,6 @@
         
     </div>
     <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
-    <button class="done-btn" onclick="closeModal()">Done</button>
 
 </body>
 
