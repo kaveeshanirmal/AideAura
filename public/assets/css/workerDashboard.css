@@ -21,7 +21,7 @@ body {
 }
 
 .dashboard-main {
-    margin-top: 100px;
+    margin-top: 90px;
     display: flex;
     min-height: 100vh;
     background: linear-gradient(
@@ -31,36 +31,11 @@ body {
     );
 }
 
-.dashboard-sidebar {
-    background: var(--primary-color);
-    width: 250px;
-    padding: 20px;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar-menu {
-    list-style: none;
-}
-
-.sidebar-menu li a {
-    display: block;
-    color: white;
-    padding: 12px 15px;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.sidebar-menu li a:hover,
-.sidebar-menu li a.active {
-    background-color: var(--accent-color);
-    transform: translateX(10px);
-}
-
 .dashboard-content {
+    background-image: url("../images/workerDashboard.png");
+    background-size: cover;
     flex-grow: 1;
     padding: 30px;
-    background: transparent;
 }
 
 .dashboard-overview {
@@ -114,6 +89,7 @@ body {
 
 .job-offers,
 .bookings {
+    margin-bottom: 20px;
     background: white;
     border-radius: 12px;
     padding: 20px;
@@ -137,7 +113,7 @@ body {
 }
 
 .btn {
-    background: var(--secondary-color);
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
     color: white;
     border: none;
     padding: 10px 15px;
@@ -148,29 +124,35 @@ body {
 }
 
 .btn:hover {
-    background: var(--accent-color);
     transform: translateY(-2px);
 }
 
 .btn-accept {
-    background: #2ecc71;
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
 }
 
 .btn-reject {
-    background: #e74c3c;
+    background: linear-gradient(135deg, #b9ab93 0%, #2b2a2a 100%);
 }
 
 @media (max-width: 1024px) {
     .dashboard-main {
+        margin-top: 170px;
         flex-direction: column;
     }
 
-    .dashboard-sidebar {
-        width: 100%;
+    .job-offers,
+    .bookings {
+        margin-bottom: 20px;
     }
 }
 
 @media (max-width: 768px) {
+    .dashboard-main {
+        margin-top: 170px;
+        flex-direction: column;
+    }
+
     .dashboard-overview {
         grid-template-columns: 1fr;
     }

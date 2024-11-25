@@ -12,16 +12,6 @@
 
     <!-- Main Container -->
     <main class="dashboard-main">
-        <!-- Sidebar (Optional) -->
-        <aside class="dashboard-sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="<?=ROOT?>/worker/dashboard" class="active">Dashboard</a></li>
-                <li><a href="<?=ROOT?>/worker/job-offers">Job Offers</a></li>
-                <li><a href="<?=ROOT?>/worker/bookings">Bookings</a></li>
-                <li><a href="<?=ROOT?>/worker/profile">Profile</a></li>
-                <li><a href="<?=ROOT?>/help">Help & Support</a></li>
-            </ul>
-        </aside>
 
         <!-- Dashboard Content -->
         <section class="dashboard-content">
@@ -36,7 +26,7 @@
                     <button id="toggle-status-btn" class="btn btn-status">Available</button>
                 </div>
                 <div class="card upcoming-jobs">
-                    <h3>Upcoming Jobs</h3>
+                    <h3>Recent Jobs</h3>
                     <ul>
                         <li>
                             <strong>Babysitting</strong> on <em>2024-11-20, 2 PM</em>
@@ -83,13 +73,13 @@
                     <h3>Babysitting</h3>
                     <p><strong>Date:</strong> 2024-11-22</p>
                     <p><strong>Time:</strong> 10 AM - 1 PM</p>
-                    <p><strong>Client:</strong> John Doe</p>
+                    <p><strong>Client:</strong> Kamal Gunaratne</p>
                     <p><strong>Location:</strong> 123 Main Street</p>
                 </div>
                 <div class="booking-card completed">
                     <h3>Cleaning</h3>
                     <p><strong>Date:</strong> 2024-11-18</p>
-                    <p><strong>Client:</strong> Jane Smith</p>
+                    <p><strong>Client:</strong> Kasuni Senethma</p>
                     <p><strong>Status:</strong> Completed</p>
                 </div>
                 <!-- Repeat similar cards for other bookings -->
