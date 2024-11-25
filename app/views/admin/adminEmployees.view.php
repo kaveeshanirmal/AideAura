@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
     <div class="dashboard-container">
         <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
         <div class="main-content">
@@ -67,23 +68,23 @@
                     </thead>
                     <tbody id="employeeTableBody">
                         <?php foreach ($employees as $employee): ?>
-                        <tr data-id="<?= htmlspecialchars($employee['id']) ?>">
-                            <td><?= htmlspecialchars($employee['id']) ?></td>
-                            <td><?= htmlspecialchars($employee['username']) ?></td>
-                            <td><?= htmlspecialchars($employee['first_name']) ?></td>
-                            <td><?= htmlspecialchars($employee['last_name']) ?></td>
-                            <td><?= htmlspecialchars($employee['role']) ?></td>
-                            <td><?= htmlspecialchars($employee['password']) ?></td>
-                            <td><?= htmlspecialchars($employee['phone']) ?></td>
-                            <td><?= htmlspecialchars($employee['email']) ?></td>
-                            <td><?= htmlspecialchars($employee['hire_date']) ?></td>
+                        <tr data-id="<?= htmlspecialchars($employee->userID) ?>">
+                            <td><?= htmlspecialchars($employee->userID) ?></td>
+                            <td><?= htmlspecialchars($employee->username) ?></td>
+                            <td><?= htmlspecialchars($employee->firstName) ?></td>
+                            <td><?= htmlspecialchars($employee->lastName) ?></td>
+                            <td><?= htmlspecialchars($employee->role) ?></td>
+                            <td><?= htmlspecialchars($employee->password) ?></td>
+                            <td><?= htmlspecialchars($employee->phone) ?></td>
+                            <td><?= htmlspecialchars($employee->email) ?></td>
+                            <td><?= htmlspecialchars($employee->createdAt) ?></td>
                             <td>
-                                <button class="update-btn" onclick="showUpdateModal('<?= $employee['id'] ?>')">
+                                <button class="update-btn" onclick="showUpdateModal('<?= $employee->userID?>')">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </td>
                             <td>
-                                <button class="delete-btn" onclick="deleteEmployee('<?= $employee['id'] ?>')">
+                                <button class="delete-btn" onclick="deleteEmployee('<?= $employee->userID?>')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>

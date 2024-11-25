@@ -2,18 +2,18 @@
 class AdminEmployees extends Controller {
 // Controller.php (Assuming this is the controller)
 
-public function index() {
-    $userModel = new UserModel();
-    $employees = $userModel->getAllEmployees();
-    error_log("Employees in controller: " . json_encode($employees));
+    public function index() {
+        $userModel = new UserModel();
+        $employees = $userModel->getAllEmployees();
+        error_log("Employees in controller: " . json_encode($employees));
 
-    if (!$employees) {
-        error_log("No employees retrieved or query failed");
-        $employees = []; // Ensuring that the variable is always an array (empty array if no employees found)
+        if (!$employees) {
+            error_log("No employees retrieved or query failed");
+            $employees = []; // Ensuring that the variable is always an array (empty array if no employees found)
+        }
+
+        $this->view('admin/adminEmployees', ['employees' => $employees]);
     }
-
-    $this->view('admin/adminEmployees', ['employees' => $employees]);
-}
 
 
     public function update() {
