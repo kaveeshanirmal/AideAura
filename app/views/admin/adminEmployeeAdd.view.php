@@ -46,9 +46,10 @@
                         <div class="form-group">
                             <label for="role">Role:</label>
                             <select id="role" name="role" class="form-select" autocomplete="off" required>
-                                <option value="Finance Manager">Finance Manager</option>
-                                <option value="HR Manager">HR Manager</option>
-                                <option value="Operational Manager">Operational Manager</option>
+                                <option value="Finance Manager">financeManager</option>
+                                <option value="HR Manager">hrManager</option>
+                                <option value="Operational Manager">OpManager</option>
+                                <option value="Operational Manager">admin</option>
                             </select>
                         </div>
 

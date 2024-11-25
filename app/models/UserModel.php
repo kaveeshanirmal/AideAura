@@ -75,6 +75,17 @@ class UserModel
         ];
         $this->insert($customerData);
     }
+    // If role is 'customer', add data to 'customer' table
+    else if ($role === 'hrManager') {
+        $this->setTable('hrManager');
+
+        // Insert customer-specific data
+        $hrManagerData = [
+            'userID' => $userID,
+            'address' => $data['address']
+        ];
+        $this->insert($hrManagerData);
+    }
     return true;
     return $userID; // Return the userID of the newly created user
 }
@@ -225,15 +236,15 @@ class UserModel
     }
 
     // Updated delete method with validatio+n
-    public function deleteEmployee($employeeID) {
-        $this->setTable('employees');
-        
-        // Check if employee exists before deletion
-        $employee = $this->find($employeeID);
-        if (!$employee) {
-            return false;
-        }
-        
-        return $this->delete($employeeID, 'employeeID');
+    public function deleteEmployee($userID) {
+    $this->setTable('users');
+    
+    // Check if employee exists before deletion
+    $employee = $this->find($userID);
+    if (!$employee) {
+        return false;
+    }
+    
+    return $this->delete($userID, 'userID'); // Ensure 'userID' is the correct column name in your table
     }
 }

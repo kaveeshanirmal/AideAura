@@ -14,6 +14,11 @@
     <div class="dashboard-container">
         <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
         <div class="main-content">
+            <div class="employee-details">
+            <button class="add-employee-btn">
+                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
+                </button>
+            </div>
             <div class="employee-controls">
                 <div class="search-filters">
                     <div class="input-group">
@@ -31,13 +36,7 @@
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
-                </div>
-                <button class="add-employee-btn">
-                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
-                </button>
-            </div>
-            <div class="employee-details">
-                <div class="input-group">
+                    <div class="input-group">
                     <label>Employee ID:</label>
                     <input type="text" id="employeeId" class="id-input">
                 </div>
@@ -47,6 +46,7 @@
                 </div>
                 <div class="search-btn-container">
                     <button class="search-btn" onclick="searchEmployees()">Search</button>
+                </div>
                 </div>
             </div>
             <div class="table-container">
@@ -58,7 +58,6 @@
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Role</th>
-                            <th>Password</th>
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Date of Hire</th>
@@ -74,7 +73,6 @@
                             <td><?= htmlspecialchars($employee->firstName) ?></td>
                             <td><?= htmlspecialchars($employee->lastName) ?></td>
                             <td><?= htmlspecialchars($employee->role) ?></td>
-                            <td><?= htmlspecialchars($employee->password) ?></td>
                             <td><?= htmlspecialchars($employee->phone) ?></td>
                             <td><?= htmlspecialchars($employee->email) ?></td>
                             <td><?= htmlspecialchars($employee->createdAt) ?></td>
@@ -127,7 +125,6 @@
                                 <td>${employee.contact}</td>
                                 <td>${employee.password}</td>
                                 <td>${employee.date_of_hire}</td>
-                                <td><span class="status-${employee.status.toLowerCase()}">${employee.status}</span></td>
                                 <td>
                                     <button class="update-btn" onclick="showUpdateModal('${employee.id}')">
                                         <i class="fas fa-sync-alt"></i>
@@ -198,26 +195,33 @@
         }
 
         // Delete employee
-        function deleteEmployee(id) {
-            if (confirm('Are you sure you want to delete this employee?')) {
-                fetch('<?=ROOT?>/public/adminEmployees/delete', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: id })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        searchEmployees(); // Refresh the table
-                    } else {
-                        alert('Delete failed');
+        function deleteEmployee(userID) {
+            console.log(userID);
+      if (confirm('Are you sure you want to delete this employee?')) {
+        fetch('<?=ROOT?>/public/adminEmployees/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userID: userID }),
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Remove the deleted row from the table
+                    const row = document.querySelector(`tr[data-id="${userID}"]`);
+                    if (row) {
+                        row.remove();
                     }
-                })
-                .catch(error => console.error('Error:', error));
-            }
-        }
+                    alert('Employee deleted successfully');
+                } else {
+                    alert('Failed to delete employee');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
 
         // Add event listeners for real-time search
         document.querySelectorAll('.search-filters input, .search-filters select, .employee-details input')

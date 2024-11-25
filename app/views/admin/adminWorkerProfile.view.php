@@ -37,7 +37,7 @@
                 ];
 
                 foreach ($workers as $worker) {
-                    echo '<div class="worker-card">';
+                    echo '<div class="worker-card">  <a href="adminWorkerProfile1">';
                     echo '<div class="worker-info">';
                     echo '<div class="worker-avatar">';
                     echo '<img src="assets/images/user_icon.png"" alt="Worker Avatar">';
@@ -47,8 +47,7 @@
                     echo '<p>' . htmlspecialchars($worker['role']) . '</p>';
                     echo '</div>';
                     echo '</div>';
-                    echo '<div class="arrow-icon"> <a href="adminWorkerProfile1">  > </a> </div>';
-                    echo '</div>';
+                    echo '</a>  </div>';
                 }
                 ?>
             </div>

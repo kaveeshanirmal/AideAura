@@ -38,6 +38,7 @@
     font-size: 14px;
     width: 200px;
     background-color: #fff;
+    cursor: pointer;
 }
 
 /* Workers List */
@@ -57,13 +58,12 @@
     margin-left: 20%;
     margin-right: 25%;
     border-radius: 8px;
-    cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .worker-card:hover {
     transform: translateX(3px);
-    background-color: #39a78e;
+    background-color: #3FFF00;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -100,12 +100,7 @@
     color: #666;
 }
 
-.arrow-icon {
-    font-size: 24px;
-    color: #666;
-}
-
-.arrow-icon a {
+.worker-card a {
     text-decoration: none;
     color: inherit;
 }
