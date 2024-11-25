@@ -9,13 +9,10 @@
     <script>
         const ROOT = "<?php echo ROOT; ?>";
     </script>
-</body>
 </head>
 <body>
-    <?php include(ROOT_PATH . '/app/views/components/navbar.view.php');?>
     <!-- Placeholder for dynamic content -->
     <div id="content"></div>
-    <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
     <!-- JavaScript for handling navigation -->
     <script src="<?=ROOT?>/public/assets/js/employeeVerificationForm/navigation.js"></script>
 </body>
