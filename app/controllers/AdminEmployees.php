@@ -13,14 +13,6 @@ class AdminEmployees extends Controller {
         $this->view('admin/adminEmployees', ['employees' => $employees]);
     }
 
-    public function test() {
-    $employeeModel = new EmployeeModel();
-    $result = $employeeModel->testConnection();
-    echo '<pre>';
-    print_r($result);
-    echo '</pre>';
-}
-
 /*
     public function search() {
         try {

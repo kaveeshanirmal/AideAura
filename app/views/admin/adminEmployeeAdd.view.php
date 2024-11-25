@@ -21,34 +21,34 @@
 
                         <div class="form-group">
                             <label for="firstName">First Name:</label>
-                            <input type="text" id="firstName" name="firstName" placeholder="Kamal" class="form-input" required>
+                            <input type="text" id="firstName" name="firstName" placeholder="Kamal" class="form-input" autocomplete="given-name" required>
                         </div>
 
                         <div class="form-group">
                             <label for="lastName">Last Name:</label>
-                            <input type="text" id="lastName" name="lastName" placeholder="Gunarathne" class="form-input" required>
+                            <input type="text" id="lastName" name="lastName" placeholder="Gunarathne" class="form-input" autocomplete="family-name" required>
                         </div>
 
                         <div class="form-group">
                             <label for="username">Username:</label>
-                            <input type="text" id="username" name="username" placeholder="kamal.g" class="form-input" required>
+                            <input type="text" id="username" name="username" placeholder="kamal.g" class="form-input" autocomplete="username" required>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" placeholder="kmgnth123@gamil.com" class="form-input" required>
+                            <input type="email" id="email" name="email" placeholder="kmgnth123@gamil.com" class="form-input" autocomplete="email" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="contact">Contact:</label>
-                            <input type="tel" id="contact" name="contact" placeholder="078 956 4738" class="form-input" required>
+                            <label for="phone">Contact:</label>
+                            <input type="tel" id="phone" name="phone" placeholder="078 956 4738" class="form-input" autocomplete="tel" required>
                         </div>
 
                         <div class="form-group">
                             <label for="role">Role:</label>
-                            <select id="role" name="role" class="form-select" required>
-                                <option value="Finance Manager">FinanceManager</option>
-                                <option value="HR Manager">hrManager</option>
+                            <select id="role" name="role" class="form-select" autocomplete="off" required>
+                                <option value="Finance Manager">Finance Manager</option>
+                                <option value="HR Manager">HR Manager</option>
                                 <option value="Operational Manager">Operational Manager</option>
                             </select>
                         </div>
@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label for="password">Password:</label>
                             <div class="password-container">
-                                <input type="password" id="password" name="password" placeholder="AdminKamal738" class="form-input" required>
+                                <input type="password" id="password" name="password" placeholder="AdminKamal738" class="form-input" autocomplete="new-password" required>
                                 <span class="toggle-password" id="togglePassword">&#128065;</span>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
             const lastName = document.getElementById('lastName').value.trim();
             const username = document.getElementById('username').value.trim();
             const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('contact').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             const password = document.getElementById('password').value.trim();
 
             if (!/^[a-zA-Z\s]+$/.test(firstName)) {
@@ -113,7 +113,7 @@
                 return false;
             }
 
-            if (!/^[0-9]{10}$/.test(contact)) {
+            if (!/^[0-9]{10}$/.test(phone)) {
                 showNotification('Contact number must be exactly 10 digits.', 'error');
                 return false;
             }
@@ -147,7 +147,7 @@
                     showNotification(result.message, 'success');
                     setTimeout(() => {
                         window.location.href = '<?=ROOT?>/public/AdminEmployees';
-                    }, 2000);
+                    }, 3000);
                 } else {
                     showNotification(result.message, 'error');
                 }
