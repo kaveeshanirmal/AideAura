@@ -108,4 +108,33 @@ class WorkerProfile extends Controller
     {
         $this->view('workingSchedule');
     }
+
+    public function faq()
+    {
+        $faqs = [
+            [
+                'question' => 'How do I accept a job request?',
+                'answer' => 'To accept a job request, log into your account, navigate to the "Job Requests" section, and review the details of each request. Click "Accept" if you are available and agree to the terms. If you need assistance, our support team is ready to help.'
+            ],
+            [
+                'question' => 'What payment methods will I receive my earnings through?',
+                'answer' => 'Your earnings will be given to you as the monthly salary by our organization.',
+            ],
+            [
+                'question' => 'How do I update my availability?',
+                'answer' => 'To update your availability, go to your account settings and navigate to the "Working Schedule." Select the dates and times you are available to work and save your changes to keep your schedule updated.'
+            ],
+            [
+                'question' => 'Does AideAura provide support for domestic helpers in different languages?',
+                'answer' => 'No, currently we only provide support in English. We are working on expanding our support to other languages in the future.'
+            ],
+            [
+                'question' => 'How is my personal information protected?',
+                'answer' => 'We prioritize your privacy. Your personal details are encrypted and securely stored. AideAura does not share your information with third parties without your consent. Please review our Privacy Policy for more details.'
+            ]
+        ];
+        
+
+        $this->view('faq', ['faqs' => $faqs]);
+    }
 }
