@@ -1,0 +1,214 @@
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;          /* Position from top */
+    right: 20px;        /* Position from right */
+    min-width: 300px;   /* Set minimum width */
+    max-width: 400px;   /* Set maximum width to prevent too wide notifications */
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;      /* Ensure it stays on top */
+    opacity: 0;
+    transform: translateY(-20px) translateX(100%);  /* Start off-screen to right */
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification.success {
+    background-color: #4caf50;
+}
+
+.notification.error {
+    background-color: #f44336;
+}
+
+.notification.hidden {
+    display: none;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0) translateX(0);  /* Slide in from right */
+    display: block;
+}
+/* Main Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #FFF;
+}
+
+.main-content {
+    flex: 1;
+    margin: 7% 3% 3% 3%;
+    background-color: #FFF;
+    //margin-left: 250px; /* Adjust based on your sidebar width */
+    //padding: 20px;
+}
+
+.content-wrapper {
+    padding: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Employee Form Container */
+.employee-form-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.employee-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 85%;
+    margin: 0% 5% 0% 5%;
+}
+
+.form-select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 89.5%;
+    margin: 0% 5% 0% 5%;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.add-btn {
+    background-color: #E6E6E6;
+    color: black;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #D4D4D4;
+}
+
+/* Form Input Focus States */
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #FF6B00;
+    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+}
+
+
+/* Add styles for the eye icon */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container .form-input {
+    flex: 1;
+    padding-right: 40px; /* Adjust for icon space */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 7%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.toggle-password:hover {
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        margin: 30% 3% 3% 3%;    
+    }
+
+    .employee-form-container {
+        padding: 20px;
+    }
+
+    .header-section {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .form-input,
+    .form-select {
+        width: 80%;
+    }
+
+    .form-select {
+        width: 85%;
+    }
+
+    .toggle-password {
+        right: 12%;
+    }
+    .password-container .form-input {
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 85%;
+        margin: 0% 10% 0% 5%;
+    }
+
+    .notification {
+        min-width: 200px;
+        max-width: 90%;   /* Take up most of screen width on mobile */
+        top: 10px;
+        right: 10px;
+        left: 10px;      /* Stretch across on mobile */
+        margin: 0 auto;
+    }
+}

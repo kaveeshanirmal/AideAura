@@ -11,7 +11,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    width: calc(100% - 4rem);
+    width: 100%;
+    box-sizing: border-box;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -52,7 +53,7 @@ body {
 
 .reg-btn {
     padding: 0.75rem 1.5rem;
-    background-color: #7f5539;
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
     color: #fff;
     border: none;
     border-radius: 25px;
@@ -61,7 +62,7 @@ body {
 }
 
 .reg-btn:hover {
-    background-color: #6a4730;
+    transform: translateY(-1px);
 }
 
 .icon {
@@ -73,7 +74,7 @@ body {
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
-        //padding: 1rem;
+        padding: 1rem;
     }
 
     .navlinks {

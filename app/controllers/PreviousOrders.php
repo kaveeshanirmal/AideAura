@@ -10,7 +10,5 @@ class PreviousOrders extends Controller
     public function edit($a = '', $b = '', $c = '')
     {
         $this->view('previousorders');
-    }
-
-    
+    } 
 }

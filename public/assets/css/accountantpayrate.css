@@ -1,18 +1,18 @@
 /* Dashboard Container */
 .dashboard-container {
     display: flex;
-   // min-height: 100vh;
-    background-color: #FFF9E6;
-    margin: 0px;
-    padding: 0px;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+   // margin: 0px;
+   //as padding: 0px;
 }
-
 
 /* Main Content */
 .main-content {
     flex: 1;
     padding: 0px;
-    background-color: #FFF;
+    background-color: #f8f9fa;
+    margin: 7% 3% 3% 3%;
 }
 
 /* Table Styles */
@@ -20,9 +20,7 @@
     background-color: white;
     border-radius: 10px;
     padding: 20px;
-    margin-left: 40px;
-    margin-right: 40px;
-
+    margin: 2% 4% 0% 4%;
 }
 
 .rates-table {
@@ -33,12 +31,16 @@
 
 .rates-table th {
     background-color: #E5E5E5;
-    padding: 15px;
-    text-align: left;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+
 }
 
 .rates-table td {
-    padding: 15px;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
     border-bottom: 1px solid #E5E5E5;
 }
 
@@ -114,12 +116,18 @@
         flex-direction: column;
     }
 
+    .main-content {
+        margin: 30% 3% 3% 3%;
+    }
+
     .table-container {
         overflow-x: auto;
+        margin-left: 10%;
+        margin-right: 10%;
     }
 
     .pagination {
-        flex-direction: column;
+        flex-direction: row;
         gap: 15px;
     }
 }

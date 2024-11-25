@@ -4,7 +4,7 @@ class PaymentProceed1 extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('paymentproceed1');
+        $this->view('payment/paymentproceed1');                              
     }
 
     
