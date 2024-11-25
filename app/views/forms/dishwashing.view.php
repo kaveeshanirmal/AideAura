@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Dishwashing Service</title>
-    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/dishwashing.css">
+    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/serviceForms.css">
     <script src="<?=ROOT?>/public/assets/js/modal.js" defer></script>
 </head>
 
@@ -19,7 +19,7 @@
 
         <!-- Form Container -->
         <div class="service-form-content">
-            <form action="SubmitHome_style_food.php" method="post">
+            <form id="dishwashingForm" class="service-form" onsubmit="event.preventDefault(); handleFormSubmit();">
 
                 <!-- people -->
                 <label class="question">How many people are there at home?</label>
@@ -56,9 +56,9 @@
                 
             </form>
         </div>
-        <button class="done-btn" onclick="closeModal()">Done</button>
+        <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
     </div>
-    <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
+   
 </body>
 
 </html>

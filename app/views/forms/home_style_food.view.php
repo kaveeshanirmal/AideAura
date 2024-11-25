@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Home-Style Food Service</title>
-    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/home_style_food.css">
+    <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/forms/serviceForms.css">
     <script src="<?=ROOT?>/public/assets/js/modal.js" defer></script>
 </head>
 
@@ -19,7 +19,7 @@
 
         <!-- Form Container -->
         <div class="service-form-content">
-            <form action="SubmitHome_style_food.php" method="post">
+            <form id="homeStyleForm" class="service-form" onsubmit="event.preventDefault(); handleFormSubmit();">
 
                 <!-- people -->
                 <label class="question">How many people are there at home?</label>
@@ -58,15 +58,15 @@
 
                 <div class="options-container">
                     <label class="option">
-                        <input type="radio" name="meals" value="1" required>
+                        <input type="radio" name="meals" value="Breakfast & Lunch" required>
                         <span>Breakfast & Lunch</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="meals" value="2">
+                        <input type="radio" name="meals" value="Dinner">
                         <span>Dinner</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="meals" value="3">
+                        <input type="radio" name="meals" value="All 3 meals">
                         <span>All 3 meals(breakfast + Lunch + Dinner)</span>
                     </label>
                 </div>
@@ -77,11 +77,11 @@
 
                 <div class="options-container">
                     <label class="option">
-                        <input type="radio" name="preference" value="1" required>
+                        <input type="radio" name="preference" value="veg" required>
                         <span>Veg food only</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="preference" value="2">
+                        <input type="radio" name="preference" value="veg+non-veg">
                         <span>Veg + Non-Veg</span>
                     </label>
 
@@ -91,13 +91,13 @@
                 <label class="question">Do you have dog(s) ?</label>
                 <label class="message">Select 1 out of 2 options</label>
 
-                <div class="options-container">
+                <div class="options-container small-options">
                     <label class="option">
-                        <input type="radio" name="dogs" value="1" required>
+                        <input type="radio" name="dogs" value="yes" required>
                         <span>Yes</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="dogs" value="2" >
+                        <input type="radio" name="dogs" value="no">
                         <span>No</span>
                     </label>
 
@@ -106,10 +106,14 @@
             </form>
         </div>
         
+        <!-- Move footer inside modal but after content -->
+        <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
     </div>
-    <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
-    <button class="done-btn" onclick="closeModal()">Done</button>
-
+    <script>
+        // Pass PHP data to JavaScript
+        const PRICING_DATA = <?php echo json_encode($pricingData); ?>;
+    </script>
 </body>
 
 </html>
+
