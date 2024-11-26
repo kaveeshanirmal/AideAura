@@ -19,7 +19,7 @@
 
         <!-- Form Container -->
         <div class="service-form-content">
-            <form id="homeStyleForm" class="service-form" onsubmit="event.preventDefault(); handleFormSubmit();">
+            <form id="homeStyleForm" class="service-form">
 
                 <!-- people -->
                 <label class="question">How many people are there at home?</label>
@@ -106,8 +106,10 @@
             </form>
         </div>
         
-        <!-- Move footer inside modal but after content -->
-        <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
+        <?php 
+        $isModal = true;
+        include(ROOT_PATH . '/app/views/forms/footer.view.php'); 
+        ?>
     </div>
     <script>
         // Pass PHP data to JavaScript

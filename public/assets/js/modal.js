@@ -3,11 +3,18 @@ function openModal(button) {
     
     const modalOverlay = document.getElementById("modal-overlay");
     const modalBody = document.getElementById("modal-body");
+    const modalContent = document.querySelector('.modal-content');
+    const serviceFormModal = document.querySelector('.service-form-modal');
 
     if (!modalOverlay || !modalBody) {
         console.error("Modal elements not found");
         return;
     }
+
+    // Reset all modal-related elements to be visible
+    modalOverlay.style.display = 'flex';  // Changed from 'block' to 'flex'
+    if (modalContent) modalContent.style.display = 'block';
+    if (serviceFormModal) serviceFormModal.style.display = 'block';
 
     const serviceType = button.getAttribute("data-service");
     console.log('2. Service Type:', serviceType);
@@ -23,92 +30,41 @@ function openModal(button) {
     if (formUrl) {
         console.log('4. Starting fetch...');
         
-        // First reset the modal completely
-        modalOverlay.style.display = 'none';
-        modalBody.innerHTML = '';
-        modalOverlay.classList.remove('show');
-        
-        // Important: Don't replace modalBody, just clear it
         fetch(formUrl)
-            .then((response) => {
-                console.log('5. Fetch response received:', response.status);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then((html) => {
-                console.log('6. HTML content received');
+            .then(response => response.text())
+            .then(html => {
                 modalBody.innerHTML = html;
-                
-                console.log('7. Showing modal');
-                // Use setTimeout to ensure DOM is updated
-                setTimeout(() => {
-                    modalOverlay.style.display = 'flex';
-                    modalOverlay.classList.add('show');
-                    
-                    console.log('8. Initializing form calculations');
-                    const formId = serviceType === 'home-style-food' ? 'homeStyleForm' : 'dishwashingForm';
-                    initializeFormCalculations(formId);
-                }, 0);
+                modalOverlay.classList.add('show');
             })
-            .catch((error) => {
-                console.error('Error in fetch:', error);
-                modalBody.innerHTML = "<p>Unable to load form. Please try again later.</p>";
-                modalOverlay.classList.add("show");
+            .catch(error => {
+                console.error('Error loading form:', error);
             });
     }
 }
 
-function validateFormSelections() {
-    const form = document.querySelector('form');
-    if (!form) return false;
-
-    // Get all required radio button groups
-    const requiredGroups = ['people', 'dogs'];
-    
-    // Add meal-specific validations
-    if (form.id === 'homeStyleForm') {
-        requiredGroups.push('meals', 'preference');
-    }
-
-    // Check each required group
-    for (const groupName of requiredGroups) {
-        const selectedOption = form.querySelector(`input[name="${groupName}"]:checked`);
-        if (!selectedOption) {
-            alert(`Please select an option for ${groupName.replace('-', ' ')}`);
-            return false;
-        }
-    }
-
-    // Check agreement checkbox if it exists
-    const agreementCheckbox = form.querySelector('input[type="checkbox"]#agreement');
-    if (agreementCheckbox && !agreementCheckbox.checked) {
-        alert('Please accept the agreement to continue');
-        return false;
-    }
-
-    return true;
-}
-
 function closeModal() {
-    const modalOverlay = document.getElementById("modal-overlay");
+    console.log('Closing modal...');
     
-    if (!modalOverlay) {
-        console.error("Modal overlay not found");
-        return;
+    // Close modal using multiple approaches (same as our working Done button)
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalContent = document.querySelector('.modal-content');
+    const serviceFormModal = document.querySelector('.service-form-modal');
+    
+    // Hide modal overlay
+    if (modalOverlay) {
+        modalOverlay.style.display = 'none';
+        modalOverlay.classList.remove('show');
     }
 
-    modalOverlay.classList.remove("show");
-    
-    // Use setTimeout to match CSS transition
-    setTimeout(() => {
-        modalOverlay.style.display = 'none';
-        const modalBody = document.getElementById("modal-body");
-        if (modalBody) {
-            modalBody.innerHTML = '';
-        }
-    }, 300);
+    // Hide modal content
+    if (modalContent) {
+        modalContent.style.display = 'none';
+    }
+
+    // Hide service form modal
+    if (serviceFormModal) {
+        serviceFormModal.style.display = 'none';
+    }
 }
 
 // Make closeModal available globally

@@ -5,7 +5,9 @@
             <td class="salary">Monthly Salary: <span class="coloredText" id="total-salary">Rs.0</span> approx</td>
             <td class="hours">Daily Working Hours: <span class="coloredText" id="total-hours">0:00</span> approx</td>
             <td class="next-btn">
-                <button id="next-button">Next</button>
+                <button id="next-button" type="button" onclick="handleButtonClick()">
+                    <?php echo isset($isModal) ? 'Done' : 'Next'; ?>
+                </button>
             </td>
         </tr>
         <tr class="row-2">
@@ -54,77 +56,58 @@ function validateFormSelections() {
 function handleFormSubmit() {
     console.log('handleFormSubmit called');
     
-    const form = document.querySelector('form');
-    if (!form) {
-        console.log('No form found');
-        return;
-    }
-
-    // Validate form first
     if (!validateFormSelections()) {
         console.log('Validation failed');
         return;
     }
-
-    console.log('Validation passed');
-
-    const serviceType = form.id === 'homeStyleForm' ? 'homeStyleFood' : 'dishwashing';
-    const totalSalary = document.getElementById('total-salary');
-    const totalHours = document.getElementById('total-hours');
     
-    // Update service card
-    if (typeof updateServiceCard === 'function') {
-        updateServiceCard(serviceType, true);
-    }
+    console.log('Validation passed, closing modal');
     
-    // Update main footer totals
-    if (typeof updateServiceTotals === 'function') {
-        const price = parseFloat(totalSalary.textContent.replace(/[^0-9.-]+/g, ''));
-        const hours = parseTimeToHours(totalHours.textContent);
-        
-        window.updateServiceTotals(serviceType, {
-            monthly_price: price,
-            working_hours: hours
-        });
+    // Try all possible ways to close the modal
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalContent = document.querySelector('.modal-content');
+    const serviceFormModal = document.querySelector('.service-form-modal');
+    
+    console.log('Found elements:', {
+        modalOverlay: modalOverlay,
+        modalContent: modalContent,
+        serviceFormModal: serviceFormModal
+    });
+
+    // Hide modal overlay
+    if (modalOverlay) {
+        modalOverlay.style.display = 'none';
+        modalOverlay.classList.remove('show');
     }
 
-    // Close modal - try all possible methods
-    try {
-        // Method 1: Using closeModal function from modal.js
-        if (typeof window.closeModal === 'function') {
-            window.closeModal();
-        }
+    // Hide modal content
+    if (modalContent) {
+        modalContent.style.display = 'none';
+    }
 
-        // Method 2: Direct DOM manipulation
-        const modalOverlay = document.getElementById('modal-overlay');
-        if (modalOverlay) {
-            modalOverlay.style.display = 'none';
-            modalOverlay.classList.remove('show');
-        }
+    // Hide service form modal
+    if (serviceFormModal) {
+        serviceFormModal.style.display = 'none';
+    }
 
-        // Method 3: Find and hide all modal-related elements
-        document.querySelectorAll('.modal-overlay, .modal-content').forEach(el => {
-            el.style.display = 'none';
-            el.classList.remove('show');
-        });
-
-        console.log('Modal close attempted');
-    } catch (error) {
-        console.error('Error closing modal:', error);
+    // Also try using the closeModal function from modal.js
+    if (typeof window.closeModal === 'function') {
+        window.closeModal();
     }
 }
 
-function parseTimeToHours(timeStr) {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    return hours + (minutes / 60);
-}
-
-// Initialize calculations when in modal
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    if (form) {
-        const serviceType = form.id === 'homeStyleForm' ? 'home-style-food' : 'dishwashing';
-        initializeFormCalculations(serviceType);
+function handleButtonClick() {
+    const isModal = document.querySelector('.service-form-modal') !== null;
+    
+    if (isModal) {
+        // For modal forms - use validation
+        handleFormSubmit();
+    } else {
+        // For main page Next button - just navigate to next step
+        if (typeof updateUI === 'function' && step < 3) {
+            step++;
+            updateUI();
+        }
     }
-});
+}
 </script>
