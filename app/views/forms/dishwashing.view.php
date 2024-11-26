@@ -11,6 +11,13 @@
 </head>
 
 <body>
+    <?php
+    // Debug output at top of file
+    echo "<!-- Debug Output Start -->\n";
+    echo "<!-- Pricing Data in View: " . print_r($pricingData ?? 'NOT SET', true) . " -->\n";
+    echo "<!-- Debug Output End -->\n";
+    ?>
+
     <div class="service-form-modal">
         <!-- Modal Header -->
         <div class="service-form-header">
@@ -20,7 +27,6 @@
         <!-- Form Container -->
         <div class="service-form-content">
             <form id="dishwashingForm" class="service-form">
-
                 <!-- people -->
                 <label class="question">How many people are there at home?</label>
                 <label class="message">Select 1 out of 6 options</label>
@@ -51,17 +57,29 @@
                         <span>7-8 people</span>
                     </label>
                 </div>
-
-               
-                
             </form>
         </div>
-        <?php 
-        $isModal = true;
-        include(ROOT_PATH . '/app/views/forms/footer.view.php'); 
-        ?>
+        
+        <?php $isModal = true; ?>
+        
+        <!-- Make pricing data available globally -->
+        <script>
+            // Initialize global values if they don't exist
+            if (!window.globalValues) {
+                window.globalValues = {
+                    totalPrice: <?php echo $services['home-style-food']['basePrice']; ?>,
+                    totalHours: "<?php echo $services['home-style-food']['baseHours']; ?>:00"
+                };
+            }
+            
+            window.previousSelections = window.previousSelections || {
+                homeStyleForm: {},
+                dishwashingForm: {}
+            };
+        </script>
+        
+        <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
     </div>
-   
 </body>
 
 </html>
