@@ -1,6 +1,5 @@
 <?php
 class AdminEmployees extends Controller {
-// Controller.php (Assuming this is the controller)
 
     public function index() {
         $userModel = new UserModel();
@@ -11,7 +10,6 @@ class AdminEmployees extends Controller {
             error_log("No employees retrieved or query failed");
             $employees = []; // Ensuring that the variable is always an array (empty array if no employees found)
         }
-
         $this->view('admin/adminEmployees', ['employees' => $employees]);
     }
 
@@ -106,4 +104,3 @@ class AdminEmployees extends Controller {
         exit; // Ensure no additional output
     }
 }
-?>

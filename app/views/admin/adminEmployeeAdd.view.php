@@ -46,10 +46,10 @@
                         <div class="form-group">
                             <label for="role">Role:</label>
                             <select id="role" name="role" class="form-select" autocomplete="off" required>
-                                <option value="Finance Manager">financeManager</option>
-                                <option value="HR Manager">hrManager</option>
-                                <option value="Operational Manager">OpManager</option>
-                                <option value="Operational Manager">admin</option>
+                                <option value="financeManager">financeManager</option>
+                                <option value="hrManager">hrManager</option>
+                                <option value="opManager">opManager</option>
+                                <option value="admin">admin</option>
                             </select>
                         </div>
 
@@ -92,6 +92,7 @@
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const password = document.getElementById('password').value.trim();
+            const role = document.getElementById('role').value.trim();
 
             if (!/^[a-zA-Z\s]+$/.test(firstName)) {
                 showNotification('First name must contain only letters and spaces.', 'error');
@@ -130,31 +131,36 @@
         };
 
         form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    e.preventDefault();
 
-            if (!validateForm()) return;
+    if (!validateForm()) return;
 
-            const formData = new FormData(form);
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    showNotification(result.message, 'success');
-                    setTimeout(() => {
-                        window.location.href = '<?=ROOT?>/public/AdminEmployees';
-                    }, 3000);
-                } else {
-                    showNotification(result.message, 'error');
-                }
-            } catch (error) {
-                showNotification('An error occurred. Please try again.', 'error');
-            }
+    const formData = new FormData(form);
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
         });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json(); // Parse the response as JSON
+
+        if (result.status === 'success') {
+            showNotification(result.message, 'success');
+            setTimeout(() => {
+                window.location.href = '<?=ROOT?>/public/AdminEmployees';
+            }, 2000);
+        } else {
+            showNotification(result.message, 'error');
+        }
+    } catch (error) {
+        showNotification(`Error: ${error.message}`, 'error');
+        console.error('Fetch error:', error); // Log the error for debugging
+    }
+});
 
         togglePassword.addEventListener('click', () => {
             const type = passwordField.type === 'password' ? 'text' : 'password';
