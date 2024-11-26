@@ -7,15 +7,15 @@
     <title>Admin - Employee Management</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployees.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-
+    </head>
 <body>
-
+    <!-- Notification container -->
+    <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
         <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
         <div class="main-content">
             <div class="employee-details">
-            <button class="add-employee-btn">
+                <button class="add-employee-btn">
                     <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
                 </button>
             </div>
@@ -37,16 +37,16 @@
                         </select>
                     </div>
                     <div class="input-group">
-                    <label>Employee ID:</label>
-                    <input type="text" id="employeeId" class="id-input">
-                </div>
-                <div class="input-group">
-                    <label>Email:</label>
-                    <input type="email" id="employeeEmail" class="email-input">
-                </div>
-                <div class="search-btn-container">
-                    <button class="search-btn" onclick="searchEmployees()">Search</button>
-                </div>
+                        <label>Employee ID:</label>
+                        <input type="text" id="employeeId" class="id-input">
+                    </div>
+                    <div class="input-group">
+                        <label>Email:</label>
+                        <input type="email" id="employeeEmail" class="email-input">
+                    </div>
+                    <div class="search-btn-container">
+                        <button class="search-btn" onclick="searchEmployees()">Search</button>
+                    </div>
                 </div>
             </div>
             <div class="table-container">
@@ -77,12 +77,12 @@
                             <td><?= htmlspecialchars($employee->email) ?></td>
                             <td><?= htmlspecialchars($employee->createdAt) ?></td>
                             <td>
-                                <button class="update-btn" onclick="showUpdateModal('<?= $employee->userID?>')">
+                                <button class="update-btn" onclick="showUpdateModal('<?= $employee->userID ?>')">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </td>
                             <td>
-                                <button class="delete-btn" onclick="deleteEmployee('<?= $employee->userID?>')">
+                                <button class="delete-btn" onclick="deleteEmployee('<?= $employee->userID ?>')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -93,77 +93,49 @@
             </div>
         </div>
     </div>
+
     <script>
+        // Notification system
+        const notification = document.getElementById('notification');
+        const showNotification = (message, type) => {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
 
-      // Print the employees array from the backend
-      const employees = <?php echo json_encode($employees, JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS); ?>;
-      console.log('Employees:', employees);
-      
-        // Search employees
-        function searchEmployees() {
-            const params = new URLSearchParams({
-                name: document.getElementById('employeeName').value,
-                role: document.getElementById('employeeRole').value,
-                email: document.getElementById('employeeEmail').value,
-                status: document.getElementById('employeeStatus').value,
-                id: document.getElementById('employeeId').value
-            });
+            setTimeout(() => {
+                notification.className = 'notification hidden';
+            }, 3000);
+        };
 
-            fetch(`<?=ROOT?>/public/adminEmployees/search?${params}`)
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.getElementById('employeeTableBody');
-                    tbody.innerHTML = '';
-                    
-                    data.forEach(employee => {
-                        const row = `
-                            <tr data-id="${employee.id}">
-                                <td>${employee.id}</td>
-                                <td>${employee.name}</td>
-                                <td>${employee.role}</td>
-                                <td>${employee.email}</td>
-                                <td>${employee.contact}</td>
-                                <td>${employee.password}</td>
-                                <td>${employee.date_of_hire}</td>
-                                <td>
-                                    <button class="update-btn" onclick="showUpdateModal('${employee.id}')">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete-btn" onclick="deleteEmployee('${employee.id}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                        tbody.innerHTML += row;
-                    });
+        // Example integration with deleteEmployee
+        function deleteEmployee(userID) {
+            if (!userID) {
+                showNotification('Invalid Employee ID', 'error');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this employee?')) {
+                fetch('<?=ROOT?>/public/adminEmployees/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userID: userID }),
                 })
-                .catch(error => console.error('Error:', error));
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            document.querySelector(`tr[data-id="${userID}"]`).remove();
+                            showNotification('Employee deleted successfully','success');
+                        } else {
+                            showNotification(result.message || 'Error deleting employee','error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('An unexpected error occurred', 'error');
+                    });
+            }
         }
 
-        // Show update modal
-        function showUpdateModal(id) {
-            const row = document.querySelector(`tr[data-id="${id}"]`);
-            const cells = row.getElementsByTagName('td');
-
-            document.getElementById('updateEmployeeId').value = id;
-            document.getElementById('updateName').value = cells[1].textContent;
-            document.getElementById('updateRole').value = cells[2].textContent;
-            document.getElementById('updateEmail').value = cells[3].textContent;
-            document.getElementById('updateContact').value = cells[4].textContent;
-            document.getElementById('updateStatus').value = cells[7].textContent;
-
-            document.getElementById('updateModal').style.display = 'block';
-        }
-
-        // Close update modal
-        function closeUpdateModal() {
-            document.getElementById('updateModal').style.display = 'none';
-        }
-
-        // Update employee
+        // Integrate notification in other functions (e.g., updateEmployee)
         function updateEmployee() {
             const id = document.getElementById('updateEmployeeId').value;
             const data = {
@@ -177,70 +149,25 @@
 
             fetch('<?=ROOT?>/public/adminEmployees/update', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
             })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    closeUpdateModal();
-                    searchEmployees(); // Refresh the table
-                } else {
-                    alert('Update failed');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // Delete employee
-        function deleteEmployee(userID) {
-            console.log(userID);
-      if (confirm('Are you sure you want to delete this employee?')) {
-        fetch('<?=ROOT?>/public/adminEmployees/delete', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userID: userID }),
-        })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    // Remove the deleted row from the table
-                    const row = document.querySelector(`tr[data-id="${userID}"]`);
-                    if (row) {
-                        row.remove();
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        closeUpdateModal();
+                        searchEmployees();
+                        showNotification('Employee updated successfully');
+                    } else {
+                        showNotification('Update failed', true);
                     }
-                    alert('Employee deleted successfully');
-                } else {
-                    alert('Failed to delete employee');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-}
-
-
-        // Add event listeners for real-time search
-        document.querySelectorAll('.search-filters input, .search-filters select, .employee-details input')
-            .forEach(element => {
-                element.addEventListener('input', debounce(searchEmployees, 500));
-            });
-
-        // Debounce function to prevent too many requests
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('An unexpected error occurred', true);
+                });
         }
     </script>
 </body>
+
 </html>
