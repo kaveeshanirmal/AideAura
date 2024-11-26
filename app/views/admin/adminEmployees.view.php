@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Employee Management</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployees.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    </head>
+</head>
 <body>
     <!-- Notification container -->
     <div id="notification" class="notification hidden"></div>
@@ -24,16 +23,10 @@
                     <div class="input-group">
                         <label>Role:</label>
                         <select id="employeeRole" class="role-select">
-                            <option value="HR Manager">HR Manager</option>
-                            <option value="Finance Manager">Finance Manager</option>
-                            <option value="Operational Manager">Operational Manager</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Status:</label>
-                        <select id="employeeStatus" class="status-select">
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
+                            <option value="hrManager">hrManager</option>
+                            <option value="financeManager">financeManager</option>
+                            <option value="opManager">opManager</option>
+                            <option value="admin">admin</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -67,7 +60,7 @@
                     </thead>
                     <tbody id="employeeTableBody">
                         <?php foreach ($employees as $employee): ?>
-                        <tr data-id="<?= htmlspecialchars($employee->userID) ?>">
+                        <tr data-id="<?= htmlspecialchars($employee->userID) ?>" data-username="<?= htmlspecialchars($employee->username) ?>" data-firstname="<?= htmlspecialchars($employee->firstName) ?>" data-lastname="<?= htmlspecialchars($employee->lastName) ?>" data-role="<?= htmlspecialchars($employee->role) ?>" data-phone="<?= htmlspecialchars($employee->phone) ?>" data-email="<?= htmlspecialchars($employee->email) ?>" data-createdAt="<?= htmlspecialchars($employee->createdAt) ?>">
                             <td><?= htmlspecialchars($employee->userID) ?></td>
                             <td><?= htmlspecialchars($employee->username) ?></td>
                             <td><?= htmlspecialchars($employee->firstName) ?></td>
@@ -77,7 +70,7 @@
                             <td><?= htmlspecialchars($employee->email) ?></td>
                             <td><?= htmlspecialchars($employee->createdAt) ?></td>
                             <td>
-                                <button class="update-btn" onclick="showUpdateModal('<?= $employee->userID ?>')">
+                                <button class="update-btn" onclick="showUpdateModal(this)">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </td>
@@ -94,57 +87,92 @@
         </div>
     </div>
 
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUpdateModal()">&times;</span>
+            <h2 class="topic">Update Employee Details</h2>
+            <form id="updateEmployeeForm" onsubmit="event.preventDefault(); updateEmployee();">
+                <input type="hidden" id="updateEmployeeId">
+                <div class="form-item">
+                    <label for="updateUserName">Username:</label>
+                    <input class="inputc1" type="text" id="updateUserName">
+                </div>
+                <div class="form-item">
+                    <label for="updatefirstName">First Name:</label>
+                    <input class="inputc2" type="text" id="updatefirstName">
+                </div>
+                <div class="form-item">
+                    <label for="updatelastName">Last Name:</label>
+                    <input class="inputc3" type="text" id="updatelastName">
+                </div>
+                <div class="form-item">
+                    <label for="updateRole">Role:</label>
+                    <select class="inputc4" id="updateRole">
+                        <option value="hrManager">hrManager</option>
+                        <option value="financeManager">financeManager</option>
+                        <option value="opManager">opManager</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="updatePhone">Phone:</label>
+                    <input class="inputc5" type="text" id="updatePhone">
+                </div>
+                <div class="form-item">
+                    <label for="updateEmail">Email:</label>
+                    <input class="inputc6" type="email" id="updateEmail">
+                </div>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Notification system
+        // Notification Functionality
         const notification = document.getElementById('notification');
         const showNotification = (message, type) => {
             notification.textContent = message;
             notification.className = `notification ${type} show`;
-
-            setTimeout(() => {
-                notification.className = 'notification hidden';
-            }, 3000);
+            setTimeout(() => notification.className = 'notification hidden', 2000);
         };
 
-        // Example integration with deleteEmployee
-        function deleteEmployee(userID) {
-            if (!userID) {
-                showNotification('Invalid Employee ID', 'error');
-                return;
-            }
+        // Show Update Modal
+        function showUpdateModal(button) {
+            const row = button.closest('tr');
+            const userID = row.getAttribute('data-id');
+            const username = row.getAttribute('data-username');
+            const firstName = row.getAttribute('data-firstname');
+            const lastName = row.getAttribute('data-lastname');
+            const role = row.getAttribute('data-role');
+            const phone = row.getAttribute('data-phone');
+            const email = row.getAttribute('data-email');
 
-            if (confirm('Are you sure you want to delete this employee?')) {
-                fetch('<?=ROOT?>/public/adminEmployees/delete', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userID: userID }),
-                })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result.success) {
-                            document.querySelector(`tr[data-id="${userID}"]`).remove();
-                            showNotification('Employee deleted successfully','success');
-                        } else {
-                            showNotification(result.message || 'Error deleting employee','error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showNotification('An unexpected error occurred', 'error');
-                    });
-            }
+            document.getElementById('updateEmployeeId').value = userID;
+            document.getElementById('updateUserName').value = username;
+            document.getElementById('updatefirstName').value = firstName;
+            document.getElementById('updatelastName').value = lastName;
+            document.getElementById('updateRole').value = role;
+            document.getElementById('updatePhone').value = phone;
+            document.getElementById('updateEmail').value = email;
+
+            document.getElementById('updateModal').style.display = 'block';
         }
 
-        // Integrate notification in other functions (e.g., updateEmployee)
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+        }
+
         function updateEmployee() {
-            const id = document.getElementById('updateEmployeeId').value;
+            const userID = document.getElementById('updateEmployeeId').value;
             const data = {
-                id: id,
-                name: document.getElementById('updateName').value,
+                userID,
+                username: document.getElementById('updateUserName').value,
+                firstName: document.getElementById('updatefirstName').value,
+                lastName: document.getElementById('updatelastName').value,
                 role: document.getElementById('updateRole').value,
+                phone: document.getElementById('updatePhone').value,
                 email: document.getElementById('updateEmail').value,
-                contact: document.getElementById('updateContact').value,
-                status: document.getElementById('updateStatus').value
             };
 
             fetch('<?=ROOT?>/public/adminEmployees/update', {
@@ -152,22 +180,38 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        closeUpdateModal();
-                        searchEmployees();
-                        showNotification('Employee updated successfully');
-                    } else {
-                        showNotification('Update failed', true);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('An unexpected error occurred', true);
-                });
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    closeUpdateModal();
+                    showNotification('Employee updated successfully', 'success');
+                    location.reload();
+                } else {
+                    showNotification('Update failed', 'error');
+                }
+            })
+            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        }
+
+        function deleteEmployee(userID) {
+            if (!confirm('Are you sure you want to delete this employee?')) return;
+
+            fetch('<?=ROOT?>/public/adminEmployees/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userID }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Employee deleted successfully', 'success');
+                    location.reload();
+                } else {
+                    showNotification('Delete failed', 'error');
+                }
+            })
+            .catch(error => showNotification('An unexpected error occurred', 'error'));
         }
     </script>
 </body>
-
 </html>

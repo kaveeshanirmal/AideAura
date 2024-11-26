@@ -1,3 +1,139 @@
+// update model styles 
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+
+/* Modal Content Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 0.1% auto; /* 10% from top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 65%; /* Could be more or less, depending on screen size */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.topic {
+    align-items: center;
+    margin-left: 24%;
+    font-size: 24px;
+}
+
+.form-item {
+    display: flex;
+    margin: 0% 0% 1% 20%;
+}
+
+/* Form Styling */
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.inputc1{
+    width: 50%;
+    padding: 1% 0% 1% 4%;
+    margin: 0% 0% 0% 5%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.inputc2{
+    width: 50%;
+    padding: 1% 0% 1% 4%;
+    margin: 0% 0% 0% 4%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.inputc3{
+    width: 50%;
+    padding: 1% 0% 1% 4%;
+    margin: 0% 0% 0% 4%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.inputc5{
+    width: 50%;
+    padding: 1% 0% 1% 4%;
+    margin: 0% 0% 0% 11%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.inputc6{
+    width: 50%;
+    padding: 1% 0% 1% 4%;
+    margin: 0% 0% 0% 12.3%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+/* Input and Select Fields */
+.modal-content form select {
+    width: 54.6%;
+    padding: 1% 0% 1% 4%;
+    margin: 0% 0% 0% 14%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Labels */
+.modal-content form label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 1%;
+    margin-top: 2%;
+    display: block;
+    color: #333;
+}
+
+/* Submit Button */
+.modal-content form button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 5px 15px;
+    margin: 1% 28% 1% 28%;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content form button:hover {
+    background-color: #45a049;
+}
+
 /* Notification styles */
 .notification {
     position: fixed;
@@ -252,7 +388,7 @@ a {
     }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .dashboard-container {
         flex-direction: column;
     }
@@ -281,6 +417,9 @@ a {
 
     .add-employee-btn {
         margin-right: 25px;
+    }
+    .modal-content {
+        width: 90%; /* Adjust for smaller screens */
     }
 }
 

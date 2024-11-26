@@ -189,6 +189,30 @@ public function registerEmployee($data)
     }
 
 
+    // Update user information
+    public function updateEmployee($id, $data)
+    {
+        $this->setTable('users'); // Update user information in the 'users' table
+
+        // Update the 'users' table
+        $userData = [
+            'firstName' => $data['firstName'],
+            'lastName' => $data['lastName'],
+            'username' => $data['username'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+        ];
+        
+        $result = $this->update($id, $userData, 'userID');
+
+        if (!$result) {
+            return false;
+        }
+        return true; // Update failed
+    }
+
+
 
     public function searchEmployees($filters) {
         $this->setTable('employees');
@@ -226,40 +250,6 @@ public function registerEmployee($data)
         $sql .= " ORDER BY employeeID DESC";
         
         return $this->query($sql, $params);
-    }
-
-
-    // Updated update method with validation
-    public function updateEmployee($employeeID, $data) {
-        $this->setTable('employees');
-        
-        // Validate required fields
-        $requiredFields = ['name', 'email', 'role', 'status'];
-        foreach ($requiredFields as $field) {
-            if (!isset($data[$field]) || empty(trim($data[$field]))) {
-                return false;
-            }
-        }
-        
-        // Validate email format
-        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return false;
-        }
-        
-        // Clean and prepare data for update
-        $updateData = [
-            'name' => trim($data['name']),
-            'email' => trim($data['email']),
-            'role' => trim($data['role']),
-            'status' => trim($data['status'])
-        ];
-        
-        // Add contact if provided
-        if (isset($data['contact']) && !empty($data['contact'])) {
-            $updateData['contact'] = trim($data['contact']);
-        }
-        
-        return $this->update($employeeID, $updateData, 'employeeID');
     }
 
     // Updated delete method with validatio+n

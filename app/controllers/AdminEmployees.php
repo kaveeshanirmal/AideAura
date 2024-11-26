@@ -1,5 +1,6 @@
 <?php
 class AdminEmployees extends Controller {
+// Controller.php (Assuming this is the controller)
 
     public function index() {
         $userModel = new UserModel();
@@ -10,6 +11,7 @@ class AdminEmployees extends Controller {
             error_log("No employees retrieved or query failed");
             $employees = []; // Ensuring that the variable is always an array (empty array if no employees found)
         }
+
         $this->view('admin/adminEmployees', ['employees' => $employees]);
     }
 
@@ -43,55 +45,65 @@ class AdminEmployees extends Controller {
         }
     }
 
-    public function delete()
-    {
+    public function delete() {
         try {
-            // Capture raw input and decode JSON
+            // Log the raw input
             $raw_input = file_get_contents('php://input');
+            error_log("Raw input received: " . $raw_input);
+    
+            // Decode JSON with error checking
             $data = json_decode($raw_input, true);
-    
-            // Log the raw input for debugging
-            error_log("Raw input: " . $raw_input);
-    
-            // Check for JSON decoding errors
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Invalid JSON input: ' . json_last_error_msg());
+                throw new Exception('Invalid JSON: ' . json_last_error_msg());
             }
     
-            // Validate 'userID'
-            if (empty($data['userID']) || !is_numeric($data['userID'])) {
-                throw new Exception('Invalid or missing userID');
+            // Log decoded data
+            error_log("Decoded data: " . print_r($data, true));
+    
+            // Validate userID
+            if (!isset($data['userID'])) {
+                throw new Exception('Employee userID is required');
             }
     
-            // Log the userID
-            error_log("Deleting user with ID: " . $data['userID']);
+            if (!is_numeric($data['userID'])) {
+                throw new Exception('Invalid userID format');
+            }
     
-            // Initialize the UserModel and attempt deletion
+            // Initialize model
             $employeeModel = new UserModel();
+            
+            // Attempt deletion
             $success = $employeeModel->deleteEmployee($data['userID']);
-    
-            if (!$success) {
-                throw new Exception('Failed to delete the employee. The employee may not exist.');
+            
+            if ($success === false) {
+                throw new Exception('Database deletion failed');
             }
     
-            // Return success response
+            // Set headers before any output
             header('Content-Type: application/json');
+            
+            // Return success response
             echo json_encode([
                 'success' => true,
-                'message' => 'Employee deleted successfully',
+                'message' => 'Employee deleted successfully'
             ]);
+            
         } catch (Exception $e) {
-            // Log the error and return an error response
-            error_log("Error in delete function: " . $e->getMessage());
+            // Log the error
+            error_log("Delete employee error: " . $e->getMessage());
+            
+            // Set headers
             header('Content-Type: application/json');
-            http_response_code(400);
+            http_response_code(500);
+            
+            // Return error response
             echo json_encode([
                 'success' => false,
                 'message' => $e->getMessage(),
+                'error' => true
             ]);
         }
-        exit;
+        exit; // Ensure no additional output
     }
-    
-
 }
+?>
