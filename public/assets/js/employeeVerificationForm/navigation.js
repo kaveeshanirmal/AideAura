@@ -2,14 +2,15 @@ const content = document.getElementById("content");
 const styleLink = document.getElementById("dynamic-styles");
 
 function loadPage(page, cssFile, jsFile) {
-    fetch(`verificationFormPages/${page}.html`)
+    console.log(ROOT);
+    fetch(`${ROOT}/app/views/workerVerification/${page}.view.php`)
         .then((response) => {
             if (!response.ok) throw new Error("Page not found");
             return response.text();
         })
         .then((html) => {
             content.innerHTML = html;
-            styleLink.href = `../../public/assets/css/employeeVerificationForm/${cssFile}.css`;
+            styleLink.href = `${ROOT}/public/assets/css/employeeVerificationForm/${cssFile}.css`;
             loadScript(jsFile);
         })
         .catch((err) => console.error(err));
@@ -17,7 +18,7 @@ function loadPage(page, cssFile, jsFile) {
 
 function loadScript(jsFile) {
     const script = document.createElement("script");
-    script.src = `../../public/assets/js/employeeVerificationForm/${jsFile}.js`;
+    script.src = `${ROOT}/public/assets/js/employeeVerificationForm/${jsFile}.js`;
     script.type = "text/javascript";
 
     script.onload = () => {
@@ -54,7 +55,6 @@ function addEventListeners(page) {
             }
         });
     } else if (page === "page2") {
-        
         document.getElementById("back2").addEventListener("click", (event) => {
             event.preventDefault();
             restoreFormData();
@@ -81,7 +81,7 @@ function addEventListeners(page) {
             event.preventDefault();
             if (typeof window.validateForm === "function") {
                 if (window.validateForm()) {
-                    alert("Form Submitted Successfully!")
+                    alert("Form Submitted Successfully!");
                 } else {
                     console.log("Form validation failed");
                 }
