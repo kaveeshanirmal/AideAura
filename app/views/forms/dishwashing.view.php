@@ -19,7 +19,7 @@
 
         <!-- Form Container -->
         <div class="service-form-content">
-            <form id="dishwashingForm" class="service-form" onsubmit="event.preventDefault(); handleFormSubmit();">
+            <form id="dishwashingForm" class="service-form">
 
                 <!-- people -->
                 <label class="question">How many people are there at home?</label>
@@ -56,7 +56,10 @@
                 
             </form>
         </div>
-        <?php include(ROOT_PATH . '/app/views/forms/footerForms.view.php'); ?>
+        <?php 
+        $isModal = true;
+        include(ROOT_PATH . '/app/views/forms/footer.view.php'); 
+        ?>
     </div>
    
 </body>

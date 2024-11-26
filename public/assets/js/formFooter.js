@@ -1,4 +1,5 @@
-//booking form
+//booking form - i dont think it is used - delete it later if it is not used coz in modal.js 
+//this validatin is there
 document.addEventListener('DOMContentLoaded', function() {
     const doneButton = document.getElementById('next-button');
     const alertMessage = document.getElementById('alert-message');
