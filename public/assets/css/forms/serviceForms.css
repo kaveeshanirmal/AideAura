@@ -1,0 +1,293 @@
+.service-form-modal {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.service-form-header {
+    padding: 0 20px;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    z-index: 10003;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.service-form-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #00bcd4, #4c8bf5);
+    opacity: 1;
+}
+
+.service-form-content {
+    flex: 1;
+    width: 100%;
+    overflow-y: auto;
+    padding: 20px 30px 100px 30px;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: #4c9ebe #c9eefb;
+    position: relative;
+    z-index: 10002;
+}
+
+.question-section {
+    margin-bottom: 30px;
+}
+
+.options-container {
+    margin: 20px 20px 30px 20px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+}
+
+.options-container:last-of-type {
+    margin-bottom: 60px;
+}
+
+#modal-overlay .form-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: white;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10005;
+}
+
+
+
+.question {
+    display: block;
+    margin: 0 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+
+.message {
+    display: block;
+    margin: 4px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #454646;
+}
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 20px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+}
+
+.options-container.small-options {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 150px));
+}
+
+.option:hover {
+    border-color: #4c9ebe;
+}
+
+.option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    background: none;
+}
+
+.option span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.option:hover span {
+    background-color: #e6f7fc;
+    border-color: #4c9ebe;
+    color: #333;
+}
+
+.option input:checked + span {
+    background-color: #e6f7fc;
+    border-color: #4c9ebe;
+    border-width: 3px;
+    color: #333;
+    font-weight: bold;
+    padding-right: 40px;
+    height: 40px;
+}
+
+.option input:checked + span::after {
+    content: "\f058";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    width: 20px;
+    height: 20px;
+    background-color: #4c9ebe;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) scale(1.2);
+}
+
+
+
+/* Alert message styling */
+.alert-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background-color: #e6f7fc;
+    color: #333;
+    border: 3px solid #4c9ebe;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.alert-message.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* WebKit browsers (Chrome, Safari, etc.) */
+.service-form-content::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.service-form-content::-webkit-scrollbar-track {
+    background: #c9eefb !important;
+    border-radius: 10px !important;
+}
+
+.service-form-content::-webkit-scrollbar-thumb {
+    background: #4c9ebe !important;
+    border-radius: 10px !important;
+}
+
+.service-form-content::-webkit-scrollbar-thumb:hover {
+    background: #377c96 !important;
+}
+
+/* Also try targeting the modal body */
+#modal-body::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+#modal-body::-webkit-scrollbar-track {
+    background: #c9eefb !important;
+    border-radius: 10px !important;
+}
+
+#modal-body::-webkit-scrollbar-thumb {
+    background: #4c9ebe !important;
+    border-radius: 10px !important;
+}
+
+#modal-body::-webkit-scrollbar-thumb:hover {
+    background: #377c96 !important;
+}
+
+
+
+.cancel-button {
+    background: white;
+    border: 1px solid #ccc;
+    color: #666;
+}
+
+.cancel-button:hover {
+    background: #f5f5f5;
+}
+
+.submit-button {
+    background: #4c9ebe;
+    border: none;
+    color: white;
+}
+
+.submit-button:hover {
+    background: #3e8794;
+}
+
+.service-form-content .form-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10005;
+    margin: 0;
+    padding: 0;
+}
+
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 70%;
+    max-width: 800px;
+    height: 70vh;
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 10001;
+}
