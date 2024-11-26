@@ -12,7 +12,7 @@
         <ul class="menu-items">
         <li><a href="<?=ROOT?>/public/adminReports"><img src="<?=ROOT?>/public/assets/images/Report.png" alt=""> Reports </a></li>
             <li><a href="<?=ROOT?>/public/adminWorkerProfile"><img src="<?=ROOT?>/public/assets/images/worker-profile.png" alt=""> Worker Profiles </a></li>
-            <li><a href="<?=ROOT?>/public/adminEmployees"><img src="<?=ROOT?>/public/assets/images/Admin.png" alt=""> Employees </a></li>
+            <li><a href="<?=ROOT?>/public/adminEmployees"><img src="<?=ROOT?>/public/assets/images/Admin.png" alt=""> Users </a></li>
             <li><a href="<?=ROOT?>/public/adminRoles"><img src="<?=ROOT?>/public/assets/images/Roles.png" alt=""> Roles </a></li>
             <li><a href="<?=ROOT?>/public/adminPayrate"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Payment Rates </a></li>
             <li><a href="<?=ROOT?>/public/adminPaymentHistory"><img src="<?=ROOT?>/public/assets/images/order history.png" alt=""> Payment History </a></li>

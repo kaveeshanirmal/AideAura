@@ -15,7 +15,7 @@
         <div class="main-content">
             <div class="employee-details">
                 <button class="add-employee-btn">
-                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
+                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add User</a>
                 </button>
             </div>
             <div class="employee-controls">
@@ -27,10 +27,11 @@
                             <option value="financeManager">financeManager</option>
                             <option value="opManager">opManager</option>
                             <option value="admin">admin</option>
+                            <option value="worker">worker</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>Employee ID:</label>
+                        <label>User ID:</label>
                         <input type="text" id="employeeId" class="id-input">
                     </div>
                     <div class="input-group">
@@ -46,7 +47,7 @@
                 <table class="employee-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>User ID</th>
                             <th>Username</th>
                             <th>First Name</th>
                             <th>Last Name</th>
@@ -91,7 +92,7 @@
     <div id="updateModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeUpdateModal()">&times;</span>
-            <h2 class="topic">Update Employee Details</h2>
+            <h2 class="topic">Update User Details</h2>
             <form id="updateEmployeeForm" onsubmit="event.preventDefault(); updateEmployee();">
                 <input type="hidden" id="updateEmployeeId">
                 <div class="form-item">
@@ -113,6 +114,7 @@
                         <option value="financeManager">financeManager</option>
                         <option value="opManager">opManager</option>
                         <option value="admin">admin</option>
+                        <option value="worker">worker</option>
                     </select>
                 </div>
                 <div class="form-item">

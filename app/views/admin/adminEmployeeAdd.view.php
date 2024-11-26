@@ -50,6 +50,7 @@
                                 <option value="hrManager">hrManager</option>
                                 <option value="opManager">opManager</option>
                                 <option value="admin">admin</option>
+                                <option value="worker">worker</option>
                             </select>
                         </div>
 
@@ -62,7 +63,7 @@
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="add-btn">Add Employee</button>
+                            <button type="submit" class="add-btn">Add User</button>
                         </div>
                     </form>
                 </div>

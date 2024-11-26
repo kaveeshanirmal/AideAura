@@ -206,7 +206,7 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 2% 5% 8% 5%;
+    margin: 2% 5% 2% 5%;
     padding: 16px;
 }
 
@@ -223,16 +223,18 @@ a {
 
 .input-group label {
     white-space: nowrap;
+    font-size: 15px;
 }
 
-.role-select,
-.status-select {
-    width: 150%;
+.role-select{
+    width: 100%;
+    padding: 8px 25px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #f8f9fa;
 }
 
 .employee-input,
-.role-select,
-.status-select,
 .id-input,
 .email-input {
     padding: 8px 14px;
@@ -279,7 +281,9 @@ a {
 }
 
 .employee-table {
-    width: 100%;
+    align-items: center;
+    width: 85%;
+    margin: 0% 0% 0% 8%;
     border-collapse: collapse;
 }
 
@@ -292,7 +296,12 @@ a {
 
 .employee-table th {
     background-color: #f8f9fa;
-    font-weight: 600;
+    font-weight: 550;
+}
+
+.employee-table td {
+    font-weight: 100;
+    font-size: 14px;
 }
 
 .employee-table tbody tr:hover {
@@ -355,74 +364,195 @@ a {
     margin-bottom: 15px;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .search-filters {
-        flex-direction: 2 column;
-        gap: 16px;
+/* Responsive Media Queries */
+
+/* Small Mobile Devices (480px) */
+@media screen and (max-width: 480px) {
+    /* Dashboard Container */
+    .dashboard-container {
+        flex-direction: column;
+        padding: 10px;
     }
 
+    /* Main Content Area */
     .main-content {
-        order: 3;
+        margin: 20% 2% 2% 2%;
         width: 100%;
-        margin: 12% 3% 3% 3%;
+        overflow-x: hidden;
     }
-    
-    .employee-details {
-        flex-wrap: wrap;
+
+    /* Employee Controls */
+    .employee-controls {
+        flex-direction: column;
+        margin: 2% 2% 2% 2%;
+        padding: 10px;
+        gap: 15px;
     }
-    
+
+    .search-filters {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
     .input-group {
-        width: 100%;
-    }
-    
-    .employee-input,
-    .role-select,
-    .status-select, {
+        flex-direction: column;
+        align-items: stretch;
         width: 100%;
     }
 
-    .id-input,
+    .input-group label {
+        margin-bottom: 5px;
+    }
+
+    .role-select{
+        width: 100%;
+        padding: 8px;
+        margin: 0;
+    }
+
+    .id-input, 
     .email-input {
-        width: 1;
+        width: 96%;
+        padding: 8px;
+        margin: 0;
+    }
+
+    /* Table Styles */
+    .table-container {
+        padding: 10px;
+        overflow-x: scroll;
+    }
+
+    .employee-table {
+        width: 100%;
+        margin: 0;
+        font-size: 12px;
+    }
+
+    .employee-table th,
+    .employee-table td {
+        padding: 8px 4px;
+    }
+
+    /* Buttons */
+    .add-employee-btn,
+    .search-btn {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+    }
+
+    /* Modal Styles */
+    .modal-content {
+        width: 95%;
+        margin: 20% auto;
+        padding: 15px;
+    }
+
+    .modal-content form {
+        gap: 10px;
+    }
+
+    .form-item {
+        margin: 0 5%;
+        flex-direction: column;
+    }
+
+    .modal-content form label {
+        margin-bottom: 5px;
+        margin-left: 0;
+    }
+
+    .inputc1, .inputc2, .inputc3, 
+    .modal-content form select {
+        width: 100%;
+        margin: 0;
+        padding: 8px;
+    }
+
+    .modal-content form button {
+        margin: 10px 0;
+        padding: 10px;
+        width: 100%;
+    }
+
+    /* Notification */
+    .notification {
+        min-width: 90%;
+        max-width: 95%;
+        right: 5px;
+        font-size: 14px;
+        padding: 10px;
     }
 }
 
-@media screen and (max-width: 768px) {
+/* Tablets and Medium Devices (481px - 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
     .dashboard-container {
         flex-direction: column;
     }
 
-    .dashboard-sidebar {
-        order: 1;
-        width: 100%;
-    }
-
-    .dashboard-header {
-        order: 2;
-        width: 100%;
-    }
-
     .main-content {
-        order: 3;
+        margin: 14% 3% 5% 3%;
+        width: 94%;
+    }
+
+    .employee-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .search-filters {
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-left: 5%;
+        //justify-content: center;
+    }
+
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .employee-table {
         width: 100%;
-        margin: 25% 3% 3% 3%;
+        margin: 0;
+        font-size: 13px;
     }
 
-    .employee-controls,
-    .employee-details,
-    .table-container {
-        padding: 15px;
-    }
-
-    .add-employee-btn {
-        margin-right: 25px;
-    }
     .modal-content {
-        width: 90%; /* Adjust for smaller screens */
+        width: 85%;
+        margin: 15% auto;
+    }
+
+    .search-btn {
+          width: 170%;
+          margin-top: 28%;
     }
 }
 
+/* Large Mobile and Small Desktop (769px - 1024px) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .main-content {
+        margin: 10% 3% 3% 3%;
+    }
+
+    .employee-controls {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-filters {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .employee-table {
+        width: 95%;
+        margin: 0 auto;
+    }
+}
 
 /* Form Controls */
 select {

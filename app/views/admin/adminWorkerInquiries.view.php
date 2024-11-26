@@ -53,6 +53,104 @@
         </div>
     </div>
 
+
+    <!-- Reply Modal -->
+    <div id="replyModal" class="reply-modal">
+        <div class="reply-modal-content">
+            <div class="reply-modal-header">
+                <h3>Reply to Inquiry</h3>
+                <button class="close-reply-modal">&times;</button>
+            </div>
+            <div class="original-inquiry">
+                <h4>Original Inquiry</h4>
+                <p class="original-message"></p>
+            </div>
+            <form id="replyForm" class="reply-form">
+                <input type="hidden" id="inquiryId" name="inquiryId">
+                <div class="form-group">
+                    <label for="replyMessage">Your Response:</label>
+                    <textarea id="replyMessage" name="replyMessage" rows="6" placeholder="Write your response here..." required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel close-reply-modal">Cancel</button>
+                    <button type="submit" class="btn-send">Send Reply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Reply Modal Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const replyModal = document.getElementById('replyModal');
+            const replyLinks = document.querySelectorAll('.reply-link');
+            const closeModalButtons = document.querySelectorAll('.close-reply-modal');
+            const originalMessage = document.querySelector('.original-message');
+            const inquiryIdInput = document.getElementById('inquiryId');
+            const replyForm = document.getElementById('replyForm');
+
+            // Open Reply Modal
+            replyLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const inquiryCard = link.closest('.inquiry-card');
+                    const messageElement = inquiryCard.querySelector('.message');
+                    const inquiryId = link.getAttribute('data-inquiry-id');
+
+                    // Populate original message
+                    originalMessage.textContent = messageElement.textContent;
+                    inquiryIdInput.value = inquiryId;
+
+                    // Show modal
+                    replyModal.style.display = 'block';
+                });
+            });
+
+            // Close Modal
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    replyModal.style.display = 'none';
+                    replyForm.reset();
+                });
+            });
+
+            // Handle Form Submission
+            replyForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(replyForm);
+                
+                // Here you would typically send the form data to your server
+                fetch('<?=ROOT?>/public/adminWorkerInquiries/reply', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Reply sent successfully');
+                        replyModal.style.display = 'none';
+                        replyForm.reset();
+                        // Optionally update the UI to mark inquiry as replied
+                    } else {
+                        alert('Failed to send reply');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            });
+
+            // Close modal if clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === replyModal) {
+                    replyModal.style.display = 'none';
+                    replyForm.reset();
+                }
+            });
+        });
+    </script>
+
     <script>
         // Tab switching functionality
         document.querySelectorAll('.tab-button').forEach(button => {
