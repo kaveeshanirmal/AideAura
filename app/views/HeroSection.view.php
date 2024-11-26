@@ -35,7 +35,12 @@
                         Experience trustworthy care for all your household work<br>with the best quality and reasonable prices
                     </h2>
                 </div>
-                <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/isSignedIn'">Find a Worker</button>
+                <!-- conditionally include hero buttons based on user role -->
+                <?php if(isset($_SESSION['userID']) && $_SESSION['role'] == 'worker'): ?>
+                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/workerRedirect'">Look for jobs</button>
+                <?php else: ?>
+                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/customerRedirect'">Find a Worker</button>
+                <?php endif; ?>
                 <div class="background-1"></div>
             </section>
         </div>

@@ -26,8 +26,11 @@ class Login extends Controller
                 // Set session variables
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['userID'] = $user->userID;
-                $_SESSION['username'] = $user->username;
                 $_SESSION['role'] = $role;
+                $_SESSION['workerID'] = isset($user->workerID) ? $user->workerID : null;
+                $_SESSION['customerID'] = isset($user->customerID) ? $user->customerID : null;
+                $_SESSION['username'] = $user->username;
+                $_SESSION['isVerified'] = isset($user->isVerified) ? $user->isVerified : null;
 
                 // Redirect based on user role
                 if ($role === 'customer') {

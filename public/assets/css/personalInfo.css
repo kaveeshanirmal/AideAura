@@ -2,7 +2,7 @@
 
 body {
     font-family: "Arial", sans-serif;
-    background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+    background-image: url("../images/profile_bg.png");
     color: #333;
     margin: 0;
     padding: 0;
@@ -117,6 +117,7 @@ body {
 }
 
 .btn {
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
     padding: 12px 20px;
     font-size: 16px;
     color: #fff;
@@ -127,27 +128,27 @@ body {
 }
 
 .edit-btn {
-    background-color: #4a90e2;
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
 }
 
 .edit-btn:hover {
-    background-color: #357abd;
+    transform: translateY(-1px);
 }
 
 .submit-btn {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
 }
 
 .submit-btn:hover {
-    background-color: #218838;
+    transform: translateY(-1px);
 }
 
 .cancel-btn {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #b9ab93 0%, #2b2a2a 100%);
 }
 
 .cancel-btn:hover {
-    background-color: #c82333;
+    transform: translateY(-1px);
 }
 
 /* Responsive adjustments for smaller screens */
