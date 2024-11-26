@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const [hours, minutes] = window.globalValues.totalHours.split(':').map(Number);
             return hours + (minutes / 60);
         }
-        return 2; // Default value
+        return 2;
     }
 
     // Initialize variables
@@ -13,89 +13,202 @@ document.addEventListener('DOMContentLoaded', function() {
     const SHIFT_BREAK = 2.5;
     let remainingHours = TOTAL_HOURS;
     
-    console.log('Initial TOTAL_HOURS (exact):', TOTAL_HOURS);
-
     // Counter elements
     const minusBtn = document.querySelector('.minus-btn');
     const plusBtn = document.querySelector('.plus-btn');
     const shiftCount = document.querySelector('.shift-count');
     const secondShiftRow = document.querySelector('.second-shift');
+    const firstDurationSelect = document.getElementById('firstShiftDuration');
+    const firstStartTime = document.getElementById('firstStartTime');
+    const firstEndTime = document.getElementById('firstEndTime');
 
-    // Modify first shift duration options based on total hours
-    function updateFirstShiftDurationOptions() {
-        const firstDurationSelect = document.getElementById('firstShiftDuration');
-        if (!firstDurationSelect) return;
-
-        firstDurationSelect.innerHTML = '<option value="" disabled selected>Select Duration</option>';
-        
-        // Get floor value of total hours for dropdown options
-        const floorHours = Math.floor(TOTAL_HOURS);
-        
-        // Start from 0.5 and increment by 0.5 up to floor hours
-        for (let i = 0.5; i <= floorHours; i += 0.5) {
-            const hours = i;
-            const label = hours === 1 ? '1 hour' : `${hours} hours`;
-            firstDurationSelect.add(new Option(label, hours.toString()));
-            console.log('Adding option:', label, hours);
+    // Function to format hours and minutes
+    function formatDurationDisplay(hours) {
+        const wholeHours = Math.floor(hours);
+        const minutes = Math.round((hours - wholeHours) * 60);
+        let displayText = wholeHours + (wholeHours === 1 ? ' hour' : ' hours');
+        if (minutes > 0) {
+            displayText += ' ' + minutes + ' minutes';
         }
-        
-        console.log('Updated duration options for total hours:', TOTAL_HOURS, 'Floor:', floorHours);
+        return displayText;
     }
 
-    // Handle first shift duration change
+    // Function to handle shift count changes
+    function handleShiftCountChange(count) {
+        shiftCount.textContent = count.toString();
+
+        if (count === 1) {
+            // Single shift mode
+            if (firstDurationSelect) {
+                firstDurationSelect.style.display = 'none';
+                
+                // Create or update duration display as span (like end time)
+                let durationDisplay = document.getElementById('firstShiftDurationDisplay');
+                if (!durationDisplay) {
+                    durationDisplay = document.createElement('span');
+                    durationDisplay.id = 'firstShiftDurationDisplay';
+                    durationDisplay.className = 'end-time';
+                    firstDurationSelect.parentNode.insertBefore(durationDisplay, firstDurationSelect);
+                }
+                durationDisplay.style.display = '';
+                durationDisplay.textContent = formatDurationDisplay(TOTAL_HOURS);
+                firstDurationSelect.value = TOTAL_HOURS;
+            }
+            
+            // Hide second shift
+            if (secondShiftRow) {
+                secondShiftRow.style.display = 'none';
+            }
+
+            // Enable plus button, disable minus button
+            plusBtn.disabled = false;
+            minusBtn.disabled = true;
+            
+        } else {
+            // Two shifts mode
+            if (firstDurationSelect) {
+                // Show duration select and hide display input
+                const durationDisplay = document.getElementById('firstShiftDurationDisplay');
+                if (durationDisplay) {
+                    durationDisplay.style.display = 'none';
+                }
+                firstDurationSelect.style.display = '';
+                firstDurationSelect.value = '';
+                updateFirstShiftDurationOptions();
+            }
+            
+            // Hide second shift until duration is selected
+            if (secondShiftRow) {
+                secondShiftRow.style.display = 'none';
+            }
+
+            // Enable minus button, disable plus button
+            plusBtn.disabled = true;
+            minusBtn.disabled = false;
+        }
+    }
+
+    // Plus button handler
+    plusBtn.addEventListener('click', function() {
+        const currentCount = parseInt(shiftCount.textContent);
+        if (currentCount === 1) {
+            // Reset fields when switching to two shifts
+            if (firstStartTime) firstStartTime.value = '';
+            if (firstEndTime) firstEndTime.textContent = '--:--';
+            if (firstDurationSelect) firstDurationSelect.value = '';
+            
+            handleShiftCountChange(2);
+        }
+    });
+
+    // Minus button handler
+    minusBtn.addEventListener('click', function() {
+        const currentCount = parseInt(shiftCount.textContent);
+        if (currentCount === 2) {
+            // Reset fields when switching to single shift
+            if (firstStartTime) firstStartTime.value = '';
+            if (firstEndTime) firstEndTime.textContent = '--:--';
+            
+            handleShiftCountChange(1);
+        }
+    });
+
+    // Function to handle first shift duration change
     function handleFirstShiftDurationChange(event) {
         const selectedDuration = parseFloat(event.target.value);
-        
-        // Get exact total hours again to ensure we have the latest value
-        TOTAL_HOURS = getExactTotalHours();
         remainingHours = TOTAL_HOURS - selectedDuration;
         
         // Update second shift duration display
         const secondShiftDuration = document.getElementById('secondShiftDuration');
-        if (secondShiftDuration) {
-            if (remainingHours >= 0.5) {
-                // Convert decimal hours to hours and minutes for display
-                const remainingWholeHours = Math.floor(remainingHours);
-                const remainingMinutes = Math.round((remainingHours - remainingWholeHours) * 60);
-                
-                // Format the display string
-                let displayValue = '';
-                if (remainingWholeHours > 0) {
-                    displayValue += `${remainingWholeHours} hour${remainingWholeHours !== 1 ? 's' : ''}`;
-                }
-                if (remainingMinutes > 0) {
-                    if (displayValue) displayValue += ' ';
-                    displayValue += `${remainingMinutes} minutes`;
-                }
-                
-                secondShiftDuration.value = displayValue;
-                
-                console.log('Remaining time calculation:', {
-                    totalHours: TOTAL_HOURS,
-                    selectedDuration,
-                    remainingHours,
-                    remainingWholeHours,
-                    remainingMinutes
-                });
-            } else {
-                secondShiftDuration.value = 'Not available';
-            }
+        if (secondShiftDuration && remainingHours >= 0.5) {
+            secondShiftDuration.value = formatDurationDisplay(remainingHours);
         }
         
-        // If selected duration equals total hours or remaining is less than 0.5, hide second shift
-        if (Math.abs(selectedDuration - TOTAL_HOURS) < 0.01 || remainingHours < 0.5) {
-            if (secondShiftRow) {
-                secondShiftRow.style.display = 'none';
-                if (shiftCount) shiftCount.textContent = '1';
-                if (plusBtn) plusBtn.disabled = true;
+        // Only update end time and show second shift if start time is selected
+        if (firstStartTime.value) {
+            const endTime = calculateEndTime(firstStartTime.value, selectedDuration);
+            if (firstEndTime) {
+                firstEndTime.textContent = endTime;
+                // Now that we have end time, populate second shift options
+                populateSecondShiftStartTimes(endTime);
+                secondShiftRow.style.display = 'flex';
             }
-        } else {
-            if (plusBtn) plusBtn.disabled = false;
+        }
+    }
+
+    // Function to populate second shift start times
+    function populateSecondShiftStartTimes(firstEndTime) {
+        const secondStartTime = document.getElementById('secondStartTime');
+        if (!secondStartTime) return;
+
+        // Clear existing options
+        secondStartTime.innerHTML = '<option value="" disabled selected>Select Time</option>';
+
+        // Parse first shift end time
+        const [timeStr, period] = firstEndTime.split(' ');
+        let [hours, minutes] = timeStr.split(':').map(Number);
+        
+        // Convert to 24-hour format for calculations
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+
+        // Add SHIFT_BREAK (2.5 hours)
+        hours += Math.floor(SHIFT_BREAK);
+        minutes += (SHIFT_BREAK % 1) * 60;
+        
+        // Handle minute overflow
+        if (minutes >= 60) {
+            hours += Math.floor(minutes / 60);
+            minutes = minutes % 60;
+        }
+
+        // Calculate end limit (7 PM = 19:00)
+        const endHour = 19;
+        
+        // Generate time slots every 30 minutes until 7 PM
+        while (hours < endHour || (hours === endHour && minutes === 0)) {
+            const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+            const displayPeriod = hours >= 12 ? 'PM' : 'AM';
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const timeString = `${displayHours}:${formattedMinutes}`;
+            
+            secondStartTime.add(new Option(`${timeString} ${displayPeriod}`, timeString));
+
+            // Increment by 30 minutes
+            minutes += 30;
+            if (minutes >= 60) {
+                hours += 1;
+                minutes -= 60;
+            }
+        }
+
+        console.log('Populated second shift times from', firstEndTime, '+', SHIFT_BREAK, 'hours until 7 PM');
+    }
+
+    // Handle first shift start time change
+    function handleFirstStartTimeChange() {
+        const currentCount = parseInt(shiftCount.textContent);
+        const duration = currentCount === 1 ? TOTAL_HOURS : parseFloat(firstDurationSelect.value);
+        
+        if (firstStartTime.value && duration) {
+            const endTime = calculateEndTime(firstStartTime.value, duration);
+            if (firstEndTime) {
+                firstEndTime.textContent = endTime;
+                
+                // Only show second shift in two-shift mode with valid duration
+                if (currentCount === 2 && firstDurationSelect.value) {
+                    populateSecondShiftStartTimes(endTime);
+                    secondShiftRow.style.display = 'flex';
+                }
+            }
         }
     }
 
     // Initialize event listeners
-    const firstDurationSelect = document.getElementById('firstShiftDuration');
+    if (firstStartTime) {
+        firstStartTime.addEventListener('change', handleFirstStartTimeChange);
+    }
+    
     if (firstDurationSelect) {
         firstDurationSelect.addEventListener('change', handleFirstShiftDurationChange);
     }
@@ -104,30 +217,21 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('totalHoursUpdated', function() {
         TOTAL_HOURS = getExactTotalHours();
         remainingHours = TOTAL_HOURS;
-        updateFirstShiftDurationOptions();
-        console.log('Total hours updated (exact):', TOTAL_HOURS);
+        const currentCount = parseInt(shiftCount.textContent);
+        handleShiftCountChange(currentCount);
     });
 
-    // Initialize duration options
-    updateFirstShiftDurationOptions();
+    // Initial setup - start with single shift mode
+    handleShiftCountChange(1);
 
-    // Plus/Minus button handlers
-    if (plusBtn) {
-        plusBtn.addEventListener('click', function() {
-            const currentCount = parseInt(shiftCount.textContent);
-            if (currentCount < 2 && remainingHours >= 0.5) {
-                shiftCount.textContent = '2';
-                secondShiftRow.style.display = 'flex';
-            }
-        });
-    }
-
-    if (minusBtn) {
-        minusBtn.addEventListener('click', function() {
-            const currentCount = parseInt(shiftCount.textContent);
-            if (currentCount > 1) {
-                shiftCount.textContent = '1';
-                secondShiftRow.style.display = 'none';
+    // Add event listener for second shift start time
+    const secondStartTime = document.getElementById('secondStartTime');
+    const secondEndTime = document.getElementById('secondEndTime');
+    if (secondStartTime && secondEndTime) {
+        secondStartTime.addEventListener('change', function() {
+            if (this.value && remainingHours) {
+                const endTime = calculateEndTime(this.value, remainingHours);
+                secondEndTime.textContent = endTime;
             }
         });
     }

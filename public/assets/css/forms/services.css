@@ -619,9 +619,11 @@ body {
 }
 
 .time-column {
-    display: table-cell;
-    width: 33.33%;
-    vertical-align: top;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
 }
 
 /* Label styling */
@@ -733,18 +735,18 @@ label {
 }
 
 .time-column {
-    display: table-cell;
-    width: 33.33%;
-    padding: 15px 20px;
-    vertical-align: top;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
 }
 
 .time-column label {
-    display: block;
-    font-size: 15px;
+    font-size: 14px;
     color: #4c9ebe;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .duration-select, .time-select {
@@ -1540,5 +1542,151 @@ input:checked + .slider:before {
 /* Content area */
 .content {
     padding-bottom: 80px; /* Add space for footer */
+}
+
+/* Add specific styling for the duration display */
+.time-column .duration-display {
+    height: 40px;
+    padding: 8px 12px;
+    border: 2px solid #4c9ebe;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333;
+    background-color: #fff;
+    margin-top: 42px; /* Increased to 42px for more spacing */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Make all inputs and selects consistent */
+.time-column select,
+.time-column input,
+.time-column .end-time {
+    height: 40px;
+    margin-top: 24px; /* Keep other inputs at 24px */
+    box-sizing: border-box;
+}
+
+/* Style for labels to ensure consistent spacing */
+.time-column label {
+    font-size: 14px;
+    color: #4c9ebe;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+/* Container for first shift duration */
+.time-column {
+    position: relative;
+    padding-top: 30px; /* Add space at the top */
+}
+
+/* Label positioning */
+.time-column label {
+    font-size: 14px;
+    color: #4c9ebe;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+}
+
+/* Duration display styling */
+.time-column .duration-display {
+    height: 40px;
+    padding: 8px 12px;
+    border: 2px solid #4c9ebe;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333;
+    background-color: #fff;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    top: 20px; /* Adjust this value to increase/decrease gap */
+}
+
+/* Keep other inputs consistent */
+.time-column select,
+.time-column input,
+.time-column .end-time {
+    height: 40px;
+    box-sizing: border-box;
+}
+
+/* Time column container */
+.time-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Space between label and input */
+}
+
+/* Label styling */
+.time-column label {
+    font-size: 20px;
+    color: #4c9ebe;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Common styles for all inputs/displays */
+.time-column .duration-display,
+.time-column select,
+.time-column input,
+.time-column .end-time {
+    height: 45px;
+    padding: 8px 16px;
+    border: 2px solid #4c9ebe;
+    border-radius: 8px;
+    font-size: 18px;
+    color: #333;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 35px; /* This will push all boxes down from their labels */
+}
+
+/* Override for first shift duration to align with other boxes */
+.time-column:first-child .duration-display {
+    margin-top: 55px; /* Increased margin to align with other boxes */
+}
+
+/* Time columns wrapper */
+.shifts-table tr {
+    display: flex;
+    gap: 20px;
+}
+
+/* Time column container */
+.time-column {
+    position: relative;
+    flex: 1;
+}
+
+/* Label styling */
+.time-column label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    color: #4c9ebe;
+    font-weight: 500;
+}
+
+/* Common styles for all inputs/displays */
+.time-column .duration-display,
+.time-column select,
+.time-column input,
+.time-column .end-time {
+    height: 45px;
+    padding: 8px 16px;
+    border: 2px solid #4c9ebe;
+    border-radius: 8px;
+    font-size: 18px;
+    color: #333;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 70px; /* Fixed position from top for all boxes */
 }
 
