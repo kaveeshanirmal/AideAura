@@ -267,7 +267,7 @@ public function registerEmployee($data)
     $this->setTable('users');
     
     // Check if employee exists before deletion
-    $employee = $this->find($userID);
+    $employee = $this->find($userID,'userID');
     if (!$employee) {
         return false;
     }

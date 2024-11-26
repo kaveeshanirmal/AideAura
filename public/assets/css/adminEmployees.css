@@ -1,3 +1,41 @@
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;          /* Position from top */
+    right: 20px;        /* Position from right */
+    min-width: 300px;   /* Set minimum width */
+    max-width: 400px;   /* Set maximum width to prevent too wide notifications */
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;      /* Ensure it stays on top */
+    opacity: 0;
+    transform: translateY(-20px) translateX(100%);  /* Start off-screen to right */
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification.success {
+    background-color: #4caf50;
+}
+
+.notification.error {
+    background-color: #f44336;
+}
+
+.notification.hidden {
+    display: none;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0) translateX(0);  /* Slide in from right */
+    display: block;
+}
 /* Main Layout */
 .dashboard-container {
     display: flex;

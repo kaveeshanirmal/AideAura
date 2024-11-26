@@ -73,7 +73,7 @@ Trait Model
     // Delete a row from the table
     public function delete($id, $id_column = 'id')
     {
-        $query = "DELETE FROM {$this->table} WHERE {$id_column} = :id";
-        return $this->query($query, ['id' => $id]);
+        $query = "DELETE FROM {$this->table} WHERE {$id_column} = :userID";
+        return $this->query($query, ['userID' => $id]);
     }
 }
