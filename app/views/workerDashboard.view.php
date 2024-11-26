@@ -19,7 +19,7 @@
             <section class="dashboard-overview">
                 <div class="card total-earnings">
                     <h3>Total Earnings</h3>
-                    <p>$750 this month</p>
+                    <p>17500 LKR this month</p>
                 </div>
                 <div class="card job-status">
                     <h3>Current Job Status</h3>

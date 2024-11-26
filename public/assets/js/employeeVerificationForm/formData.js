@@ -125,12 +125,12 @@ function submitForm() {
         })
         .then((result) => {
             console.log("Form submitted successfully:", result);
+            window.location.href = `${ROOT}/public/workerVerification/verificationStatus`;
 
-            // Clear form data from localStorage after successful submission
-            clearFormData();
+            // clearFormData();
         })
         .catch((error) => {
             console.error("Error submitting form:", error);
+            window.location.href = `${ROOT}/public/workerVerification/verificationStatus`;
         });
 }
-

@@ -22,14 +22,19 @@ class VerificationRequestModel
         return $this->get_all($query, ['status' => 'pending']);
     }
 
+    public function findRequestByWorkerId($id)
+    {
+        return $this->find($id, 'workerID');
+    }
+
     public function findRequestById($id)
     {
         return $this->find($id, 'requestID');
     }
 
-    public function updateRequestStatus($id, $status)
+    public function updateRequest($data, $id)
     {
-        return $this->update($id, ['status' => $status], 'requestID');
+        return $this->update($id, $data, 'requestID');
     }
 
     public function deleteRequest($id)

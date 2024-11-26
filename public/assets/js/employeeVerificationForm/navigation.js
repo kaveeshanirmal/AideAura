@@ -58,6 +58,13 @@ function addEventListeners(page) {
                 console.log("Form validation failed");
             }
         });
+
+        const backButton = document.getElementById("back1");
+        backButton.addEventListener("click", (event) => {
+            console.log("Back button 1 pressed");
+            event.preventDefault();
+            window.history.back(); // Navigate to the previous page
+        });
     } else if (page === "page2") {
         document.getElementById("back2").addEventListener("click", (event) => {
             event.preventDefault();
@@ -88,7 +95,6 @@ function addEventListeners(page) {
                 window.validateForm()
             ) {
                 submitForm();
-                alert("Form Submitted Successfully!");
                 clearFormData(); // Clear all data on successful submission
             } else {
                 console.log("Form validation failed");

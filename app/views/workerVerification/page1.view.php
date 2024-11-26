@@ -60,7 +60,7 @@
         
         <div class="user_buttons">
           <div class="next_button_container">
-            <button class="next_button">Back</button>
+            <button class="next_button" id="back1">Back</button>
           </div>
           <div class="back_button_container">
             <button class="next_button" id="next1">Next</button>

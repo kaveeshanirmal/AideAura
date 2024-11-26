@@ -22,7 +22,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--background-gradient);
+    background-image: linear-gradient(to bottom, #3d0505, #834d2bdc),
+        url(../images/Loading_Screen_Background.png);
+    background-size: cover;
     color: var(--text-color);
     line-height: 1.6;
 }
@@ -137,21 +139,15 @@ form .category label .dot {
 }
 
 .next_button {
-    padding: 15px 30px;
-    background: linear-gradient(
-        135deg,
-        var(--primary-color),
-        var(--secondary-color)
-    );
+    padding: 8px 15px;
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-transform: uppercase;
 }
 
 .next_button:hover {
