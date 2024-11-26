@@ -1,8 +1,17 @@
 const content = document.getElementById("content");
 const styleLink = document.getElementById("dynamic-styles");
 
-function loadPage(page, cssFile, jsFile) {
-    console.log(ROOT);
+// Helper function for navigation
+function navigateToPage(currentPage, nextPage, cssFile, jsFile) {
+    if (currentPage) saveFormData(currentPage); // Save current page's data
+    loadPage(nextPage, cssFile, jsFile, () => {
+        restoreFormData(nextPage); // Restore next page's data
+    });
+}
+
+// Load and render the specified page
+function loadPage(page, cssFile, jsFile, callback) {
+    console.log("Loading page:", page);
     fetch(`${ROOT}/app/views/workerVerification/${page}.view.php`)
         .then((response) => {
             if (!response.ok) throw new Error("Page not found");
@@ -11,12 +20,13 @@ function loadPage(page, cssFile, jsFile) {
         .then((html) => {
             content.innerHTML = html;
             styleLink.href = `${ROOT}/public/assets/css/employeeVerificationForm/${cssFile}.css`;
-            loadScript(jsFile);
+            loadScript(jsFile, callback);
         })
         .catch((err) => console.error(err));
 }
 
-function loadScript(jsFile) {
+// Dynamically load a JavaScript file
+function loadScript(jsFile, callback) {
     const script = document.createElement("script");
     script.src = `${ROOT}/public/assets/js/employeeVerificationForm/${jsFile}.js`;
     script.type = "text/javascript";
@@ -24,6 +34,7 @@ function loadScript(jsFile) {
     script.onload = () => {
         console.log(`${jsFile} loaded successfully!`);
         addEventListeners(jsFile);
+        if (callback) callback();
     };
 
     script.onerror = (error) => {
@@ -33,64 +44,58 @@ function loadScript(jsFile) {
     document.body.appendChild(script);
 }
 
+// Add event listeners for page-specific navigation
 function addEventListeners(page) {
-    document.querySelectorAll(".page-nav").forEach((el) => {
-        el.removeEventListener("click", navigate);
-    });
-
     if (page === "page1") {
-        restoreFormData();
         document.getElementById("next1").addEventListener("click", (event) => {
             event.preventDefault();
-            // Check if validateForm exists and run validation before navigation
-            if (typeof window.validateForm === "function") {
-                if (window.validateForm()) {
-                    saveFormData();
-                    loadPage("page2", "page2", "page2");
-                } else {
-                    console.log("Form validation failed");
-                }
+            if (
+                typeof window.validateForm === "function" &&
+                window.validateForm()
+            ) {
+                navigateToPage("page1", "page2", "page2", "page2");
             } else {
-                console.error("Validation function not found");
+                console.log("Form validation failed");
             }
         });
     } else if (page === "page2") {
         document.getElementById("back2").addEventListener("click", (event) => {
             event.preventDefault();
-            restoreFormData();
-            loadPage("page1", "page1", "page1");
+            navigateToPage("page2", "page1", "page1", "page1");
         });
+
         document.getElementById("next2").addEventListener("click", (event) => {
             event.preventDefault();
-            if (typeof window.validateForm === "function") {
-                if (window.validateForm()) {
-                    loadPage("page3", "page3", "page3");
-                } else {
-                    console.log("Form validation failed");
-                }
+            if (
+                typeof window.validateForm === "function" &&
+                window.validateForm()
+            ) {
+                navigateToPage("page2", "page3", "page3", "page3");
             } else {
-                console.error("Validation function not found");
+                console.log("Form validation failed");
             }
         });
     } else if (page === "page3") {
         document.getElementById("back3").addEventListener("click", (event) => {
             event.preventDefault();
-            loadPage("page2", "page2", "page2");
+            navigateToPage("page3", "page2", "page2", "page2");
         });
+
         document.getElementById("submit").addEventListener("click", (event) => {
             event.preventDefault();
-            if (typeof window.validateForm === "function") {
-                if (window.validateForm()) {
-                    alert("Form Submitted Successfully!");
-                } else {
-                    console.log("Form validation failed");
-                }
+            if (
+                typeof window.validateForm === "function" &&
+                window.validateForm()
+            ) {
+                submitForm();
+                alert("Form Submitted Successfully!");
+                clearFormData(); // Clear all data on successful submission
             } else {
-                console.error("Validation function not found");
+                console.log("Form validation failed");
             }
         });
     }
 }
 
 // Initial page load
-loadPage("page1", "page1", "page1");
+navigateToPage(null, "page1", "page1", "page1");

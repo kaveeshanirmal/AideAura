@@ -13,7 +13,8 @@
 <body>
     <!-- Placeholder for dynamic content -->
     <div id="content"></div>
-    <!-- JavaScript for handling navigation -->
+    <!-- JavaScript for handling navigation and saving form data-->
+    <script src="<?=ROOT?>/public/assets/js/employeeVerificationForm/formData.js"></script>
     <script src="<?=ROOT?>/public/assets/js/employeeVerificationForm/navigation.js"></script>
 </body>
 </html>
