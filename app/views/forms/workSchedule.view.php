@@ -56,10 +56,7 @@
                     <label>First Work Shift</label>
                     <select class="duration-select" id="firstShiftDuration">
                         <option value="" disabled selected>Select Duration</option>
-                        <option value="1">1 hour</option>
-                        <option value="1.5">1.5 hours</option>
-                        <option value="2">2 hours</option>
-                        <option value="2.5">2.5 hours</option>
+                        <!-- Options will be populated by JavaScript -->
                     </select>
                 </div>
                 
@@ -191,17 +188,119 @@ function updateWorkingHoursDisplay() {
     const totalHoursDisplay = document.getElementById('totalHoursDisplay');
     if (window.globalValues && window.globalValues.totalHours) {
         totalHoursDisplay.textContent = window.globalValues.totalHours;
+        
+        // Dispatch event to update duration options
+        window.dispatchEvent(new Event('totalHoursUpdated'));
+        
         console.log('Work Schedule: Updated hours to', window.globalValues.totalHours);
     }
 }
 
-// Update on page load
+// Calculate end time based on start time and duration
+function calculateEndTime(startTime, duration) {
+    if (!startTime || !duration) return '--:--';
+    
+    // Parse start time
+    const [hours, minutes] = startTime.split(':').map(Number);
+    
+    // Handle exact duration including decimal parts
+    const durationHours = Math.floor(duration);
+    const durationMinutes = Math.round((duration - durationHours) * 60); // More precise calculation
+    
+    let endHours = hours + durationHours;
+    let endMinutes = minutes + durationMinutes;
+    
+    // Handle minute overflow
+    if (endMinutes >= 60) {
+        endHours += Math.floor(endMinutes / 60);
+        endMinutes = endMinutes % 60;
+    }
+    
+    // Format with AM/PM
+    const period = endHours >= 12 ? 'PM' : 'AM';
+    endHours = endHours > 12 ? endHours - 12 : (endHours === 0 ? 12 : endHours);
+    
+    // Ensure minutes are properly padded
+    const formattedMinutes = endMinutes.toString().padStart(2, '0');
+    
+    console.log('End time calculation:', {
+        startTime,
+        duration,
+        durationHours,
+        durationMinutes,
+        endHours,
+        endMinutes
+    });
+    
+    return `${endHours}:${formattedMinutes} ${period}`;
+}
+
+// Update end time when start time or duration changes
+document.getElementById('firstStartTime').addEventListener('change', function() {
+    const duration = parseFloat(document.getElementById('firstShiftDuration').value) || 0;
+    const endTime = calculateEndTime(this.value, duration);
+    document.getElementById('firstEndTime').textContent = endTime;
+});
+
+document.getElementById('firstShiftDuration').addEventListener('change', function() {
+    const startTime = document.getElementById('firstStartTime').value;
+    const endTime = calculateEndTime(startTime, parseFloat(this.value));
+    document.getElementById('firstEndTime').textContent = endTime;
+});
+
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     updateWorkingHoursDisplay();
+    
+    // Disable plus button initially
+    const plusBtn = document.querySelector('.plus-btn');
+    if (plusBtn) plusBtn.disabled = true;
 });
 
 // Listen for changes to total hours
 window.addEventListener('totalHoursUpdated', function() {
     updateWorkingHoursDisplay();
+});
+
+// Debug function to check total hours and populate duration options
+function populateFirstShiftDurations() {
+    const firstDurationSelect = document.getElementById('firstShiftDuration');
+    if (!firstDurationSelect) {
+        console.error('First duration select not found');
+        return;
+    }
+
+    // Clear existing options
+    firstDurationSelect.innerHTML = '<option value="" disabled selected>Select Duration</option>';
+    
+    // Get total hours from global values
+    let totalHours = 2; // Default
+    if (window.globalValues && window.globalValues.totalHours) {
+        const [hours, minutes] = window.globalValues.totalHours.split(':').map(Number);
+        totalHours = hours + (minutes / 60);
+    }
+    
+    // Get floor value of total hours
+    const floorHours = Math.floor(totalHours);
+    console.log('Populating durations for total hours:', totalHours, 'Floor:', floorHours);
+    
+    // Add options from 0.5 to floor hours
+    for (let i = 0.5; i <= floorHours; i += 0.5) {
+        const label = i === 1 ? '1 hour' : `${i} hours`;
+        const option = new Option(label, i.toString());
+        firstDurationSelect.add(option);
+        console.log('Added option:', label, i);
+    }
+}
+
+// Call on page load and when total hours update
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, initial global values:', window.globalValues);
+    populateFirstShiftDurations();
+});
+
+window.addEventListener('totalHoursUpdated', function() {
+    console.log('Hours updated, current global values:', window.globalValues);
+    populateFirstShiftDurations();
 });
 </script>
