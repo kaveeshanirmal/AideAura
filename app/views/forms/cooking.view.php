@@ -138,5 +138,18 @@
     </div>
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
     <script src="<?=ROOT?>/public/assets/js/formHeader1.js"></script>
+    <script>
+        // Make pricing data available globally with home-style food base values
+        window.PRICING_DATA = <?php echo json_encode($services['home-style-food'] ?? null); ?>;
+        window.ALL_SERVICES = <?php echo json_encode($services ?? null); ?>;
+        
+        // Set initial values from home-style food service
+        window.currentValues = {
+            price: window.PRICING_DATA?.basePrice || 0,
+            hours: (window.PRICING_DATA?.baseHours || 0) + ":00"
+        };
+        
+        console.log('Initial values set:', window.currentValues);
+    </script>
 </body>
 </html>

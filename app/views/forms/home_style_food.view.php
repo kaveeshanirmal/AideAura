@@ -1,3 +1,9 @@
+<?php
+// Debug data at the top of the file
+echo "<pre style='display:none;'>";
+print_r($pricingData);
+echo "</pre>";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +17,13 @@
 </head>
 
 <body>
+    <?php
+    // Debug output at the start
+    echo "<!--";
+    print_r($pricingData);
+    echo "-->";
+    ?>
+    
     <div class="service-form-modal">
         <!-- Modal Header -->
         <div class="service-form-header">
@@ -58,15 +71,15 @@
 
                 <div class="options-container">
                     <label class="option">
-                        <input type="radio" name="meals" value="Breakfast & Lunch" required>
+                        <input type="radio" name="meals" value="breakfast-lunch" required>
                         <span>Breakfast & Lunch</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="meals" value="Dinner">
+                        <input type="radio" name="meals" value="dinner">
                         <span>Dinner</span>
                     </label>
                     <label class="option">
-                        <input type="radio" name="meals" value="All 3 meals">
+                        <input type="radio" name="meals" value="all">
                         <span>All 3 meals(breakfast + Lunch + Dinner)</span>
                     </label>
                 </div>
@@ -106,15 +119,25 @@
             </form>
         </div>
         
-        <?php 
-        $isModal = true;
-        include(ROOT_PATH . '/app/views/forms/footer.view.php'); 
-        ?>
+        <?php $isModal = true; ?>
+        
+          <!-- Make pricing data available globally -->
+        <script>
+            if (!window.globalValues) {
+                window.globalValues = {
+                    totalPrice: <?php echo $services['home-style-food']['basePrice']; ?>,
+                    totalHours: "<?php echo $services['home-style-food']['baseHours']; ?>:00"
+                };
+            }
+            
+            window.previousSelections = window.previousSelections || {
+                homeStyleForm: {},
+                dishwashingForm: {}
+            };
+        </script>
+        
+        <?php include(ROOT_PATH . '/app/views/forms/footer.view.php'); ?>
     </div>
-    <script>
-        // Pass PHP data to JavaScript
-        const PRICING_DATA = <?php echo json_encode($pricingData); ?>;
-    </script>
 </body>
 
 </html>
