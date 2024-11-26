@@ -182,7 +182,7 @@ function updateAllFooters() {
         });
     }
 
-    // Update display
+    // Update displays
     const monthlySalary = `Rs.${window.globalValues.totalPrice * 30}`;
     document.querySelectorAll('#total-salary').forEach(element => {
         element.textContent = monthlySalary;
@@ -192,12 +192,10 @@ function updateAllFooters() {
         element.textContent = window.globalValues.totalHours;
     });
 
-    console.log('Footer updated with:', {
-        totalPrice: window.globalValues.totalPrice,
-        totalHours: window.globalValues.totalHours,
-        currentCharges: window.currentCharges,
-        currentMinutes: window.currentMinutes
-    });
+    // Dispatch event for other components
+    window.dispatchEvent(new Event('totalHoursUpdated'));
+    
+    console.log('Footer: Updated total hours to', window.globalValues.totalHours);
 }
 
 // Validate form selections
@@ -276,4 +274,31 @@ document.addEventListener('DOMContentLoaded', function() {
         nextButton.onclick = validateAndSubmit;
     }
 });
+
+// Update display this for step 2 work schedule
+function updateDisplay() {
+    const monthlySalary = `Rs.${window.globalValues.totalPrice * 30}`;
+    const totalHours = window.globalValues.totalHours;
+    
+    // Update all displays
+    document.querySelectorAll('#total-salary').forEach(element => {
+        element.textContent = monthlySalary;
+    });
+    
+    document.querySelectorAll('#total-hours').forEach(element => {
+        element.textContent = totalHours;
+    });
+
+    // Update working hours display if it exists
+    const workingHoursDisplay = document.querySelector('.working-hours');
+    if (workingHoursDisplay) {
+        workingHoursDisplay.textContent = `Daily Working Hours - ${totalHours}`;
+        console.log('Footer updated working hours to:', totalHours);
+    }
+
+    // Trigger an update event
+    window.dispatchEvent(new CustomEvent('totalHoursUpdated', { 
+        detail: { totalHours: totalHours }
+    }));
+}
 </script>
