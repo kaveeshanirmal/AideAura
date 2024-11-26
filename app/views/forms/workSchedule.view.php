@@ -37,8 +37,12 @@
 
         <!-- Second Section -->
         <div class="shift-section">
-            <div class="working-hours">
-                Daily Working Hours - 2:00
+            <div class="working-hours" id="workingHoursDisplay">
+                Daily Working Hours - <span id="totalHoursDisplay">
+                    <?php echo isset($services['home-style-food']['baseHours']) ? 
+                        $services['home-style-food']['baseHours'] . ':00' : 
+                        '2:00'; ?>
+                </span>
             </div>
         </div>
 
@@ -179,3 +183,25 @@
     </div>
 
 </div>
+
+<!-- Add this script at the bottom of the file -->
+<script>
+// Function to update the working hours display
+function updateWorkingHoursDisplay() {
+    const totalHoursDisplay = document.getElementById('totalHoursDisplay');
+    if (window.globalValues && window.globalValues.totalHours) {
+        totalHoursDisplay.textContent = window.globalValues.totalHours;
+        console.log('Work Schedule: Updated hours to', window.globalValues.totalHours);
+    }
+}
+
+// Update on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateWorkingHoursDisplay();
+});
+
+// Listen for changes to total hours
+window.addEventListener('totalHoursUpdated', function() {
+    updateWorkingHoursDisplay();
+});
+</script>
