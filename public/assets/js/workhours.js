@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (firstDurationSelect) {
                 firstDurationSelect.style.display = 'none';
                 
-                // Create or update duration display as span (like end time)
+                // Create or update duration display as span
                 let durationDisplay = document.getElementById('firstShiftDurationDisplay');
                 if (!durationDisplay) {
                     durationDisplay = document.createElement('span');
@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 secondShiftRow.style.display = 'none';
             }
 
-            // Enable plus button, disable minus button
+            // Set button states for single shift mode
             plusBtn.disabled = false;
-            minusBtn.disabled = true;
+            minusBtn.disabled = false; // Changed: Don't disable minus button
             
-        } else {
+        } else if (count === 2) {
             // Two shifts mode
             if (firstDurationSelect) {
                 // Show duration select and hide display input
@@ -82,11 +82,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 secondShiftRow.style.display = 'none';
             }
 
-            // Enable minus button, disable plus button
+            // Set button states for two shifts mode
             plusBtn.disabled = true;
             minusBtn.disabled = false;
         }
     }
+
+    // Minus button handler
+    minusBtn.addEventListener('click', function() {
+        const currentCount = parseInt(shiftCount.textContent);
+        if (currentCount > 1) { // Changed: Allow decreasing if count is greater than 1
+            // Reset fields when switching to single shift
+            if (firstStartTime) firstStartTime.value = '';
+            if (firstEndTime) firstEndTime.textContent = '--:--';
+            
+            handleShiftCountChange(1);
+        }
+    });
 
     // Plus button handler
     plusBtn.addEventListener('click', function() {
@@ -98,18 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (firstDurationSelect) firstDurationSelect.value = '';
             
             handleShiftCountChange(2);
-        }
-    });
-
-    // Minus button handler
-    minusBtn.addEventListener('click', function() {
-        const currentCount = parseInt(shiftCount.textContent);
-        if (currentCount === 2) {
-            // Reset fields when switching to single shift
-            if (firstStartTime) firstStartTime.value = '';
-            if (firstEndTime) firstEndTime.textContent = '--:--';
-            
-            handleShiftCountChange(1);
         }
     });
 
