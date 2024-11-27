@@ -13,6 +13,14 @@
         <?php if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) : ?>
             <a href="<?=ROOT?>/public/login">Login</a>
         <?php endif; ?>
+        <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] && ($_SESSION['role'] == 'customer')) : ?>
+            <div class="dropdown">
+                <span class="dropdown-toggle">Services</span>
+                <div class="dropdown-menu">
+                    <a href="<?=ROOT?>/public/serviceForms" class="dropdown-item">Cooking</a>
+                </div>
+            </div>
+        <?php endif; ?>
     </nav>
     <div class="right-section">
         <?php if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) : ?>
@@ -24,6 +32,7 @@
         <?php endif; ?>
     </div>
 </div>
+
 <!-- conditionally add worker or customer menubar -->
 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) : ?>
     <?php if ($_SESSION['role'] == 'worker') : ?>
@@ -34,3 +43,22 @@
 <?php endif; ?>
 <!-- notification panel -->
 <?php include ROOT_PATH . '/app/views/components/notificationPanel.view.php'; ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        // Toggle dropdown on mobile/touch devices
+        dropdownToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+    });
+</script>
