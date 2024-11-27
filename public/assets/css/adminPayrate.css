@@ -2,9 +2,10 @@
 .dashboard-container {
     display: flex;
    // min-height: 100vh;
-    background-color: #f8f9fa;
+    background-color: #FFF;
     margin: 0px;
     padding: 0px;
+    height: 100%;
 }
 
 
@@ -13,7 +14,7 @@
     flex: 1;
     padding: 0px;
     background-color: #FFF;
-    margin: 8% 3% 3% 3%;
+    margin: 12% 3% 3% 3%;
 }
 
 /* Table Styles */
@@ -21,8 +22,8 @@
     background-color: white;
     border-radius: 10px;
     padding: 20px;
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 8%;
+    margin-right: 8%;
 
 }
 
@@ -109,6 +110,72 @@
     display: inline-block;
 }
 
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    max-width: 500px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 90%;
+    padding: 8px;
+    border-radius: 8px
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 70%;
+    margin-left: 15%;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .dashboard-container {
@@ -116,9 +183,10 @@
     }
 
     .table-container {
+        flex-direction: column;
         overflow-x: auto;
-        margin-left: 10%;
-        margin-right: 10%;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
     }
 
     .pagination {
@@ -127,7 +195,7 @@
     }
 
     .main-content {
-        margin: 30% 3% 3% 3%;    
+        margin: 20% 3% 4% 3%;    
     }
 
 }

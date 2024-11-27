@@ -14,7 +14,7 @@
             <div class="dashboard-container">
                 <div class="scheduling-controls">
                 <button class="back-button">
-                    <span class="back-icon"><a href="adminWorkerProfile1" class="back-button">  < </a>
+                    <span class="back-icon"><a href="worker1" class="back-button">  < </a>
                     </span>
                 </button>
                     <div class="view-controls">
