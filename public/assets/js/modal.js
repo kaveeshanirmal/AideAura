@@ -1,3 +1,5 @@
+let selectedServices = new Set();
+
 function openModal(button) {
     console.log('1. Opening modal...');
     
@@ -16,7 +18,12 @@ function openModal(button) {
     if (modalContent) modalContent.style.display = 'block';
     if (serviceFormModal) serviceFormModal.style.display = 'block';
 
-    const serviceType = button.getAttribute("data-service");
+    const serviceCard = button.closest('.service-card');
+    const serviceType = serviceCard.dataset.service;
+    
+    // Store which service is being configured
+    window.currentService = serviceType;
+    
     console.log('2. Service Type:', serviceType);
 
     const serviceForms = {
@@ -40,6 +47,7 @@ function openModal(button) {
                 console.error('Error loading form:', error);
             });
     }
+
 }
 
 function closeModal() {
@@ -64,6 +72,20 @@ function closeModal() {
     // Hide service form modal
     if (serviceFormModal) {
         serviceFormModal.style.display = 'none';
+    }
+
+    // If the form was successfully completed, keep the checkmark
+    // If not, revert the button
+    if (window.homeStyleFormComplete) {
+        // Add to selected services if form was completed
+        selectedServices.add(window.currentService);
+        
+        // Update button appearance
+        const button = document.querySelector(`.service-card[data-service="${window.currentService}"] .add-button`);
+        if (button) {
+            button.textContent = '✓';
+            button.classList.add('selected');
+        }
     }
 }
 

@@ -1410,7 +1410,7 @@ label {
 }
 
 /* The slider knob */
-.slider:before {
+.slider::before {
     position: absolute;
     content: "";
     height: 26px;
