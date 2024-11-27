@@ -2,6 +2,7 @@
 
 class Admin extends Controller
 {
+    
     public function index($a = '', $b = '', $c = '')
     {
         $this->view('admin/adminReports');
@@ -57,6 +58,7 @@ class Admin extends Controller
 
     public function workerInquiries()
     {
+
         $this->view('admin/adminWorkerInquiries');
     }
 
