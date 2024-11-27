@@ -3,172 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Worker Inquiries</title>
+    <title>Admin - Complaints Management</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerInquiries.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?> 
-    <div class="container">
-        <div class="main-content">
-            <!-- Navbar Component -->
-            <div class="dashboard-container">                
-                <!-- Tabs Section -->
-                <div class="tabs-container">
-                    <button class="tab-button active" data-tab="unreplied">Unreplied</button>
-                    <button class="tab-button" data-tab="replied">Replied</button>
+        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+        <div class="container">
+            <div class="main-content">
+                <div class="filters-container">
+                    <label for="issueFilter">Filter by Issue Type:</label>
+                    <select id="issueFilter">
+                        <option value="all">All</option>
+                        <option value="general-inquiry">General Inquiry</option>
+                        <option value="feedback">Feedback/Suggestions</option>
+                        <option value="worker-unavailability">Worker Unavailability</option>
+                        <option value="worker-misconduct">Worker Misconduct</option>
+                        <option value="unable-to-book">Unable to Book</option>
+                        <option value="failed-payment">Failed Payment</option>
+                        <!-- Add remaining options -->
+                    </select>
+
+                    <label for="prioritySort">Sort by Priority:</label>
+                    <select id="prioritySort">
+                        <option value="none">None</option>
+                        <option value="high-to-low">High to Low</option>
+                        <option value="low-to-high">Low to High</option>
+                    </select>
                 </div>
 
-                <!-- Inquiries List -->
-                <div class="inquiries-container">
-                    <div class="inquiry-card">
-                        <div class="inquiry-header">
-                            <div class="user-info">
-                                <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile" class="profile-image">
-                                <div class="user-details">
-                                    <h3>MR. Kamal Rupasinghe</h3>
-                                    <div class="timestamp">
-                                        <span>24 September 2024</span>
-                                        <span class="time">20:34 pm</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="options-button">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="inquiry-content">
-                            <p class="salutation">Sir,</p>
-                            <p class="message">I was face some threatened from my current employee. I think my life is in a danger. Please can you get immidiate actions for this situation.</p>
-                            <p class="signature">Thank you</p>
-                            <a href="#" class="reply-link">reply</a>
-                        </div>
-                    </div>
-
-                    <!-- Repeat similar inquiry-card structure for other messages -->
-                    <!-- You can dynamically generate these cards from your database -->
-                </div>
+                <table class="complaints-table">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Issue Type</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="complaintsTableBody">
+                        <!-- Dynamic complaint rows will be injected here -->
+                    </tbody>
+                </table>
             </div>
         </div>
-   
-
-
-    <!-- Reply Modal -->
-    <div id="replyModal" class="reply-modal">
-        <div class="reply-modal-content">
-            <div class="reply-modal-header">
-                <h3>Reply to Inquiry</h3>
-                <button class="close-reply-modal">&times;</button>
-            </div>
-            <div class="original-inquiry">
-                <h4>Original Inquiry</h4>
-                <p class="original-message"></p>
-            </div>
-            <form id="replyForm" class="reply-form">
-                <input type="hidden" id="inquiryId" name="inquiryId">
-                <div class="form-group">
-                    <label for="replyMessage">Your Response:</label>
-                    <textarea id="replyMessage" name="replyMessage" rows="6" placeholder="Write your response here..." required></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel close-reply-modal">Cancel</button>
-                    <button type="submit" class="btn-send">Send Reply</button>
-                </div>
-            </form>
-        </div>
-    </div>
     </div>
 
     <script>
-        // Reply Modal Functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const replyModal = document.getElementById('replyModal');
-            const replyLinks = document.querySelectorAll('.reply-link');
-            const closeModalButtons = document.querySelectorAll('.close-reply-modal');
-            const originalMessage = document.querySelector('.original-message');
-            const inquiryIdInput = document.getElementById('inquiryId');
-            const replyForm = document.getElementById('replyForm');
+        // Dummy data for complaints
+        const complaints = [
+            {
+                customerID: "12",
+                issueType: "failed-payment",
+                description: "Payment failed during checkout.",
+                priority: "Critical",
+                date: "2024-11-20"
+            },
+            {
+                customerID: "14",
+                issueType: "general-inquiry",
+                description: "Inquiry about service availability.",
+                priority: "Low",
+                date: "2024-11-22"
+            },
+            {
+                customerID: "21",
+                issueType: "worker-misconduct",
+                description: "Complaint about worker behavior.",
+                priority: "High",
+                date: "2024-11-23"
+            },
+            // Add more dummy data
+        ];
 
-            // Open Reply Modal
-            replyLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const inquiryCard = link.closest('.inquiry-card');
-                    const messageElement = inquiryCard.querySelector('.message');
-                    const inquiryId = link.getAttribute('data-inquiry-id');
-
-                    // Populate original message
-                    originalMessage.textContent = messageElement.textContent;
-                    inquiryIdInput.value = inquiryId;
-
-                    // Show modal
-                    replyModal.style.display = 'block';
-                });
+        // Function to render complaints
+        const renderComplaints = (data) => {
+            const tableBody = document.getElementById('complaintsTableBody');
+            tableBody.innerHTML = "";
+            data.forEach(complaint => {
+                const row = `
+                    <tr>
+                        <td>${complaint.customerID}</td>
+                        <td>${complaint.issueType}</td>
+                        <td>${complaint.description}</td>
+                        <td>${complaint.priority}</td>
+                        <td>${complaint.date}</td>
+                        <td><button class="reply-button">Reply</button></td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
             });
+        };
 
-            // Close Modal
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    replyModal.style.display = 'none';
-                    replyForm.reset();
-                });
-            });
+        // Initial render
+        renderComplaints(complaints);
 
-            // Handle Form Submission
-            replyForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const formData = new FormData(replyForm);
-                
-                // Here you would typically send the form data to your server
-                fetch('<?=ROOT?>/public/adminWorkerInquiries/reply', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        alert('Reply sent successfully');
-                        replyModal.style.display = 'none';
-                        replyForm.reset();
-                        // Optionally update the UI to mark inquiry as replied
-                    } else {
-                        alert('Failed to send reply');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred');
-                });
-            });
+        // Filter and sorting logic
+        document.getElementById('issueFilter').addEventListener('change', (e) => {
+            const filterValue = e.target.value;
+            let filteredData = complaints;
 
-            // Close modal if clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === replyModal) {
-                    replyModal.style.display = 'none';
-                    replyForm.reset();
-                }
-            });
+            if (filterValue !== "all") {
+                filteredData = complaints.filter(c => c.issueType === filterValue);
+            }
+
+            renderComplaints(filteredData);
         });
-    </script>
 
-    <script>
-        // Tab switching functionality
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                document.querySelectorAll('.tab-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                // Add active class to clicked button
-                button.classList.add('active');
-                
-                // Handle tab content switching here
-                const tabName = button.getAttribute('data-tab');
-                // Add your logic to show/hide appropriate inquiries
-            });
+        document.getElementById('prioritySort').addEventListener('change', (e) => {
+            const sortValue = e.target.value;
+            let sortedData = [...complaints];
+
+            if (sortValue === "high-to-low") {
+                sortedData.sort((a, b) => priorityValue(b.priority) - priorityValue(a.priority));
+            } else if (sortValue === "low-to-high") {
+                sortedData.sort((a, b) => priorityValue(a.priority) - priorityValue(b.priority));
+            }
+
+            renderComplaints(sortedData);
         });
+
+        // Function to map priority to numeric value
+        const priorityValue = (priority) => {
+            if (priority === "Critical") return 3;
+            if (priority === "High") return 2;
+            if (priority === "Medium") return 1;
+            if (priority === "Low") return 0;
+            return -1; // For undefined priorities
+        };
     </script>
 </body>
 </html>

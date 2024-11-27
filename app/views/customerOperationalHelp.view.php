@@ -39,10 +39,10 @@
             <!-- Submit Issue Form -->
             <section class="submit-issue">
                 <h2>Submit an Issue</h2>
-                <form action="<?=ROOT?>/submit-issue" method="POST">
+                <form class="issue-form" action="<?=ROOT?>/public/customerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="issue-type">Issue Type</label>
-                        <select id="issue-type" name="issue_type" required>
+                        <select id="issue-type" name="issue" required>
                             <option value="">Select an Issue Type</option>
                             <optgroup label="General Issues">
                                 <option value="general-inquiry">
@@ -178,121 +178,32 @@
 
         <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 
-        <style>
-            .helpdesk-container {
-                padding: 20px;
-                max-width: 1200px;
-                margin: auto;
-                font-family: Arial, sans-serif;
-            }
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const issueTypeSelect = document.getElementById("issue-type");
+                const form = document.querySelector(".issue-form");
 
-            h1,
-            h2 {
-                color: #333;
-            }
+                // Create a hidden input field to hold the optgroup label
+                const optgroupLabelInput = document.createElement("input");
+                optgroupLabelInput.type = "hidden";
+                optgroupLabelInput.name = "issue-type";
+                form.appendChild(optgroupLabelInput);
 
-            .contact-section {
-                margin-bottom: 30px;
-            }
+                // Listen for changes in the select dropdown
+                issueTypeSelect.addEventListener("change", function () {
+                    const selectedOption = issueTypeSelect.options[issueTypeSelect.selectedIndex];
+                    const optgroup = selectedOption.parentElement;
 
-            .contact-methods {
-                display: flex;
-                gap: 20px;
-            }
-
-            .contact-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                background: #f9f9f9;
-                padding: 10px 15px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .contact-item img {
-                width: 30px;
-            }
-
-            .submit-issue {
-                margin-bottom: 30px;
-                background: #f4f4f4;
-                padding: 20px;
-                border-radius: 5px;
-            }
-
-            .submit-issue .form-group {
-                margin-bottom: 15px;
-            }
-
-            .submit-issue label {
-                display: block;
-                margin-bottom: 5px;
-            }
-
-            .submit-issue input,
-            .submit-issue textarea,
-            .submit-issue select {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 14px;
-            }
-
-            .submit-btn {
-                background-color: #4caf50;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .submit-btn:hover {
-                background-color: #45a049;
-            }
-
-            .knowledge-base {
-                background: #e7f3ff;
-                padding: 20px;
-                border-radius: 5px;
-            }
-
-            .kb-articles {
-                display: flex;
-                gap: 20px;
-                flex-wrap: wrap;
-            }
-
-            .kb-article {
-                background: white;
-                padding: 15px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                flex: 1;
-                min-width: 250px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .kb-article h3 {
-                margin-bottom: 10px;
-                font-size: 18px;
-            }
-
-            .kb-article p {
-                margin-bottom: 10px;
-                font-size: 14px;
-            }
-
-            .kb-article a {
-                color: #007bff;
-                text-decoration: none;
-            }
-
-            .kb-article a:hover {
-                text-decoration: underline;
-            }
-        </style>
+                    // Set the value of the hidden input to the optgroup label
+                    if (optgroup.tagName === "OPTGROUP") {
+                        optgroupLabelInput.value = optgroup.label;
+                        console.log("Optgroup: ", optgroup.label);
+                    } else {
+                        optgroupLabelInput.value = ""; // Clear if no optgroup
+                        console.log("No Optgroup");
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
