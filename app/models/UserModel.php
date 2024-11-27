@@ -75,9 +75,47 @@ class UserModel
         ];
         $this->insert($customerData);
     }
-    return true;
+    // If role is 'customer', add data to 'customer' table
+    else if ($role === 'hrManager') {
+        $this->setTable('hrManager');
+
+        // Insert customer-specific data
+        $hrManagerData = [
+            'userID' => $userID,
+            'address' => $data['address']
+        ];
+        $this->insert($hrManagerData);
+    }
     return $userID; // Return the userID of the newly created user
 }
+public function registerEmployee($data)
+{
+     // Set the table to 'users' for inserting the base user data
+    $this->setTable('users');
+
+    // User data to be entered into the 'users' table
+    $userData = [
+        'firstName' => $data['firstName'],
+        'lastName' => $data['lastName'],
+        'username' => $data['username'],
+        'phone' => $data['phone'],
+        'email' => $data['email'],
+        'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+        'role' => $data['role'],
+    ];
+
+    // Insert the base user data and get the newly created userID
+    $userID = $this->insert($userData);
+
+    // Check if user was created successfully
+    if (!$userID) {
+        return false; // User creation failed
+    }
+
+    return true; // Return true on success
+}
+
+
     // Find a user by username (for login)
     public function findUserByUsername($username)
     {
@@ -110,6 +148,13 @@ class UserModel
         return false; // No user found
     }
 
+
+    public function getAllEmployees() {
+        $this->setTable('users');
+        return $this->all(); // Use the get_all method from the Database trait
+    }
+
+
     // Update user information
     public function updateUserInfo($id, $data)
     {
@@ -141,5 +186,82 @@ class UserModel
         }
 
         return false; // Update failed
+    }
+
+
+    // Update user information
+    public function updateEmployee($id, $data)
+    {
+        $this->setTable('users'); // Update user information in the 'users' table
+
+        // Update the 'users' table
+        $userData = [
+            'firstName' => $data['firstName'],
+            'lastName' => $data['lastName'],
+            'username' => $data['username'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+        ];
+        
+        $result = $this->update($id, $userData, 'userID');
+
+        if (!$result) {
+            return false;
+        }
+        return true; // Update failed
+    }
+
+
+
+    public function searchEmployees($filters) {
+        $this->setTable('employees');
+        
+        $conditions = [];
+        $params = [];
+        
+        // Build search conditions based on filters
+        if (!empty($filters['role'])) {
+            $conditions[] = "role LIKE :role";
+            $params['role'] = "%" . trim($filters['role']) . "%";
+        }
+        
+        if (!empty($filters['email'])) {
+            $conditions[] = "email LIKE :email";
+            $params['email'] = "%" . trim($filters['email']) . "%";
+        }
+        
+        if (!empty($filters['status'])) {
+            $conditions[] = "status LIKE :status";
+            $params['status'] = "%" . trim($filters['status']) . "%";
+        }
+        
+        if (!empty($filters['employeeID'])) {
+            $conditions[] = "employeeID LIKE :employeeID";
+            $params['employeeID'] = "%" . trim($filters['employeeID']) . "%";
+        }
+
+        $sql = "SELECT * FROM employees";
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(' OR ', $conditions);
+        }
+        
+        // Add ordering to ensure consistent results
+        $sql .= " ORDER BY employeeID DESC";
+        
+        return $this->query($sql, $params);
+    }
+
+    // Updated delete method with validatio+n
+    public function deleteEmployee($userID) {
+    $this->setTable('users');
+    
+    // Check if employee exists before deletion
+    $employee = $this->find($userID,'userID');
+    if (!$employee) {
+        return false;
+    }
+    
+    return $this->delete($userID, 'userID'); // Ensure 'userID' is the correct column name in your table
     }
 }

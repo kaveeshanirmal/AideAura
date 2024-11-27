@@ -18,11 +18,12 @@
                     <span class="back-icon"><a href="adminWorkerProfile1" class="back-button"> < </a>
                     </span>
                 </button>
-                <div class="profile-header">
+                <div class="profile-header"><a href="adminWorkerProfile1">
                     <img src="assets/images/user_icon.png" alt="Profile Icon" class="profile-icon">
                     <div class="profile-info">
                         <h2>MR. Kamal Rupasinghe</h2>
                         <p>Certificates</p>
+                        </a>
                     </div>
                 </div>
                 </div>
