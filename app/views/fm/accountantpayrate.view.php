@@ -18,23 +18,65 @@
             <table class="rates-table">
                 <thead>
                     <tr>
-                        <th>Field of helper</th>
-                        <th>Last update</th>
-                        <th>Rate</th>
+                        <th>ServiceID</th>
+                        <th>Service Type</th>
+                        <th>Base Price</th>
+                        <th>Base Hours</th>
+                        <th>Created At</th>
                         <th>Update</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php for($i = 0; $i < 6; $i++) { ?>
                         <tr>
-                            <td>Cleaner</td>
-                            <td>2024-11-05</td>
-                            <td>3%</td>
+                            <td>1</td>
+                            <td>home-style-food</td>
+                            <td>500.00</td>
+                            <td>1.00</td>
+                            <td>2024-11-05 09:13:08</td>
                             <td>
                                 <button class="update-btn">update</button>
                             </td>
                         </tr>
-                    <?php } ?>
+                        <tr>
+                            <td>2</td>
+                            <td>dishwashing</td>
+                            <td>100.00</td>
+                            <td>0.25</td>
+                            <td>2024-11-02 07:15:05</td>
+                            <td>
+                                <button class="update-btn">update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>24h cook</td>
+                            <td>20000.00</td>
+                            <td>24.00</td>
+                            <td>2024-11-03 08:10:00</td>
+                            <td>
+                                <button class="update-btn">update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>indoor cleaner</td>
+                            <td>250.00</td>
+                            <td>1.00</td>
+                            <td>2024-11-08 10:00:03</td>
+                            <td>
+                                <button class="update-btn">update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>outdoor cleaner</td>
+                            <td>200.00</td>
+                            <td>1.00</td>
+                            <td>2024-11-03 11:14:20</td>
+                            <td>
+                                <button class="update-btn">update</button>
+                            </td>
+                        </tr>
                 </tbody>
             </table>
 

@@ -14,7 +14,20 @@ class Admin extends Controller
 
     public function workers()
     {
-        $this->view('admin/workerProfiles');
+        $this->view('admin/adminWorkerProfile');
+    }
+
+    public function worker1()
+    {
+        $this->view('admin/adminWorkerProfile1');
+    }
+    public function worker2()
+    {
+        $this->view('admin/adminWorkerProfile2');
+    }
+    public function workerSchedule()
+    {
+        $this->view('admin/adminWorkerProfileSchedule');
     }
 
     public function customers()
@@ -27,9 +40,14 @@ class Admin extends Controller
         $this->view('admin/adminRoles');
     }
 
+    public function workerRoles1()
+    {
+        $this->view('admin/adminRoles1');
+    }
+
     public function paymentRates()
     {
-        $this->view('admin/adminPaymentRates');
+        $this->view('admin/adminPayrate');
     }
 
     public function paymentHistory()
@@ -42,8 +60,8 @@ class Admin extends Controller
         $this->view('admin/adminWorkerInquiries');
     }
 
-    public function customerInquiries()
+    public function paymentIssues()
     {
-        $this->view('admin/adminCustomerInquiries');
+        $this->view('admin/adminpaymentIssues');
     }
 }

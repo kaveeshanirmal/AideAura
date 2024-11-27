@@ -11,10 +11,10 @@
     <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
     <main class="main-content">
             <div class="back-header">
-                <a href="adminWorkerProfile" class="back-button">‹</a>
+                <a href="workers" class="back-button">‹</a>
                 <div class="worker-header">
                     <div class="worker-avatar">
-                        <img src="assets/images/user_icon.png" alt="Worker Avatar">
+                        <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker Avatar">
                     </div>
                     <div class="worker-title">
                         <h2>MR. Kamal Rupasinghe</h2>
@@ -99,8 +99,8 @@
 
             <div class="action-buttons">
                 <button class="btn update" onclick="openUpdateModal()">Update</button>
-                <button class="btn schedule"><a href="adminWorkerProfileSchedule">Availability schedule</a></button>
-                <button class="btn certificates"><a href="adminWorkerProfile2">Certificates</a></button>
+                <button class="btn schedule"><a href="workerSchedule">Availability schedule</a></button>
+                <button class="btn certificates"><a href="worker2">Certificates</a></button>
             </div>
 
             <!-- Update Modal -->
