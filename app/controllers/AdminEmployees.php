@@ -2,18 +2,27 @@
 class AdminEmployees extends Controller {
 // Controller.php (Assuming this is the controller)
 
-    public function index() {
-        $userModel = new UserModel();
-        $employees = $userModel->getAllEmployees();
-        error_log("Employees in controller: " . json_encode($employees));
+public function index() {
+    $userModel = new UserModel();
+    $allEmployees = $userModel->getAllEmployees(); // Fetch all employees from the database
+    error_log("Employees in controller: " . json_encode($allEmployees));
 
-        if (!$employees) {
-            error_log("No employees retrieved or query failed");
-            $employees = []; // Ensuring that the variable is always an array (empty array if no employees found)
-        }
+    // Define the allowed roles for filtering
+    $allowedRoles = ['hrManager', 'opManager', 'financeManager', 'admin'];
 
-        $this->view('admin/adminEmployees', ['employees' => $employees]);
+    // Filter employees based on allowed roles
+    $filteredEmployees = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
+        return in_array($employee->role, $allowedRoles); // Access object property using '->'
+    });
+
+    if (!$filteredEmployees) {
+        error_log("No employees with specified roles retrieved or query failed");
+        $filteredEmployees = []; // Ensuring the variable is always an array
     }
+
+    $this->view('admin/adminEmployees', ['employees' => $filteredEmployees]);
+}
+
 
 
     public function update() {
