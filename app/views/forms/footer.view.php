@@ -203,29 +203,48 @@ function validateFormSelections() {
     const form = document.querySelector('form');
     if (!form) return false;
 
-    // First check people selection for all forms
-    if (!form.querySelector('input[name="people"]:checked')) {
-        alert('Please select number of people');
-        return false;
-    }
-
-    // For home style food form, check meals and preference
+    // For home style food form, check all selections
     if (form.id === 'homeStyleForm') {
-        // Check meals
+        const isComplete = form.querySelector('input[name="people"]:checked') &&
+                          form.querySelector('input[name="meals"]:checked') &&
+                          form.querySelector('input[name="preference"]:checked') &&
+                          form.querySelector('input[name="dogs"]:checked');
+        
+        // Add console logs to track the state
+        console.log('Form Validation Status:', {
+            people: !!form.querySelector('input[name="people"]:checked'),
+            meals: !!form.querySelector('input[name="meals"]:checked'),
+            preference: !!form.querySelector('input[name="preference"]:checked'),
+            dogs: !!form.querySelector('input[name="dogs"]:checked'),
+            isComplete: isComplete
+        });
+        
+        // Set global flag for home style form completion
+        window.homeStyleFormComplete = isComplete;
+        console.log('homeStyleFormComplete set to:', window.homeStyleFormComplete);
+        
+        if (!form.querySelector('input[name="people"]:checked')) {
+            alert('Please select number of people');
+            return false;
+        }
         if (!form.querySelector('input[name="meals"]:checked')) {
             alert('Please select number of meals');
             return false;
         }
-
-        // Check preference
         if (!form.querySelector('input[name="preference"]:checked')) {
             alert('Please select your meal preference');
             return false;
         }
-
-        // Check dogs selection
         if (!form.querySelector('input[name="dogs"]:checked')) {
             alert('Please select whether you have dog(s)');
+            return false;
+        }
+    }
+
+    // For dishwashing form, check people selection
+    if (form.id === 'dishwashingForm') {
+        if (!form.querySelector('input[name="people"]:checked')) {
+            alert('Please select number of people');
             return false;
         }
     }
@@ -301,4 +320,18 @@ function updateDisplay() {
         detail: { totalHours: totalHours }
     }));
 }
+
+// Add this to track form changes
+document.addEventListener('change', function(event) {
+    if (event.target.type === 'radio' && event.target.closest('form')?.id === 'homeStyleForm') {
+        const form = event.target.closest('form');
+        const isComplete = form.querySelector('input[name="people"]:checked') &&
+                          form.querySelector('input[name="meals"]:checked') &&
+                          form.querySelector('input[name="preference"]:checked') &&
+                          form.querySelector('input[name="dogs"]:checked');
+        
+        window.homeStyleFormComplete = isComplete;
+        console.log('Home Style Form complete:', isComplete);
+    }
+});
 </script>
