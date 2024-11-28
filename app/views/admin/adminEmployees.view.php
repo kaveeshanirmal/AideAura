@@ -27,7 +27,6 @@
                             <option value="financeManager">financeManager</option>
                             <option value="opManager">opManager</option>
                             <option value="admin">admin</option>
-                            <option value="worker">worker</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -114,7 +113,6 @@
                         <option value="financeManager">financeManager</option>
                         <option value="opManager">opManager</option>
                         <option value="admin">admin</option>
-                        <option value="worker">worker</option>
                     </select>
                 </div>
                 <div class="form-item">
