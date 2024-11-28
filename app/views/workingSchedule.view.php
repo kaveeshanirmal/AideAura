@@ -12,7 +12,7 @@
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
     <div class="schedule-container">
         <h1>My Weekly Schedule</h1>
-        <button class="edit-btn">Edit Schedule</button>
+        
         
         <form id="scheduleForm" method="POST" action="<?=ROOT?>/public/WorkingSchedule/saveSchedule">
             <input type="hidden" name="workerID" value="<?=$_SESSION['workerID']?>">
@@ -23,7 +23,7 @@
                         <th>Day</th>
                         <th>Start Time</th>
                         <th>End Time</th>
-                        <th class="action-column" style="display: none">Actions</th>
+                        <th class="action-column">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,7 +53,7 @@
                                     <input type="time" class="time-input" name="schedules[<?= $schedule->scheduleID ?>][endTime]" 
                                            value="<?= htmlspecialchars($schedule->endTime) ?>" style="display: none">
                                 </td>
-                                <td class="action-column" style="display: none">
+                                <td class="action-column">
                                     <i class="fas fa-edit update-btn" title="Edit Icon"></i>
                                     <i class="fas fa-trash-alt delete-btn" title="Delete Schedule"></i>
                                 </td>
@@ -66,11 +66,15 @@
                     <?php endif; ?>
                 </tbody>
             </table>
-
+            <div class="button-container">
+                <button class="edit-btn">Edit Schedule</button>
+            </div>
             <!-- Form buttons -->
-            <button type="button" class="add-schedule-btn" style="display: none">Add new day</button>
-            <button type="button" class="save-changes-btn" style="display: none">Save Changes</button>
-            <button type="button" class="cancel-changes-btn" style="display: none">Cancel Changes</button>
+            <div class="schedule-actions">
+                <button type="button" class="schedule-btn add-schedule-btn">Add New Day</button>
+                <button type="button" class="schedule-btn save-changes-btn">Save Changes</button>
+            </div>
+            
         </form>
 
         <div class="error-overlay" style="display: none">
