@@ -28,7 +28,7 @@
                         <input type="number" value="" class="field-input">
                     </div>
 
-                    <button class="schedule-btn">View Schedule</button>
+                    <button class="schedule-btn" id="view-schedule-btn">View Schedule</button>
                     
                     <div class="view-controls">
                         <button class="view-btn">Days</button>
@@ -87,5 +87,117 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="schedule-modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Worker Schedule</h3>
+            <button class="close-btn" id="close-modal-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="schedule-grid" id="modal-schedule-grid">
+                <table>
+                    <tr>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                        <th>Sunday</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">John Doe</div>
+                                <div class="worker-role">Cleaner</div>
+                                <div class="work-time">8:00 - 5:00</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">Jane Smith</div>
+                                <div class="worker-role">Cook</div>
+                                <div class="work-time">9:00 - 6:00</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">Mike Johnson</div>
+                                <div class="worker-role">Nanny</div>
+                                <div class="work-time">9:30 - 5:30</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">Sarah Williams</div>
+                                <div class="worker-role">All Rounder</div>
+                                <div class="work-time">10:00 - 5:00</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">Tom Brown</div>
+                                <div class="worker-role">Cleaner</div>
+                                <div class="work-time">12:00 - 3:00</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">Emily Davis</div>
+                                <div class="worker-role">Cook</div>
+                                <div class="work-time">8:30 - 4:30</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="schedule-item">
+                                <div class="worker-name">David Wilson</div>
+                                <div class="worker-role">Nanny</div>
+                                <div class="work-time">10:15 - 5:00</div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="worker-details-container" id="worker-details">
+                    <div class="customer-match-section">
+                        <div class="field-group">
+                            <label for="customer-id">Customer ID:</label>
+                            <input type="number" id="customer-id" class="field-input">
+                        </div>
+                        <button class="match-btn" id="match-customer-btn">Match</button>
+                    </div>
+                    <div class="worker-info-section" id="worker-info">
+                        <!-- Worker details will be dynamically populated here -->
+                    </div>
+         </div>
+    </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const viewScheduleBtn = document.getElementById('view-schedule-btn');
+    const modal = document.getElementById('schedule-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+
+    // Show modal on button click
+    viewScheduleBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+    });
+
+    // Hide modal on close button click
+    closeModalBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Hide modal when clicking outside the modal content
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+    </script>
 </body>
 </html>

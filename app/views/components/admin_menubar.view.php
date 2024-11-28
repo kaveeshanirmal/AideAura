@@ -2,9 +2,9 @@
 <script src="<?=ROOT?>/public/assets/js/menubar.js"></script>
 <div class="menubar">
     <div class="menubar-header">
-        <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile" class="profile-image">
+        <img src="<?=ROOT?>/public/assets/images/" alt="Profile" class="profile-image">
         <div class="profile-info">
-            <h4>Moda Tharindu</h4>
+            <h4>Saman Kumara</h4>
             </div>
         <button class="menubar-close" id="menubar-close">×</button>
     </div>
