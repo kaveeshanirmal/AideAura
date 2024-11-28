@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?> 
+        <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?> 
     <div class="container">
         <div class="main-content">
             <!-- Navbar Component -->

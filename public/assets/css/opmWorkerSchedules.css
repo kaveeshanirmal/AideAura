@@ -158,17 +158,22 @@ td {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .scheduling-controls {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
         gap: 1rem;
+    }
+
+    .main-content {
+        margin: 15% 3% 3% 3%;
     }
     
     .view-controls {
         margin-left: 0;
+
     }
     
     .schedule-container {
-        flex-direction: column;
+        flex-direction: row;
     }
     
     .nav-btn {
@@ -178,6 +183,11 @@ td {
     .schedule-grid {
         overflow-x: auto;
     }
+
+    .view-controls {
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -186,7 +196,13 @@ td {
     }
     
     .main-content {
-        margin: 30% 3% 3% 3%;
+        margin: 20% 3% 3% 3%;
+    }
+
+    .scheduling-controls {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 1rem;
     }
     
     .field-group {
@@ -195,6 +211,14 @@ td {
     }
     
     .field-input {
-        width: 100%;
+        width: 63%;
     }
+    .field-select {
+        width: 70%;
+    }
+    .view-controls {
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
+
 }

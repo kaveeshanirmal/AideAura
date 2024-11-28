@@ -64,6 +64,6 @@ class Admin extends Controller
 
     public function paymentIssues()
     {
-        $this->view('admin/adminpaymentIssues');
+        $this->view('admin/adminWorkerInquiries1');
     }
 }

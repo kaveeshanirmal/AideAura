@@ -15,7 +15,7 @@
                 <div class="scheduling-controls">
                 <div class="field-group">
                     <label for="worker-field">Select the Worker Field:</label>        
-                    <select id="worker-field" class="field-input">
+                    <select id="worker-field" class="field-input field-select">
                         <option value="cleaner" selected>Cleaner</option>
                         <option value="cook">Cook</option>
                         <option value="nanny">Nanny</option>
@@ -28,7 +28,7 @@
                         <input type="number" value="" class="field-input">
                     </div>
 
-                    <button class="schedule-btn">Generate Schedule</button>
+                    <button class="schedule-btn">View Schedule</button>
                     
                     <div class="view-controls">
                         <button class="view-btn">Days</button>
