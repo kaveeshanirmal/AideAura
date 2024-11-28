@@ -3,7 +3,7 @@
 <?php include ROOT_PATH . '/app/views/components/accountant_menubar.view.php'; ?>
 <div class="header">
     
-    <div class="right-section">
+<div class="right-section">
             <img class="icon" id="profile-toggle" src="<?=ROOT?>/public/assets/images/Menu.png" alt="profile logo">
     </div>
 
@@ -11,7 +11,11 @@
         <img src="<?=ROOT?>/public/assets/images/logo.png" alt="logo" id="logo">
     </div>
 
-    <a href="<?=ROOT?>/public/accountantReports">Dashboard</a>
+    <div class="toggle-button">
+  <div class="toggle-button-container">
+    <p>Finance Manager</p>
+  </div>
+</div>
 
     <div class="right-section">
             <img class="icon" id="notification-bell" src="<?=ROOT?>/public/assets/images/bell.png" alt="notifications logo">

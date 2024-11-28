@@ -11,7 +11,11 @@
         <img src="<?=ROOT?>/public/assets/images/logo.png" alt="logo" id="logo">
     </div>
 
-    <a href="<?=ROOT?>/public/adminReports">Dashboard</a>
+    <div class="toggle-button">
+  <div class="toggle-button-container">
+    <p>Admin</p>
+  </div>
+</div>
 
     <div class="right-section">
             <img class="icon" id="notification-bell" src="<?=ROOT?>/public/assets/images/bell.png" alt="notifications logo">
