@@ -13,6 +13,9 @@ class App
         return $URL;
     }
 
+    // Authorization for certain roles to access each controller
+
+
     public function loadController()
     {
         $URL = $this->splitURL();
