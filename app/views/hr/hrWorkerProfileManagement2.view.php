@@ -11,17 +11,19 @@
         <!-- Navbar Component -->
         <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
         <div class="main-content">
+            <!-- Navbar Component -->
             <div class="dashboard-container">
            <div class="back-header">
                 <button class="back-button">
-                    <span class="back-icon"><a href="hrWorkerProfileManagement1" class="back-button">  < </a>
+                    <span class="back-icon"><a href="hrWorkerProfileManagement1" class="back-button"> < </a>
                     </span>
                 </button>
-                <div class="profile-header">
-                    <img src="assets/images/user_icon.png" alt="Profile Icon" class="profile-icon">
+                <div class="profile-header"><a href="hrWorkerProfileManagement1">
+                    <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile Icon" class="profile-icon">
                     <div class="profile-info">
                         <h2>MR. Kamal Rupasinghe</h2>
                         <p>Certificates</p>
+                        </a>
                     </div>
                 </div>
                 </div>

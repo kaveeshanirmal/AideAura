@@ -20,7 +20,7 @@
 .tabs-container {
     display: flex;
     gap: 2rem;
-    margin-bottom: 2rem;
+    //margin-bottom: 2rem;
     background-color: #eef3ff;
     padding: 1rem 1rem 1rem 3rem;
     border-radius: 8px;
@@ -63,7 +63,8 @@
 .inquiry-card {
     background-color: #fffacd;
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 20px;
+    margin: 0 10% 0 10%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -89,8 +90,12 @@
 
 .user-details h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 15px;
     color: #333;
+}
+
+span {
+    font-size: 13px;
 }
 
 .timestamp {
@@ -120,16 +125,23 @@
     line-height: 1.6;
 }
 
+.inquiry-content p{
+    font-size: 14px;
+}
+
 .salutation {
     margin-bottom: 0.5rem;
+    font-size: 14px;
 }
 
 .message {
     margin-bottom: 1rem;
+    font-size: 14px;
 }
 
 .signature {
     margin-bottom: 1rem;
+    font-size: 14px;
 }
 
 .reply-link {
@@ -149,7 +161,7 @@
     }
     
     .main-content {
-        margin: 30% 3% 3% 3%;
+        margin: 20% 3% 3% 3%;
     }
     
     .tabs-container {
@@ -160,15 +172,23 @@
     
     .inquiry-card {
         padding: 1rem;
+        margin: 0 2% 0 2%;
     }
     
     .user-info {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
     }
     
     .timestamp {
         flex-direction: column;
         gap: 0.25rem;
+    }
+
+    .inquiries-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 40px 40px 10px 40px;
     }
 }

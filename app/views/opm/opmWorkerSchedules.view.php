@@ -174,6 +174,7 @@
          </div>
     </div>
     </div>
+    
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     const viewScheduleBtn = document.getElementById('view-schedule-btn');
