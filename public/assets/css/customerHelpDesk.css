@@ -1,7 +1,9 @@
 .helpdesk-container {
+    margin-top: 100px;
     padding: 20px;
     max-width: 1200px;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     font-family: Arial, sans-serif;
 }
 
@@ -88,7 +90,9 @@ h2 {
     margin-bottom: 5px;
 }
 
-.report-payment-issue input, .report-payment-issue textarea, .report-payment-issue select {
+.report-payment-issue input,
+.report-payment-issue textarea,
+.report-payment-issue select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -141,4 +145,109 @@ h2 {
 
 .kb-article a:hover {
     text-decoration: underline;
+}
+
+.complaint-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.complaint-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 300px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.complaint-card::before {
+    content: attr(data-status);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.complaint-card.Pending::before {
+    background-color: #fff3cd;
+    color: #856404;
+    content: "Pending";
+}
+
+.complaint-card.Resolved::before {
+    background-color: #d4edda;
+    color: #155724;
+    content: "Resolved";
+}
+
+.view-solution-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.pending-message {
+    color: #856404;
+    font-style: italic;
+}
+
+.solution {
+    background-color: #f8f9fa;
+    border-left: 4px solid #007bff;
+    padding: 10px 15px;
+    margin-top: 10px;
+    font-style: italic;
+    color: #495057;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.overlay-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#overlay-close-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#overlay-close-btn:hover {
+    background-color: #0056b3;
 }

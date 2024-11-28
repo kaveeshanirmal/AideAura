@@ -30,6 +30,13 @@ Trait Model
         return $this->get_row($query, ['id' => $id]);
     }
 
+    // Select all rows with a specific column value
+    public function get($id, $id_column = 'id')
+    {
+        $query = "SELECT * FROM {$this->table} WHERE {$id_column} = :id";
+        return $this->get_all($query, ['id' => $id]);
+    }
+
     // Insert a new row into the table
     public function insert($data)
     {
