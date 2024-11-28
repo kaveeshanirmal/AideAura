@@ -49,9 +49,7 @@
                                 <option value="financeManager">financeManager</option>
                                 <option value="hrManager">hrManager</option>
                                 <option value="opManager">opManager</option>
-                                <option value="admin">admin</option>
-                                <option value="worker">worker</option>
-                            </select>
+                                <option value="admin">admin</option>                            </select>
                         </div>
 
                         <div class="form-group">
