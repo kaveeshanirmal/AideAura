@@ -1,3 +1,5 @@
+let isSaving = false;
+
 document.addEventListener("DOMContentLoaded", function() {
     console.log('Working Schedule JS loaded');
     console.log('ROOT path:', ROOT);
@@ -8,282 +10,456 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
+    // Add event listener for the Add New Day button
+    const addNewDayBtn = document.querySelector(".add-schedule-btn");
+    if (addNewDayBtn) {
+        addNewDayBtn.addEventListener("click", addNewScheduleRow);
+    }
+
+    // Function to get remaining available days
+    function getRemainingDays() {
+        const existingDays = Array.from(document.querySelectorAll('.schedule-table tbody tr'))
+            .map(row => {
+                const daySelect = row.querySelector('.day-select');
+                const dayCell = row.querySelector('td:first-child');
+                return daySelect ? daySelect.value.toLowerCase() : dayCell.textContent.toLowerCase();
+            });
+
+        const allDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        return allDays.filter(day => !existingDays.includes(day));
+    }
+
+    // Function to add new schedule row
+    function addNewScheduleRow() {
+        const remainingDays = getRemainingDays();
+
+        if (remainingDays.length === 0) {
+            showAlert("All days have already been selected.", "error");
+            return;
+        }
+
+        const tableBody = document.querySelector(".schedule-table tbody");
+        const newRow = document.createElement("tr");
+        newRow.classList.add('new-schedule-row');
+
+        newRow.innerHTML = `
+            <td>
+                <select class="day-select" name="days_of_week" required>
+                    <option value="">Select Day</option>
+                    ${remainingDays
+                        .map((day) => `<option value="${day.toLowerCase()}">${day.charAt(0).toUpperCase() + day.slice(1)}</option>`)
+                        .join("")}
+                </select>
+            </td>
+            <td><input type="time" class="time-input" value="09:00" required></td>
+            <td><input type="time" class="time-input" value="17:00" required></td>
+            <td class="action-column">
+                <div class="remove-row-btn">
+                    <i class="fas fa-minus" title="Remove Row"></i>
+                </div>
+            </td>
+        `;
+
+        tableBody.appendChild(newRow);
+    }
+
     // Event delegation for all buttons
     scheduleContainer.addEventListener("click", (event) => {
-        if (event.target.matches(".add-schedule-btn")) {
-            console.log("Add Schedule button clicked");
-            addNewScheduleRow();
+        // Find if click was on the button or the icon inside it
+        const addSlotBtn = event.target.closest('.add-slot-btn');
+        const removeRowBtn = event.target.closest('.remove-row-btn');
+        const updateBtn = event.target.closest('.update-btn');
+        
+        if (addSlotBtn) {
+            console.log("Add slot button clicked");
+            const parentRow = addSlotBtn.closest('tr');
+            addTimeSlot(parentRow);
+        } else if (removeRowBtn) {
+            console.log("Remove row button clicked");
+            removeRowBtn.closest('tr').remove();
         } else if (event.target.matches(".delete-btn")) {
             console.log("Delete button clicked");
             handleDelete(event);
-        } else if (event.target.matches(".save-changes-btn")) {
-            console.log("Save Changes button clicked");
-            saveSchedules(); // Changed from validateSchedule to be more explicit
-        } else if (event.target.matches(".edit-btn")) {
-            console.log("Edit button clicked");
-            makeTableEditable();
-        } else if (event.target.matches(".cancel-changes-btn")) {
-            console.log("Cancel button clicked");
-            restoreTableToViewMode();
+        } else if (updateBtn) {
+            console.log("Update button clicked");
+            const row = updateBtn.closest('tr');
+            makeRowEditable(row);
         }
     });
+
+    // Add event listeners for the main edit, save, and cancel buttons
+    const editBtn = document.querySelector(".edit-btn");
+    if (editBtn) {
+        editBtn.addEventListener("click", function() {
+            makeTableEditable();
+            // Hide the edit button itself
+            this.style.display = "none";
+        });
+    }
 
     // Load initial schedules
     loadSchedules();
+
+    // Remove duplicate save button event listeners and add new one
+    const saveBtn = document.querySelector(".save-changes-btn");
+    if (saveBtn) {
+        saveBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            console.log("Save button clicked"); // Debug log
+            saveSchedules();
+        });
+    }
+
+    // Add event delegation for time input changes
+    document.querySelector(".schedule-table").addEventListener("change", function(e) {
+        if (e.target.classList.contains('time-input')) {
+            validateTimeSlots(e.target.closest('tr'));
+        }
+    });
 });
 
-function showAlert(message, type = 'error') {
-    const alertContainer = document.getElementById('alert-container');
+function showAlert(message, type = 'info') {
+    // Create container if it doesn't exist
+    let container = document.querySelector('.alert-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'alert-container';
+        document.body.appendChild(container);
+    }
+
+    // Create alert element
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert-message ${type}`;
-    alertDiv.innerHTML = `
-        <span class="close-btn">&times;</span>
-        <span class="message">${message}</span>
-    `;
+    alertDiv.className = `alert alert-${type}`;
+    
+    // Create icon based on alert type
+    const icon = document.createElement('i');
+    switch(type) {
+        case 'success':
+            icon.className = 'fas fa-check-circle';
+            break;
+        case 'error':
+            icon.className = 'fas fa-exclamation-circle';
+            break;
+        default:
+            icon.className = 'fas fa-info-circle';
+    }
+    icon.style.marginRight = '10px';
 
-    // Add to container
-    alertContainer.appendChild(alertDiv);
+    // Create message element
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
 
-    // Trigger slide in
-    setTimeout(() => alertDiv.classList.add('show'), 100);
+    // Assemble alert
+    alertDiv.appendChild(icon);
+    alertDiv.appendChild(messageSpan);
+    container.appendChild(alertDiv);
 
-    // Add close button handler
-    const closeBtn = alertDiv.querySelector('.close-btn');
-    closeBtn.onclick = () => {
-        alertDiv.classList.remove('show');
-        setTimeout(() => alertDiv.remove(), 500);
-    };
-
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.classList.remove('show');
-            setTimeout(() => alertDiv.remove(), 500);
+    // Remove the alert after animation completes
+    alertDiv.addEventListener('animationend', (event) => {
+        if (event.animationName === 'slideOut') {
+            alertDiv.remove();
+            // Remove container if it's empty
+            if (container.children.length === 0) {
+                container.remove();
+            }
         }
-    }, 5000);
+    });
 }
 
 function saveSchedules() {
+    if (isSaving) return;
+
     const rows = document.querySelectorAll(".schedule-table tbody tr");
+    const workerID = document.querySelector('input[name="workerID"]').value;
     const schedules = [];
 
-    console.log("Starting save process...");
-    console.log("Found " + rows.length + " rows");
+    // Process each row
+    for (const row of rows) {
+        if (row.querySelector(".no-schedules")) continue;
 
-    rows.forEach((row, index) => {
-        // Skip the "no schedules" message row
-        if (row.querySelector(".no-schedules")) {
+        const dayCell = row.querySelector('td:first-child');
+        const isNewDay = !!dayCell.querySelector('.day-select'); // Check if it's a new day
+        const day = isNewDay ? 
+                   dayCell.querySelector('.day-select').value.toLowerCase() : 
+                   dayCell.textContent.trim().toLowerCase();
+        
+        if (isNewDay && !day) {
+            showAlert("Please select a day", "error");
             return;
         }
 
-        let days_of_week, startTime, endTime;
+        // Get start and end times
+        const startTimeCell = row.querySelector('td:nth-child(2)');
+        const endTimeCell = row.querySelector('td:nth-child(3)');
+        
+        const startTime = startTimeCell.querySelector('input') ? 
+                         startTimeCell.querySelector('input').value : 
+                         startTimeCell.textContent.trim();
+        
+        const endTime = endTimeCell.querySelector('input') ? 
+                       endTimeCell.querySelector('input').value : 
+                       endTimeCell.textContent.trim();
 
-        // Check if this is a new row (has select) or existing row (has text)
-        const daySelect = row.querySelector(".day-select");
-        if (daySelect) {
-            // New row
-            days_of_week = daySelect.value;
-            const timeInputs = row.querySelectorAll(".time-input");
-            startTime = timeInputs[0].value;
-            endTime = timeInputs[1].value;
-        } else {
-            // Existing row
-            const cells = row.querySelectorAll("td");
-            days_of_week = cells[0].textContent.trim().toLowerCase();
-            startTime = cells[1].textContent.trim();
-            endTime = cells[2].textContent.trim();
-        }
-
-        // Validate the data
-        if (!days_of_week || !startTime || !endTime) {
-            showAlert("Please fill in all fields for each schedule", "error");
+        if (!startTime || !endTime) {
+            showAlert("Please fill in all time fields", "error");
             return;
         }
 
-        if (startTime >= endTime) {
-            showAlert("Start time must be earlier than end time", "error");
+        const startMinutes = convertTimeToMinutes(startTime);
+        const endMinutes = convertTimeToMinutes(endTime);
+
+        // Validate time range
+        if (startMinutes >= endMinutes) {
+            showAlert(`Invalid time range: End time must be after start time`, "error");
             return;
         }
 
-        const schedule = {
-            days_of_week: days_of_week,
+        // Only check for overlaps if it's NOT a new day
+        if (!isNewDay) {
+            // Check for overlaps with other slots for the same day
+            const otherSlots = Array.from(rows).filter(r => 
+                r !== row && 
+                r.querySelector('td:first-child').textContent.trim().toLowerCase() === day &&
+                !r.querySelector('.no-schedules')
+            );
+
+            for (const otherSlot of otherSlots) {
+                const otherStartCell = otherSlot.querySelector('td:nth-child(2)');
+                const otherEndCell = otherSlot.querySelector('td:nth-child(3)');
+                
+                const otherStart = otherStartCell.querySelector('input') ? 
+                                 otherStartCell.querySelector('input').value : 
+                                 otherStartCell.textContent.trim();
+                
+                const otherEnd = otherEndCell.querySelector('input') ? 
+                               otherEndCell.querySelector('input').value : 
+                               otherEndCell.textContent.trim();
+
+                const otherStartMinutes = convertTimeToMinutes(otherStart);
+                const otherEndMinutes = convertTimeToMinutes(otherEnd);
+
+                if (
+                    (startMinutes >= otherStartMinutes && startMinutes < otherEndMinutes) ||
+                    (endMinutes > otherStartMinutes && endMinutes <= otherEndMinutes) ||
+                    (startMinutes <= otherStartMinutes && endMinutes >= otherEndMinutes)
+                ) {
+                    showAlert(
+                        `Time overlap detected for ${day.charAt(0).toUpperCase() + day.slice(1)}:\n` +
+                        `${formatTime(startTime)} - ${formatTime(endTime)}\n` +
+                        `overlaps with\n` +
+                        `${formatTime(otherStart)} - ${formatTime(otherEnd)}`,
+                        "error"
+                    );
+                    return;
+                }
+            }
+        }
+
+        // Add to schedules array
+        schedules.push({
+            days_of_week: day,
             startTime: startTime,
-            endTime: endTime
-        };
-
-        // Add scheduleID if it exists (for existing rows)
-        if (row.dataset.scheduleId) {
-            schedule.scheduleID = row.dataset.scheduleId;
-        }
-
-        console.log(`Valid schedule found:`, schedule);
-        schedules.push(schedule);
-    });
+            endTime: endTime,
+            scheduleID: row.dataset.scheduleId || null,
+            workerId: workerID
+        });
+    }
 
     if (schedules.length === 0) {
-        console.warn("No schedules to save");
         showAlert("No schedules to save", "error");
         return;
     }
 
-    console.log('Sending schedules to server:', { schedules });
-    
-    const url = `${ROOT}/public/WorkingSchedule/saveSchedule`;
-    console.log('Attempting to save to:', url);
-    console.log('Data being sent:', { schedules });
+    console.log("Sending data:", { schedules, workerId: workerID });
+    isSaving = true;
 
-    fetch(url, {
+    // Make the API call
+    fetch(`${ROOT}/public/WorkingSchedule/saveSchedule`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
         },
-        body: JSON.stringify({ schedules: schedules })
+        body: JSON.stringify({ 
+            schedules: schedules,
+            workerId: workerID
+        })
     })
-    .then(response => {
-        console.log('Server response status:', response.status);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log('Server response data:', data);
+        console.log("Server response:", data);
+        
         if (data.success) {
+            showAlert("Schedule saved successfully!", "success");
             loadSchedules();
-            restoreTableToViewMode();
-            showAlert('Changes saved successfully!', 'success');
+            resetEditMode();
         } else {
-            const errorMessage = data.messages ? data.messages.join("\n") : "Unknown error";
-            console.error("Save failed:", errorMessage);
-            showAlert(`Error saving changes: ${errorMessage}`);
+            throw new Error(data.messages ? data.messages.join('\n') : data.message || "Failed to save schedule");
         }
     })
     .catch(error => {
         console.error('Save error:', error);
-        showAlert(`Error saving changes: ${error.message}`);
+        showAlert(error.message || "Error saving schedule", "error");
+    })
+    .finally(() => {
+        isSaving = false;
     });
 }
 
-function addNewScheduleRow() {
-    const remainingDays = getRemainingDays();
 
-    if (remainingDays.length === 0) {
-        alert("All days have already been selected.");
-        return;
+function formatTime(timeStr) {
+    const [hours, minutes] = timeStr.split(':');
+    const hour = parseInt(hours, 10);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${period}`;
+}
+
+function convertTimeToMinutes(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(num => parseInt(num, 10));
+    return (hours * 60) + minutes;
+}
+
+// Add this function to validate times when they're changed
+function validateTimeInput(input) {
+    const row = input.closest('tr');
+    const day = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+    const allRowsForDay = Array.from(document.querySelectorAll('tr')).filter(r => 
+        r.querySelector('td:first-child').textContent.trim().toLowerCase() === day
+    );
+    
+    // Collect all times for this day
+    const times = allRowsForDay.map(r => ({
+        startTime: r.querySelector('td:nth-child(2)').querySelector('input')?.value || 
+                  r.querySelector('td:nth-child(2)').textContent.trim(),
+        endTime: r.querySelector('td:nth-child(3)').querySelector('input')?.value || 
+                r.querySelector('td:nth-child(3)').textContent.trim()
+    }));
+
+    // Sort and check for overlaps
+    times.sort((a, b) => convertTimeToMinutes(a.startTime) - convertTimeToMinutes(b.startTime));
+    
+    for (let i = 0; i < times.length - 1; i++) {
+        if (convertTimeToMinutes(times[i].endTime) > convertTimeToMinutes(times[i + 1].startTime)) {
+            showAlert(`Time overlap detected for ${day}`, "error");
+            return false;
+        }
     }
+    return true;
+}
 
-    const tableBody = document.querySelector(".schedule-table tbody");
-    const newRow = document.createElement("tr");
+// Add event listeners for time inputs
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.schedule-table').addEventListener('change', function(e) {
+        if (e.target.classList.contains('time-input')) {
+            validateTimeInput(e.target);
+        }
+    });
+});
 
-    newRow.innerHTML = `
-        <td>
-            <select class="day-select" name="days_of_week" required>
-                <option value="">Select Day</option>
-                ${remainingDays
-                    .map((day) => `<option value="${day.toLowerCase()}">${day.charAt(0).toUpperCase() + day.slice(1)}</option>`)
-                    .join("")}
-            </select>
-        </td>
-        <td><input type="time" class="time-input" value="09:00" required></td>
-        <td><input type="time" class="time-input" value="17:00" required></td>
-        <td class="action-column">
-            <i class="fas fa-edit edit-btn" title="Edit Schedule"></i>
-            <i class="fas fa-trash-alt delete-btn" title="Delete Schedule"></i>
-        </td>
-    `;
+function resetEditMode() {
+    // Remove edit mode class from table
+    document.querySelector(".schedule-table").classList.remove('table-edit-mode');
+    
+    // Hide action buttons
+    document.querySelector(".add-schedule-btn").style.display = "none";
+    document.querySelector(".save-changes-btn").style.display = "none";
+    
+    // Show edit schedule button again
+    document.querySelector(".edit-btn").style.display = "block";
 
-    tableBody.appendChild(newRow);
-    console.log('New schedule row added');
+    // Reset any input fields back to text
+    document.querySelectorAll('.time-input').forEach(input => {
+        const cell = input.parentElement;
+        cell.textContent = input.value;
+    });
+}
+
+// Add debug logging
+function debugScheduleData(schedules) {
+    console.log('Schedules to be saved:', schedules);
+    schedules.forEach((schedule, index) => {
+        console.log(`Schedule ${index + 1}:`, {
+            day: schedule.days_of_week,
+            start: schedule.startTime,
+            end: schedule.endTime,
+            id: schedule.scheduleID || 'new'
+        });
+    });
 }
 
 function loadSchedules() {
-    console.log('Loading schedules...');
     fetch(`${ROOT}/public/WorkingSchedule/getSchedule`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(schedules => {
-            console.log('Received schedules:', schedules);
             const tableBody = document.querySelector(".schedule-table tbody");
             tableBody.innerHTML = '';
 
-            if (schedules && schedules.length > 0) {
-                schedules.forEach(schedule => {
-                    // Capitalize the first letter of the day
-                    const capitalizedDay = schedule.days_of_week.charAt(0).toUpperCase() + 
-                                         schedule.days_of_week.slice(1).toLowerCase();
-                    
-                    const row = document.createElement("tr");
-                    row.dataset.scheduleId = schedule.scheduleID;
-                    row.innerHTML = `
-                        <td>${capitalizedDay}</td>
-                        <td>${schedule.startTime}</td>
-                        <td>${schedule.endTime}</td>
-                        <td class="action-column" style="display: none">
-                            <i class="far fa-edit update-btn" title="Edit Icon"></i>
-                            <i class="far fa-trash-alt delete-btn" title="Delete Schedule"></i>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="no-schedules">No schedules found. Click 'Edit Schedule' to add new schedules.</td>
-                    </tr>
+            if (!schedules || schedules.length === 0) {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td colspan="4" class="no-schedules">No schedules found</td>
                 `;
+                tableBody.appendChild(row);
+                return;
             }
+
+            schedules.forEach(schedule => {
+                const row = document.createElement("tr");
+                row.dataset.scheduleId = schedule.scheduleID;
+                const capitalizedDay = schedule.days_of_week.charAt(0).toUpperCase() + schedule.days_of_week.slice(1);
+                
+                row.innerHTML = `
+                    <td>${capitalizedDay}</td>
+                    <td>${schedule.startTime}</td>
+                    <td>${schedule.endTime}</td>
+                    <td class="action-column">
+                        <div class="add-slot-btn">
+                            <i class="fas fa-plus" title="Add Time Slot"></i>
+                        </div>
+                        <i class="fas fa-edit update-btn" title="Edit Schedule"></i>
+                        <i class="fas fa-trash-alt delete-btn" title="Delete Schedule"></i>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
         })
         .catch(error => {
             console.error('Error loading schedules:', error);
-            showAlert('Error loading schedules. Please try again.');
-            const tableBody = document.querySelector(".schedule-table tbody");
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="4" class="no-schedules">No schedules found. Click 'Edit Schedule' to add new schedules.</td>
-                </tr>
-            `;
+            showAlert("Error loading schedules", "error");
         });
 }
 
-function getRemainingDays() {
-    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    const existingDays = new Set(
-        Array.from(document.querySelectorAll('.schedule-table tbody tr'))
-            .map(row => {
-                const dayCell = row.querySelector('td:first-child');
-                return dayCell ? dayCell.textContent.toLowerCase() : null;
-            })
-            .filter(day => day !== null)
-    );
-
-    return days.filter(day => !existingDays.has(day));
-}
-
 function makeTableEditable() {
-    const actionColumns = document.querySelectorAll(".action-column");
-    actionColumns.forEach(col => col.style.display = "table-cell");
+    // Add edit mode class to table
+    document.querySelector(".schedule-table").classList.add('table-edit-mode');
     
+    // Show action buttons
     document.querySelector(".add-schedule-btn").style.display = "block";
     document.querySelector(".save-changes-btn").style.display = "block";
-    document.querySelector(".cancel-changes-btn").style.display = "block";
+    
+    // Hide edit schedule button
     document.querySelector(".edit-btn").style.display = "none";
 }
 
-function restoreTableToViewMode() {
-    const actionColumns = document.querySelectorAll(".action-column");
-    actionColumns.forEach(col => col.style.display = "none");
+// Add cancel function to remove edit mode
+function cancelEdit() {
+    // Remove edit mode class from table
+    document.querySelector(".schedule-table").classList.remove('table-edit-mode');
     
+    // Hide action buttons
     document.querySelector(".add-schedule-btn").style.display = "none";
     document.querySelector(".save-changes-btn").style.display = "none";
-    document.querySelector(".cancel-changes-btn").style.display = "none";
+    
+    // Show edit schedule button again
     document.querySelector(".edit-btn").style.display = "block";
     
+    // Reload the original schedules
     loadSchedules();
 }
+
+// Add event listener for cancel button
+document.querySelector(".cancel-changes-btn").addEventListener("click", cancelEdit);
 
 function handleDelete(event) {
     const row = event.target.closest('tr');
@@ -316,3 +492,239 @@ function handleDelete(event) {
 document.getElementById('scheduleForm').addEventListener('submit', function(e) {
     e.preventDefault();
 });
+
+function addTimeSlot(clickedRow) {
+    const day = clickedRow.querySelector('td:first-child').textContent.trim();
+    
+    // Create new row
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+        <td>${day}</td>
+        <td><input type="time" class="time-input" value="09:00" required></td>
+        <td><input type="time" class="time-input" value="17:00" required></td>
+        <td class="action-column">
+            <div class="remove-row-btn">
+                <i class="fas fa-minus" title="Remove Time Slot"></i>
+            </div>
+        </td>
+    `;
+
+    // Insert new row directly after the clicked row
+    clickedRow.parentNode.insertBefore(newRow, clickedRow.nextSibling);
+}
+
+function convertTimeToMinutes(timeStr) {
+    timeStr = timeStr.replace(/:\d{2}$/, '');
+    const [hours, minutes] = timeStr.split(':').map(num => parseInt(num, 10));
+    return (hours * 60) + minutes;
+}
+
+function formatTimeForDisplay(timeStr) {
+    const [hours, minutes] = timeStr.split(':');
+    const hour = parseInt(hours, 10);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${period}`;
+}
+
+// Update button click handler
+document.addEventListener('click', function(e) {
+    const updateBtn = e.target.closest('.update-btn');
+    if (updateBtn) {
+        const row = updateBtn.closest('tr');
+        makeRowEditable(row);
+        
+        // Show save changes button
+        const saveBtn = document.querySelector(".save-changes-btn");
+        if (saveBtn) {
+            saveBtn.style.display = "block";
+        }
+    }
+});
+
+function makeRowEditable(row) {
+    // Only proceed if row isn't already being edited
+    if (!row.classList.contains('editing')) {
+        // Get the cells
+        const startTimeCell = row.querySelector('td:nth-child(2)');
+        const endTimeCell = row.querySelector('td:nth-child(3)');
+        
+        // Store original values
+        row.dataset.originalStart = startTimeCell.textContent.trim();
+        row.dataset.originalEnd = endTimeCell.textContent.trim();
+        
+        // Get current values and convert to 24-hour format
+        const startTime = convertTo24Hour(startTimeCell.textContent.trim());
+        const endTime = convertTo24Hour(endTimeCell.textContent.trim());
+        
+        // Convert to input fields
+        startTimeCell.innerHTML = `<input type="time" class="time-input" value="${startTime}" required>`;
+        endTimeCell.innerHTML = `<input type="time" class="time-input" value="${endTime}" required>`;
+        
+        // Add editing class
+        row.classList.add('editing');
+        
+        // Show save changes button
+        document.querySelector(".save-changes-btn").style.display = "block";
+    }
+}
+
+function resetRowToNormal(row) {
+    if (row.classList.contains('editing')) {
+        const startTimeCell = row.querySelector('td:nth-child(2)');
+        const endTimeCell = row.querySelector('td:nth-child(3)');
+        
+        // Restore original values
+        startTimeCell.textContent = row.dataset.originalStart;
+        endTimeCell.textContent = row.dataset.originalEnd;
+        
+        // Remove editing class
+        row.classList.remove('editing');
+    }
+}
+
+
+function convertTo24Hour(timeStr) {
+    // If already in 24-hour format, return as is
+    if (timeStr.match(/^\d{2}:\d{2}$/)) {
+        return timeStr;
+    }
+    
+    const [time, modifier] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':');
+    
+    hours = parseInt(hours, 10);
+    if (modifier === 'PM' && hours < 12) hours += 12;
+    if (modifier === 'AM' && hours === 12) hours = 0;
+    
+    return `${hours.toString().padStart(2, '0')}:${minutes}`;
+}
+
+// Add this new function for real-time validation
+function validateTimeSlots(changedRow) {
+    const day = changedRow.querySelector('td:first-child').textContent.trim().toLowerCase();
+    const rows = Array.from(document.querySelectorAll('.schedule-table tbody tr'))
+        .filter(row => row.querySelector('td:first-child').textContent.trim().toLowerCase() === day);
+
+    const timeSlots = rows.map(row => {
+        const startInput = row.querySelector('td:nth-child(2) input') || row.querySelector('td:nth-child(2)');
+        const endInput = row.querySelector('td:nth-child(3) input') || row.querySelector('td:nth-child(3)');
+        
+        return {
+            row: row,
+            startTime: startInput.value || startInput.textContent.trim(),
+            endTime: endInput.value || endInput.textContent.trim(),
+            startMinutes: convertTimeToMinutes(startInput.value || startInput.textContent.trim()),
+            endMinutes: convertTimeToMinutes(endInput.value || endInput.textContent.trim())
+        };
+    });
+
+    // Sort slots by start time
+    timeSlots.sort((a, b) => a.startMinutes - b.startMinutes);
+
+    // Check for overlaps
+    for (let i = 0; i < timeSlots.length; i++) {
+        const currentSlot = timeSlots[i];
+        
+        // Validate start time is before end time
+        if (currentSlot.startMinutes >= currentSlot.endMinutes) {
+            showAlert(`Invalid time range: End time must be after start time`, "error");
+            return false;
+        }
+
+        // Check overlap with next slot
+        if (i < timeSlots.length - 1) {
+            const nextSlot = timeSlots[i + 1];
+            if (currentSlot.endMinutes > nextSlot.startMinutes) {
+                showAlert(`Time overlap detected: ${formatTimeForDisplay(currentSlot.startTime)}-${formatTimeForDisplay(currentSlot.endTime)} ` +
+                         `overlaps with ${formatTimeForDisplay(nextSlot.startTime)}-${formatTimeForDisplay(nextSlot.endTime)}`, 
+                         "error");
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// Add this function to check for overlaps immediately
+function checkForOverlaps(changedRow) {
+    const day = changedRow.querySelector('td:first-child').textContent.trim().toLowerCase();
+    const allRowsForDay = Array.from(document.querySelectorAll('.schedule-table tbody tr')).filter(row => {
+        const rowDay = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+        return rowDay === day && !row.querySelector('.no-schedules');
+    });
+
+    // Get all time slots for this day
+    const timeSlots = allRowsForDay.map(row => {
+        const startTimeCell = row.querySelector('td:nth-child(2)');
+        const endTimeCell = row.querySelector('td:nth-child(3)');
+        
+        const startTime = startTimeCell.querySelector('input') ? 
+                         startTimeCell.querySelector('input').value : 
+                         startTimeCell.textContent.trim();
+        
+        const endTime = endTimeCell.querySelector('input') ? 
+                       endTimeCell.querySelector('input').value : 
+                       endTimeCell.textContent.trim();
+
+        return {
+            row: row,
+            startTime,
+            endTime,
+            startMinutes: convertTimeToMinutes(startTime),
+            endMinutes: convertTimeToMinutes(endTime)
+        };
+    });
+
+    // Sort by start time
+    timeSlots.sort((a, b) => a.startMinutes - b.startMinutes);
+
+    // Check each slot
+    for (let i = 0; i < timeSlots.length; i++) {
+        const currentSlot = timeSlots[i];
+
+        // Check if end time is before start time
+        if (currentSlot.startMinutes >= currentSlot.endMinutes) {
+            showAlert(`Invalid time range: End time must be after start time`, "error");
+            return false;
+        }
+
+        // Check for overlap with next slot
+        if (i < timeSlots.length - 1) {
+            const nextSlot = timeSlots[i + 1];
+            if (currentSlot.endMinutes > nextSlot.startMinutes) {
+                showAlert(
+                    `Time overlap detected for ${day.charAt(0).toUpperCase() + day.slice(1)}:\n` +
+                    `${formatTime(currentSlot.startTime)} - ${formatTime(currentSlot.endTime)}\n` +
+                    `overlaps with\n` +
+                    `${formatTime(nextSlot.startTime)} - ${formatTime(nextSlot.endTime)}`,
+                    "error"
+                );
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// Add event listeners for immediate validation
+document.addEventListener('DOMContentLoaded', function() {
+    const scheduleTable = document.querySelector('.schedule-table');
+    
+    scheduleTable.addEventListener('input', function(e) {
+        if (e.target.classList.contains('time-input')) {
+            const row = e.target.closest('tr');
+            checkForOverlaps(row);
+        }
+    });
+
+    // Also check on change event for browsers that don't trigger input events for time inputs
+    scheduleTable.addEventListener('change', function(e) {
+        if (e.target.classList.contains('time-input')) {
+            const row = e.target.closest('tr');
+            checkForOverlaps(row);
+        }
+    });
+});
+
+

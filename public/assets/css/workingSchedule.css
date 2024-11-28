@@ -12,7 +12,11 @@
 body {
     font-family: "Arial", "Helvetica Neue", sans-serif;
     line-height: 1.6;
-    background-image: url("../images/profile_bg.png");
+    background-image: url("../images/booking_bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--text-color);
     display: flex;
     justify-content: center;
@@ -44,13 +48,12 @@ h1 {
 
 .edit-btn,
 .add-schedule-btn,
-.save-changes-btn,
-.cancel-changes-btn {
+.save-changes-btn {
     align-self: center;
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: var(--border-radius);
-    background-color: var(--secondary-color);
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -61,16 +64,13 @@ h1 {
 
 .edit-btn:hover,
 .add-schedule-btn:hover,
-.save-changes-btn:hover,
-.cancel-changes-btn:hover {
-    background-color: var(--hover-color);
+.save-changes-btn:hover {
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.cancel-changes-btn {
-    background-color: #e74c3c;
-}
+
 
 .schedule-table {
     width: 100%;
@@ -83,8 +83,17 @@ h1 {
 }
 
 .schedule-table thead {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, #9d7d4a 0%, #9c835b 100%);
     color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.schedule-table thead th {
+    padding: 15px 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border: none;
+    opacity: 0.95;
 }
 
 .schedule-table th,
@@ -95,7 +104,7 @@ h1 {
 }
 
 .schedule-table tr:last-child td {
-    border-bottom: none;
+    border-bottom: 1px solid #ecf0f1;
 }
 
 .schedule-table tr:nth-child(even) {
@@ -213,42 +222,64 @@ h1 {
     }
 }
 
-.alert-message {
+.alert-container {
     position: fixed;
     top: 20px;
-    right: -300px; /* Start off-screen */
-    width: 280px;
-    padding: 15px;
-    border-radius: 4px;
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: right 0.5s ease-in-out;
+    right: 20px;
     z-index: 1000;
 }
 
-.alert-message.show {
-    right: 20px; /* Slide in */
+.alert {
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    transform: translateX(120%);
+    animation: slideIn 0.5s forwards, slideOut 0.5s forwards 3.5s;
 }
 
-.alert-message.success {
+.alert-success {
     background-color: #d4edda;
+    border-left: 4px solid #28a745;
     color: #155724;
-    border-color: #c3e6cb;
 }
 
-.alert-message.error {
+.alert-error {
     background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
     color: #721c24;
-    border-color: #f5c6cb;
 }
 
-.alert-message .close-btn {
-    float: right;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 10px;
+.alert-info {
+    background-color: #cce5ff;
+    border-left: 4px solid #0d6efd;
+    color: #004085;
+}
+
+/* Alert animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
 }
 
 .delete-btn {
@@ -263,15 +294,208 @@ h1 {
 }
 
 .action-column {
-    white-space: nowrap;
-    display: flex;
-    gap: 15px;
+    display: none !important;
+}
+
+.table-edit-mode .action-column {
+    display: table-cell !important;
+}
+
+.update-btn,
+.delete-btn,
+.add-slot-btn {
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px;
+}
+
+.add-slot-btn {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #000000;
+    border-radius: 50%;
+    background: transparent;
+    color: #000000;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
 }
 
-.update-btn {
+.add-slot-btn i {
+    font-size: 12px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.update-btn:hover,
+.delete-btn:hover,
+.add-slot-btn:hover {
+    transform: scale(1.1);
+}
+
+.action-column > *:first-child {
+    margin-left: 0;
+}
+
+.action-column > *:last-child {
+    margin-right: 0;
+}
+
+/* Base row styles */
+.schedule-table tbody tr {
+    background-color: #ffffff;
+}
+
+/* Alternate row style */
+.schedule-table tbody tr.alternate-row {
+    background-color: #f8f9fa;
+}
+
+/* Style for added time slots to match parent */
+.schedule-table tbody tr.child-row {
+    background-color: inherit;
+}
+
+.remove-row-btn {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #000000;
+    border-radius: 50%;
+    background: transparent;
     color: #000000;
     cursor: pointer;
-    transition: color 0.2s ease;
-    margin-right: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-row-btn i {
+    font-size: 12px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+/* Add styles for editing state */
+.editing {
+    background-color: rgba(255, 255, 0, 0.1) !important;
+}
+
+.editing input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.editing input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Remove underline from action column */
+.action-column {
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* If needed, also remove from table header */
+th.action-column {
+    display: table-cell !important;
+}
+
+/* Remove any text decoration from icons */
+.action-column i,
+.action-column a {
+    text-decoration: none;
+}
+
+/* Hide action column by default */
+.action-column {
+    display: none !important;
+}
+
+/* Show action column only when table is in edit mode */
+.table-edit-mode .action-column {
+    display: table-cell !important;
+}
+
+/* Make sure the header is also hidden by default */
+th.action-column {
+    display: none !important;
+}
+
+/* Show header when in edit mode */
+.table-edit-mode th.action-column {
+    display: table-cell !important;
+}
+
+/* Container for buttons */
+.schedule-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+/* Button styles */
+.schedule-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
+}
+
+.schedule-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Add specific hover states if needed */
+.add-schedule-btn:hover,
+.save-changes-btn:hover {
+    background: linear-gradient(135deg, #8b6f42 0%, #2d0b05 100%);
+}
+
+/* Hide buttons by default */
+.add-schedule-btn,
+.save-changes-btn {
+    display: none;
+}
+
+/* Show buttons when in edit mode */
+.table-edit-mode .add-schedule-btn,
+.table-edit-mode .save-changes-btn {
+    display: block;
+}
+
+/* Optional: Add some depth with a subtle shadow */
+.schedule-table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Container for the edit button */
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
 }
