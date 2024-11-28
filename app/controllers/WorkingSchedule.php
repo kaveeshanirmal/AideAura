@@ -61,30 +61,43 @@ class WorkingSchedule extends Controller
     public function saveSchedule()
     {
         header('Content-Type: application/json');
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
 
         try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                throw new Exception('Invalid request method');
+            // Get and validate input
+            $rawData = file_get_contents('php://input');
+            error_log("Raw input: " . $rawData); // Debug log
+
+            if (empty($rawData)) {
+                throw new Exception('No data received');
+            }
+
+            $data = json_decode($rawData, true);
+            error_log("Decoded data: " . print_r($data, true)); // Debug log
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON: ' . json_last_error_msg());
+            }
+
+            if (!isset($data['schedules']) || !is_array($data['schedules'])) {
+                throw new Exception('Invalid data format: schedules array missing');
             }
 
             if (!isset($_SESSION['workerID'])) {
-                throw new Exception('Not authenticated');
-            }
-
-            $rawData = file_get_contents('php://input');
-            $data = json_decode($rawData, true);
-            error_log('Received data: ' . print_r($data, true));
-
-            if (!isset($data['schedules']) || !is_array($data['schedules'])) {
-                throw new Exception('Invalid data format');
+                throw new Exception('Worker ID not found in session');
             }
 
             $workerId = $_SESSION['workerID'];
             $success = true;
             $messages = [];
 
-            // Instead of deleting all schedules, update existing ones and add new ones
             foreach ($data['schedules'] as $schedule) {
+                // Validate schedule data
+                if (!isset($schedule['days_of_week'], $schedule['startTime'], $schedule['endTime'])) {
+                    throw new Exception('Missing required fields in schedule');
+                }
+
                 $scheduleData = [
                     'workerId' => $workerId,
                     'days_of_week' => $schedule['days_of_week'],
@@ -92,15 +105,15 @@ class WorkingSchedule extends Controller
                     'endTime' => $schedule['endTime']
                 ];
 
-                // If schedule has an ID, update it; otherwise, add new
-                if (isset($schedule['scheduleID'])) {
-                    error_log("Updating existing schedule ID: " . $schedule['scheduleID']);
+                error_log("Processing schedule: " . print_r($scheduleData, true)); // Debug log
+
+                // Add or update schedule
+                if (!empty($schedule['scheduleID'])) {
                     if (!$this->scheduleModel->updateSchedule($schedule['scheduleID'], $scheduleData)) {
                         $success = false;
                         $messages[] = "Failed to update schedule for {$schedule['days_of_week']}";
                     }
                 } else {
-                    error_log("Adding new schedule for day: " . $schedule['days_of_week']);
                     if (!$this->scheduleModel->addSchedule($scheduleData)) {
                         $success = false;
                         $messages[] = "Failed to add schedule for {$schedule['days_of_week']}";
@@ -108,17 +121,26 @@ class WorkingSchedule extends Controller
                 }
             }
 
-            echo json_encode([
+            $response = [
                 'success' => $success,
+                'message' => $success ? 'Schedules saved successfully' : 'Failed to save some schedules',
                 'messages' => $messages
-            ]);
+            ];
+
+            error_log("Sending response: " . json_encode($response)); // Debug log
+            echo json_encode($response);
+
         } catch (Exception $e) {
             error_log("Error in saveSchedule: " . $e->getMessage());
-            http_response_code(500);
-            echo json_encode([
+            error_log("Stack trace: " . $e->getTraceAsString());
+            
+            $response = [
                 'success' => false,
                 'message' => $e->getMessage()
-            ]);
+            ];
+            
+            http_response_code(500);
+            echo json_encode($response);
         }
     }
 

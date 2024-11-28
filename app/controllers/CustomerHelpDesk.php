@@ -16,8 +16,10 @@ class customerHelpDesk extends Controller
 
     public function operationalHelp()
     {
+        // Sending the existing complaints to the view
+        $complaints = $this->customerComplaintModel->getComplaintsByUser($_SESSION['customerID']);
 
-        $this->view('customerOperationalHelp');
+        $this->view('customerOperationalHelp', ['complaints' => $complaints]);
     }
 
     public function paymentHelp()
@@ -28,7 +30,6 @@ class customerHelpDesk extends Controller
     public function submitComplaint()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Collect and sanitize user input
             $data = [
                 'customerID' => $_SESSION['customerID'],
                 'issue_type' => $_POST['issue-type'],
@@ -37,14 +38,22 @@ class customerHelpDesk extends Controller
                 'priority' => $this->getComplaintPriority($_POST['issue']),
             ];
 
-            // Inser the complaint to the database
+            // Ensure session is started
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
             $result = $this->customerComplaintModel->addComplaint($data);
 
             if ($result) {
-                echo 'Complaint submitted successfully';
+                $_SESSION['complaint_message'] = 'Complaint submitted successfully';
             } else {
-                echo 'Failed to submit complaint';
+                $_SESSION['complaint_message'] = 'Failed to submit complaint';
             }
+
+            // Redirect to the operational help page
+            header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+            exit();
         }
     }
 
@@ -102,5 +111,40 @@ class customerHelpDesk extends Controller
 
         return $priority;
     }
+
+    public function getSolution($complaintId = null)
+    {
+        // Validate complaint ID
+        if (!$complaintId) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid complaint ID']);
+            exit;
+        }
+
+        // Fetch solution from model
+        $solution = $this->customerComplaintModel->getSolutionByComplaintId($complaintId);
+
+       if ($solution) {
+            // Return solution as JSON
+            header('Content-Type: application/json');
+            echo json_encode(['solution' => $solution->comments]);
+            exit;
+       } else {
+            http_response_code(400);
+            echo json_encode(['error'=> '
+            Solution not found']);
+            exit;
+        }
+    }
     
+    public function clearSessionMessage()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        unset($_SESSION['complaint_message']);
+        http_response_code(200); // Indicate success
+        exit();
+    }
+
 }

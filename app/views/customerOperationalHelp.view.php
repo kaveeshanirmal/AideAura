@@ -153,6 +153,38 @@
                 </form>
             </section>
 
+            <!-- Your complaints section -->
+            <section class="complaint-status">
+            <h2>Your Complaints</h2>
+            <div class="complaint-cards-container">
+                <?php if (!empty($complaints)): ?>
+                    <?php foreach ($complaints as $complaint): ?>
+                        <div class="complaint-card <?= htmlspecialchars($complaint->status) ?>" 
+                            data-status="<?= htmlspecialchars($complaint->status) ?>">
+                            <h3>Complaint ID: <?= htmlspecialchars($complaint->complaintID) ?></h3>
+                            <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
+                            <?php if ($complaint->status === 'Resolved'): ?>
+                                <button class="view-solution-btn" 
+                                        data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                        onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                    View Solution
+                                </button>
+                                <div class="solution" 
+                                    id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                    style="display: none;">
+                                    <p id="solution-tag"></p>
+                                </div>
+                            <?php else: ?>
+                                <p class="pending-message">Your complaint is being processed.</p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No complaints found.</p>
+                    <?php echo isset($complaints)?>
+                <?php endif; ?>
+            </div>
+            </section>
             <!-- Knowledge Base Section -->
             <section class="knowledge-base">
                 <h2>Knowledge Base</h2>
@@ -204,6 +236,60 @@
                     }
                 });
             });
+
+            function toggleSolution(complaintId) {
+                const solutionElement = document.getElementById(`solution-${complaintId}`);
+                
+                if (solutionElement.style.display === "none") {
+                    fetch(`<?=ROOT?>/public/customerHelpDesk/getSolution/${encodeURIComponent(complaintId)}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        solutionElement.textContent = data.solution;
+                        solutionElement.style.display = "block";
+                    })
+                    .catch(error => {
+                        console.error('Error fetching solution:', error);
+                    });
+                } else {
+                    solutionElement.style.display = "none";
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const overlay = document.getElementById("overlay-message");
+                const closeBtn = document.getElementById("overlay-close-btn");
+
+                // Show the overlay if a session message exists
+                if (overlay && overlay.textContent.trim() !== "") {
+                    overlay.classList.remove("hidden");
+                }
+
+                // Close the overlay and clear the session message when the "Okay" button is clicked
+                closeBtn.addEventListener("click", function () {
+                    overlay.classList.add("hidden");
+
+                    // Clear the session message on the server side
+                    fetch("<?= ROOT ?>/public/customerHelpDesk/clearSessionMessage")
+                        .then(response => {
+                            if (!response.ok) {
+                                console.error("Failed to clear session message.");
+                            }
+                        })
+                        .catch(error => console.error("Error clearing session message:", error));
+                });
+            });
+
         </script>
+        <?php if (isset($_SESSION['complaint_message'])): ?>
+            <div id="overlay-message" class="overlay hidden">
+                <div class="overlay-content">
+                    <p id="overlay-text">
+                        <?= isset($_SESSION['complaint_message']) ? htmlspecialchars($_SESSION['complaint_message']) : ''; ?>
+                    </p>
+                    <button id="overlay-close-btn">Okay</button>
+                </div>
+            </div>
+        <?php endif; ?>
+
     </body>
 </html>
