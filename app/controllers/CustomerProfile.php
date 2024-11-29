@@ -113,7 +113,7 @@ class CustomerProfile extends Controller
     public function paymentHistory()
     {
         // Load the view and pass the payment history data to it
-        $this->view('paymentHistory');
+        $this->view('customerPaymentHistory');
     }
     
     public function faq()
