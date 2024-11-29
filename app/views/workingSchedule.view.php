@@ -67,7 +67,7 @@
                 </tbody>
             </table>
             <div class="button-container">
-                <button class="edit-btn">Edit Schedule</button>
+                <button type="button" class="edit-btn">Edit Schedule</button>
             </div>
             <!-- Form buttons -->
             <div class="schedule-actions">
