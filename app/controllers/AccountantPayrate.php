@@ -6,9 +6,4 @@ class AccountantPayrate extends Controller
     {
         $this->view('fm/accountantpayrate');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('fm/accountantpayrate');
-    } 
 }

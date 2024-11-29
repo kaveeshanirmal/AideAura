@@ -7,8 +7,4 @@ class HRworkerProfileSchedule extends Controller
         $this->view('hr/hrWorkerProfileSchedule');
     }
 
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('hr/hrWorkerProfileSchedule');
-    }
 }

@@ -43,9 +43,4 @@ class Signup extends Controller
         // Load the registration view
         $this->view('signup');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('signup');
-    }
 }

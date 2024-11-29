@@ -6,11 +6,4 @@ class BookingHistory extends Controller
     {
         $this->view('bookingHistory');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('bookingHistory');
-    }
-
-    
 }
