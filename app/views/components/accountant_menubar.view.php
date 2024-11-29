@@ -2,7 +2,7 @@
 <script src="<?=ROOT?>/public/assets/js/menubar.js"></script>
 <div class="menubar">
 <div class="menubar-header">
-        <img src="<?=ROOT?>/public/assets/images/" alt="Profile" class="profile-image">
+        <img src="<?=ROOT?>/public/assets/images/profile3.jpg" alt="Profile" class="profile-image">
         <div class="profile-info">
             <h4>Saman Kumara</h4>
             </div>
