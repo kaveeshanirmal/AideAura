@@ -6,9 +6,4 @@ class OPMspecialRequests extends Controller
     {
         $this->view('opm/opmSpecialRequests');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('opm/opmSpecialRequests');
-    } 
 }

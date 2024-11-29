@@ -6,9 +6,4 @@ class AccountantReports extends Controller
     {
         $this->view('fm/accountantReports');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('fm/accountantReports');
-    } 
 }

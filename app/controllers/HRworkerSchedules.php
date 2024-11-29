@@ -7,8 +7,4 @@ class HRworkerSchedules extends Controller
         $this->view('hr/hrWorkerSchedules');
     }
 
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('hr/hrWorkerSchedules');
-    } 
 }

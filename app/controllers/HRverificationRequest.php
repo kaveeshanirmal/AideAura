@@ -6,9 +6,4 @@ class HRverificationRequest extends Controller
     {
         $this->view('hr/hrVerificationRequest');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('hr/hrVerificationRequest');
-    } 
 }

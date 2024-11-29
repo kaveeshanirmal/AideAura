@@ -7,8 +7,4 @@ class HRworkerProfileManagement2 extends Controller
         $this->view('hr/hrWorkerProfileManagement2');
     }
 
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('hr/hrWorkerProfileManagement2');
-    } 
 }
