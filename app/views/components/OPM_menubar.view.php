@@ -4,7 +4,7 @@
 <div class="menubar-header">
         <img src="<?=ROOT?>/public/assets/images/" alt="Profile" class="profile-image">
         <div class="profile-info">
-            <h4>Tharindu Medawa</h4>
+            <h4>Medawa Upul</h4>
             </div>
         <button class="menubar-close" id="menubar-close">×</button>
     </div>

@@ -11,8 +11,8 @@
 <!-- Navbar -->
 <div class="dashboard-container">
     <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
-    <!-- Main Content -->
-    <main class="main-content">
+ <!-- Main Content -->
+ <main class="main-content">
         <!-- Table Section -->
         <div class="table-container">
             <table class="rates-table">
@@ -102,5 +102,81 @@
         </div>
     </main>
 </div>
+
+<!-- Update Modal -->
+<div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Update Service Rate</h2>
+            <form id="updateRateForm">
+                <input type="hidden" id="serviceIdInput" name="serviceId">
+                <div class="form-group">
+                    <label for="basePriceInput">Base Price</label>
+                    <input type="number" id="basePriceInput" name="basePrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="baseHoursInput">Base Hours</label>
+                    <input type="number" id="baseHoursInput" name="baseHours" step="0.25" required>
+                </div>
+                <button type="submit" class="submit-btn">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('updateModal');
+    const updateButtons = document.querySelectorAll('.update-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const updateForm = document.getElementById('updateRateForm');
+    const serviceIdInput = document.getElementById('serviceIdInput');
+    const basePriceInput = document.getElementById('basePriceInput');
+    const baseHoursInput = document.getElementById('baseHoursInput');
+
+    // Open modal when update button is clicked
+    updateButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const serviceId = e.target.getAttribute('data-service-id');
+            const row = e.target.closest('tr');
+            
+            // Populate current values
+            const basePrice = row.querySelector('td:nth-child(3)').textContent;
+            const baseHours = row.querySelector('td:nth-child(4)').textContent;
+
+            serviceIdInput.value = serviceId;
+            basePriceInput.value = basePrice;
+            baseHoursInput.value = baseHours;
+
+            modal.style.display = 'block';
+        });
+    });
+
+    // Close modal when close button is clicked
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Handle form submission
+    updateForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Here you would typically send an AJAX request to update the service rate
+        // For now, we'll just update the table and close the modal
+        const row = document.querySelector(`tr[data-service-id="${serviceIdInput.value}"]`);
+        row.querySelector('td:nth-child(3)').textContent = basePriceInput.value;
+        row.querySelector('td:nth-child(4)').textContent = baseHoursInput.value;
+
+        modal.style.display = 'none';
+    });
+});
+</script>
 </body>
 </html>

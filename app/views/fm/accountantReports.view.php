@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
+    <title>Accountant Reports</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantReports.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
@@ -14,8 +14,8 @@
             <div class="content-area">
                 <div class="filter-section">
                     <div class="input-group">
-                        <label>Worker Name:</label>
-                        <input type="text" value="Mr.Kamal Gunarathne" class="worker-input">
+                        <label>Worker ID:</label>
+                        <input type="text" value="#345784" class="worker-input">
                     </div>
                     <div class="input-group">
                         <label>Start Date:</label>

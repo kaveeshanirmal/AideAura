@@ -90,8 +90,12 @@
 
 .user-details h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 15px;
     color: #333;
+}
+
+span {
+    font-size: 13px;
 }
 
 .timestamp {
@@ -121,16 +125,23 @@
     line-height: 1.6;
 }
 
+.inquiry-content p{
+    font-size: 14px;
+}
+
 .salutation {
     margin-bottom: 0.5rem;
+    font-size: 14px;
 }
 
 .message {
     margin-bottom: 1rem;
+    font-size: 14px;
 }
 
 .signature {
     margin-bottom: 1rem;
+    font-size: 14px;
 }
 
 .reply-link {

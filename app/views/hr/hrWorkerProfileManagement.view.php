@@ -14,9 +14,10 @@
                     <label for="workerField">Select the Worker Field:</label>
                     <select id="worker-field" class="search-input">
                         <option value="cook">Cooks</option>
+                        <option value="cook">cook 24-hour</option>
                         <option value="nannies">Nannies</option>
-                        <option value="cleaners">Cleaners</option>
                         <option value="all-rounder">All Rounders</option>
+                        <option value="cleaners">Maid</option>
                     </select>
                 </div>
 
@@ -25,22 +26,27 @@
                 // Assuming you have a database connection and query to fetch workers
                 $workers = [
                     ['name' => 'MR. Kamal Rupasinghe', 'role' => 'Cleaner'],
+                    ['name' => 'MR. Saman Athapaththu', 'role' => 'Cook'],
+                    ['name' => 'MRS. Nadeeshani Gamage', 'role' => 'Nanny'],
+                    ['name' => 'MR. Chathura Amarathunga', 'role' => 'All Rounder'],
+                    ['name' => 'MR. Kamal Rupasinghe', 'role' => 'Cleaner'],
+                    ['name' => 'MR. Saman Athapaththu', 'role' => 'Cook'],
+                    ['name' => 'MRS. Nadeeshani Gamage', 'role' => 'Nanny'],
+                    ['name' => 'MR. Chathura Amarathunga', 'role' => 'All Rounder']
                     // Add more workers as needed
                 ];
 
                 foreach ($workers as $worker) {
-                    echo '<div class="worker-card">';
+                    echo '<div class="worker-card">  <a href="hrWorkerProfileManagement1">';
                     echo '<div class="worker-info">';
                     echo '<div class="worker-avatar">';
-                    echo '<img src="assets/images/user_icon.png"" alt="Worker Avatar">';
-                    echo '</div>';
+                    echo '<img src="' . ROOT . '/public/assets/images/user_icon.png" alt="Worker Avatar">';                    echo '</div>';
                     echo '<div class="worker-details">';
                     echo '<h3>' . htmlspecialchars($worker['name']) . '</h3>';
                     echo '<p>' . htmlspecialchars($worker['role']) . '</p>';
                     echo '</div>';
                     echo '</div>';
-                    echo '<div class="arrow-icon"> <a href="hrWorkerProfileManagement1">  > </a> </div>';
-                    echo '</div>';
+                    echo '</a>  </div>';
                 }
                 ?>
             </div>
