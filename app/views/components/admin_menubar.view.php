@@ -20,7 +20,7 @@
             <li><a href="<?=ROOT?>/public/admin/paymentIssues"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
         </ul>
     </div>
-    <a href="<?=ROOT?>/public/login" class="logout">
+    <a href="<?=ROOT?>/public/login/logout" class="logout">
         <img src="<?=ROOT?>/public/assets/images/logout-icon.png" alt=""> Logout
     </a>         
 </div>

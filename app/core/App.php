@@ -44,14 +44,14 @@ class App
 
         'customer'=> [
             'BookingHistory' => ['index'],
-            'CustomerHlepDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
+            'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
             'Payment'> ['index', 'paymentDetail', 'paymentComplete', 'paymentProceed'],
             'Home' => ['customerRedirect'],
+            'ServiceForms' => ['index', 'getForm', 'testDataBase'],
         ],
 
         'worker' => [
-            'ServiceForms' => ['index', 'getForm', 'testDataBase'],
             'WorkerProfile' => ['index', 'personalInfo', 'update', 'workingSchedule', 'faq'],
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],

@@ -15,8 +15,11 @@
 }
 
 body {
-    background-image: linear-gradient(to bottom, #3d0505, #834d2bdc),
-        url(../images/Loading_Screen_Background.png);
+    background-image: url("../images/booking_bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
