@@ -114,5 +114,27 @@ public function index() {
         }
         exit; // Ensure no additional output
     }
+
+    public function search() {
+        try {
+            $filters = json_decode(file_get_contents('php://input'), true);
+    
+            $userModel = new UserModel();
+            $employees = $userModel->searchEmployees($filters);
+    
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'employees' => $employees,
+            ]);
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+    
 }
-?>

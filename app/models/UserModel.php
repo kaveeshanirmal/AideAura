@@ -213,10 +213,7 @@ public function registerEmployee($data)
     }
 
 
-
     public function searchEmployees($filters) {
-        $this->setTable('employees');
-        
         $conditions = [];
         $params = [];
         
@@ -226,31 +223,32 @@ public function registerEmployee($data)
             $params['role'] = "%" . trim($filters['role']) . "%";
         }
         
-        if (!empty($filters['email'])) {
-            $conditions[] = "email LIKE :email";
-            $params['email'] = "%" . trim($filters['email']) . "%";
+        if (!empty($filters['userID'])) {
+            $conditions[] = "userID LIKE :userID";
+            $params['userID'] = "%" . trim($filters['userID']) . "%";
         }
+    
+        $sql = "SELECT * FROM users";
         
-        if (!empty($filters['status'])) {
-            $conditions[] = "status LIKE :status";
-            $params['status'] = "%" . trim($filters['status']) . "%";
-        }
-        
-        if (!empty($filters['employeeID'])) {
-            $conditions[] = "employeeID LIKE :employeeID";
-            $params['employeeID'] = "%" . trim($filters['employeeID']) . "%";
-        }
-
-        $sql = "SELECT * FROM employees";
+        // Add WHERE clause if conditions exist
         if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' OR ', $conditions);
+            $sql .= " WHERE " . implode(' OR ', $conditions); // Use AND for stricter matching
         }
         
-        // Add ordering to ensure consistent results
-        $sql .= " ORDER BY employeeID DESC";
+        // Add ordering for consistent results
+        $sql .= " ORDER BY userID DESC";
         
-        return $this->query($sql, $params);
+        try {
+            // Execute the query and fetch results
+            $result = $this->query($sql, $params);
+            return $result;
+        } catch (Exception $e) {
+            // Log error and return empty array
+            error_log("Error searching employees: " . $e->getMessage());
+            return [];
+        }
     }
+    
 
     // Updated delete method with validatio+n
     public function deleteEmployee($userID) {

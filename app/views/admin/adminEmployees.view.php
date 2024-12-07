@@ -21,7 +21,7 @@
             <div class="employee-controls">
                 <div class="search-filters">
                     <div class="input-group">
-                        <label>Role:</label>
+                        <label for="employeeRole">Role:</label>
                         <select id="employeeRole" class="role-select">
                             <option value="hrManager">hrManager</option>
                             <option value="financeManager">financeManager</option>
@@ -30,12 +30,8 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>User ID:</label>
+                        <label for="employeeId">User ID:</label>
                         <input type="text" id="employeeId" class="id-input">
-                    </div>
-                    <div class="input-group">
-                        <label>Email:</label>
-                        <input type="email" id="employeeEmail" class="email-input">
                     </div>
                     <div class="search-btn-container">
                         <button class="search-btn" onclick="searchEmployees()">Search</button>
@@ -212,6 +208,50 @@
             })
             .catch(error => showNotification('An unexpected error occurred', 'error'));
         }
+
+        function searchEmployees() {
+    const role = document.getElementById('employeeRole').value;
+    const userID = document.getElementById('employeeId').value;
+
+    console.log(role, userID); // Check what is being sent
+
+    fetch('<?=ROOT?>/public/adminEmployees/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role, userID }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log(result); // Add this to see the response from the server
+        if (result.success) {
+            const tableBody = document.getElementById('employeeTableBody');
+            tableBody.innerHTML = result.employees.map(employee => `
+                <tr data-id="${employee.userID}" data-username="${employee.username}" data-firstname="${employee.firstName}" data-lastname="${employee.lastName}" data-role="${employee.role}" data-phone="${employee.phone}" data-email="${employee.email}" data-createdAt="${employee.createdAt}">
+                    <td>${employee.userID}</td>
+                    <td>${employee.username}</td>
+                    <td>${employee.firstName}</td>
+                    <td>${employee.lastName}</td>
+                    <td>${employee.role}</td>
+                    <td>${employee.phone}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.createdAt}</td>
+                </tr>
+            `).join('');
+        } else {
+            showNotification(result.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        showNotification('An unexpected error occurred', 'error');
+    });
+}
+
     </script>
 </body>
 </html>
