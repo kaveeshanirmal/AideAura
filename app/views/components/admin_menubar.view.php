@@ -4,7 +4,7 @@
     <div class="menubar-header">
         <img src="<?=ROOT?>/public/assets/images/womenprofile1.png" alt="Profile" class="profile-image">
         <div class="profile-info">
-            <h4>Saman Kumara</h4>
+            <h4>Samanthi Kumari x </h4>
             </div>
         <button class="menubar-close" id="menubar-close">×</button>
     </div>
@@ -20,7 +20,7 @@
             <li><a href="<?=ROOT?>/public/admin/paymentIssues"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
         </ul>
     </div>
-    <a href="<?=ROOT?>/public/login/logout" class="logout">
+    <a href="<?=ROOT?>/public/login" class="logout">
         <img src="<?=ROOT?>/public/assets/images/logout-icon.png" alt=""> Logout
     </a>         
 </div>
