@@ -4,48 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Worker Profiles</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerProfile.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(ROOT) ?>/public/assets/css/adminWorkerProfile.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const workerFieldDropdown = document.getElementById('worker-field');
+            const workersList = document.getElementById('workers-list');
+
+            // PHP workers variable passed to JavaScript
+            const workersObj = <?= json_encode($workers) ?>;
+
+            // Convert the object with numerical keys into an array
+            const workers = Object.values(workersObj);
+
+            console.log("Workers data:", workers); // Debugging output to verify the conversion
+
+            function renderWorkers(filteredWorkers) {
+                workersList.innerHTML = ''; // Clear existing list
+
+                if (filteredWorkers.length > 0) {
+                    filteredWorkers.forEach(worker => {
+                        const workerCard = `
+                            <div class="worker-card">
+                                <a href="worker1"> <!-- Update dynamically if needed -->
+                                    <div class="worker-info">
+                                        <div class="worker-avatar">
+                                            <img src="<?= htmlspecialchars(ROOT) ?>/public/assets/images/user_icon.png" alt="Worker Avatar">
+                                        </div>
+                                        <div class="worker-details">
+                                            <h3>${worker.firstName} ${worker.lastName}</h3>
+                                            <p>${worker.role}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                        workersList.innerHTML += workerCard;
+                    });
+                } else {
+                    workersList.innerHTML = '<p>No workers found.</p>';
+                }
+            }
+
+            workerFieldDropdown.addEventListener('change', function () {
+                const selectedField = this.value.toLowerCase(); // Convert to lowercase for case-insensitive comparison
+
+                console.log("Selected field:", selectedField); // Debugging selected dropdown value
+
+                // Filter workers based on selected role
+                const filteredWorkers = selectedField === 'all'
+                    ? workers
+                    : workers.filter(worker => worker.role.toLowerCase() === selectedField.toLowerCase());
+
+                renderWorkers(filteredWorkers);
+            });
+
+            // Render all workers on initial load
+            renderWorkers(workers);
+        });
+    </script>
 </head>
 <body>
     <div class="dashboard-container">
         <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
         <main class="main-content">
             <div class="search-container">
-                <label for="workerField">Select the Worker Field:</label>
+                <label for="worker-field">Select the Worker Field:</label>
                 <select id="worker-field" class="search-input">
-                    <option value="cook">Cooks</option>
-                    <option value="cook24">Cook 24-hour</option>
-                    <option value="nannies">Nannies</option>
-                    <option value="all-rounder">All Rounders</option>
-                    <option value="cleaners">Maids</option>
+                    <option value="all">All</option>
+                    <option value="cook">Cook</option>
+                    <option value="cook24">Cook 24-hour Live in</option>
+                    <option value="nannies">Nanny</option>
+                    <option value="all-rounder">All rounder</option>
+                    <option value="cleaners">Maid</option>
                 </select>
             </div>
 
             <div class="workers-list" id="workers-list">
-                <?php
-                // Ensure workers array exists and is not empty
-                if (!empty($workers)) {
-                    foreach ($workers as $worker) {
-                        $fullName = htmlspecialchars(($worker->firstName) . ' ' . ($worker->lastName));
-                        $role = htmlspecialchars($worker->role);
-                        echo '<div class="worker-card">';
-                        echo '  <a href="worker1">'; // Update the href URL if needed
-                        echo '      <div class="worker-info">';
-                        echo '          <div class="worker-avatar">';
-                        echo '              <img src="' . ROOT . '/public/assets/images/user_icon.png" alt="Worker Avatar">';
-                        echo '          </div>';
-                        echo '          <div class="worker-details">';
-                        echo '              <h3>' . $fullName . '</h3>';
-                        echo '              <p>' . $role . '</p>';
-                        echo '          </div>';
-                        echo '      </div>';
-                        echo '  </a>';
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<p>No workers found.</p>';
-                }
-                ?>
+                <!-- Workers will be rendered dynamically -->
             </div>
         </main>
     </div>
