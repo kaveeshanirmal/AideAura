@@ -213,41 +213,45 @@ public function registerEmployee($data)
     }
 
 
-    public function searchEmployees($filters) {
+    public function searchEmployees($filters = []) {
         $conditions = [];
         $params = [];
-        
-        // Build search conditions based on filters
+    
+        // Add filter for role if provided
         if (!empty($filters['role'])) {
-            $conditions[] = "role LIKE :role";
-            $params['role'] = "%" . trim($filters['role']) . "%";
-        }
-        
-        if (!empty($filters['userID'])) {
-            $conditions[] = "userID LIKE :userID";
-            $params['userID'] = "%" . trim($filters['userID']) . "%";
+            $conditions[] = "role = :role"; // Use '=' for exact match
+            $params['role'] = trim($filters['role']);
         }
     
-        $sql = "SELECT * FROM users";
-        
-        // Add WHERE clause if conditions exist
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' OR ', $conditions); // Use AND for stricter matching
+        // Add filter for userID if provided
+        if (!empty($filters['userID'])) {
+            $conditions[] = "userID = :userID"; // Use '=' for exact match
+            $params['userID'] = trim($filters['userID']);
         }
-        
-        // Add ordering for consistent results
+    
+        // Base query
+        $sql = "SELECT * FROM users";
+    
+        // Add WHERE clause only if conditions exist
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(' AND ', $conditions);
+        } else {
+            // If no filters, return an empty result set (optional)
+            return [];
+        }
+    
+        // Add ordering
         $sql .= " ORDER BY userID DESC";
-        
+    
         try {
-            // Execute the query and fetch results
-            $result = $this->query($sql, $params);
-            return $result;
+            // Execute query
+            return $this->get_all($sql, $params);
         } catch (Exception $e) {
-            // Log error and return empty array
             error_log("Error searching employees: " . $e->getMessage());
             return [];
         }
     }
+    
     
 
     // Updated delete method with validatio+n

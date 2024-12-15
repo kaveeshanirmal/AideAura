@@ -36,6 +36,9 @@
                     <div class="search-btn-container">
                         <button class="search-btn" onclick="searchEmployees()">Search</button>
                     </div>
+                    <div class="search-btn-container">
+                        <button class="search-btn" onclick="resetEmployees()">Reset</button>
+                    </div>
                 </div>
             </div>
             <div class="table-container">
@@ -213,25 +216,50 @@
     const role = document.getElementById('employeeRole').value;
     const userID = document.getElementById('employeeId').value;
 
-    console.log(role, userID); // Check what is being sent
+    // Validate input before sending
+    if (!role && !userID) {
+        showNotification("Please provide a role or user ID", 'error');
+        return;
+    }
+
+    console.log("Sending:", { role, userID });
 
     fetch('<?=ROOT?>/public/adminEmployees/search', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role, userID }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            role: role || null, 
+            userID: userID || null 
+        })
     })
     .then(response => {
+        // Log the raw response for debugging
+        console.log('Raw response:', response);
+
+        // Check content type before parsing
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            return response.text().then(text => {
+                console.error('Non-JSON response:', text);
+                throw new Error('Expected JSON, received: ' + text);
+            });
+        }
+
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            return response.json().catch(() => {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            });
         }
         return response.json();
     })
     .then(result => {
-        console.log(result); // Add this to see the response from the server
+        console.log("Received:", result);
         if (result.success) {
             const tableBody = document.getElementById('employeeTableBody');
             tableBody.innerHTML = result.employees.map(employee => `
-                <tr data-id="${employee.userID}" data-username="${employee.username}" data-firstname="${employee.firstName}" data-lastname="${employee.lastName}" data-role="${employee.role}" data-phone="${employee.phone}" data-email="${employee.email}" data-createdAt="${employee.createdAt}">
+                <tr>
                     <td>${employee.userID}</td>
                     <td>${employee.username}</td>
                     <td>${employee.firstName}</td>
@@ -243,12 +271,12 @@
                 </tr>
             `).join('');
         } else {
-            showNotification(result.message, 'error');
+            showNotification(result.message || "Search failed", 'error');
         }
     })
     .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-        showNotification('An unexpected error occurred', 'error');
+        console.error("Fetch error:", error);
+        showNotification(error.message || "An unexpected error occurred", 'error');
     });
 }
 
