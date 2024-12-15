@@ -12,7 +12,7 @@ public function index() {
 
     // Filter employees based on allowed roles
     $filteredEmployees = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-        return in_array($employee->role, $allowedRoles); // Access object property using '->'
+        return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
     });
 
     if (!$filteredEmployees) {
@@ -54,66 +54,66 @@ public function index() {
         }
     }
 
-    public function delete() {
-        try {
-            // Log the raw input
-            $raw_input = file_get_contents('php://input');
-            error_log("Raw input received: " . $raw_input);
+    // public function delete() {
+    //     try {
+    //         // Log the raw input
+    //         $raw_input = file_get_contents('php://input');
+    //         error_log("Raw input received: " . $raw_input);
     
-            // Decode JSON with error checking
-            $data = json_decode($raw_input, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Invalid JSON: ' . json_last_error_msg());
-            }
+    //         // Decode JSON with error checking
+    //         $data = json_decode($raw_input, true);
+    //         if (json_last_error() !== JSON_ERROR_NONE) {
+    //             throw new Exception('Invalid JSON: ' . json_last_error_msg());
+    //         }
     
-            // Log decoded data
-            error_log("Decoded data: " . print_r($data, true));
+    //         // Log decoded data
+    //         error_log("Decoded data: " . print_r($data, true));
     
-            // Validate userID
-            if (!isset($data['userID'])) {
-                throw new Exception('Employee userID is required');
-            }
+    //         // Validate userID
+    //         if (!isset($data['userID'])) {
+    //             throw new Exception('Employee userID is required');
+    //         }
     
-            if (!is_numeric($data['userID'])) {
-                throw new Exception('Invalid userID format');
-            }
+    //         if (!is_numeric($data['userID'])) {
+    //             throw new Exception('Invalid userID format');
+    //         }
     
-            // Initialize model
-            $employeeModel = new UserModel();
+    //         // Initialize model
+    //         $employeeModel = new UserModel();
             
-            // Attempt deletion
-            $success = $employeeModel->deleteEmployee($data['userID']);
+    //         // Attempt deletion
+    //         $success = $employeeModel->softDeleteEmployee($data['userID']);
             
-            if ($success === false) {
-                throw new Exception('Database deletion failed');
-            }
+    //         if ($success === false) {
+    //             throw new Exception('Database deletion failed');
+    //         }
     
-            // Set headers before any output
-            header('Content-Type: application/json');
+    //         // Set headers before any output
+    //         header('Content-Type: application/json');
             
-            // Return success response
-            echo json_encode([
-                'success' => true,
-                'message' => 'Employee deleted successfully'
-            ]);
+    //         // Return success response
+    //         echo json_encode([
+    //             'success' => true,
+    //             'message' => 'Employee deleted successfully'
+    //         ]);
             
-        } catch (Exception $e) {
-            // Log the error
-            error_log("Delete employee error: " . $e->getMessage());
+    //     } catch (Exception $e) {
+    //         // Log the error
+    //         error_log("Delete employee error: " . $e->getMessage());
             
-            // Set headers
-            header('Content-Type: application/json');
-            http_response_code(500);
+    //         // Set headers
+    //         header('Content-Type: application/json');
+    //         http_response_code(500);
             
-            // Return error response
-            echo json_encode([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => true
-            ]);
-        }
-        exit; // Ensure no additional output
-    }
+    //         // Return error response
+    //         echo json_encode([
+    //             'success' => false,
+    //             'message' => $e->getMessage(),
+    //             'error' => true
+    //         ]);
+    //     }
+    //     exit; // Ensure no additional output
+    // }
 
     public function search() {
         try {

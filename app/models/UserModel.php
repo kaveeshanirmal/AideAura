@@ -262,4 +262,20 @@ public function registerEmployee($data)
     
     return $this->delete($userID, 'userID'); // Ensure 'userID' is the correct column name in your table
     }
+
+
+    // Updated delete method with validation for soft delete
+public function softDeleteEmployee($userID) {
+    $this->setTable('users');
+    
+    // Check if employee exists before deletion
+    $employee = $this->find($userID, 'userID');
+    if (!$employee) {
+        return false;
+    }
+    
+    // Perform soft delete instead of permanent deletion
+    return $this->softDelete($userID, 'userID', 'isDelete'); 
+}
+
 }
