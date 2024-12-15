@@ -154,6 +154,25 @@ public function registerEmployee($data)
         return $this->all(); // Use the get_all method from the Database trait
     }
 
+    // Get specific role of a worker based on userID  ,, can be easily implement using sql join query
+    public function getWorkerRole($id)
+    {
+        $this->setTable('worker');
+        $worker = $this->find($id, 'userID'); // find already uses get_row
+        if ($worker) {
+            $workerId = $worker->workerID;
+            $this->setTable('worker_roles');
+            $workerRole = $this->find($workerId, 'workerID');
+            if ($workerRole) {
+                $RoleId = $workerRole->roleID;
+                $this->setTable('jobRoles');
+                $workerRoleRaw = $this->find($RoleId, 'roleID');
+                return $workerRoleRaw->name ?? null; // Return role name or null
+            }
+        }
+        return null; // Default if worker or role not found
+    }
+    
 
     // Update user information
     public function updateUserInfo($id, $data)
