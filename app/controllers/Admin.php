@@ -57,11 +57,37 @@ private function assignDynamicRoles($filteredWorkers)
     }, $filteredWorkers);
 }
 
+public function workerDetails()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Sanitize and retrieve worker details from POST request
+        $workerData = [
+            'firstName' => htmlspecialchars($_POST['firstName']),
+            'lastName' => htmlspecialchars($_POST['lastName']),
+            'role' => htmlspecialchars($_POST['role']),
+            'image' => htmlspecialchars($_POST['image']),
+        ];
 
-    public function worker1()
-    {
-        $this->view('admin/adminWorkerProfile1');
+        // Example: Log the data or store it in the database
+        error_log("Worker Data: " . json_encode($workerData));
+
+        // Store or process the data as needed
+        // Example: Redirect to another view or render worker details
+        $this->view('admin/adminWorkerProfile1', ['worker' => $workerData]);
+    } else {
+        // Handle invalid request
+        http_response_code(405);
+        echo "Method Not Allowed";
     }
+}
+
+
+
+    // public function worker1()
+    // {
+
+    //     $this->view('admin/adminWorkerProfile1');
+    // }
     public function worker2()
     {
         $this->view('admin/adminWorkerProfile2');
