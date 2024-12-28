@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Fredoka:wght@300..700&family=Montserrat:wght@100&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Fredoka:wght@300..700&family=Montserrat:wght@100&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to bottom, #3d0505, #3d1a05dc),url(../images/About_Us_Side_Picture.png); 
+}
+.about{
+    background: url(../images/About_Us_Side_Picture.png) no-repeat left;
+    min-height: 100vh;
+    background-size: 55%;
+    background-color: rgba(79, 31, 10, 0.247);
+    overflow: hidden;
+    padding: 100px 0;
+    z-index: 1;
+}
+
+.logo{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 6%;
+    left: 2%;
+}
+.inner-section{
+    position: relative;
+    border-radius: 10px;
+    width: 50%;
+    top: 12px;
+    left: 47%;
+    background-color: #fdfdfd;
+    padding: 60px;
+    right: 20px;
+    box-shadow: 10px 10px 8px rgba(0,0,0,0.3);
+    margin: 0;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.inner-section::after,.inner-section::before{
+
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle),rgb(50, 6, 6),rgb(93, 29, 9),rgb(136, 59, 36),rgb(206, 159, 145),rgb(50, 6, 6));
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 8px;
+    border-radius: 10px;
+    animation: 7s spin linear infinite;
+}
+
+/**/
+
+.inner-section::before {
+    filter: blur(1.5rem);
+    opacity: 0.8;
+}
+
+.inner-section h1{
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 60px;
+    text-shadow: 1px 1px 2px #545454;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+.text{
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #545454;
+    line-height: 30px;
+    text-align: justify;
+    margin-bottom: 40px;
+}
+.skills button{
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 20px;
+    padding: 8px;
+    width: 200px;
+    background-color: #4e2513;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.skills button:hover{
+    transition: 0.3s;
+    background-color: #653019;
+    color: #ffffff;
+    transform: scale(1.03);
+}
+
+@keyframes spin {
+    from{
+        --angle:0deg;
+    }
+    to{
+        --angle:360deg;
+    }
+}
+
+@media screen and (max-width:1200px){
+    .inner-section{
+        padding: 80px;
+    }
+}
+@media screen and (max-width:1000px){
+    .about{
+        background-size: 100%;
+        padding: 100px 40px;
+    }
+    .inner-section{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:600px){
+    .about{
+        padding: 0;
+    }
+    .inner-section{
+        padding: 60px;
+    }
+    .skills button{
+        font-size: 19px;
+        padding: 5px;
+        width: 160px;
+    }
+}
+

@@ -1,0 +1,194 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.main-content {
+    flex: 1;
+    margin: 8% 3% 3% 3%;
+    background-color: #f8f9fa;
+}
+
+.dashboard-title {
+    color: #f90;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.tabs-container {
+    display: flex;
+    gap: 2rem;
+    //margin-bottom: 2rem;
+    background-color: #eef3ff;
+    padding: 1rem 1rem 1rem 3rem;
+    border-radius: 8px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.tab-button.active {
+    color: #333;
+    font-weight: 600;
+    position: relative;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #f90;
+}
+
+.inquiries-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 40px;
+}
+
+.inquiry-card {
+    background-color: #fffacd;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0 10% 0 10%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.user-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.profile-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-details h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #333;
+}
+
+span {
+    font-size: 13px;
+}
+
+.timestamp {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.options-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.options-button:hover {
+    background-color: #f5f5f5;
+}
+
+.inquiry-content {
+    color: #333;
+    line-height: 1.6;
+}
+
+.inquiry-content p{
+    font-size: 14px;
+}
+
+.salutation {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+}
+
+.message {
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+.signature {
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+.reply-link {
+    color: #6366f1;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.reply-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .main-content {
+        margin: 20% 3% 3% 3%;
+    }
+    
+    .tabs-container {
+        //padding: 0.5rem;
+        gap: 1rem;
+        padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    }
+    
+    .inquiry-card {
+        padding: 1rem;
+        margin: 0 2% 0 2%;
+    }
+    
+    .user-info {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .timestamp {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .inquiries-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 40px 40px 10px 40px;
+    }
+}

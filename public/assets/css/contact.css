@@ -1,0 +1,91 @@
+:root {
+    --primary-color: #7f5539;
+    --secondary-color: #d8a841;
+    --text-color: #333;
+    --background-color: #f5f5f5;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url(../images/signup-bg.png);
+    background-size: cover;
+    color: var(--text-color);
+}
+
+/* Main section styles */
+main {
+    font-family: Arial, sans-serif;
+    min-height: calc(
+        100vh - 200px
+    ); /* Adjust to fit remaining viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.contact-form {
+    background-color: #fff; /* Background color of the form */
+    padding: 40px 50px 40px 40px; /* Added more padding to the right */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    max-width: 478.2px;
+    max-height: 590px;
+    margin: 160px auto; /* Centering the form */
+    text-align: center;
+}
+
+/* Heading styles */
+.contact-form h1 {
+    color: #000000; /* Match the page background */
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+/* Input field styles */
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+/* Button styles */
+.contact-form button {
+    background-color: var(--secondary-color); /* Pink color for the button */
+    color: #fff;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #d69d33; /* Darker pink on hover */
+}
+
+/* Textarea specific styles */
+.contact-form textarea {
+    height: 100px;
+    resize: none; /* Prevent resizing */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .contact-form {
+        padding: 20px 30px 20px 20px; /* Adjust right padding for smaller screens */
+        margin: 240px auto 150px;
+    }
+
+    .contact-form h1 {
+        font-size: 28px;
+    }
+}

@@ -1,0 +1,167 @@
+:root {
+    --primary-color: #FFFACD;
+    --secondary-color: #000000;
+    --accent-color: #FDFFF5;
+    --text-color: #333;
+    --background-color: #f5f5f5;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Main section styles */
+main {
+    margin-top: 6%;
+    font-family: Arial, sans-serif;
+    background-color: var(--primary-color);
+    min-height: calc(100vh - 200px); /* Adjust to fit remaining viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.payment-form {
+    background-color: #FFFFFF; /* White background for the form */
+    padding: 40px 50px; /* Adjusted padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+    max-width: 480px;
+    margin: 50px auto;
+    text-align: left; /* Align text to the left */
+    border: 1px solid #ccc; /* Light border around the form */
+}
+
+/* Heading styles */
+.payment-form h1 {
+    color: var(--secondary-color); /* Dark text for the heading */
+    font-size: 24px; /* Adjusted font size */
+    margin-bottom: 30px; /* Increased margin below the heading */
+    text-align: center; /* Center the heading */
+}
+
+/* Payment method styles */
+.payment-method {
+    margin-bottom: 20px;
+}
+
+.payment-method label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.card-logos {
+    display: flex;
+    gap: 10px;
+}
+
+.card-logo {
+    max-width: 50px; /* Adjust the size of card logos */
+    height: auto;
+    cursor: pointer;
+    border: 2px solid transparent; /* Default no border */
+    border-radius: 5px; /* Rounded edges for a modern look */
+    transition: border-color 0.3s ease; /* Smooth transition */
+}
+
+.card-logo:hover {
+    border-color: tomato; /* Border color on hover */
+}
+
+.card-logo.selected {
+    border-color: tomato; /* Border color when selected */
+}
+
+/* Form group styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.payment-form input[type="text"],
+.payment-form select {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+/* Expiration date styles */
+.expiration-date {
+    display: flex;
+    gap: 10px;
+}
+
+.expiration-date select {
+    width: 48%;
+}
+
+/* Tooltip and input wrapper styles */
+.security-code-input {
+    position: relative;
+}
+
+.security-code-input .tooltip {
+    font-size: 18px;
+    color: #ccc;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Button styles */
+.payment-form button {
+    background-color: var(--secondary-color); /* Black color for the button */
+    color: #fff;
+    padding: 15px 0;
+    width: 100%; /* Full width button */
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.payment-form button:hover {
+    background-color: #333; /* Slightly darker on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .payment-form {
+        padding: 20px 30px; /* Adjust padding for smaller screens */
+        margin: 20px auto;
+    }
+
+    .payment-form h1 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 711px) {
+    .payment-form {
+        padding: 20px 30px; /* Adjust padding for smaller screens */
+        margin: 20px auto;
+    }
+
+    .payment-form h1 {
+        font-size: 22px;
+    }
+
+    main {
+        margin-top: 25%;
+    }
+}
