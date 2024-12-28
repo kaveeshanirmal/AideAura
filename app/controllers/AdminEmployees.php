@@ -147,6 +147,7 @@ public function index() {
                 'message' => $e->getMessage()
             ]);
         }
+// I was add some comments to the code
         exit; // Ensure no further output
     }
     
