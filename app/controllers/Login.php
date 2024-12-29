@@ -24,6 +24,7 @@ class Login extends Controller
             if ($user && password_verify($password, $user->password)) {
                 $role = $user->role;
                 // Set session variables
+                session_start(); // Ensure the session is started
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['userID'] = $user->userID;
                 $_SESSION['role'] = $role;

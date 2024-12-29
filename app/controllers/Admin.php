@@ -3,6 +3,7 @@
 class Admin extends Controller
 {
     private $customerComplaintModel;
+    private $workerClicked = [];
 
     public function __construct()
     {
@@ -37,6 +38,8 @@ class Admin extends Controller
         $filteredWorkers = []; // Ensuring the variable is always an array
     }
 
+    $workerClicked = $filteredWorkers;
+
     // Dynamically update roles for filtered workers 
     $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
 
@@ -59,25 +62,34 @@ private function assignDynamicRoles($filteredWorkers)
 
 public function workerDetails()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Sanitize and retrieve worker details from POST request
-        $workerData = [
-            'firstName' => htmlspecialchars($_POST['firstName']),
-            'lastName' => htmlspecialchars($_POST['lastName']),
-            'role' => htmlspecialchars($_POST['role']),
-            'image' => htmlspecialchars($_POST['image']),
-        ];
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        // Retrieve userID from the query parameters
+        $userID = $_GET['userID'] ?? null;
 
-        // Example: Log the data or store it in the database
-        error_log("Worker Data: " . json_encode($workerData));
+        if ($userID) {
+            // Search for the worker in the workerClicked array
+            $worker = array_filter($this->workerClicked, function ($w) use ($userID) {
+                return $w->userID == $userID;
+            });
 
-        // Store or process the data as needed
-        // Example: Redirect to another view or render worker details
-        $this->view('admin/adminWorkerProfile1', ['worker' => $workerData]);
+            // If a worker is found, pass it to the view
+            if (!empty($worker)) {
+                $worker = reset($worker); // Get the first matching worker
+                $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
+            } else {
+                // Handle case where no worker is found
+                http_response_code(404);
+                echo "Worker not found.";
+            }
+        } else {
+            // Handle case where userID is not provided
+            http_response_code(400);
+            echo "User ID is missing.";
+        }
     } else {
-        // Handle invalid request
+        // Handle invalid request method
         http_response_code(405);
-        echo "Method Not Allowed";
+        echo "Method Not Allowed.";
     }
 }
 

@@ -1,5 +1,4 @@
 <?php
-
 class UserModel
 {
     use Model; // Use the Model trait

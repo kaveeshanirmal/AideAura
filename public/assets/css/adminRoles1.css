@@ -104,7 +104,7 @@
 }
 
 .add-btn {
-    background-color: #E6E6E6;
+    background-color: #00FF1A;
     color: black;
     padding: 10px 40px;
     border: none;
@@ -121,7 +121,7 @@
 }
 
 .add-btn:hover {
-    background-color: #D4D4D4;
+    background-color:  #4CAF50;
 }
 
 /* Form Input Focus States */
