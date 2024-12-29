@@ -116,7 +116,11 @@ public function workerDetails()
 
     public function workerRoles()
     {
-        $this->view('admin/adminRoles');
+
+        $workerRoleModel = new WorkerRoleModel();
+        $allRoles = $workerRoleModel->getAllRoles(); // Fetch all Workers from the database
+        error_log("Workers in controller: " . json_encode($allRoles));    
+        $this->view('admin/adminRoles',['roles'=> $allRoles]);
     }
 
     public function workerRoles1()
