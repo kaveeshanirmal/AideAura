@@ -10,4 +10,21 @@ class WorkerRoleModel {
         return $this->all();
     }
 
+    public function insertRole($data){
+        $this->setTable('jobroles');
+        // $roleData = [
+        //      'name' => $data['name'],
+        //      'description' => $data['description'],
+        //      'image' => $data['image'],
+        // ];
+
+       $userID = $this->insert($data);
+       
+       if(!$userID){
+        return false;
+       }
+
+       return true;
+    }
+
 }

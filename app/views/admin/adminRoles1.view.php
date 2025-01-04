@@ -14,7 +14,7 @@
             <!-- Include your existing navbar component -->
             <div class="content-wrapper">
                 <div class="role-form-container">
-                    <form action="workerRoles" method="POST" class="role-form">
+                    <form action="<?=ROOT?>/public/admin/addRole" method="POST" class="role-form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="roleName">Role Name :</label>
                             <input type="text" 
@@ -29,13 +29,25 @@
                             <label for="roleDescription">Description of the Role :</label>
                             <textarea id="roleDescription" 
                                       name="roleDescription" 
+                                      placeholder="This is the special role of cleaning service employees, including indoor cleaning, outdoor cleaning, and bathroom/kitchen cleaning."
                                       class="form-textarea"
-                                      required>This is the special role of cleaning service Employees including indoor cleaning, outdoor cleaning and bathroom/kitchen cleaning.</textarea>
+                                      required>
+                            </textarea>
+                        </div>
+
+                        <div class="form-group">
+                        <label for="roleImage">Upload Role Image :</label>
+                        <input type="file" 
+                               id="roleImage" 
+                               name="roleImage" 
+                               class="form-input file-input"
+                               accept="image/*"
+                               required>
                         </div>
 
                         <div class="form-actions">
                             <button type="submit" class="add-btn">
-                            <a href="<?=ROOT?>/public/admin/workerRoles">Add</a>
+                                Add
                             </button>
                         </div>
                     </form>
@@ -45,6 +57,5 @@
     </div>
 
     <!-- Include your JavaScript files -->
-    <script src="assets/js/dashboard.js"></script>
 </body>
 </html>

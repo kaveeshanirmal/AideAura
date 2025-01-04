@@ -93,8 +93,6 @@ public function workerDetails()
     }
 }
 
-
-
     // public function worker1()
     // {
 
@@ -127,6 +125,59 @@ public function workerDetails()
     {
         $this->view('admin/adminRoles1');
     }
+
+    public function addRole()
+{
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $roleName = $_POST['roleName'];
+        $roleDescription = $_POST['roleDescription'];
+        $fileName = ''; // Initialize variable for file name
+
+        // Handle the uploaded image
+        if (isset($_FILES['roleImage']) && $_FILES['roleImage']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
+            $fileTmpPath = $_FILES['roleImage']['tmp_name'];
+            $fileName = basename($_FILES['roleImage']['name']);
+            $uploadFilePath = $uploadDir . $fileName;
+
+            // Check and create upload directory if it doesn't exist
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Move uploaded file to the destination
+            if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                echo "File uploaded successfully.<br>";
+            } else {
+                echo "Error uploading the file.<br>";
+                $fileName = ''; // Clear file name on error
+            }
+        } else {
+            echo "No file uploaded or an error occurred.<br>";
+        }
+
+        // Prepare data for database insertion
+        $roleData = [
+            'name' => $roleName,
+            'description' => $roleDescription,
+            'image' => 'public/assets/images/roles/' . $fileName, // Store relative path
+        ];
+
+        // Insert the role using WorkerRoleModel
+        $workerRoleModel = new WorkerRoleModel(); // Assuming proper inclusion and instantiation
+        $insertStatus = $workerRoleModel->insertRole($roleData);
+
+        if ($insertStatus) {
+            echo "Role successfully added.<br>";
+        } else {
+            echo "Failed to add role.<br>";
+        }
+    } else {
+        echo "Invalid request method.";
+    }
+}
+
 
     public function paymentRates()
     {
