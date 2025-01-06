@@ -47,7 +47,7 @@ class Login extends Controller
                 } elseif ($role === 'opManager') {
                     header('Location: ' . ROOT . '/public/OPMcomplaintManagement');
                 } elseif ($role === 'financeManager') {
-                    header('Location: ' . ROOT . '/public/FinanceManager/AccountantReports');
+                    header('Location: ' . ROOT . '/public/FinanceManager/reports');
                 }
             } else {
                 // Handle invalid login attempt

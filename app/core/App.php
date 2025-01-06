@@ -36,10 +36,7 @@ class App
         ],
         
         'financeManager' => [
-            'AccountantPaymentHistory' => ['index'],
-            'AccountantPaymentIssues' => ['index'],
-            'AccountantPayrate' => ['index'],
-            'AccountantReports' => ['index'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'paymentIssues', 'reports'],
         ],
 
         'customer'=> [
