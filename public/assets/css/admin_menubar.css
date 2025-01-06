@@ -4,7 +4,7 @@
     right: -265.3px;
     width: 265.3px;
     height: calc(100vh - 60px);
-    background-color: #ffffff;
+    background-color: #f9f9f9;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
     box-sizing: border-box;
@@ -76,6 +76,15 @@
     font-size: 14px;
     border-radius: 8px;
     transition: background-color 0.3s;
+}
+
+.menubar-header img{
+    max-width: 60px;  /* Limit image width */
+    max-height: 100px; /* Limit image height */
+    width: 60px;      /* Fixed width */
+    height: 61px;     /* Fixed height */
+    object-fit: cover; /* Ensures image covers area without distortion */
+    border-radius: 50%;
 }
 
 .menu-items img {

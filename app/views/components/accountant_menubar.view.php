@@ -2,7 +2,7 @@
 <script src="<?=ROOT?>/public/assets/js/menubar.js"></script>
 <div class="menubar">
 <div class="menubar-header">
-        <img src="<?=ROOT?>/public/assets/images/" alt="Profile" class="profile-image">
+        <img src="<?=ROOT?>/public/assets/images/profile3.jpg" alt="Profile" class="profile-image">
         <div class="profile-info">
             <h4>Saman Kumara</h4>
             </div>
@@ -16,7 +16,7 @@
             <li><a href="<?=ROOT?>/public/FinanceManager/paymentIssues"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Payment Issues </a></li>
         </ul>
     </div>
-    <a href="<?=ROOT?>/public/login" class="logout">
+    <a href="<?=ROOT?>/public/login/logout" class="logout">
         <img src="<?=ROOT?>/public/assets/images/logout-icon.png" alt=""> Logout
     </a>         
 </div>

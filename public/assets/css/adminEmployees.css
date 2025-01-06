@@ -272,6 +272,11 @@ a {
     cursor: pointer;
 }
 
+.search-btn-container .search-btn:hover {
+    background-color: #00FF00;
+}
+
+
 /* Table Styles */
 .table-container {
     background-color: white;

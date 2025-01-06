@@ -21,7 +21,7 @@
             <div class="employee-controls">
                 <div class="search-filters">
                     <div class="input-group">
-                        <label>Role:</label>
+                        <label for="employeeRole">Role:</label>
                         <select id="employeeRole" class="role-select">
                             <option value="hrManager">hrManager</option>
                             <option value="financeManager">financeManager</option>
@@ -30,15 +30,14 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>User ID:</label>
+                        <label for="employeeId">User ID:</label>
                         <input type="text" id="employeeId" class="id-input">
-                    </div>
-                    <div class="input-group">
-                        <label>Email:</label>
-                        <input type="email" id="employeeEmail" class="email-input">
                     </div>
                     <div class="search-btn-container">
                         <button class="search-btn" onclick="searchEmployees()">Search</button>
+                    </div>
+                    <div class="search-btn-container">
+                        <button class="search-btn" onclick="resetEmployees()">Reset</button>
                     </div>
                 </div>
             </div>
@@ -212,6 +211,75 @@
             })
             .catch(error => showNotification('An unexpected error occurred', 'error'));
         }
+
+        function searchEmployees() {
+    const role = document.getElementById('employeeRole').value;
+    const userID = document.getElementById('employeeId').value;
+
+    // Validate input before sending
+    if (!role && !userID) {
+        showNotification("Please provide a role or user ID", 'error');
+        return;
+    }
+
+    console.log("Sending:", { role, userID });
+
+    fetch('<?=ROOT?>/public/adminEmployees/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            role: role || null, 
+            userID: userID || null 
+        })
+    })
+    .then(response => {
+        // Log the raw response for debugging
+        console.log('Raw response:', response);
+
+        // Check content type before parsing
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            return response.text().then(text => {
+                console.error('Non-JSON response:', text);
+                throw new Error('Expected JSON, received: ' + text);
+            });
+        }
+
+        if (!response.ok) {
+            return response.json().catch(() => {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            });
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log("Received:", result);
+        if (result.success) {
+            const tableBody = document.getElementById('employeeTableBody');
+            tableBody.innerHTML = result.employees.map(employee => `
+                <tr>
+                    <td>${employee.userID}</td>
+                    <td>${employee.username}</td>
+                    <td>${employee.firstName}</td>
+                    <td>${employee.lastName}</td>
+                    <td>${employee.role}</td>
+                    <td>${employee.phone}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.createdAt}</td>
+                </tr>
+            `).join('');
+        } else {
+            showNotification(result.message || "Search failed", 'error');
+        }
+    })
+    .catch(error => {
+        console.error("Fetch error:", error);
+        showNotification(error.message || "An unexpected error occurred", 'error');
+    });
+}
+
     </script>
 </body>
 </html>

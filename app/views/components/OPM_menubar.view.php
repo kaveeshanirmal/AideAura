@@ -2,7 +2,7 @@
 <script src="<?=ROOT?>/public/assets/js/menubar.js"></script>
 <div class="menubar">
 <div class="menubar-header">
-        <img src="<?=ROOT?>/public/assets/images/" alt="Profile" class="profile-image">
+        <img src="<?=ROOT?>/public/assets/images/profile2.jpg" alt="Profile" class="profile-image">
         <div class="profile-info">
             <h4>Medawa Upul</h4>
             </div>
@@ -15,7 +15,7 @@
             <li><a href="<?=ROOT?>/public/opmComplaintManagement"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Complaints </a></li>
         </ul>
     </div>
-    <a href="<?=ROOT?>/public/login" class="logout">
+    <a href="<?=ROOT?>/public/login/logout" class="logout">
         <img src="<?=ROOT?>/public/assets/images/logout-icon.png" alt=""> Logout
     </a>         
 </div>

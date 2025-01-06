@@ -84,6 +84,15 @@
     margin-right: 15px;
 }
 
+.menubar-header img{
+    max-width: 60px;  /* Limit image width */
+    max-height: 100px; /* Limit image height */
+    width: 60px;      /* Fixed width */
+    height: 61px;     /* Fixed height */
+    object-fit: cover; /* Ensures image covers area without distortion */
+    border-radius: 50%;
+}
+
 .menu-items a.active {
     background-color: #FFE4B5;
 }

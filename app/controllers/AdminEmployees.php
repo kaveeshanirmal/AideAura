@@ -12,7 +12,7 @@ public function index() {
 
     // Filter employees based on allowed roles
     $filteredEmployees = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-        return in_array($employee->role, $allowedRoles); // Access object property using '->'
+        return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
     });
 
     if (!$filteredEmployees) {
@@ -82,7 +82,7 @@ public function index() {
             $employeeModel = new UserModel();
             
             // Attempt deletion
-            $success = $employeeModel->deleteEmployee($data['userID']);
+            $success = $employeeModel->softDeleteEmployee($data['userID']);
             
             if ($success === false) {
                 throw new Exception('Database deletion failed');
@@ -114,5 +114,53 @@ public function index() {
         }
         exit; // Ensure no additional output
     }
+
+    public function search() {
+        header('Content-Type: application/json');
+    
+        try {
+            // Decode the JSON input from the request body
+            $data = json_decode(file_get_contents('php://input'), true);
+    
+            // Validate and extract filters from the input
+            $filters = [
+                'role' => !empty($data['role']) ? trim($data['role']) : null,
+                'userID' => !empty($data['userID']) ? trim($data['userID']) : null
+            ];
+    
+            // Ensure at least one filter is provided
+            if (empty($filters['role']) && empty($filters['userID'])) {
+                throw new Exception('At least one filter (role or userID) must be provided.');
+            }
+    
+            $userModel = new UserModel();
+            $employees = $userModel->searchEmployees($filters);
+    
+            echo json_encode([
+                'success' => true,
+                'employees' => $employees
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400); // Bad request
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+// I was add some comments to the code
+        exit; // Ensure no further output
+    }
+    
+
+
+    // $userModel = new UserModel();
+
+    // // Pass filters as an associative array
+    // $filters = [
+    //     'role' => $role,
+    //     'userID' => $userID
+    // ];
+
+    // $employees = $userModel->searchEmployees($filters);
+    
 }
-?>

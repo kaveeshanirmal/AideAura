@@ -13,7 +13,7 @@
         <div class="main-content">
             <div class="dashboard-container">
                 <div class="scheduling-controls">
-                <div class="field-group">
+                <!-- <div class="field-group">
                     <label for="worker-field">Select the Worker Field:</label>        
                     <select id="worker-field" class="field-input field-select">
                         <option value="cleaner" selected>Cleaner</option>
@@ -21,14 +21,14 @@
                         <option value="nanny">Nanny</option>
                         <option value="allRounder">All Rounder</option>
                     </select>
-                </div>
+                </div> -->
 
                     <div class="field-group">
                         <label>Worker ID : </label>
                         <input type="number" value="" class="field-input">
                     </div>
 
-                    <button class="schedule-btn" id="view-schedule-btn">View Schedule</button>
+                    <button class="schedule-btn" id="view-schedule-btn">see worker schedule</button>
                     
                     <div class="view-controls">
                         <button class="view-btn">Days</button>
@@ -162,7 +162,7 @@
         </div>
         <div class="worker-details-container" id="worker-details">
                     <div class="customer-match-section">
-                        <div class="field-group">
+                        <div class="field-group1">
                             <label for="customer-id">Customer ID:</label>
                             <input type="number" id="customer-id" class="field-input">
                         </div>
