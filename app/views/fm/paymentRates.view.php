@@ -10,7 +10,7 @@
 
 <!-- Navbar -->
 <div class="dashboard-container">
-    <?php include(ROOT_PATH . '/app/views/components/accountant_navbar.view.php'); ?>
+    <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
  <!-- Main Content -->
  <main class="main-content">
         <!-- Table Section -->
