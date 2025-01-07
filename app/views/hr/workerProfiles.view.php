@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <main class="main-content">
             <div class="search-container">
                     <label for="workerField">Select the Worker Field:</label>

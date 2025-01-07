@@ -11,7 +11,7 @@
 <!-- Navbar -->
 <div class="dashboard-container">
     <!-- Sidebar -->
-    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+    <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
     <!-- Main Content -->
     <main class="main-content">
         <!-- Table Section -->

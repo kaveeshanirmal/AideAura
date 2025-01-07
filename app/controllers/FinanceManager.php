@@ -4,7 +4,7 @@ class FinanceManager extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('fm/accountantPaymentHistory');
+        $this->view('fm/paymentHistory');
     }
 
     public function paymentHistory()

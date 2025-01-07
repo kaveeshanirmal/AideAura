@@ -105,7 +105,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <main class="main-content">
             <div class="search-container">
                 <label for="worker-field">Select the Worker Field:</label>

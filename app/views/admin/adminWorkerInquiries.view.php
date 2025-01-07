@@ -46,7 +46,7 @@
     </div>
 
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="container">
             <div class="main-content">
                 <div class="filters-container">

@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-    <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
     <main class="main-content">
             <div class="back-header">
                 <a href="workers" class="back-button">‹</a>

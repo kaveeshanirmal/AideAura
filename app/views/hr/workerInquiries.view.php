@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <!-- Navbar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="main-content">
             <div class="dashboard-container">
                 <!-- Tabs Section -->

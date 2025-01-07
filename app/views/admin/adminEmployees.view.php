@@ -11,7 +11,7 @@
     <!-- Notification container -->
     <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="main-content">
             <div class="employee-details">
                 <button class="add-employee-btn">
