@@ -19,6 +19,7 @@ class App
         ],
 
         'hrManager' => [
+            'HrManager' => ['index', 'workerInfo', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
             'HRverificationRequest'=> ['index'],
             'HRworkerSchedules' => ['index'],
             'HRworkerProfileSchedule' => ['index'],

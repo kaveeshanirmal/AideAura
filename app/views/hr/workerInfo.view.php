@@ -11,7 +11,7 @@
         <?php include(ROOT_PATH . '/app/views/components/HR_navbar.view.php');  ?>
         <main class="main-content">
             <div class="back-header">
-                <a href="hrWorkerProfileManagement" class="back-button">‹</a>
+                <a href="HrManager" class="back-button">‹</a>
                 <div class="worker-header">
                     <div class="worker-avatar">
                         <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker Avatar">
@@ -99,8 +99,8 @@
 
             <div class="action-buttons">
                 <button class="btn update" onclick="openUpdateModal()">Update</button>
-                <button class="btn schedule"><a href="hrWorkerProfileSchedule">Availability schedule</a></button>
-                <button class="btn certificates"><a href="hrWorkerProfileManagement2">Certificates</a></button>
+                <button class="btn schedule"><a href="<?=ROOT?>/public/HrManager/availabilitySchedule">Availability schedule</a></button>
+                <button class="btn certificates"><a href="<?=ROOT?>/public/HrManager/workerCertificates">Certificates</a></button>
             </div>
 
             <!-- Update Modal -->
