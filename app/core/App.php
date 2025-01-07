@@ -20,20 +20,10 @@ class App
 
         'hrManager' => [
             'HrManager' => ['index', 'workerInfo', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
-            'HRverificationRequest'=> ['index'],
-            'HRworkerSchedules' => ['index'],
-            'HRworkerProfileSchedule' => ['index'],
-            'HRworkerProfileManagement1' => ['index'],
-            'HRworkerProfileManagement2'=> ['index'],
-            'HRworkerProfileManagement' => ['index'],
-            'HRworkerInquiries' => ['index'],
         ],
 
         'opManager' => [
-            'OPMcomplaintManagement' => ['index'],
-            'OPMworkerSchedules' => ['index'],
-            'OPMspecialRequests' => ['index'],
-
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
         ],
         
         'financeManager' => [
