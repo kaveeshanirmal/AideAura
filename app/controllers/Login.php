@@ -45,7 +45,7 @@ class Login extends Controller
                 } elseif ($role === 'hrManager') {
                     header('Location: ' . ROOT . '/public/HrManager');
                 } elseif ($role === 'opManager') {
-                    header('Location: ' . ROOT . '/public/OPMcomplaintManagement');
+                    header('Location: ' . ROOT . '/public/OpManager');
                 } elseif ($role === 'financeManager') {
                     header('Location: ' . ROOT . '/public/FinanceManager');
                 }
