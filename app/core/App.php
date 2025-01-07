@@ -19,6 +19,7 @@ class App
         ],
 
         'hrManager' => [
+            'HrManager' => ['index', 'workerInfo', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
             'HRverificationRequest'=> ['index'],
             'HRworkerSchedules' => ['index'],
             'HRworkerProfileSchedule' => ['index'],
@@ -36,10 +37,7 @@ class App
         ],
         
         'financeManager' => [
-            'AccountantPaymentHistory' => ['index'],
-            'AccountantPaymentIssues' => ['index'],
-            'AccountantPayrate' => ['index'],
-            'AccountantReports' => ['index'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'paymentIssues', 'reports'],
         ],
 
         'customer'=> [

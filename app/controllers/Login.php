@@ -41,13 +41,13 @@ class Login extends Controller
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'admin') {
                     // Admin and other dashboards
-                    header('Location: ' . ROOT . '/public/Admin/adminReports');
+                    header('Location: ' . ROOT . '/public/Admin');
                 } elseif ($role === 'hrManager') {
-                    header('Location: ' . ROOT . '/public/HRworkerProfileManagement');
+                    header('Location: ' . ROOT . '/public/HrManager');
                 } elseif ($role === 'opManager') {
                     header('Location: ' . ROOT . '/public/OPMcomplaintManagement');
                 } elseif ($role === 'financeManager') {
-                    header('Location: ' . ROOT . '/public/AccountantReports');
+                    header('Location: ' . ROOT . '/public/FinanceManager');
                 }
             } else {
                 // Handle invalid login attempt

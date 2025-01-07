@@ -15,10 +15,10 @@
             <div class="dashboard-container">
            <div class="back-header">
                 <button class="back-button">
-                    <span class="back-icon"><a href="hrWorkerProfileManagement1" class="back-button"> < </a>
+                    <span class="back-icon"><a href="HrManager" class="back-button"> < </a>
                     </span>
                 </button>
-                <div class="profile-header"><a href="hrWorkerProfileManagement1">
+                <div class="profile-header"><a href="HrManager">
                     <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile Icon" class="profile-icon">
                     <div class="profile-info">
                         <h2>MR. Kamal Rupasinghe</h2>
@@ -65,6 +65,5 @@
                 </div>
             </div>
         </div>
-    </div>
 </body>
 </html>

@@ -23,7 +23,6 @@
 
             <div class="workers-list">
                 <?php
-                // Assuming you have a database connection and query to fetch workers
                 $workers = [
                     ['name' => 'MR. Kamal Rupasinghe', 'role' => 'Cleaner'],
                     ['name' => 'MR. Saman Athapaththu', 'role' => 'Cook'],
@@ -33,11 +32,10 @@
                     ['name' => 'MR. Saman Athapaththu', 'role' => 'Cook'],
                     ['name' => 'MRS. Nadeeshani Gamage', 'role' => 'Nanny'],
                     ['name' => 'MR. Chathura Amarathunga', 'role' => 'All Rounder']
-                    // Add more workers as needed
                 ];
 
                 foreach ($workers as $worker) {
-                    echo '<div class="worker-card">  <a href="hrWorkerProfileManagement1">';
+                    echo '<div class="worker-card"> <a href="' . ROOT . '/public/HrManager/workerInfo">';
                     echo '<div class="worker-info">';
                     echo '<div class="worker-avatar">';
                     echo '<img src="' . ROOT . '/public/assets/images/user_icon.png" alt="Worker Avatar">';                    echo '</div>';
