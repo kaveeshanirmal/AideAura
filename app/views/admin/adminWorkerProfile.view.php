@@ -38,48 +38,19 @@
                             </a>
                         </div>
                     `;
-                    workersList.innerHTML += workerCard;
+                    workersList.innerHTML += workerCard; 
                 });
 
-                // Add click event listener to each worker card
                 document.querySelectorAll('.worker-card').forEach(card => {
-                    card.addEventListener('click', function (event) {
-                        event.preventDefault();
+            card.addEventListener('click', function (event) {
+                event.preventDefault();
+                const userID = this.dataset.userID;
 
-                        // Create a form and submit it
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '<?= htmlspecialchars(ROOT) ?>/public/admin/workerDetails';
+                // Redirect to the URL with the userID as a query parameter
+                window.location.href = '<?= htmlspecialchars(ROOT) ?>/public/admin/workerDetails?userID=' + encodeURIComponent(userID);
+            });
+        });
 
-                        const firstNameInput = document.createElement('input');
-                        firstNameInput.type = 'hidden';
-                        firstNameInput.name = 'firstName';
-                        firstNameInput.value = this.dataset.firstname;
-
-                        const lastNameInput = document.createElement('input');
-                        lastNameInput.type = 'hidden';
-                        lastNameInput.name = 'lastName';
-                        lastNameInput.value = this.dataset.lastname;
-
-                        const roleInput = document.createElement('input');
-                        roleInput.type = 'hidden';
-                        roleInput.name = 'role';
-                        roleInput.value = this.dataset.role;
-
-                        const imageInput = document.createElement('input');
-                        imageInput.type = 'hidden';
-                        imageInput.name = 'image';
-                        imageInput.value = '<?= htmlspecialchars(ROOT) ?>/public/assets/images/user_icon.png';
-
-                        form.appendChild(firstNameInput);
-                        form.appendChild(lastNameInput);
-                        form.appendChild(roleInput);
-                        form.appendChild(imageInput);
-
-                        document.body.appendChild(form);
-                        form.submit();
-                    });
-                });
             } else {
                 workersList.innerHTML = '<p>No workers found.</p>';
             }
@@ -102,6 +73,7 @@
         renderWorkers(workers);
     });
 </script>
+
 </head>
 <body>
     <div class="dashboard-container">

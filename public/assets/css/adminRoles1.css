@@ -81,7 +81,7 @@
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     width: 100%;
     max-width: 300px;
 }
@@ -94,7 +94,7 @@
     width: 100%;
     min-height: 150px;
     resize: vertical;
-    background-color: #F0F0F0;
+    background-color: #FFF;
 }
 
 .form-actions {
@@ -104,7 +104,7 @@
 }
 
 .add-btn {
-    background-color: #E6E6E6;
+    background-color: #00FF1A;
     color: black;
     padding: 10px 40px;
     border: none;
@@ -121,7 +121,7 @@
 }
 
 .add-btn:hover {
-    background-color: #D4D4D4;
+    background-color:  #4CAF50;
 }
 
 /* Form Input Focus States */
@@ -135,6 +135,27 @@
 .form-input,.form-textarea {
     max-width: 95%;
  }
+
+/* Image Upload Input Style */
+.file-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #FFF;
+    max-width: 95%;
+}
+
+.file-input:focus {
+    outline: none;
+    border-color: #FF6B00;
+    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+}
+
+#file-upload-button {
+    font-size: 15px;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -154,5 +175,9 @@
 
     .form-input,.form-textarea {
        max-width: 95%;
+    }
+
+    .file-input {
+        max-width: 95%;
     }
 }

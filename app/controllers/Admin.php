@@ -3,6 +3,7 @@
 class Admin extends Controller
 {
     private $customerComplaintModel;
+    private $workerClicked = [];
 
     public function __construct()
     {
@@ -37,6 +38,8 @@ class Admin extends Controller
         $filteredWorkers = []; // Ensuring the variable is always an array
     }
 
+    $workerClicked = $filteredWorkers;
+
     // Dynamically update roles for filtered workers 
     $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
 
@@ -59,29 +62,36 @@ private function assignDynamicRoles($filteredWorkers)
 
 public function workerDetails()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Sanitize and retrieve worker details from POST request
-        $workerData = [
-            'firstName' => htmlspecialchars($_POST['firstName']),
-            'lastName' => htmlspecialchars($_POST['lastName']),
-            'role' => htmlspecialchars($_POST['role']),
-            'image' => htmlspecialchars($_POST['image']),
-        ];
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        // Retrieve userID from the query parameters
+        $userID = $_GET['userID'] ?? null;
 
-        // Example: Log the data or store it in the database
-        error_log("Worker Data: " . json_encode($workerData));
+        if ($userID) {
+            // Search for the worker in the workerClicked array
+            $worker = array_filter($this->workerClicked, function ($w) use ($userID) {
+                return $w->userID == $userID;
+            });
 
-        // Store or process the data as needed
-        // Example: Redirect to another view or render worker details
-        $this->view('admin/adminWorkerProfile1', ['worker' => $workerData]);
+            // If a worker is found, pass it to the view
+            if (!empty($worker)) {
+                $worker = reset($worker); // Get the first matching worker
+                $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
+            } else {
+                // Handle case where no worker is found
+                http_response_code(404);
+                echo "Worker not found.";
+            }
+        } else {
+            // Handle case where userID is not provided
+            http_response_code(400);
+            echo "User ID is missing.";
+        }
     } else {
-        // Handle invalid request
+        // Handle invalid request method
         http_response_code(405);
-        echo "Method Not Allowed";
+        echo "Method Not Allowed.";
     }
 }
-
-
 
     // public function worker1()
     // {
@@ -104,13 +114,70 @@ public function workerDetails()
 
     public function workerRoles()
     {
-        $this->view('admin/adminRoles');
+
+        $workerRoleModel = new WorkerRoleModel();
+        $allRoles = $workerRoleModel->getAllRoles(); // Fetch all Workers from the database
+        error_log("Workers in controller: " . json_encode($allRoles));    
+        $this->view('admin/adminRoles',['roles'=> $allRoles]);
     }
 
     public function workerRoles1()
     {
         $this->view('admin/adminRoles1');
     }
+
+    public function addRole()
+{
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $roleName = $_POST['roleName'];
+        $roleDescription = $_POST['roleDescription'];
+        $fileName = ''; // Initialize variable for file name
+
+        // Handle the uploaded image
+        if (isset($_FILES['roleImage']) && $_FILES['roleImage']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
+            $fileTmpPath = $_FILES['roleImage']['tmp_name'];
+            $fileName = basename($_FILES['roleImage']['name']);
+            $uploadFilePath = $uploadDir . $fileName;
+
+            // Check and create upload directory if it doesn't exist
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Move uploaded file to the destination
+            if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                echo "File uploaded successfully.<br>";
+            } else {
+                echo "Error uploading the file.<br>";
+                $fileName = ''; // Clear file name on error
+            }
+        } else {
+            echo "No file uploaded or an error occurred.<br>";
+        }
+
+        // Prepare data for database insertion
+        $roleData = [
+            'name' => $roleName,
+            'description' => $roleDescription,
+            'image' => 'public/assets/images/roles/' . $fileName, // Store relative path
+        ];
+
+        // Insert the role using WorkerRoleModel
+        $workerRoleModel = new WorkerRoleModel(); // Assuming proper inclusion and instantiation
+        $insertStatus = $workerRoleModel->insertRole($roleData);
+
+        if ($insertStatus) {
+            echo "Role successfully added.<br>";
+        } else {
+            echo "Failed to add role.<br>";
+        }
+    } else {
+        echo "Invalid request method.";
+    }
+}
+
 
     public function paymentRates()
     {
