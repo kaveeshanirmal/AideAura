@@ -93,11 +93,10 @@ public function workerDetails()
     }
 }
 
-    // public function worker1()
-    // {
+    public function worker1()
 
-    //     $this->view('admin/adminWorkerProfile1');
-    // }
+        $this->view('admin/adminWorkerProfile1');
+    }
     public function worker2()
     {
         $this->view('admin/adminWorkerProfile2');

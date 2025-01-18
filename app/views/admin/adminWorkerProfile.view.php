@@ -25,7 +25,7 @@
                 filteredWorkers.forEach(worker => {
                     const workerCard = `
                         <div class="worker-card" data-firstname="${worker.firstName}" data-lastname="${worker.lastName}" data-role="${worker.role}">
-                            <a href="workerDetails">
+                            <a href="<?=ROOT?>/public/admin/worker1">
                                 <div class="worker-info">
                                     <div class="worker-avatar">
                                         <img src="<?= htmlspecialchars(ROOT) ?>/public/assets/images/user_icon.png" alt="Worker Avatar">
@@ -47,7 +47,7 @@
                 const userID = this.dataset.userID;
 
                 // Redirect to the URL with the userID as a query parameter
-                window.location.href = '<?= htmlspecialchars(ROOT) ?>/public/admin/workerDetails?userID=' + encodeURIComponent(userID);
+                window.location.href = '<?= htmlspecialchars(ROOT) ?>/public/admin/worker1';
             });
         });
 
