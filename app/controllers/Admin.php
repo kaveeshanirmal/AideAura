@@ -94,6 +94,7 @@ public function workerDetails()
 }
 
     public function worker1()
+    {
 
         $this->view('admin/adminWorkerProfile1');
     }
