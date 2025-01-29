@@ -11,7 +11,6 @@
             <li><a href="<?=ROOT?>/public/workerProfile/personalInfo"><img src="<?=ROOT?>/public/assets/images/personal-info-icon.png" alt=""> Personal Info</a></li>
             <li><a href="<?=ROOT?>/public/workerVerification/verificationStatus"><img src="<?=ROOT?>/public/assets/images/verification-icon.png" alt=""> Verification Status</a></li>
             <li><a href="<?=ROOT?>/public/workerProfile/workingSchedule"><img src="<?=ROOT?>/public/assets/images/calender-icon.png" alt=""> Working Schedule</a></li>
-            <li><a href="<?=ROOT?>/public/workerProfile/paymentHistory"><img src="<?=ROOT?>/public/assets/images/payment-history-icon.png" alt="">Payment History</a></li>
             <li><a href="<?=ROOT?>/public/workerProfile/faq"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt="">Help</a></li>
         </ul>
     </div>

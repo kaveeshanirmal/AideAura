@@ -7,7 +7,7 @@ class VerificationRequestModel
     // Constructor to set the table name
     public function __construct()
     {
-        $this->setTable('verification_requests'); // Assume your table name is `verification_requests`
+        $this->setTable('verification_requests'); 
     }
 
 

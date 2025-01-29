@@ -19,6 +19,7 @@ Trait Model
     public function all()
     {
         $query = "SELECT * FROM {$this->table}";
+        error_log("Executing query: " . $query);
         return $this->get_all($query);
     }
 
@@ -27,6 +28,13 @@ Trait Model
     {
         $query = "SELECT * FROM {$this->table} WHERE {$id_column} = :id LIMIT 1";
         return $this->get_row($query, ['id' => $id]);
+    }
+
+    // Select all rows with a specific column value
+    public function get($id, $id_column = 'id')
+    {
+        $query = "SELECT * FROM {$this->table} WHERE {$id_column} = :id";
+        return $this->get_all($query, ['id' => $id]);
     }
 
     // Insert a new row into the table
@@ -75,4 +83,13 @@ Trait Model
         $query = "DELETE FROM {$this->table} WHERE {$id_column} = :id";
         return $this->query($query, ['id' => $id]);
     }
+
+    // Soft delete a row from the table
+    public function softDelete($id, $id_column = 'id', $isDelete = 'isDelete')
+    {
+    $query = "UPDATE {$this->table} SET {$isDelete} = 1 WHERE {$id_column} = :id";
+    return $this->query($query, ['id' => $id]);
+    }
+
 }
+

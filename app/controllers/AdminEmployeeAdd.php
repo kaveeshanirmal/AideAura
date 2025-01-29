@@ -20,28 +20,20 @@ class AdminEmployeeAdd extends Controller
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            header('Content-Type: application/json'); // Ensure JSON response
             $_POST = filter_input_array(INPUT_POST);
-
-            // Determine the role (e.g., 'worker' or 'customer') based on the form input
-            $role = trim($_POST['role']);
-            
-            // Prepare data based on the role
+    
             $data = [
                 'firstName' => trim($_POST['firstName']),
                 'lastName' => trim($_POST['lastName']),
                 'username' => trim($_POST['username']),
-                'email' => trim($_POST['email']),
                 'phone' => trim($_POST['phone']),
+                'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
-                'address' => trim($_POST['address']),
+                'role' => trim($_POST['role']),
             ];
 
-            // For workers, include the services they offer
-            if ($role === 'worker' && isset($_POST['servicesOffer'])) {
-                $data['servicesOffer'] = $_POST['servicesOffer']; // Array of job roles
-            }
-
-            $result = $this->userModel->register($data, $role); // Register the user
+            $result = $this->userModel->registerEmployee($data);
 
             if ($result) {
                 echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);

@@ -83,7 +83,7 @@ a {
 }
 
 .form-group label {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     color: #333;
 }
@@ -92,7 +92,7 @@ a {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     width: 85%;
     margin: 0% 5% 0% 5%;
 }
@@ -169,7 +169,7 @@ a {
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        margin: 30% 3% 3% 3%;    
+        margin: 15% 5% 5% 5%;    
     }
 
     .employee-form-container {

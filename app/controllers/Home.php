@@ -25,7 +25,7 @@ class Home extends Controller
                 $this->view('workerDashboard');
             else
                 // redirect to the worker verification controller
-                header('Location: ' . ROOT . '/public/workerVerification');
+                header('Location: ' . ROOT . '/public/workerVerification/verificationStatus');
                 
         } else {
             // login page

@@ -6,11 +6,4 @@ class ResetPassword extends Controller
     {
         $this->view('resetpassword');
     }
-
-    public function edit($a = '', $b = '', $c = '')
-    {
-        $this->view('resetpassword');
-    }
-
-    
 }

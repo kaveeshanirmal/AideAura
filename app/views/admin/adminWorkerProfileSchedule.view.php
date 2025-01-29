@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Worker Scheduling</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/hrWorkerProfileSchedule.css">
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerProfileSchedule.css">
 </head>
 <body>
     <div class="container">
         <!-- Navbar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="main-content">
             <div class="dashboard-container">
                 <div class="scheduling-controls">
                 <button class="back-button">
-                    <span class="back-icon"><a href="adminWorkerProfile1" class="back-button">  < </a>
+                    <span class="back-icon"><a href="worker1" class="back-button">  < </a>
                     </span>
                 </button>
                     <div class="view-controls">

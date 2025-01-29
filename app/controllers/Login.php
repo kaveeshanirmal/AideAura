@@ -33,13 +33,21 @@ class Login extends Controller
                 $_SESSION['isVerified'] = isset($user->isVerified) ? $user->isVerified : null;
 
                 // Redirect based on user role
+                // 'admin','hrManager','opManager','financeManager','customer','worker'
+
                 if ($role === 'customer') {
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'worker') {
                     header('Location: ' . ROOT . '/public/home');
-                } else {
+                } elseif ($role === 'admin') {
                     // Admin and other dashboards
-                    header('Location: ' . ROOT . '/public/AdminReports');
+                    header('Location: ' . ROOT . '/public/Admin');
+                } elseif ($role === 'hrManager') {
+                    header('Location: ' . ROOT . '/public/HrManager');
+                } elseif ($role === 'opManager') {
+                    header('Location: ' . ROOT . '/public/OpManager');
+                } elseif ($role === 'financeManager') {
+                    header('Location: ' . ROOT . '/public/FinanceManager');
                 }
             } else {
                 // Handle invalid login attempt

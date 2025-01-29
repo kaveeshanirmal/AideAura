@@ -39,10 +39,10 @@
             <!-- Submit Issue Form -->
             <section class="submit-issue">
                 <h2>Submit an Issue</h2>
-                <form action="<?=ROOT?>/submit-issue" method="POST">
+                <form class="issue-form" action="<?=ROOT?>/public/customerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="issue-type">Issue Type</label>
-                        <select id="issue-type" name="issue_type" required>
+                        <select id="issue-type" name="issue" required>
                             <option value="">Select an Issue Type</option>
                             <optgroup label="General Issues">
                                 <option value="general-inquiry">
@@ -153,6 +153,38 @@
                 </form>
             </section>
 
+            <!-- Your complaints section -->
+            <section class="complaint-status">
+            <h2>Your Complaints</h2>
+            <div class="complaint-cards-container">
+                <?php if (!empty($complaints)): ?>
+                    <?php foreach ($complaints as $complaint): ?>
+                        <div class="complaint-card <?= htmlspecialchars($complaint->status) ?>" 
+                            data-status="<?= htmlspecialchars($complaint->status) ?>">
+                            <h3>Complaint ID: <?= htmlspecialchars($complaint->complaintID) ?></h3>
+                            <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
+                            <?php if ($complaint->status === 'Resolved'): ?>
+                                <button class="view-solution-btn" 
+                                        data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                        onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                    View Solution
+                                </button>
+                                <div class="solution" 
+                                    id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                    style="display: none;">
+                                    <p id="solution-tag"></p>
+                                </div>
+                            <?php else: ?>
+                                <p class="pending-message">Your complaint is being processed.</p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No complaints found.</p>
+                    <?php echo isset($complaints)?>
+                <?php endif; ?>
+            </div>
+            </section>
             <!-- Knowledge Base Section -->
             <section class="knowledge-base">
                 <h2>Knowledge Base</h2>
@@ -178,121 +210,86 @@
 
         <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 
-        <style>
-            .helpdesk-container {
-                padding: 20px;
-                max-width: 1200px;
-                margin: auto;
-                font-family: Arial, sans-serif;
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const issueTypeSelect = document.getElementById("issue-type");
+                const form = document.querySelector(".issue-form");
+
+                // Create a hidden input field to hold the optgroup label
+                const optgroupLabelInput = document.createElement("input");
+                optgroupLabelInput.type = "hidden";
+                optgroupLabelInput.name = "issue-type";
+                form.appendChild(optgroupLabelInput);
+
+                // Listen for changes in the select dropdown
+                issueTypeSelect.addEventListener("change", function () {
+                    const selectedOption = issueTypeSelect.options[issueTypeSelect.selectedIndex];
+                    const optgroup = selectedOption.parentElement;
+
+                    // Set the value of the hidden input to the optgroup label
+                    if (optgroup.tagName === "OPTGROUP") {
+                        optgroupLabelInput.value = optgroup.label;
+                        console.log("Optgroup: ", optgroup.label);
+                    } else {
+                        optgroupLabelInput.value = ""; // Clear if no optgroup
+                        console.log("No Optgroup");
+                    }
+                });
+            });
+
+            function toggleSolution(complaintId) {
+                const solutionElement = document.getElementById(`solution-${complaintId}`);
+                
+                if (solutionElement.style.display === "none") {
+                    fetch(`<?=ROOT?>/public/customerHelpDesk/getSolution/${encodeURIComponent(complaintId)}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        solutionElement.textContent = data.solution;
+                        solutionElement.style.display = "block";
+                    })
+                    .catch(error => {
+                        console.error('Error fetching solution:', error);
+                    });
+                } else {
+                    solutionElement.style.display = "none";
+                }
             }
 
-            h1,
-            h2 {
-                color: #333;
-            }
+            document.addEventListener("DOMContentLoaded", function () {
+                const overlay = document.getElementById("overlay-message");
+                const closeBtn = document.getElementById("overlay-close-btn");
 
-            .contact-section {
-                margin-bottom: 30px;
-            }
+                // Show the overlay if a session message exists
+                if (overlay && overlay.textContent.trim() !== "") {
+                    overlay.classList.remove("hidden");
+                }
 
-            .contact-methods {
-                display: flex;
-                gap: 20px;
-            }
+                // Close the overlay and clear the session message when the "Okay" button is clicked
+                closeBtn.addEventListener("click", function () {
+                    overlay.classList.add("hidden");
 
-            .contact-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                background: #f9f9f9;
-                padding: 10px 15px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
+                    // Clear the session message on the server side
+                    fetch("<?= ROOT ?>/public/customerHelpDesk/clearSessionMessage")
+                        .then(response => {
+                            if (!response.ok) {
+                                console.error("Failed to clear session message.");
+                            }
+                        })
+                        .catch(error => console.error("Error clearing session message:", error));
+                });
+            });
 
-            .contact-item img {
-                width: 30px;
-            }
+        </script>
+        <?php if (isset($_SESSION['complaint_message'])): ?>
+            <div id="overlay-message" class="overlay hidden">
+                <div class="overlay-content">
+                    <p id="overlay-text">
+                        <?= isset($_SESSION['complaint_message']) ? htmlspecialchars($_SESSION['complaint_message']) : ''; ?>
+                    </p>
+                    <button id="overlay-close-btn">Okay</button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-            .submit-issue {
-                margin-bottom: 30px;
-                background: #f4f4f4;
-                padding: 20px;
-                border-radius: 5px;
-            }
-
-            .submit-issue .form-group {
-                margin-bottom: 15px;
-            }
-
-            .submit-issue label {
-                display: block;
-                margin-bottom: 5px;
-            }
-
-            .submit-issue input,
-            .submit-issue textarea,
-            .submit-issue select {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 14px;
-            }
-
-            .submit-btn {
-                background-color: #4caf50;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .submit-btn:hover {
-                background-color: #45a049;
-            }
-
-            .knowledge-base {
-                background: #e7f3ff;
-                padding: 20px;
-                border-radius: 5px;
-            }
-
-            .kb-articles {
-                display: flex;
-                gap: 20px;
-                flex-wrap: wrap;
-            }
-
-            .kb-article {
-                background: white;
-                padding: 15px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                flex: 1;
-                min-width: 250px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .kb-article h3 {
-                margin-bottom: 10px;
-                font-size: 18px;
-            }
-
-            .kb-article p {
-                margin-bottom: 10px;
-                font-size: 14px;
-            }
-
-            .kb-article a {
-                color: #007bff;
-                text-decoration: none;
-            }
-
-            .kb-article a:hover {
-                text-decoration: underline;
-            }
-        </style>
     </body>
 </html>

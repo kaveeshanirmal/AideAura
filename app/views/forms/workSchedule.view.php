@@ -149,7 +149,7 @@
         </div>
     </div>
 
-    <!-- After the Notes section -->
+    <!-- Add new Preference section -->
     <div class="preference-section">
         <label class="service-name">Preference</label>
         <div class="preference-container">
@@ -158,24 +158,9 @@
                 <span class="slider"></span>
             </label>
             <p class="preference-message">
-                If you HAVE a religious preference, the salary of the worker would be 10% more than the estimated shown salary.
-                In the Notes area mention your preference type if you have any.
+                If you HAVE a religious preference, the salary of the worker would be 10% more than the 
+                estimated shown salary. Mention the preference type in the Notes section.
             </p>
-        </div>
-    </div>
-
-    <!-- After the Preference section -->
-    <div class="agreement-section">
-        <div class="agreement-container">
-            <label class="agreement-checkbox">
-                <input type="checkbox" id="agreementCheck" checked>
-                <span class="checkmark"></span>
-            </label>
-            <div class="agreement-box">
-                <p class="agreement-message">
-                    I agree to pay Monthly salary of the worker through AideAura's online platform(s) only. The salary will be as shown here (approx.) and this includes 2 paid leaves per month which can be encashed if not taken by the worker.
-                </p>
-            </div>
         </div>
     </div>
 
