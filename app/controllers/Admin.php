@@ -127,56 +127,54 @@ public function workerDetails()
     }
 
     public function addRole()
-{
-    // Check if the form is submitted
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $roleName = $_POST['roleName'];
-        $roleDescription = $_POST['roleDescription'];
-        $fileName = ''; // Initialize variable for file name
-
-        // Handle the uploaded image
-        if (isset($_FILES['roleImage']) && $_FILES['roleImage']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
-            $fileTmpPath = $_FILES['roleImage']['tmp_name'];
-            $fileName = basename($_FILES['roleImage']['name']);
-            $uploadFilePath = $uploadDir . $fileName;
-
-            // Check and create upload directory if it doesn't exist
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            // Move uploaded file to the destination
-            if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
-                echo "File uploaded successfully.<br>";
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            header('Content-Type: application/json');
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+    
+            $roleName = trim($_POST['roleName']);
+            $roleDescription = trim($_POST['roleDescription']);
+            $fileName = '';
+    
+            // Handle file upload
+            if (isset($_FILES['roleImage']) && $_FILES['roleImage']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
+                $fileTmpPath = $_FILES['roleImage']['tmp_name'];
+                $fileName = uniqid() . '_' . basename($_FILES['roleImage']['name']);
+                $uploadFilePath = $uploadDir . $fileName;
+    
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+    
+                if (!move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to upload the image.']);
+                    exit;
+                }
             } else {
-                echo "Error uploading the file.<br>";
-                $fileName = ''; // Clear file name on error
+                echo json_encode(['status' => 'error', 'message' => 'No file uploaded or an error occurred.']);
+                exit;
+            }
+    
+            $roleData = [
+                'name' => $roleName,
+                'description' => $roleDescription,
+                'image' => 'public/assets/images/roles/' . $fileName,
+            ];
+    
+            $workerRoleModel = new WorkerRoleModel();
+            $insertStatus = $workerRoleModel->insertRole($roleData);
+    
+            if ($insertStatus) {
+                echo json_encode(['status' => 'success', 'message' => 'Role added successfully!']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to add role. Please try again.']);
             }
         } else {
-            echo "No file uploaded or an error occurred.<br>";
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
         }
-
-        // Prepare data for database insertion
-        $roleData = [
-            'name' => $roleName,
-            'description' => $roleDescription,
-            'image' => 'public/assets/images/roles/' . $fileName, // Store relative path
-        ];
-
-        // Insert the role using WorkerRoleModel
-        $workerRoleModel = new WorkerRoleModel(); // Assuming proper inclusion and instantiation
-        $insertStatus = $workerRoleModel->insertRole($roleData);
-
-        if ($insertStatus) {
-            echo "Role successfully added.<br>";
-        } else {
-            echo "Failed to add role.<br>";
-        }
-    } else {
-        echo "Invalid request method.";
-    }
-}
+        exit;
+    }    
 
 
     public function paymentRates()
