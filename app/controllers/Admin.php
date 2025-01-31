@@ -38,7 +38,7 @@ class Admin extends Controller
         $filteredWorkers = []; // Ensuring the variable is always an array
     }
 
-    $workerClicked = $filteredWorkers;
+    //$workerClicked = $filteredWorkers;
 
     // Dynamically update roles for filtered workers 
     $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
@@ -175,12 +175,42 @@ public function workerDetails()
         }
         exit;
     }    
-
-
+    
     public function paymentRates()
     {
-        $this->view('admin/adminPayrate');
+        $paymentRateModel = new PaymentRateModel();
+        $allRates = $paymentRateModel->getAllPaymentRates(); // Fetch all payment rateas from the database
+        $this->view('admin/adminPayrate',['rates'=>$allRates]);
     }
+
+    public function updatePaymentRates(){
+        try {
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if(!isset($data['ServiceID'])) {
+            throw new Exception('ServiceId is required');
+        }
+
+        $serviceID = $data['ServiceID'];
+        unset($data['ServiceID']);
+
+        $paymentRateModel = new PaymentRateModel();
+        $success = $paymentRateModel->updatePayrate($serviceID,$data);
+
+        header('Content-Type: application/json');
+            echo json_encode([
+                'success' => $success,
+                'message' => $success ? 'Payment rates updated successfully' : 'Failed to update payment rate.'
+            ]);
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+    }
+}
 
     public function paymentHistory()
     {
