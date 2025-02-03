@@ -116,37 +116,63 @@ function closeUpdateModal() {
 }
 
 function updateEmployee() {
-    const serviceID = document.getElementById('serviceIdInput').value;
-    const data = {
-        serviceID,
-        BasePrice: document.getElementById('basePriceInput').value,
-        BaseHours: document.getElementById('baseHoursInput').value,
-    };
-
-    fetch('<?=ROOT?>/public/admin/updatePaymentRates', {
+    // Get input elements
+    const serviceIdInput = document.getElementById('serviceIdInput');
+    const basePriceInput = document.getElementById('basePriceInput');
+    const baseHoursInput = document.getElementById('baseHoursInput');
+    
+    // Validate inputs exist
+    if (!serviceIdInput || !basePriceInput || !baseHoursInput) {
+        showNotification("Error: One or more input fields are missing.", 'error');
+        return;
+    }
+    
+    // Validate input values
+    const ServiceID = serviceIdInput.value.trim();
+    const BasePrice = parseFloat(document.getElementById('basePriceInput').value).toFixed(2);
+    const BaseHours = parseFloat(document.getElementById('baseHoursInput').value).toFixed(2);
+    
+    if (!ServiceID || isNaN(BasePrice) || isNaN(BaseHours)) {
+        showNotification("Please fill in all fields with valid numbers.", 'error');
+        return;
+    }
+    
+    const data = { ServiceID, BasePrice, BaseHours };
+    
+    // Show loading state
+    showNotification('Updating payment rates...', 'info');
+    
+    fetch('<?=ROOT?>/public/Admin/updatePaymentRates', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(async response => {
+        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.message || 'Server error');
+        }
+        return result;
+    })
     .then(result => {
         if (result.success) {
-            closeUpdateModal();
             showNotification('Payment rate updated successfully', 'success');
             setTimeout(() => location.reload(), 2000);
+            closeUpdateModal();
         } else {
-            showNotification('Failed to update payment rate', 'error');
+            showNotification('Payment Rates update failed', 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showNotification('Something went wrong', 'error');
+        showNotification('An unexpected error occurred', 'error');
     });
-
-    closeUpdateModal();
 }
+
+
 
 </script>
 </body>
