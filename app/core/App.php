@@ -13,7 +13,7 @@ class App
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
-            'AdminEmployees' => ['index', 'update', 'delete'],
+            'AdminEmployees' => ['index', 'update', 'delete' , 'search'],
 
             'AdminRoles1' => ['index', 'edit'],
         ],

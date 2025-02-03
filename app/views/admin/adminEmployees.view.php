@@ -163,6 +163,7 @@
         }
 
         function updateEmployee() {
+            try {
             const userID = document.getElementById('updateEmployeeId').value;
             const data = {
                 userID,
@@ -184,15 +185,18 @@
                 if (result.success) {
                     closeUpdateModal();
                     showNotification('Employee updated successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Update failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch{
+            (error => showNotification('An unexpected error occurred', 'error'));
+        }
         }
 
         function deleteEmployee(userID) {
+            try {
             if (!confirm('Are you sure you want to delete this employee?')) return;
 
             fetch('<?=ROOT?>/public/adminEmployees/delete', {
@@ -204,19 +208,22 @@
             .then(result => {
                 if (result.success) {
                     showNotification('Employee deleted successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Delete failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch {
+         (error => showNotification('An unexpected error occurred', 'error'));
         }
+    }
 
     // Global array to store all employees
     let allEmployees = [];
 
     // Function to load all employees initially
     function loadEmployees() {
+        try {
         fetch('<?=ROOT?>/public/adminEmployees/all')
             .then(response => response.json())
             .then(result => {
@@ -227,8 +234,10 @@
                     showNotification('Failed to load employees', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch {
+            (error => showNotification('An unexpected error occurred', 'error'));
     }
+}
 
     // Function to render the employee table
     function renderTable(employees) {

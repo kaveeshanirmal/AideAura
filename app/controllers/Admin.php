@@ -3,7 +3,6 @@
 class Admin extends Controller
 {
     private $customerComplaintModel;
-    private $workerClicked = [];
 
     public function __construct()
     {
@@ -38,8 +37,6 @@ class Admin extends Controller
         $filteredWorkers = []; // Ensuring the variable is always an array
     }
 
-    //$workerClicked = $filteredWorkers;
-
     // Dynamically update roles for filtered workers 
     $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
 
@@ -62,42 +59,35 @@ private function assignDynamicRoles($filteredWorkers)
 
 public function workerDetails()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        // Retrieve userID from the query parameters
-        $userID = $_GET['userID'] ?? null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Sanitize and retrieve worker details from POST request
+        $workerData = [
+            'firstName' => htmlspecialchars($_POST['firstName']),
+            'lastName' => htmlspecialchars($_POST['lastName']),
+            'role' => htmlspecialchars($_POST['role']),
+            'image' => htmlspecialchars($_POST['image']),
+        ];
 
-        if ($userID) {
-            // Search for the worker in the workerClicked array
-            $worker = array_filter($this->workerClicked, function ($w) use ($userID) {
-                return $w->userID == $userID;
-            });
+        // Example: Log the data or store it in the database
+        error_log("Worker Data: " . json_encode($workerData));
 
-            // If a worker is found, pass it to the view
-            if (!empty($worker)) {
-                $worker = reset($worker); // Get the first matching worker
-                $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
-            } else {
-                // Handle case where no worker is found
-                http_response_code(404);
-                echo "Worker not found.";
-            }
-        } else {
-            // Handle case where userID is not provided
-            http_response_code(400);
-            echo "User ID is missing.";
-        }
+        // Store or process the data as needed
+        // Example: Redirect to another view or render worker details
+        $this->view('admin/adminWorkerProfile1', ['worker' => $workerData]);
     } else {
-        // Handle invalid request method
+        // Handle invalid request
         http_response_code(405);
-        echo "Method Not Allowed.";
+        echo "Method Not Allowed";
     }
 }
 
-    public function worker1()
-    {
 
-        $this->view('admin/adminWorkerProfile1');
-    }
+
+    // public function worker1()
+    // {
+
+    //     $this->view('admin/adminWorkerProfile1');
+    // }
     public function worker2()
     {
         $this->view('admin/adminWorkerProfile2');
@@ -114,11 +104,7 @@ public function workerDetails()
 
     public function workerRoles()
     {
-
-        $workerRoleModel = new WorkerRoleModel();
-        $allRoles = $workerRoleModel->getAllRoles(); // Fetch all Workers from the database
-        error_log("Workers in controller: " . json_encode($allRoles));    
-        $this->view('admin/adminRoles',['roles'=> $allRoles]);
+        $this->view('admin/adminRoles');
     }
 
     public function workerRoles1()
@@ -126,117 +112,9 @@ public function workerDetails()
         $this->view('admin/adminRoles1');
     }
 
-    public function addRole()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            header('Content-Type: application/json');
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    
-            $roleName = trim($_POST['roleName']);
-            $roleDescription = trim($_POST['roleDescription']);
-            $fileName = '';
-    
-            // Handle file upload
-            if (isset($_FILES['roleImage']) && $_FILES['roleImage']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
-                $fileTmpPath = $_FILES['roleImage']['tmp_name'];
-                $fileName = uniqid() . '_' . basename($_FILES['roleImage']['name']);
-                $uploadFilePath = $uploadDir . $fileName;
-    
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-    
-                if (!move_uploaded_file($fileTmpPath, $uploadFilePath)) {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to upload the image.']);
-                    exit;
-                }
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'No file uploaded or an error occurred.']);
-                exit;
-            }
-    
-            $roleData = [
-                'name' => $roleName,
-                'description' => $roleDescription,
-                'image' => 'public/assets/images/roles/' . $fileName,
-            ];
-    
-            $workerRoleModel = new WorkerRoleModel();
-            $insertStatus = $workerRoleModel->insertRole($roleData);
-    
-            if ($insertStatus) {
-                echo json_encode(['status' => 'success', 'message' => 'Role added successfully!']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to add role. Please try again.']);
-            }
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
-        }
-        exit;
-    }    
-    
     public function paymentRates()
     {
-        $paymentRateModel = new PaymentRateModel();
-        $allRates = $paymentRateModel->getAllPaymentRates(); // Fetch all payment rateas from the database
-        $this->view('admin/adminPayrate',['rates'=>$allRates]);
-    }
-
-    public function updatePaymentRates() {
-        try {
-            // Ensure proper content type header is set first
-            header('Content-Type: application/json');
-            
-            // Read raw POST data
-            $rawData = file_get_contents('php://input');
-            if (!$rawData) {
-                throw new Exception('No data received');
-            }
-            
-            // Decode JSON data
-            $data = json_decode($rawData, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Invalid JSON data: ' . json_last_error_msg());
-            }
-            
-            // Validate required fields
-            if (!$data || !isset($data['ServiceID'])) {
-                throw new Exception('Invalid data. ServiceID is required.');
-            }
-            
-            // Extract and validate data
-            $ServiceID = $data['ServiceID'];
-            $updateData = [
-                'BasePrice' => isset($data['BasePrice']) ? (float) $data['BasePrice'] : null,
-                'BaseHours' => isset($data['BaseHours']) ? (float) $data['BaseHours'] : null
-            ];
-            
-            // Validate numeric values
-            if ($updateData['BasePrice'] === null || $updateData['BaseHours'] === null) {
-                throw new Exception('BasePrice and BaseHours are required and must be numeric.');
-            }
-            
-            // Update payment rate
-            $paymentRateModel = new PaymentRateModel();
-            $success = $paymentRateModel->updatePayrate($ServiceID, $updateData);
-            
-            if (!$success) {
-                throw new Exception('Failed to update payment rate.');
-            }
-            
-            echo json_encode([
-                'success' => true,
-                'message' => 'Payment rates updated successfully'
-            ]);
-            
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
+        $this->view('admin/adminPayrate');
     }
 
     public function paymentHistory()
