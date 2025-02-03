@@ -126,52 +126,83 @@ public function workerDetails()
         $this->view('admin/adminRoles1');
     }
 
-    public function addRole()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            header('Content-Type: application/json');
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-    
-            $roleName = trim($_POST['roleName']);
-            $roleDescription = trim($_POST['roleDescription']);
-            $fileName = '';
-    
-            // Handle file upload
-            if (isset($_FILES['roleImage']) && $_FILES['roleImage']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
-                $fileTmpPath = $_FILES['roleImage']['tmp_name'];
-                $fileName = uniqid() . '_' . basename($_FILES['roleImage']['name']);
-                $uploadFilePath = $uploadDir . $fileName;
-    
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-    
-                if (!move_uploaded_file($fileTmpPath, $uploadFilePath)) {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to upload the image.']);
-                    exit;
-                }
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'No file uploaded or an error occurred.']);
-                exit;
+    public function addRole() {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
             }
     
+            // Set header first
+            header('Content-Type: application/json');
+    
+            // Validate form inputs
+            if (empty($_POST['roleName']) || empty($_POST['roleDescription'])) {
+                throw new Exception('Role name and description are required');
+            }
+    
+            // Sanitize inputs
+            $roleName = trim(filter_var($_POST['roleName'], FILTER_SANITIZE_STRING));
+            $roleDescription = trim(filter_var($_POST['roleDescription'], FILTER_SANITIZE_STRING));
+    
+            // Validate file upload
+            if (!isset($_FILES['roleImage']) || $_FILES['roleImage']['error'] !== UPLOAD_ERR_OK) {
+                throw new Exception('Please select a valid image file');
+            }
+    
+            // Handle file upload
+            $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
+            $fileTmpPath = $_FILES['roleImage']['tmp_name'];
+            $fileName = uniqid() . '_' . basename($_FILES['roleImage']['name']);
+            $uploadFilePath = $uploadDir . $fileName;
+    
+            // Create directory if it doesn't exist
+            if (!is_dir($uploadDir)) {
+                if (!mkdir($uploadDir, 0777, true)) {
+                    throw new Exception('Failed to create upload directory');
+                }
+            }
+    
+            // Validate image file
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($fileInfo, $fileTmpPath);
+            finfo_close($fileInfo);
+    
+            if (!in_array($mimeType, $allowedTypes)) {
+                throw new Exception('Invalid file type. Please upload an image (JPEG, PNG, or GIF)');
+            }
+    
+            // Move uploaded file
+            if (!move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                throw new Exception('Failed to upload the image');
+            }
+    
+            // Prepare role data
             $roleData = [
                 'name' => $roleName,
                 'description' => $roleDescription,
                 'image' => 'public/assets/images/roles/' . $fileName,
             ];
     
+            // Insert role
             $workerRoleModel = new WorkerRoleModel();
             $insertStatus = $workerRoleModel->insertRole($roleData);
     
-            if ($insertStatus) {
-                echo json_encode(['status' => 'success', 'message' => 'Role added successfully!']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to add role. Please try again.']);
+            if (!$insertStatus) {
+                throw new Exception('Failed to add role to database');
             }
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Role added successfully!'
+            ]);
+    
+        } catch (Exception $e) {
+            error_log('Role addition error: ' . $e->getMessage());
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
         }
         exit;
     }    

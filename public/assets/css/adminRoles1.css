@@ -156,7 +156,6 @@
     font-size: 15px;
 }
 
-//Notification
 /* Notification styles */
 .notification {
     position: fixed;
@@ -186,9 +185,9 @@
     background-color: #f44336;
 }
 
-/* .notification.hidden {
+.notification.hidden {
     display: none;
-} */
+}
 
 .notification.show {
     opacity: 1;

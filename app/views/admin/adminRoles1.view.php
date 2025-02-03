@@ -13,7 +13,7 @@
         <div class="main-content">
             <div class="content-wrapper">
                 <div class="role-form-container">
-                    <form id="roleForm" action="<?=ROOT?>/public/admin/addRole" method="POST" enctype="multipart/form-data">
+                    <form id="roleForm" action="<?=ROOT?>/public/Admin/addRole" class="role-form" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="roleName">Role Name :</label>
                             <input type="text" id="roleName" name="roleName" placeholder="Cleaner" class="form-input" required>
@@ -39,41 +39,57 @@
     </div>
 
     <script>
-        const form = document.getElementById('roleForm');
-        const notification = document.getElementById('notification');
+const form = document.getElementById('roleForm');
+const notification = document.getElementById('notification');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(form);
-
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                });
-                const result = await response.json();
-
-                if (result.status === 'success') {
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    
+    try {
+        // Show loading notification
+        showNotification('Adding role...', 'info');
+        
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+        
+        // Log raw response for debugging
+        const responseText = await response.text();
+        console.log('Raw server response:', responseText);
+        
+        // Try to parse the response as JSON
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parsing error:', parseError);
+            showNotification('Server returned invalid response', 'error');
+            return;
+        }
+        
+        if (result.status === 'success') {
             showNotification(result.message, 'success');
             setTimeout(() => {
-                window.location.href = '<?=ROOT?>/public/Admin/workerRoles1';
+                window.location.href = '<?=ROOT?>/public/Admin/workerRoles';
             }, 2000);
         } else {
-            showNotification(result.message, 'error');
+            showNotification(result.message || 'Failed to add role', 'error');
         }
-                showNotification(result.message, result.status === 'success' ? 'success' : 'error');
-            } catch (error) {
-                showNotification('An error occurred while processing the form.', 'error');
-            }
-        });
+    } catch (error) {
+        console.error('Fetch error:', error);
+        showNotification('Network error occurred. Please try again.', 'error');
+    }
+});
 
-        function showNotification(message, type) {
-            notification.textContent = message;
-            notification.className = `notification ${type} show`;
-            setTimeout(() => {
-                notification.className = 'notification hidden';
-            });
-        }
+function showNotification(message, type) {
+    notification.textContent = message;
+    notification.className = `notification ${type} show`;
+    setTimeout(() => {
+        notification.className = 'notification hidden';
+    }, 3000); // Added specific timeout
+}
     </script>
 </body>
 </html>
