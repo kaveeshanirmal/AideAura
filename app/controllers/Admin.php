@@ -207,6 +207,64 @@ public function workerDetails()
         exit;
     }    
     
+    public function deleteRoles() {
+        try{
+            // log raw input
+            $row_input = file_get_contents('php://input');
+            error_log("Raw input received: " . $row_input);
+
+            // decode JSON with error checking
+            $data = json_decode($row_input, true);
+            if(json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON: ' . json_last_error_msg());
+            }
+
+            // log decoded data
+            error_log("Decoded data: " . print_r($data, true));
+
+            // validation of userID
+            if(!isset($data['roleID'])) {
+                throw new Exception('This role roleID is required');
+            }
+
+            if (!is_numeric($data['roleID'])) {
+                throw new Exception('Invalid roleID format');
+            }
+            $workerRoleModel = new WorkerRoleModel();
+            $success = $workerRoleModel->softDeleteRole($data['roleID']);
+    
+            if($success == false) {
+                throw new Exception('Database deletion failed');
+            }
+                // set headers
+                header('Content-Type: application/json');
+
+                // Return success response
+                echo json_encode ([
+                    'success' => true, 
+                    'message' => 'Role deleted successfully'
+                ]);
+            }  catch(Exception $e){
+                // log the error
+                error_log("Delete Role erro: " . $e->getMessage());
+
+                // set headers
+                header('Content-Type: application/json');
+                http_response_code(500);
+
+                // return erro response 
+                echo json_encode([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                    'error' => true
+                ]);
+                exit;
+            }
+
+    
+    
+        }
+
     public function paymentRates()
     {
         $paymentRateModel = new PaymentRateModel();

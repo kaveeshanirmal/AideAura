@@ -27,4 +27,8 @@ class WorkerRoleModel {
        return true;
     }
 
+
+    public function softDeleteRole(){
+
+    }
 }

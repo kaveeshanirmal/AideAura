@@ -27,7 +27,7 @@
                         <div class="role-card">
                             <div class="role-header">
                                 <h2><?= htmlspecialchars($role->name) ?></h2>
-                                <span class="close-btn" onclick="closeUpdateModal()">&times;</span>
+                                <span class="close-btn" onclick="deleteRole('<?= $role->roleID ?>')">&times;</span>
                                 <div class="role-actions">
                                     <button class="refresh-btn"><i class="refresh-icon"></i></button>
                                     <button class="delete-btn"><i class="delete-icon"></i></button>
@@ -45,6 +45,32 @@
     </div>
 
     <!-- Include your JavaScript files -->
-    <script src="assets/js/dashboard.js"></script>
+    <scrip src="assets/js/dashboard.js"></script>
+     <script>
+        function deleteRole(roleID) {
+            try {
+                if(!confirm('Are you sure you want to delelte this role ?')) return;
+
+                fetch('<?=ROOT?>/public/Admin/deleteRoles', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify({ roleID }),
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result.success) {
+                        showNotification('Role deleted Successfully', ' success');
+                        setTimout(() => location.reload(), 2000);
+                    }
+                    else {
+                        showNotification('Delete failed', 'error');
+                    }
+                })                    
+    
+            } catch {
+                (error => showNotification('An unexpected error occurred', 'error'));
+            }
+        }
+     </script>
 </body>
 </html>
