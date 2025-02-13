@@ -28,7 +28,16 @@ class WorkerRoleModel {
     }
 
 
-    public function softDeleteRole(){
+    public function softDeleteRole($roleID){
+       $this->setTable('jobroles');
+       
+       // before delete check if that role exists
+       $role = $this->find($roleID, 'roleID');
+          if(!$role){
+            return false;
+          }
 
+          // perform soft delete
+          return $this->softDelete($roleID, 'roleID' , 'isDelete');
     }
 }

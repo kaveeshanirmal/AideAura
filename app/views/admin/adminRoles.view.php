@@ -8,6 +8,8 @@
     <!-- Include any other CSS files you need -->
 </head>
 <body>
+     <!-- Notification container -->
+     <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
         <!-- Include your existing sidebar component -->
         <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
@@ -23,6 +25,7 @@
 
                     <div class="roles-list">
                         <!-- Cleaner Role Card -->
+                        <?php if (!empty($roles)): ?>
                          <?php foreach($roles as $role): ?>
                         <div class="role-card">
                             <div class="role-header">
@@ -38,6 +41,9 @@
                             </div>
                         </div>
                         <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No roles available.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -45,32 +51,40 @@
     </div>
 
     <!-- Include your JavaScript files -->
-    <scrip src="assets/js/dashboard.js"></script>
-     <script>
-        function deleteRole(roleID) {
-            try {
-                if(!confirm('Are you sure you want to delelte this role ?')) return;
+    <script src="assets/js/dashboard.js"></script>
+    <script>
 
-                fetch('<?=ROOT?>/public/Admin/deleteRoles', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json'},
-                    body: JSON.stringify({ roleID }),
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if(result.success) {
-                        showNotification('Role deleted Successfully', ' success');
-                        setTimout(() => location.reload(), 2000);
-                    }
-                    else {
-                        showNotification('Delete failed', 'error');
-                    }
-                })                    
-    
-            } catch {
-                (error => showNotification('An unexpected error occurred', 'error'));
+     // Notification Functionality
+     const notification = document.getElementById('notification');
+        const showNotification = (message, type) => {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            setTimeout(() => notification.className = 'notification hidden', 2000);
+        };
+
+
+    function deleteRole(roleID) {
+        if (!confirm('Are you sure you want to delete this role?')) return;
+
+        fetch('<?=ROOT?>/public/Admin/deleteRoles', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roleID })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showNotification('Role deleted successfully','success'); // Temporary notification
+                setTimeout(() => location.reload(), 2000); // Reload after 2 seconds
+            } else {
+                showNotification('Delete failed', 'error');
             }
-        }
-     </script>
+        })
+        .catch(error => {
+            showNotification('An unexpected error occurred','error');
+        });
+    }
+</script>
+
 </body>
 </html>

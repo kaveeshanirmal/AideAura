@@ -117,8 +117,20 @@ public function workerDetails()
 
         $workerRoleModel = new WorkerRoleModel();
         $allRoles = $workerRoleModel->getAllRoles(); // Fetch all Workers from the database
-        error_log("Workers in controller: " . json_encode($allRoles));    
-        $this->view('admin/adminRoles',['roles'=> $allRoles]);
+        error_log("Workers in controller: " . json_encode($allRoles));   
+        
+
+
+        // Filter roles that doesn't delete 
+        $filteredRoles = array_filter($allRoles, function($role){
+            return $role->isDelete == 0;
+        });
+
+        if(empty($filteredRoles)){
+            error_log("No roles with specified roles retrieved or query failed");
+        }
+
+        $this->view('admin/adminRoles',['roles'=> $filteredRoles]);
     }
 
     public function workerRoles1()
