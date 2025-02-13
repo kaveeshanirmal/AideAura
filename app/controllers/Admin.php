@@ -281,7 +281,18 @@ public function workerDetails()
     {
         $paymentRateModel = new PaymentRateModel();
         $allRates = $paymentRateModel->getAllPaymentRates(); // Fetch all payment rateas from the database
-        $this->view('admin/adminPayrate',['rates'=>$allRates]);
+        
+         // Filter roles that doesn't delete 
+         $filteredRates = array_filter($allRates, function($rate){
+            return $rate->isDelete == 0;
+        });
+
+        if(empty($filteredRates)){
+            error_log("No roles with specified roles retrieved or query failed");
+        }
+        
+        
+        $this->view('admin/adminPayrate',['rates'=>$filteredRates]);
     }
 
     public function updatePaymentRates() {
