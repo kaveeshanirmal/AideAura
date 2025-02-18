@@ -57,6 +57,7 @@ class App
         'Signup' => ['index'],
         'Login' => ['index', 'logout'],
         'Unauthorized' => ['index'],
+        'Test' => ['index', 'find', 'workerFound'],
     ];
     private function splitURL()
     {
