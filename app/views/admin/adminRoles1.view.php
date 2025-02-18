@@ -7,36 +7,30 @@
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminRoles1.css">
 </head>
 <body>
+    <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
-        <!-- Include your existing sidebar component -->
         <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="main-content">
-            <!-- Include your existing navbar component -->
             <div class="content-wrapper">
                 <div class="role-form-container">
-                    <form action="workerRoles" method="POST" class="role-form">
+                    <form id="roleForm" action="<?=ROOT?>/public/Admin/addRole" class="role-form" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="roleName">Role Name :</label>
-                            <input type="text" 
-                                   id="roleName" 
-                                   name="roleName" 
-                                   placeholder="Cleaner"
-                                   class="form-input"
-                                   required>
+                            <input type="text" id="roleName" name="roleName" placeholder="Cleaner" class="form-input" required>
                         </div>
 
                         <div class="form-group">
                             <label for="roleDescription">Description of the Role :</label>
-                            <textarea id="roleDescription" 
-                                      name="roleDescription" 
-                                      class="form-textarea"
-                                      required>This is the special role of cleaning service Employees including indoor cleaning, outdoor cleaning and bathroom/kitchen cleaning.</textarea>
+                            <textarea id="roleDescription" name="roleDescription" placeholder="Description of role..." class="form-textarea" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="roleImage">Upload Role Image :</label>
+                            <input type="file" id="roleImage" name="roleImage" class="form-input file-input" accept="image/*" required>
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="add-btn">
-                            <a href="<?=ROOT?>/public/admin/workerRoles">Add</a>
-                            </button>
+                            <button type="submit" class="add-btn">Add</button>
                         </div>
                     </form>
                 </div>
@@ -44,7 +38,58 @@
         </div>
     </div>
 
-    <!-- Include your JavaScript files -->
-    <script src="assets/js/dashboard.js"></script>
+    <script>
+const form = document.getElementById('roleForm');
+const notification = document.getElementById('notification');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    
+    try {
+        // Show loading notification
+        showNotification('Adding role...', 'info');
+        
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+        
+        // Log raw response for debugging
+        const responseText = await response.text();
+        console.log('Raw server response:', responseText);
+        
+        // Try to parse the response as JSON
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parsing error:', parseError);
+            showNotification('Server returned invalid response', 'error');
+            return;
+        }
+        
+        if (result.status === 'success') {
+            showNotification(result.message, 'success');
+            setTimeout(() => {
+                window.location.href = '<?=ROOT?>/public/Admin/workerRoles';
+            }, 2000);
+        } else {
+            showNotification(result.message || 'Failed to add role', 'error');
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        showNotification('Network error occurred. Please try again.', 'error');
+    }
+});
+
+function showNotification(message, type) {
+    notification.textContent = message;
+    notification.className = `notification ${type} show`;
+    setTimeout(() => {
+        notification.className = 'notification hidden';
+    }, 3000); // Added specific timeout
+}
+    </script>
 </body>
 </html>

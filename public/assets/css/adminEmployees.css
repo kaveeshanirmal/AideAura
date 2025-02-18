@@ -253,6 +253,11 @@ a {
     font-weight: 500;
 }
 
+.add-employee-btn:hover {
+    background-color: #4CAF50;
+    transition: background-color 0.3s ease;
+}
+
 /* Employee Details */
 .employee-details {
     left: 90%;

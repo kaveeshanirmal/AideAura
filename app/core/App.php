@@ -9,11 +9,11 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'worker1', 'worker2', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'paymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'worker1', 'worker2', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
-            'AdminEmployees' => ['index', 'update', 'delete'],
+            'AdminEmployees' => ['index', 'update', 'delete' , 'search'],
 
             'AdminRoles1' => ['index', 'edit'],
         ],

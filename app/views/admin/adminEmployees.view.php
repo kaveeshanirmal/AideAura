@@ -163,6 +163,7 @@
         }
 
         function updateEmployee() {
+            try {
             const userID = document.getElementById('updateEmployeeId').value;
             const data = {
                 userID,
@@ -184,15 +185,18 @@
                 if (result.success) {
                     closeUpdateModal();
                     showNotification('Employee updated successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Update failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch{
+            (error => showNotification('An unexpected error occurred', 'error'));
+        }
         }
 
         function deleteEmployee(userID) {
+            try {
             if (!confirm('Are you sure you want to delete this employee?')) return;
 
             fetch('<?=ROOT?>/public/adminEmployees/delete', {
@@ -204,81 +208,87 @@
             .then(result => {
                 if (result.success) {
                     showNotification('Employee deleted successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Delete failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch {
+         (error => showNotification('An unexpected error occurred', 'error'));
         }
-
-        function searchEmployees() {
-    const role = document.getElementById('employeeRole').value;
-    const userID = document.getElementById('employeeId').value;
-
-    // Validate input before sending
-    if (!role && !userID) {
-        showNotification("Please provide a role or user ID", 'error');
-        return;
     }
 
-    console.log("Sending:", { role, userID });
+    // Global array to store all employees
+    let allEmployees = [];
 
-    fetch('<?=ROOT?>/public/adminEmployees/search', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-            role: role || null, 
-            userID: userID || null 
-        })
-    })
-    .then(response => {
-        // Log the raw response for debugging
-        console.log('Raw response:', response);
-
-        // Check content type before parsing
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            return response.text().then(text => {
-                console.error('Non-JSON response:', text);
-                throw new Error('Expected JSON, received: ' + text);
-            });
-        }
-
-        if (!response.ok) {
-            return response.json().catch(() => {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            });
-        }
-        return response.json();
-    })
-    .then(result => {
-        console.log("Received:", result);
-        if (result.success) {
-            const tableBody = document.getElementById('employeeTableBody');
-            tableBody.innerHTML = result.employees.map(employee => `
-                <tr>
-                    <td>${employee.userID}</td>
-                    <td>${employee.username}</td>
-                    <td>${employee.firstName}</td>
-                    <td>${employee.lastName}</td>
-                    <td>${employee.role}</td>
-                    <td>${employee.phone}</td>
-                    <td>${employee.email}</td>
-                    <td>${employee.createdAt}</td>
-                </tr>
-            `).join('');
-        } else {
-            showNotification(result.message || "Search failed", 'error');
-        }
-    })
-    .catch(error => {
-        console.error("Fetch error:", error);
-        showNotification(error.message || "An unexpected error occurred", 'error');
-    });
+    // Function to load all employees initially
+    function loadEmployees() {
+        try {
+        fetch('<?=ROOT?>/public/adminEmployees/all')
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    allEmployees = result.employees;
+                    renderTable(allEmployees);
+                } else {
+                    showNotification('Failed to load employees', 'error');
+                }
+            })
+        } catch {
+            (error => showNotification('An unexpected error occurred', 'error'));
+    }
 }
+
+    // Function to render the employee table
+    function renderTable(employees) {
+        const tableBody = document.getElementById('employeeTableBody');
+        tableBody.innerHTML = employees.map(employee => `
+            <tr>
+                <td>${employee.userID}</td>
+                <td>${employee.username}</td>
+                <td>${employee.firstName}</td>
+                <td>${employee.lastName}</td>
+                <td>${employee.role}</td>
+                <td>${employee.phone}</td>
+                <td>${employee.email}</td>
+                <td>${employee.createdAt}</td>
+                <td>
+                    <button class="update-btn" onclick="showUpdateModal(this)">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="delete-btn" onclick="deleteEmployee('${employee.userID}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Search employees in the stored array
+    function searchEmployees() {
+        const role = document.getElementById('employeeRole').value.toLowerCase();
+        const userID = document.getElementById('employeeId').value.trim();
+
+        const filteredEmployees = allEmployees.filter(employee => {
+            const matchesRole = role ? employee.role.toLowerCase() === role : true;
+            const matchesUserID = userID ? employee.userID.includes(userID) : true;
+            return matchesRole && matchesUserID;
+        });
+
+        renderTable(filteredEmployees);
+    }
+
+    // Reset the table to show all employees
+    function resetEmployees() {
+        renderTable(allEmployees);
+    }
+
+    // Load employees on page load
+    window.onload = loadEmployees;
+</script>
+
 
     </script>
 </body>

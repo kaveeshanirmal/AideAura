@@ -3,6 +3,7 @@
 class Admin extends Controller
 {
     private $customerComplaintModel;
+    private $workerClicked = [];
 
     public function __construct()
     {
@@ -37,6 +38,8 @@ class Admin extends Controller
         $filteredWorkers = []; // Ensuring the variable is always an array
     }
 
+    //$workerClicked = $filteredWorkers;
+
     // Dynamically update roles for filtered workers 
     $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
 
@@ -59,35 +62,42 @@ private function assignDynamicRoles($filteredWorkers)
 
 public function workerDetails()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Sanitize and retrieve worker details from POST request
-        $workerData = [
-            'firstName' => htmlspecialchars($_POST['firstName']),
-            'lastName' => htmlspecialchars($_POST['lastName']),
-            'role' => htmlspecialchars($_POST['role']),
-            'image' => htmlspecialchars($_POST['image']),
-        ];
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        // Retrieve userID from the query parameters
+        $userID = $_GET['userID'] ?? null;
 
-        // Example: Log the data or store it in the database
-        error_log("Worker Data: " . json_encode($workerData));
+        if ($userID) {
+            // Search for the worker in the workerClicked array
+            $worker = array_filter($this->workerClicked, function ($w) use ($userID) {
+                return $w->userID == $userID;
+            });
 
-        // Store or process the data as needed
-        // Example: Redirect to another view or render worker details
-        $this->view('admin/adminWorkerProfile1', ['worker' => $workerData]);
+            // If a worker is found, pass it to the view
+            if (!empty($worker)) {
+                $worker = reset($worker); // Get the first matching worker
+                $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
+            } else {
+                // Handle case where no worker is found
+                http_response_code(404);
+                echo "Worker not found.";
+            }
+        } else {
+            // Handle case where userID is not provided
+            http_response_code(400);
+            echo "User ID is missing.";
+        }
     } else {
-        // Handle invalid request
+        // Handle invalid request method
         http_response_code(405);
-        echo "Method Not Allowed";
+        echo "Method Not Allowed.";
     }
 }
 
+    public function worker1()
+    {
 
-
-    // public function worker1()
-    // {
-
-    //     $this->view('admin/adminWorkerProfile1');
-    // }
+        $this->view('admin/adminWorkerProfile1');
+    }
     public function worker2()
     {
         $this->view('admin/adminWorkerProfile2');
@@ -104,7 +114,11 @@ public function workerDetails()
 
     public function workerRoles()
     {
-        $this->view('admin/adminRoles');
+
+        $workerRoleModel = new WorkerRoleModel();
+        $allRoles = $workerRoleModel->getAllRoles(); // Fetch all Workers from the database
+        error_log("Workers in controller: " . json_encode($allRoles));    
+        $this->view('admin/adminRoles',['roles'=> $allRoles]);
     }
 
     public function workerRoles1()
@@ -112,9 +126,148 @@ public function workerDetails()
         $this->view('admin/adminRoles1');
     }
 
+    public function addRole() {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
+            }
+    
+            // Set header first
+            header('Content-Type: application/json');
+    
+            // Validate form inputs
+            if (empty($_POST['roleName']) || empty($_POST['roleDescription'])) {
+                throw new Exception('Role name and description are required');
+            }
+    
+            // Sanitize inputs
+            $roleName = trim(filter_var($_POST['roleName'], FILTER_SANITIZE_STRING));
+            $roleDescription = trim(filter_var($_POST['roleDescription'], FILTER_SANITIZE_STRING));
+    
+            // Validate file upload
+            if (!isset($_FILES['roleImage']) || $_FILES['roleImage']['error'] !== UPLOAD_ERR_OK) {
+                throw new Exception('Please select a valid image file');
+            }
+    
+            // Handle file upload
+            $uploadDir = ROOT_PATH . '/public/assets/images/roles/';
+            $fileTmpPath = $_FILES['roleImage']['tmp_name'];
+            $fileName = uniqid() . '_' . basename($_FILES['roleImage']['name']);
+            $uploadFilePath = $uploadDir . $fileName;
+    
+            // Create directory if it doesn't exist
+            if (!is_dir($uploadDir)) {
+                if (!mkdir($uploadDir, 0777, true)) {
+                    throw new Exception('Failed to create upload directory');
+                }
+            }
+    
+            // Validate image file
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($fileInfo, $fileTmpPath);
+            finfo_close($fileInfo);
+    
+            if (!in_array($mimeType, $allowedTypes)) {
+                throw new Exception('Invalid file type. Please upload an image (JPEG, PNG, or GIF)');
+            }
+    
+            // Move uploaded file
+            if (!move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                throw new Exception('Failed to upload the image');
+            }
+    
+            // Prepare role data
+            $roleData = [
+                'name' => $roleName,
+                'description' => $roleDescription,
+                'image' => 'public/assets/images/roles/' . $fileName,
+            ];
+    
+            // Insert role
+            $workerRoleModel = new WorkerRoleModel();
+            $insertStatus = $workerRoleModel->insertRole($roleData);
+    
+            if (!$insertStatus) {
+                throw new Exception('Failed to add role to database');
+            }
+    
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Role added successfully!'
+            ]);
+    
+        } catch (Exception $e) {
+            error_log('Role addition error: ' . $e->getMessage());
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+        exit;
+    }    
+    
     public function paymentRates()
     {
-        $this->view('admin/adminPayrate');
+        $paymentRateModel = new PaymentRateModel();
+        $allRates = $paymentRateModel->getAllPaymentRates(); // Fetch all payment rateas from the database
+        $this->view('admin/adminPayrate',['rates'=>$allRates]);
+    }
+
+    public function updatePaymentRates() {
+        try {
+            // Ensure proper content type header is set first
+            header('Content-Type: application/json');
+            
+            // Read raw POST data
+            $rawData = file_get_contents('php://input');
+            if (!$rawData) {
+                throw new Exception('No data received');
+            }
+            
+            // Decode JSON data
+            $data = json_decode($rawData, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON data: ' . json_last_error_msg());
+            }
+            
+            // Validate required fields
+            if (!$data || !isset($data['ServiceID'])) {
+                throw new Exception('Invalid data. ServiceID is required.');
+            }
+            
+            // Extract and validate data
+            $ServiceID = $data['ServiceID'];
+            $updateData = [
+                'BasePrice' => isset($data['BasePrice']) ? (float) $data['BasePrice'] : null,
+                'BaseHours' => isset($data['BaseHours']) ? (float) $data['BaseHours'] : null
+            ];
+            
+            // Validate numeric values
+            if ($updateData['BasePrice'] === null || $updateData['BaseHours'] === null) {
+                throw new Exception('BasePrice and BaseHours are required and must be numeric.');
+            }
+            
+            // Update payment rate
+            $paymentRateModel = new PaymentRateModel();
+            $success = $paymentRateModel->updatePayrate($ServiceID, $updateData);
+            
+            if (!$success) {
+                throw new Exception('Failed to update payment rate.');
+            }
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Payment rates updated successfully'
+            ]);
+            
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function paymentHistory()
