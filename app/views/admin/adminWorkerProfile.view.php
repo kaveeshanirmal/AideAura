@@ -82,12 +82,12 @@
             <div class="search-container">
                 <label for="worker-field">Select the Worker Field:</label>
                 <select id="worker-field" class="search-input">
-                    <option value="all">All</option>
-                    <option value="cook">Cook</option>
-                    <option value="cook24">Cook 24-hour Live in</option>
-                    <option value="nannies">Nanny</option>
-                    <option value="all-rounder">All rounder</option>
-                    <option value="cleaners">Maid</option>
+                    <option value="All">All</option>
+                    <option value="Cook">Cook</option>
+                    <option value="Cook 24-hour Live in">Cook 24-hour Live in</option>
+                    <option value="Nanny">Nanny</option>
+                    <option value="All rounder">All rounder</option>
+                    <option value="Maid">Maid</option>
                 </select>
             </div>
 
