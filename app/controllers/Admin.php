@@ -63,41 +63,43 @@ private function assignDynamicRoles($filteredWorkers)
 public function workerDetails()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        // Retrieve userID from the query parameters
         $userID = $_GET['userID'] ?? null;
 
         if ($userID) {
-            // Search for the worker in the workerClicked array
+            // Debug: Print all workers in the array
+            echo "<pre>";
+            print_r($this->workerClicked);
+            echo "</pre>";
+            exit(); // Stop execution here to debug
+
+            // Search for the worker in the array
             $worker = array_filter($this->workerClicked, function ($w) use ($userID) {
                 return $w->userID == $userID;
             });
 
-            // If a worker is found, pass it to the view
             if (!empty($worker)) {
                 $worker = reset($worker); // Get the first matching worker
                 $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
             } else {
-                // Handle case where no worker is found
                 http_response_code(404);
                 echo "Worker not found.";
             }
         } else {
-            // Handle case where userID is not provided
             http_response_code(400);
             echo "User ID is missing.";
         }
     } else {
-        // Handle invalid request method
         http_response_code(405);
         echo "Method Not Allowed.";
     }
 }
 
-    public function worker1()
-    {
+    // public function worker1()
+    // {
 
-        $this->view('admin/adminWorkerProfile1');
-    }
+    //     $this->view('admin/adminWorkerProfile1');
+    // }
+
     public function worker2()
     {
         $this->view('admin/adminWorkerProfile2');

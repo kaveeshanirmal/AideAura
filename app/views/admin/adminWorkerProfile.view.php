@@ -10,69 +10,67 @@
         const workerFieldDropdown = document.getElementById('worker-field');
         const workersList = document.getElementById('workers-list');
 
-        // PHP workers variable passed to JavaScript
-        const workersObj = <?= json_encode($workers) ?>;
-
-        // Convert the object with numerical keys into an array
+        // Ensure `$workers` exists and is properly encoded
+        const workersObj = <?= isset($workers) ? json_encode($workers, JSON_HEX_TAG) : '[]'; ?>;
         const workers = Object.values(workersObj);
 
-        console.log("Workers data:", workers); // Debugging output to verify the conversion
+        console.log("Workers data:", workers); // Debugging output
 
         function renderWorkers(filteredWorkers) {
             workersList.innerHTML = ''; // Clear existing list
 
             if (filteredWorkers.length > 0) {
                 filteredWorkers.forEach(worker => {
-                    const workerCard = `
-                        <div class="worker-card" data-firstname="${worker.firstName}" data-lastname="${worker.lastName}" data-role="${worker.role}">
-                            <a href="<?=ROOT?>/public/admin/worker1">
-                                <div class="worker-info">
-                                    <div class="worker-avatar">
-                                        <img src="<?= htmlspecialchars(ROOT) ?>/public/assets/images/user_icon.png" alt="Worker Avatar">
-                                    </div>
-                                    <div class="worker-details">
-                                        <h3>${worker.firstName} ${worker.lastName}</h3>
-                                        <p>${worker.role}</p>
-                                    </div>
+                    const workerCard = document.createElement('div');
+                    workerCard.classList.add('worker-card');
+                    workerCard.dataset.userid = worker.userID; // Correctly attach userID
+
+                    workerCard.innerHTML = `
+                        <a href="<?= htmlspecialchars(ROOT) ?>/public/admin/workerDetails?userID=${worker.userID}">
+                            <div class="worker-info">
+                                <div class="worker-avatar">
+                                    <img src="<?= htmlspecialchars(ROOT) ?>/public/assets/images/user_icon.png" alt="Worker Avatar">
                                 </div>
-                            </a>
-                        </div>
+                                <div class="worker-details">
+                                    <h3>${worker.firstName} ${worker.lastName}</h3>
+                                    <p>${worker.role}</p>
+                                </div>
+                            </div>
+                        </a>
                     `;
-                    workersList.innerHTML += workerCard; 
+
+                    // Click event listener to redirect with correct userID
+                    workerCard.addEventListener('click', function (event) {
+                        event.preventDefault(); // Prevent default anchor behavior
+                        const userID = this.dataset.userid;
+
+                        // Redirect with userID
+                        window.location.href = `<?= htmlspecialchars(ROOT) ?>/public/admin/workerDetails?userID=${userID}`;
+                    });
+
+                    workersList.appendChild(workerCard);
                 });
-
-                document.querySelectorAll('.worker-card').forEach(card => {
-            card.addEventListener('click', function (event) {
-                event.preventDefault();
-                const userID = this.dataset.userID;
-
-                // Redirect to the URL with the userID as a query parameter
-                window.location.href = '<?= htmlspecialchars(ROOT) ?>/public/admin/worker1';
-            });
-        });
-
             } else {
                 workersList.innerHTML = '<p>No workers found.</p>';
             }
         }
 
         workerFieldDropdown.addEventListener('change', function () {
-            const selectedField = this.value.toLowerCase(); // Convert to lowercase for case-insensitive comparison
+            const selectedField = this.value.toLowerCase();
 
             console.log("Selected field:", selectedField); // Debugging selected dropdown value
 
-            // Filter workers based on selected role
             const filteredWorkers = selectedField === 'all'
                 ? workers
-                : workers.filter(worker => worker.role.toLowerCase() === selectedField.toLowerCase());
+                : workers.filter(worker => worker.role.toLowerCase() === selectedField);
 
             renderWorkers(filteredWorkers);
         });
 
-        // Render all workers on initial load
         renderWorkers(workers);
     });
 </script>
+
 
 </head>
 <body>
