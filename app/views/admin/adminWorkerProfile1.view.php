@@ -17,8 +17,8 @@
                         <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker Avatar">
                     </div>
                     <div class="worker-title">
-                        <h2>MR. Kamal Rupasinghe</h2>
-                        <p>Cleaner</p>
+                        <h2>MR. <?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?></h2>
+                        <p><?= htmlspecialchars($worker['role']) ?></p>
                     </div>
                 </div>
             </div>
@@ -27,73 +27,72 @@
                 <div class="details-grid">
                     <div class="detail-item">
                         <span class="label">Name :</span>
-                        <span class="value">R.N.D. Kamal Gunarathne</span>
+                        <span class="value"><?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Date Of Birth :</span>
-                        <span class="value">1984.06.19</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Nationality :</span>
-                        <span class="value">Sinhalese</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Gender :</span>
-                        <span class="value">Male</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Contact :</span>
-                        <span class="value">078 4968 720</span>
+                        <span class="value"><?= htmlspecialchars($worker['phone']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Email :</span>
-                        <span class="value">kamal123@gamil.com</span>
+                        <span class="value"><?= htmlspecialchars($worker['email']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">ID/Passport No :</span>
-                        <span class="value">1984 2543 6702 0149</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Employment History / Experience :</span>
-                        <span class="value">5 years in Sri Lanka</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Skilled or Specialized Areas :</span>
-                        <span class="value">Cooking</span>
+                        <span class="value"><?= htmlspecialchars($worker['role']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Certificates :</span>
-                        <span class="value">Master Chef Certificate Of Levenro Garden Hotel Schole</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Spoken Languages :</span>
-                        <span class="value">Sinhala, Tamil</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Work Area/Location :</span>
-                        <span class="value">Colombo Mid Town</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Job Preferences :</span>
-                        <span class="value">Maximum an be cooked Three meals per day for adults</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Medical Fitness Certificate :</span>
-                        <span class="value">Colombo Central Hospital Medical Fitness Report</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Allergies of Physical Limitations :</span>
+                        <span class="label">Allergies or Physical Limitations :</span>
                         <span class="value">No</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Address :</span>
-                        <span class="value">78/1 Queen street Kollupitiya Colombo 07</span>
+                        <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Bank Details :</span>
-                        <span class="value">Peoples Bank Kollupitiya 1789-6325-4147-0502</span>
+                        <span class="value">N/A</span>
                     </div>
-                    <!-- ... (previous detail items remain the same) ... -->
                 </div>
             </div>
 
@@ -113,15 +112,15 @@
                     <form id="workerUpdateForm" class="update-form">
                         <div class="form-group">
                             <label>Full Name</label>
-                            <input type="text" name="full_name" value="R.N.D. Kamal Gunarathne">
+                            <input type="text" name="full_name" value="<?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?>">
                         </div>
                         <div class="form-group">
                             <label>Date of Birth</label>
-                            <input type="date" name="date_of_birth" value="1984-06-19">
+                            <input type="date" name="date_of_birth" value="N/A">
                         </div>
                         <div class="form-group">
                             <label>Nationality</label>
-                            <input type="text" name="nationality" value="Sinhalese">
+                            <input type="text" name="nationality" value="N/A">
                         </div>
                         <div class="form-group">
                             <label>Gender</label>
@@ -133,31 +132,31 @@
                         </div>
                         <div class="form-group">
                             <label>Contact Number</label>
-                            <input type="tel" name="contact" value="078 4968 720">
+                            <input type="tel" name="contact" value="<?= htmlspecialchars($worker['phone']) ?>">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" name="email" value="kamal123@gamil.com">
+                            <input type="email" name="email" value="<?= htmlspecialchars($worker['email']) ?>">
                         </div>
                         <div class="form-group">
                             <label>ID/Passport No</label>
-                            <input type="text" name="id_passport" value="1984 2543 6702 0149">
+                            <input type="text" name="id_passport" value="N/A">
                         </div>
                         <div class="form-group">
                             <label>Work Area/Location</label>
-                            <input type="text" name="work_location" value="Colombo Mid Town">
+                            <input type="text" name="work_location" value="N/A">
                         </div>
                         <div class="form-group">
                             <label>Address</label>
-                            <input type="text" name="address" value="78/1 Queen street Kollupitiya Colombo 07">
+                            <input type="text" name="address" value="N/A">
                         </div>
                         <div class="form-group">
                             <label>Bank Details</label>
-                            <input type="text" name="bank_details" value="Peoples Bank Kollupitiya 1789-6325-4147-0502">
+                            <input type="text" name="bank_details" value="N/A">
                         </div>
                         <div class="form-group">
                             <label>Job Preferences</label>
-                            <textarea name="job_preferences">Maximum can be cooked Three meals per day for adults</textarea>
+                            <textarea name="job_preferences">N/A</textarea>
                         </div>
                         <div class="form-actions">
                             <button type="button" class="btn btn-cancel" onclick="closeUpdateModal()">Cancel</button>
@@ -178,6 +177,7 @@
             document.getElementById('updateModal').style.display = 'none';
         }
 
+        console.log(worker);
         // Form submission handler
         document.getElementById('workerUpdateForm').addEventListener('submit', function(e) {
             e.preventDefault();

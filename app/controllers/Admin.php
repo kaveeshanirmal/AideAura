@@ -62,23 +62,13 @@ private function assignDynamicRoles($filteredWorkers)
 
 public function workerDetails()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $userID = $_GET['userID'] ?? null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $workerData = $_POST['workerData'] ?? null;
 
-        if ($userID) {
-            // Debug: Print all workers in the array
-            echo "<pre>";
-            print_r($this->workerClicked);
-            echo "</pre>";
-            exit(); // Stop execution here to debug
-
-            // Search for the worker in the array
-            $worker = array_filter($this->workerClicked, function ($w) use ($userID) {
-                return $w->userID == $userID;
-            });
+        if ($workerData) {
+            $worker = json_decode($workerData, true);
 
             if (!empty($worker)) {
-                $worker = reset($worker); // Get the first matching worker
                 $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
             } else {
                 http_response_code(404);
@@ -86,13 +76,14 @@ public function workerDetails()
             }
         } else {
             http_response_code(400);
-            echo "User ID is missing.";
+            echo "Worker details are missing.";
         }
     } else {
         http_response_code(405);
         echo "Method Not Allowed.";
     }
 }
+
 
     // public function worker1()
     // {
