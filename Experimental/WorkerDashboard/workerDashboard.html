@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Enhanced Dashboard</title>
+    <link rel="stylesheet" href="workerDashboard.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script src="workerDashboard.js"></script>
+  </head>
+  <body>
+      <div class="main-content">
+        <div class="header">
+          <h1>Employee Dashboard</h1>
+          <div class="profile">
+            <div class="profile-image">
+              <img src="images/profile.jpg" alt="Profile Image" />
+            </div>
+            <div class="profile-info">
+              <h3>Ms. Kusum Salgado</h3>
+              <p>Nanny / House Keeper</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <h3>Total Income</h3>
+            <div class="stat-value">
+              Rs. 238040.00
+              <span>+45%</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <h3>Availability</h3>
+            <button id="availability" class="toggle-btn available" onclick="toggleAvailability()">Available</button>
+          </div>
+          
+          <div class="stat-card">
+            <h3>Working Location</h3>
+          
+            <label for="district">Select District:</label>
+            <select id="district" class="drop-down-2">
+              <option value="Colombo">Colombo</option>
+              <option value="Galle">Galle</option>
+              <option value="Matara">Matara</option>
+            </select>
+          
+            <label for="city">Enter City:</label>
+            <input type="text" id="city" class="city-input" placeholder="Enter city..." onblur="formatCity()">
+          
+            <button class="submit-btn" onclick="submitLocation()">Submit</button>
+          </div>
+
+        <div class="job-requests">
+          <div class="upcoming-events">
+            <h2>Job Requests</h2>
+            <br>
+            <div class="event-item">
+              <div class="event-date">
+                <div class="day">10</div>
+                <div class="weekday">Wed</div>
+              </div>
+              <div class="event-info">
+                <h4>Babysitting</h4>
+                <p>Colombo, Maharagama</p>
+              </div>
+              <div class="event-actions">
+                <button class="accept-btn" onclick="acceptJob(this)">Accept</button>
+                <button class="deny-btn" onclick="denyJob(this)">Deny</button>
+              </div>
+            </div>
+
+            <div class="event-item">
+              <div class="event-date">
+                <div class="day">15</div>
+                <div class="weekday">Mon</div>
+              </div>
+              <div class="event-info">
+                <h4>Cook - 24Hrs</h4>
+                <p>Colombo, Nugegoda</p>
+              </div>
+              <div class="event-actions">
+                <button class="accept-btn" onclick="acceptJob(this)">Accept</button>
+                <button class="deny-btn" onclick="denyJob(this)">Deny</button>
+              </div>
+            </div>
+
+            <div class="event-item">
+              <div class="event-date">
+                <div class="day">10</div>
+                <div class="weekday">Wed</div>
+              </div>
+              <div class="event-info">
+                <h4>House Keeping</h4>
+                <p>Colombo, Kottawa</p>
+              </div>
+              <div class="event-actions">
+                <button class="accept-btn" onclick="acceptJob(this)">Accept</button>
+                <button class="deny-btn" onclick="denyJob(this)">Deny</button>
+              </div>
+            </div>
+
+            <div class="event-item">
+              <div class="event-date">
+                <div class="day">15</div>
+                <div class="weekday">Mon</div>
+              </div>
+              <div class="event-info">
+                <h4>Babysitting</h4>
+                <p>Colombo, Maharagama</p>
+              </div>
+              <div class="event-actions">
+                <button class="accept-btn" onclick="acceptJob(this)">Accept</button>
+                <button class="deny-btn" onclick="denyJob(this)">Deny</button>
+              </div>
+            </div>
+        </div>
+      </div>
+  </body>
+</html>
