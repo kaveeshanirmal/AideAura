@@ -30,6 +30,10 @@
                         <span class="value"><?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?></span>
                     </div>
                     <div class="detail-item">
+                        <span class="label">User Name :</span>
+                        <span class="value"><?= htmlspecialchars($worker['username']) ?></span>
+                    </div>
+                    <div class="detail-item">
                         <span class="label">Date Of Birth :</span>
                         <span class="value">N/A</span>
                     </div>
@@ -93,6 +97,10 @@
                         <span class="label">Bank Details :</span>
                         <span class="value">N/A</span>
                     </div>
+                    <div class="detail-item">
+                        <span class="label">Date of profile created :</span>
+                        <span class="value"><?= htmlspecialchars($worker['createdAt']) ?></span>
+                    </div>
                 </div>
             </div>
 
@@ -114,6 +122,11 @@
                             <label>Full Name</label>
                             <input type="text" name="full_name" value="<?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?>">
                         </div>
+                        <div class="form-group">
+                            <label>User Name</label>
+                            <input type="text" name="user_name" value="<?= htmlspecialchars($worker['username'] 
+                            ) ?>">
+                        </div>            
                         <div class="form-group">
                             <label>Date of Birth</label>
                             <input type="date" name="date_of_birth" value="N/A">
