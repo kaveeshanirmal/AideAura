@@ -1,0 +1,319 @@
+:root {
+    --primary-brown: #8B4513;
+    --light-brown: #DEB887;
+    --cream: #FDFBF7;
+    --dark-brown: #5C3317;
+    --light-shadow: rgba(139, 69, 19, 0.1);
+    --medium-shadow: rgba(139, 69, 19, 0.2);
+    --label-bg: #FFFFFF;         /* New white background for labels */
+    --label-text: #8B4513;       /* Text color matching primary brown */
+    --label-hover: #F8F1E7;      /* Light cream color for hover state */
+}
+
+body {
+    background-image: url(../../images/booking_bg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    background: white;
+    margin: 90px 5px;
+    padding: 30px 40px 40px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--light-shadow);
+    width: 100%;
+    max-width: 700px;
+}
+
+h2 {
+    color: var(--primary-brown);
+    text-align: left;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-brown);
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+}
+
+button {
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-previous {
+    background-color: var(--light-brown);
+    color: var(--dark-brown);
+}
+
+.btn-next {
+    background-color: var(--primary-brown);
+    color: white;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--medium-shadow);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px var(--light-shadow);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: var(--light-brown);
+    border-radius: 6px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px var(--medium-shadow);
+}
+
+.progress {
+    width: 33%;
+    height: 100%;
+    background-color: var(--primary-brown);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+/* Form element styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Label styling */
+form > label {
+    display: block;
+    color: var(--primary-brown);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+/* Select styling */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    border: 2px solid var(--light-brown);
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 16px;
+    width: 100%;
+    color: var(--dark-brown);
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B4513' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-brown);
+    box-shadow: 0 0 0 3px var(--light-shadow);
+}
+
+select:hover {
+    border-color: var(--primary-brown);
+}
+
+/* Checkbox and radio groups */
+.checkbox-group, .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+/* Custom checkbox and radio styling */
+.checkbox-group input[type="checkbox"],
+.radio-group input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox-group label,
+.radio-group label {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: var(--dark-brown);
+    background-color: var(--cream);
+    border: 2px solid var(--light-brown);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.checkbox-group label::before,
+.radio-group label::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border: 2px solid var(--light-brown);
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group label::before {
+    border-radius: 4px;
+}
+
+.radio-group label::before {
+    border-radius: 50%;
+}
+
+.checkbox-group input[type="checkbox"]:checked + label,
+.radio-group input[type="radio"]:checked + label {
+    background-color: var(--label-hover);
+    border-color: var(--primary-brown);
+    color: var(--primary-brown);
+    font-weight: 600;
+}
+
+.checkbox-group input[type="checkbox"]:checked + label::before {
+    background-color: var(--primary-brown);
+    border-color: var(--primary-brown);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 12 10 16 18 8'%3e%3c/polyline%3e%3c/svg%3e");
+    background-size: 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.radio-group input[type="radio"]:checked + label::before {
+    border-color: var(--primary-brown);
+    box-shadow: inset 0 0 0 5px var(--primary-brown);
+    background-color: #fff;
+}
+
+.checkbox-group label:hover,
+.radio-group label:hover {
+    background-color: var(--label-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px var(--light-shadow);
+}
+
+.total-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--label-bg);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary-brown);
+    box-shadow: 0 4px 8px var(--light-shadow);
+    margin-top: 20px;
+}
+
+.total-label {
+    color: var(--dark-brown);
+    padding-right: 10px;
+}
+
+.total-amount {
+    color: var(--primary-brown);
+    font-size: 20px;
+}
+
+
+/* Modern form layout for larger screens */
+@media (min-width: 768px) {
+    .checkbox-group, .radio-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+    select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .checkbox-group label,
+    .radio-group label {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .checkbox-group, .radio-group {
+        gap: 10px;
+    }
+}
+
+/* Animation for focus state */
+select:focus,
+.checkbox-group input[type="checkbox"]:focus + label,
+.radio-group input[type="radio"]:focus + label {
+    animation: pulse 1.5s infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.4); }
+    70% { box-shadow: 0 0 0 5px rgba(139, 69, 19, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0); }
+}
+
+/* Ensure proper spacing */
+form > *:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}

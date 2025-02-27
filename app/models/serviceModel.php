@@ -99,13 +99,13 @@ class ServiceModel {
         $this->setTable('service_base_price_hour');
         
         try {
-            // Test query to get all services
+            // SearchForWorker query to get all services
             $query = "SELECT * FROM " . $this->getTable();
             $result = $this->get_all($query);
             
             // Output results directly
             echo "<pre>";
-            echo "Database Test Results:\n";
+            echo "Database SearchForWorker Results:\n";
             echo "Table: " . $this->getTable() . "\n";
             echo "Query: " . $query . "\n";
             echo "Results: ";

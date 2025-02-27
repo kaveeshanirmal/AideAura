@@ -36,7 +36,7 @@ class App
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
             'Payment'> ['index', 'paymentDetail', 'paymentComplete', 'paymentProceed'],
             'Home' => ['customerRedirect'],
-            'ServiceForms' => ['index', 'getForm', 'testDataBase'],
+            'serviceForms' => ['index', 'getForm', 'testDataBase'],
         ],
 
         'worker' => [
@@ -57,7 +57,8 @@ class App
         'Signup' => ['index'],
         'Login' => ['index', 'logout'],
         'Unauthorized' => ['index'],
-        'Test' => ['index', 'find', 'workerFound'],
+        'SearchForWorker' => ['index', 'find', 'workerFound'],
+        'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal'],
     ];
     private function splitURL()
     {

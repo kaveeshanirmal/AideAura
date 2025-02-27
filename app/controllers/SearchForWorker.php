@@ -1,6 +1,6 @@
 <?php
 
-class Test extends Controller
+class SearchForWorker extends Controller
 {
     use Database;
     public function index($a = '', $b = '', $c = '')
@@ -49,7 +49,7 @@ class Test extends Controller
             $_SESSION['workers'] = $data;
 
             // Redirect to workerFound view
-            header("Location: " . ROOT . "/public/test/workerFound");
+            header("Location: " . ROOT . "/public/SearchForWorker/workerFound");
             exit;
         }
     }
