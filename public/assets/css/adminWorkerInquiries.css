@@ -1,302 +1,302 @@
 /* Admin Complaints Management Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-    color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  min-height: 100vh;
 }
 
 .container {
-    margin-top: 90px;
-    margin-bottom: 20px;
-    flex: 1;
-    padding: 20px;
+  margin-top: 90px;
+  margin-bottom: 20px;
+  flex: 1;
+  padding: 20px;
 }
 
 .main-content {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
 /* Filters Container Styling */
 .filters-container {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 20px;
-    background-color: #eef3ff;
-    padding: 15px;
-    border-radius: 8px;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 20px;
+  background-color: #eef3ff;
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .filters-container label {
-    color: #666;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
+  color: #666;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .filters-container select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 14px;
 }
 
 /* Complaints Table Styling */
 .complaints-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .complaints-table thead {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .complaints-table th {
-    padding: 12px 15px;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 2px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
 }
 
 .complaints-table tbody tr {
-    transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .complaints-table tbody tr:hover {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .complaints-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
 }
 
 /* Priority Highlighting */
 .complaints-table td:nth-child(4) {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .complaints-table td:nth-child(4):contains("Critical") {
-    color: #d9534f;
+  color: #d9534f;
 }
 
 .complaints-table td:nth-child(4):contains("High") {
-    color: #f0ad4e;
+  color: #f0ad4e;
 }
 
 .complaints-table td:nth-child(4):contains("Low") {
-    color: #5cb85c;
+  color: #5cb85c;
 }
 
 /* Action Button Styling */
 .reply-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .reply-button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 .delete-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .delete-button:hover {
-    background-color: #da190b;
+  background-color: #da190b;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .filters-container {
-        flex-direction: column;
-        gap: 10px;
-    }
+  .filters-container {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .complaints-table {
-        font-size: 14px;
-    }
+  .complaints-table {
+    font-size: 14px;
+  }
 
-    .complaints-table th,
-    .complaints-table td {
-        padding: 8px 10px;
-    }
+  .complaints-table th,
+  .complaints-table td {
+    padding: 8px 10px;
+  }
 }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
+  background: #888;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .overlay-content {
-    position: relative;
-    background-color: #ffffff;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 25px;
-    width: 100%;
-    max-width: 450px;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  width: 100%;
+  max-width: 450px;
 }
 
 h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 1.2rem;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.2rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
 }
 
 #solutionText {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical;
-    min-height: 100px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 100px;
 }
 
 .form-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 
 .form-actions button {
-    padding: 8px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f4f4f4;
-    color: #333;
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+  color: #333;
 }
 
 #submitReplyButton {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
 }
 
 #confirmDeleteButton {
-    background-color: #dc3545;
-    color: white;
-    border-color: #dc3545;
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
 }
 
 .response-message {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 4px;
-    text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
 }
 
 .response-message.success {
-    background-color: #dff0d8;
-    color: #3c763d;
+  background-color: #dff0d8;
+  color: #3c763d;
 }
 
 .response-message.error {
-    background-color: #f2dede;
-    color: #a94442;
+  background-color: #f2dede;
+  color: #a94442;
 }
 
 #closeMessageButton {
-    display: block;
-    margin: 15px auto 0;
-    padding: 8px 15px;
-    background-color: #f4f4f4;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  display: block;
+  margin: 15px auto 0;
+  padding: 8px 15px;
+  background-color: #f4f4f4;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .description-tooltip {
-    position: relative;
-    cursor: help;
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  position: relative;
+  cursor: help;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .description-tooltip::after {
-    content: attr(data-full-description);
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    z-index: 1;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    white-space: normal;
-    width: 300px;
-    transition: opacity 0.3s;
+  content: attr(data-full-description);
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: normal;
+  width: 300px;
+  transition: opacity 0.3s;
 }
 
 .description-tooltip:hover::after {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }

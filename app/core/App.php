@@ -58,7 +58,8 @@ class App
         'Login' => ['index', 'logout'],
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
-        'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal'],
+        'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal', 'bookingInfo'],
+        'Test' => ['index'],
     ];
     private function splitURL()
     {

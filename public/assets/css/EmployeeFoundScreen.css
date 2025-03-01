@@ -1,224 +1,221 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Fredoka:wght@300..700&family=Montserrat:wght@100&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Fredoka:wght@300..700&family=Montserrat:wght@100&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Fredoka:wght@300..700&family=Montserrat:wght@100&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Fredoka:wght@300..700&family=Montserrat:wght@100&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
 
 .container {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgb(137, 196, 216); 
-    background-size: cover;           
-    background-position: center;      
-    background-repeat: no-repeat;     
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(137, 196, 216);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.square_1{
-    width: 1000px;
-    height: 600px;
-    background-color:rgba(95, 57, 49, 0.733); 
-    border-radius: 15px; 
-    position: absolute; 
-    top: 50%; 
-    right: 40px; 
-    transform: translateY(-50%); 
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    backdrop-filter: blur(10px); /* Adds the glass blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari support */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Optional: adds a thin border for a defined edge */
+.square_1 {
+  width: 1000px;
+  height: 600px;
+  background-color: rgba(95, 57, 49, 0.733);
+  border-radius: 15px;
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  backdrop-filter: blur(10px); /* Adds the glass blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Optional: adds a thin border for a defined edge */
 }
-.square_2{
-    width: 500px;
-    height: 300px;
-    background-color:rgba(248, 246, 246, 0.735); 
-    border-radius: 15px; 
-    position: relative; 
-    flex-direction: column;
-    row-gap: 5px;
-    top: 45%; 
-    right: 170px; 
-    transform: translateY(-50%); 
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    backdrop-filter: blur(10px); /* Adds the glass blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari support */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Optional: adds a thin border for a defined edge */
+.square_2 {
+  width: 500px;
+  height: 300px;
+  background-color: rgba(248, 246, 246, 0.735);
+  border-radius: 15px;
+  position: relative;
+  flex-direction: column;
+  row-gap: 5px;
+  top: 45%;
+  right: 170px;
+  transform: translateY(-50%);
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  backdrop-filter: blur(10px); /* Adds the glass blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Optional: adds a thin border for a defined edge */
 }
 
-.match_found_text{
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    top: 30%;
-    left: 15%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-family: "Sour Gummy", sans-serif;
-    font-size: 120px;
-    font-weight: 400;
-    z-index: 3; ;
-    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2),  1px 1px 2px rgba(0, 0, 0, 0.3);
+.match_found_text {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  top: 30%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: "Sour Gummy", sans-serif;
+  font-size: 120px;
+  font-weight: 400;
+  z-index: 3;
+  text-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.2),
+    1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .textarea-container {
-    display: flex;
-    flex-direction: column;
-    margin: 20px 0;
-  }
-  
-  textarea {
-    width: 100%; 
-    max-width: 600px;
-    min-height: 120px; 
-    padding: 10px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
-    resize: vertical; 
-    transition: all 0.3s ease;
-  }
-  
-  textarea:focus {
-    outline: none;
-    border-color: #9b59b6; 
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); 
-  }
-  
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
 
-.container_2{
-    display: flex;
-    flex-direction: column;
-    left: 70%;
-    top: 50%;
-    align-items: flex-start;
-    justify-content: flex-start;
-    row-gap: 5px;
-    gap: 10px;
+textarea {
+  width: 100%;
+  max-width: 600px;
+  min-height: 120px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #9b59b6;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.container_2 {
+  display: flex;
+  flex-direction: column;
+  left: 70%;
+  top: 50%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  row-gap: 5px;
+  gap: 10px;
 }
 
 .contact_info {
-   position: relative;
-   left: 0;
-   top: 0;
-   margin-left: 40px;
-   margin-top: 20px;
+  position: relative;
+  left: 0;
+  top: 0;
+  margin-left: 40px;
+  margin-top: 20px;
 }
 
 .contact_info .container_2 {
-    margin-left: 50px !important;
+  margin-left: 50px !important;
 }
-
 
 .contact_text {
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-    font-size: 20px;
-    font-weight: 300; /* Light font weight */
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  font-size: 20px;
+  font-weight: 300; /* Light font weight */
 }
-.contact_text h3{
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-    font-size: 15px;
-    font-weight: 300; /* Light font weight */
-}
-
-.heading h1{
-    position: absolute;
-    font-family: 'Poppins',sans-serif;
-    font-size: 70px;
-    font-weight: 300;
-    left: 10%;
-    top: 5%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5)); /* Adjust the opacity on the right */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
+.contact_text h3 {
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  font-size: 15px;
+  font-weight: 300; /* Light font weight */
 }
 
-.heading h2{
-    position: absolute;
-    font-family: 'Poppins',sans-serif;
-    color: white;
-    font-size: 30px;
-    font-weight: 200;
-    left: 10%;
-    top: 30%;
-}
-.heading h3{
-    position: absolute;
-    font-family: 'Poppins',sans-serif;
-    color: white;
-    font-size: 18px;
-    font-weight: 200;
-    left: 105px;
-    top: 10%;
-}
-
-
-.logo{
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    bottom: 5%;
-    right: 2%;
+.heading h1 {
+  position: absolute;
+  font-family: "Poppins", sans-serif;
+  font-size: 70px;
+  font-weight: 300;
+  left: 10%;
+  top: 5%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.5)
+  ); /* Adjust the opacity on the right */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
-.logo_verified{
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    top: 149px;
-    left: 737px;
-    z-index: 3;
-    transform: scale(0.7);
+.heading h2 {
+  position: absolute;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  font-size: 30px;
+  font-weight: 200;
+  left: 10%;
+  top: 30%;
+}
+.heading h3 {
+  position: absolute;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  font-size: 18px;
+  font-weight: 200;
+  left: 105px;
+  top: 10%;
+}
+
+.logo {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  bottom: 5%;
+  right: 2%;
+}
+
+.logo_verified {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  top: 149px;
+  left: 737px;
+  z-index: 3;
+  transform: scale(0.7);
 }
 
 .profile_picture {
-    position: absolute;
-    top: 13%;
-    left: 65%; /* Position it next to h1 */
-    width: 300px;
-    height: 300px;
-    border-radius: 100%; /* Circular shape */
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds shadow */
+  position: absolute;
+  top: 13%;
+  left: 65%; /* Position it next to h1 */
+  width: 300px;
+  height: 300px;
+  border-radius: 100%; /* Circular shape */
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds shadow */
 }
 
 .profile_picture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the circle */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the circle */
 }
 
 .status {
-    position: absolute;
-    top: 45%; /* Position below h2 */
-    left: 10%;
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Spacing between the light and the text */
+  position: absolute;
+  top: 45%; /* Position below h2 */
+  left: 10%;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spacing between the light and the text */
 }
 
 .green_light {
-    width: 12px;
-    height: 12px;
-    background-color: #4caf50; /* Green color */
-    border-radius: 50%; /* Makes it circular */
-    box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.7); /* Glow effect */
+  width: 12px;
+  height: 12px;
+  background-color: #4caf50; /* Green color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.7); /* Glow effect */
 }
 
 .time_remaining {
-    font-family: 'Poppins', sans-serif;
-    color: white;
-    font-size: 20px;
-    font-weight: 100;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  font-size: 20px;
+  font-weight: 100;
 }
-
-
-
-
-
-

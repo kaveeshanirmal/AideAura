@@ -1,47 +1,44 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Toggle password visibility
-    document.querySelectorAll(".toggle-password").forEach((item) => {
-        item.addEventListener("click", function () {
-            const passwordField = this.previousElementSibling;
-            const type =
-                passwordField.getAttribute("type") === "password"
-                    ? "text"
-                    : "password";
-            passwordField.setAttribute("type", type);
-            this.querySelector("i").classList.toggle("fa-eye");
-            this.querySelector("i").classList.toggle("fa-eye-slash");
-        });
+  // Toggle password visibility
+  document.querySelectorAll(".toggle-password").forEach((item) => {
+    item.addEventListener("click", function () {
+      const passwordField = this.previousElementSibling;
+      const type =
+        passwordField.getAttribute("type") === "password" ? "text" : "password";
+      passwordField.setAttribute("type", type);
+      this.querySelector("i").classList.toggle("fa-eye");
+      this.querySelector("i").classList.toggle("fa-eye-slash");
     });
+  });
 
-    // Password validation
-    function validatepassword() {
-        const password = document.getElementById("password").value;
-        const confirmPassword =
-            document.getElementById("confirm-password").value;
-        if (password !== confirmPassword) {
-            alert("Passwords do not match");
-        }
+  // Password validation
+  function validatepassword() {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
     }
+  }
 
-    // Role buttons (Worker or Customer)
-    const workerBtn = document.querySelector(".worker-btn");
-    const customerBtn = document.querySelector(".customer-btn");
+  // Role buttons (Worker or Customer)
+  const workerBtn = document.querySelector(".worker-btn");
+  const customerBtn = document.querySelector(".customer-btn");
 
-    workerBtn.addEventListener("click", () => {
-        renderForm("worker");
-    });
+  workerBtn.addEventListener("click", () => {
+    renderForm("worker");
+  });
 
-    customerBtn.addEventListener("click", () => {
-        renderForm("customer");
-    });
+  customerBtn.addEventListener("click", () => {
+    renderForm("customer");
+  });
 
-    // Render the form dynamically based on role
-    function getForm(role, selectedServices = "") {
-        const serviceInput = selectedServices
-            ? `<input type="hidden" name="serviceType" value="${selectedServices}">`
-            : "";
+  // Render the form dynamically based on role
+  function getForm(role, selectedServices = "") {
+    const serviceInput = selectedServices
+      ? `<input type="hidden" name="serviceType" value="${selectedServices}">`
+      : "";
 
-        const form = `
+    const form = `
         <div class="signup-form">
             <h2 class="greeting">Get Started Now</h2>
             <form id="signup-form">
@@ -100,114 +97,97 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         </div>`;
 
-        return form;
+    return form;
+  }
+
+  // Add event listener for form submission
+  document.addEventListener("submit", function (event) {
+    const form = document.getElementById("signup-form");
+    if (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Create an object to hold form data
+        const formData = {
+          role: document.querySelector('input[name="role"]').value,
+          firstName: document.querySelector('input[name="firstName"]').value,
+          lastName: document.querySelector('input[name="lastName"]').value,
+          username: document.querySelector('input[name="username"]').value,
+          address: document.querySelector('input[name="address"]').value,
+          phone: document.querySelector('input[name="phone"]').value,
+          email: document.querySelector('input[name="email"]').value,
+          password: document.querySelector('input[name="password"]').value,
+          confirmPassword: document.querySelector(
+            'input[name="confirm-password"]',
+          ).value,
+          terms: document.querySelector('input[name="terms"]').checked,
+        };
+
+        // Log the form data to the console
+        console.log("Form data being submitted:", formData);
+
+        // Optionally submit the form after logging
+        // event.target.submit(); // Uncomment this to allow submission after logging
+      });
     }
+  });
 
-    // Add event listener for form submission
-    document.addEventListener("submit", function (event) {
-        const form = document.getElementById("signup-form");
-        if (form) {
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
+  // Render the form based on role (customer or worker)
+  function renderForm(role) {
+    if (role === "customer") {
+      const formContainer = document.querySelector(".signup-form-container");
+      formContainer.innerHTML = getForm("customer");
+    } else {
+      const container = document.querySelector(".signup-form-container");
+      container.innerHTML = getServiceTypes();
 
-                // Create an object to hold form data
-                const formData = {
-                    role: document.querySelector('input[name="role"]').value,
-                    firstName: document.querySelector('input[name="firstName"]')
-                        .value,
-                    lastName: document.querySelector('input[name="lastName"]')
-                        .value,
-                    username: document.querySelector('input[name="username"]')
-                        .value,
-                    address: document.querySelector('input[name="address"]')
-                        .value,
-                    phone: document.querySelector('input[name="phone"]').value,
-                    email: document.querySelector('input[name="email"]').value,
-                    password: document.querySelector('input[name="password"]')
-                        .value,
-                    confirmPassword: document.querySelector(
-                        'input[name="confirm-password"]'
-                    ).value,
-                    terms: document.querySelector('input[name="terms"]')
-                        .checked,
-                };
+      const imageLabels = document.querySelectorAll(".image-label");
 
-                // Log the form data to the console
-                console.log("Form data being submitted:", formData);
+      // Set up the click listener for the image labels to toggle selection
+      imageLabels.forEach((label) => {
+        label.addEventListener("click", function () {
+          const isSelected = this.getAttribute("data-selected") === "true";
+          this.setAttribute("data-selected", !isSelected);
+          this.querySelector(".service-btn").classList.toggle("selected");
+        });
+      });
 
-                // Optionally submit the form after logging
-                // event.target.submit(); // Uncomment this to allow submission after logging
-            });
-        }
-    });
+      const nextBtn = document.getElementById("next-btn");
+      nextBtn.addEventListener("click", () => {
+        // Gather all selected services inside the button click event
+        const selectedServices = [];
+        imageLabels.forEach((label) => {
+          if (label.getAttribute("data-selected") === "true") {
+            const serviceName = label.querySelector(".label-text").innerText;
+            selectedServices.push(serviceName);
+          }
+        });
 
-    // Render the form based on role (customer or worker)
-    function renderForm(role) {
-        if (role === "customer") {
-            const formContainer = document.querySelector(
-                ".signup-form-container"
-            );
-            formContainer.innerHTML = getForm("customer");
+        // Check if at least one service is selected
+        const errorMessage = document.querySelector(".error-message");
+        if (selectedServices.length === 0) {
+          // Show error message if no services are selected
+          errorMessage.style.display = "block";
+          window.scrollTo(0, 0); // Scroll to the top of the page
+          return; // Prevent proceeding to the next step
         } else {
-            const container = document.querySelector(".signup-form-container");
-            container.innerHTML = getServiceTypes();
+          // Hide error message if services are selected
+          errorMessage.style.display = "none";
 
-            const imageLabels = document.querySelectorAll(".image-label");
+          // Create a comma-separated string of selected services
+          const selectedServicesString = selectedServices.join(",");
+          const container = document.querySelector(".signup-form-container");
+          container.innerHTML = getForm("worker", selectedServicesString);
 
-            // Set up the click listener for the image labels to toggle selection
-            imageLabels.forEach((label) => {
-                label.addEventListener("click", function () {
-                    const isSelected =
-                        this.getAttribute("data-selected") === "true";
-                    this.setAttribute("data-selected", !isSelected);
-                    this.querySelector(".service-btn").classList.toggle(
-                        "selected"
-                    );
-                });
-            });
-
-            const nextBtn = document.getElementById("next-btn");
-            nextBtn.addEventListener("click", () => {
-                // Gather all selected services inside the button click event
-                const selectedServices = [];
-                imageLabels.forEach((label) => {
-                    if (label.getAttribute("data-selected") === "true") {
-                        const serviceName =
-                            label.querySelector(".label-text").innerText;
-                        selectedServices.push(serviceName);
-                    }
-                });
-
-                // Check if at least one service is selected
-                const errorMessage = document.querySelector(".error-message");
-                if (selectedServices.length === 0) {
-                    // Show error message if no services are selected
-                    errorMessage.style.display = "block";
-                    window.scrollTo(0, 0); // Scroll to the top of the page
-                    return; // Prevent proceeding to the next step
-                } else {
-                    // Hide error message if services are selected
-                    errorMessage.style.display = "none";
-
-                    // Create a comma-separated string of selected services
-                    const selectedServicesString = selectedServices.join(",");
-                    const container = document.querySelector(
-                        ".signup-form-container"
-                    );
-                    container.innerHTML = getForm(
-                        "worker",
-                        selectedServicesString
-                    );
-
-                    window.scrollTo(0, 0); // Scroll to the top of the page
-                }
-            });
+          window.scrollTo(0, 0); // Scroll to the top of the page
         }
+      });
     }
+  }
 
-    // Get the service selection form
-    function getServiceTypes() {
-        const serviceTypes = `
+  // Get the service selection form
+  function getServiceTypes() {
+    const serviceTypes = `
     <div class="signup-form">
         <h3>I Offer</h3>
         <h5>Select one or more services</h5>
@@ -241,6 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <button class="signup-button" id="next-btn" type="button">Next</button>
     </div>
     `;
-        return serviceTypes;
-    }
+    return serviceTypes;
+  }
 });

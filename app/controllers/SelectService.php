@@ -15,6 +15,7 @@ class SelectService extends Controller
     public function cookingService()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_SESSION['gender'] = $_POST['gender'] ?? [];
             $_SESSION['num_people'] = $_POST['people'] ?? [];
             $_SESSION['num_meals'] = $_POST['meals'] ?? [];
             $_SESSION['diet'] = $_POST['diet'] ?? [];
@@ -68,7 +69,7 @@ class SelectService extends Controller
             }
 
             if (isset($_SESSION['num_meals'])) {
-                $cost += count($_SESSION['num_meals']) * $cost;
+                $cost = count($_SESSION['num_meals']) * $cost;
             }
 
             if (isset($_SESSION['addons'])) {
@@ -89,6 +90,11 @@ class SelectService extends Controller
             echo json_encode(["total" => $cost]);
             exit;
         }
+    }
+
+    public function bookingInfo()
+    {
+        $this->view('serviceForms/bookingInfo');
     }
 
 

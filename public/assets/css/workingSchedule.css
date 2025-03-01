@@ -1,501 +1,500 @@
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --background: linear-gradient(135deg, #e0f7fa, #e1bee7);
-    --text-color: #2c3e50;
-    --accent-color: #34495e;
-    --hover-color: #2980b9;
-    --border-radius: 8px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+  --text-color: #2c3e50;
+  --accent-color: #34495e;
+  --hover-color: #2980b9;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 body {
-    font-family: "Arial", "Helvetica Neue", sans-serif;
-    line-height: 1.6;
-    background-image: url("../images/booking_bg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  font-family: "Arial", "Helvetica Neue", sans-serif;
+  line-height: 1.6;
+  background-image: url("../images/booking_bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .schedule-container {
-    margin-top: 100px;
-    margin-bottom: 10px;
-    max-width: 800px;
-    width: 800px;
-    padding: 40px 30px;
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  max-width: 800px;
+  width: 800px;
+  padding: 40px 30px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 h1 {
-    text-align: center;
-    color: var(--primary-color);
-    font-size: 2.5rem;
-    font-weight: 300;
-    margin-bottom: 1rem;
+  text-align: center;
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
 }
 
 .edit-btn,
 .add-schedule-btn,
 .save-changes-btn {
-    align-self: center;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--border-radius);
-    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  align-self: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .edit-btn:hover,
 .add-schedule-btn:hover,
 .save-changes-btn:hover {
-    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-
-
 .schedule-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background-color: white;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    overflow: hidden;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .schedule-table thead {
-    background: linear-gradient(135deg, #9d7d4a 0%, #9c835b 100%);
-    color: white;
-    border-radius: 8px 8px 0 0;
+  background: linear-gradient(135deg, #9d7d4a 0%, #9c835b 100%);
+  color: white;
+  border-radius: 8px 8px 0 0;
 }
 
 .schedule-table thead th {
-    padding: 15px 20px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border: none;
-    opacity: 0.95;
+  padding: 15px 20px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: none;
+  opacity: 0.95;
 }
 
 .schedule-table th,
 .schedule-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #ecf0f1;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ecf0f1;
 }
 
 .schedule-table tr:last-child td {
-    border-bottom: 1px solid #ecf0f1;
+  border-bottom: 1px solid #ecf0f1;
 }
 
 .schedule-table tr:nth-child(even) {
-    background-color: #f8f9fa;
+  background-color: #f8f9fa;
 }
 
 .schedule-table tr:hover {
-    background-color: #e9ecef;
-    transition: background-color 0.3s ease;
+  background-color: #e9ecef;
+  transition: background-color 0.3s ease;
 }
 
 .error-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .error-modal {
-    background-color: white;
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    width: 90%;
-    max-width: 500px;
-    box-shadow: var(--box-shadow);
-    text-align: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: var(--box-shadow);
+  text-align: center;
 }
 
 .error-name {
-    color: #e74c3c;
-    margin-bottom: 1rem;
+  color: #e74c3c;
+  margin-bottom: 1rem;
 }
 
 .error-list {
-    list-style-type: none;
-    margin-bottom: 1.5rem;
-    text-align: left;
+  list-style-type: none;
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
 .close-overlay-btn {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .close-overlay-btn:hover {
-    background-color: var(--hover-color);
+  background-color: var(--hover-color);
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .schedule-container {
-        width: 98%;
-        padding: 1rem;
-        margin: 1rem auto;
-    }
+  .schedule-container {
+    width: 98%;
+    padding: 1rem;
+    margin: 1rem auto;
+  }
 
-    h1 {
-        font-size: 2rem;
-    }
+  h1 {
+    font-size: 2rem;
+  }
 
-    .schedule-table {
-        font-size: 0.9rem;
-    }
+  .schedule-table {
+    font-size: 0.9rem;
+  }
 
-    .schedule-table th,
-    .schedule-table td {
-        padding: 0.75rem;
-    }
+  .schedule-table th,
+  .schedule-table td {
+    padding: 0.75rem;
+  }
 
-    .edit-btn,
-    .add-schedule-btn,
-    .save-changes-btn,
-    .cancel-changes-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-    }
+  .edit-btn,
+  .add-schedule-btn,
+  .save-changes-btn,
+  .cancel-changes-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .schedule-container {
-        padding: 1rem;
-        margin: 1rem;
-    }
+  .schedule-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
 
-    h1 {
-        font-size: 1.5rem;
-    }
+  h1 {
+    font-size: 1.5rem;
+  }
 
-    .schedule-table {
-        font-size: 0.8rem;
-    }
+  .schedule-table {
+    font-size: 0.8rem;
+  }
 
-    .schedule-table th,
-    .schedule-table td {
-        padding: 0.5rem;
-    }
+  .schedule-table th,
+  .schedule-table td {
+    padding: 0.5rem;
+  }
 
-    .edit-btn,
-    .add-schedule-btn,
-    .save-changes-btn,
-    .cancel-changes-btn {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-    }
+  .edit-btn,
+  .add-schedule-btn,
+  .save-changes-btn,
+  .cancel-changes-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
 
 .alert-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
 .alert {
-    padding: 15px 25px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-    display: flex;
-    align-items: center;
-    min-width: 300px;
-    transform: translateX(120%);
-    animation: slideIn 0.5s forwards, slideOut 0.5s forwards 3.5s;
+  padding: 15px 25px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  display: flex;
+  align-items: center;
+  min-width: 300px;
+  transform: translateX(120%);
+  animation:
+    slideIn 0.5s forwards,
+    slideOut 0.5s forwards 3.5s;
 }
 
 .alert-success {
-    background-color: #d4edda;
-    border-left: 4px solid #28a745;
-    color: #155724;
+  background-color: #d4edda;
+  border-left: 4px solid #28a745;
+  color: #155724;
 }
 
 .alert-error {
-    background-color: #f8d7da;
-    border-left: 4px solid #dc3545;
-    color: #721c24;
+  background-color: #f8d7da;
+  border-left: 4px solid #dc3545;
+  color: #721c24;
 }
 
 .alert-info {
-    background-color: #cce5ff;
-    border-left: 4px solid #0d6efd;
-    color: #004085;
+  background-color: #cce5ff;
+  border-left: 4px solid #0d6efd;
+  color: #004085;
 }
 
 /* Alert animations */
 @keyframes slideIn {
-    from {
-        transform: translateX(120%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideOut {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(120%);
-        opacity: 0;
-    }
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
 
 .delete-btn {
-    color: #000000;
-    cursor: pointer;
-    transition: color 0.2s ease;
+  color: #000000;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-
 .delete-btn i {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 .action-column {
-    display: none !important;
+  display: none !important;
 }
 
 .table-edit-mode .action-column {
-    display: table-cell !important;
+  display: table-cell !important;
 }
 
 .update-btn,
 .delete-btn,
 .add-slot-btn {
-    color: #000000;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 15px;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 15px;
 }
 
 .add-slot-btn {
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid #000000;
-    border-radius: 50%;
-    background: transparent;
-    color: #000000;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #000000;
+  border-radius: 50%;
+  background: transparent;
+  color: #000000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .add-slot-btn i {
-    font-size: 12px;
-    line-height: 1;
-    margin: 0;
-    padding: 0;
+  font-size: 12px;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
 }
 
 .update-btn:hover,
 .delete-btn:hover,
 .add-slot-btn:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .action-column > *:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .action-column > *:last-child {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 /* Base row styles */
 .schedule-table tbody tr {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 /* Alternate row style */
 .schedule-table tbody tr.alternate-row {
-    background-color: #f8f9fa;
+  background-color: #f8f9fa;
 }
 
 /* Style for added time slots to match parent */
 .schedule-table tbody tr.child-row {
-    background-color: inherit;
+  background-color: inherit;
 }
 
 .remove-row-btn {
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid #000000;
-    border-radius: 50%;
-    background: transparent;
-    color: #000000;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #000000;
+  border-radius: 50%;
+  background: transparent;
+  color: #000000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .remove-row-btn i {
-    font-size: 12px;
-    line-height: 1;
-    margin: 0;
-    padding: 0;
+  font-size: 12px;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
 }
 
 /* Add styles for editing state */
 .editing {
-    background-color: rgba(255, 255, 0, 0.1) !important;
+  background-color: rgba(255, 255, 0, 0.1) !important;
 }
 
 .editing input {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .editing input:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }
 
 /* Remove underline from action column */
 .action-column {
-    border-bottom: 1px solid #ecf0f1;
+  border-bottom: 1px solid #ecf0f1;
 }
 
 /* If needed, also remove from table header */
 th.action-column {
-    display: table-cell !important;
+  display: table-cell !important;
 }
 
 /* Remove any text decoration from icons */
 .action-column i,
 .action-column a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 /* Hide action column by default */
 .action-column {
-    display: none !important;
+  display: none !important;
 }
 
 /* Show action column only when table is in edit mode */
 .table-edit-mode .action-column {
-    display: table-cell !important;
+  display: table-cell !important;
 }
 
 /* Make sure the header is also hidden by default */
 th.action-column {
-    display: none !important;
+  display: none !important;
 }
 
 /* Show header when in edit mode */
 .table-edit-mode th.action-column {
-    display: table-cell !important;
+  display: table-cell !important;
 }
 
 /* Container for buttons */
 .schedule-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0;
-    padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  padding: 0 20px;
 }
 
 /* Button styles */
 .schedule-btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: white;
-    background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+  background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
 }
 
 .schedule-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Add specific hover states if needed */
 .add-schedule-btn:hover,
 .save-changes-btn:hover {
-    background: linear-gradient(135deg, #8b6f42 0%, #2d0b05 100%);
+  background: linear-gradient(135deg, #8b6f42 0%, #2d0b05 100%);
 }
 
 /* Hide buttons by default */
 .add-schedule-btn,
 .save-changes-btn {
-    display: none;
+  display: none;
 }
 
 /* Show buttons when in edit mode */
 .table-edit-mode .add-schedule-btn,
 .table-edit-mode .save-changes-btn {
-    display: block;
+  display: block;
 }
 
 /* Optional: Add some depth with a subtle shadow */
 .schedule-table {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Container for the edit button */
 .button-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
 }

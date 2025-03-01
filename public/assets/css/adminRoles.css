@@ -1,155 +1,157 @@
 /* Main Layout */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f8f9fa;
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
 .main-content {
-    flex: 1;
-    margin: 7% 3% 3% 3%;
-    background-color: #f8f9fa;
-    //margin-left: 250px; /* Adjust based on your sidebar width */
-    //padding: 20px;
+  flex: 1;
+  margin: 7% 3% 3% 3%;
+  background-color: #f8f9fa;
+  //margin-left: 250px; /* Adjust based on your sidebar width */
+  //padding: 20px;
 }
 
 .content-wrapper {
-    padding: 20px;
+  padding: 20px;
 }
 
 /* Header Section */
 .header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .header-section h1 {
-    color: #FF6B00;
-    font-size: 32px;
-    font-weight: bold;
+  color: #ff6b00;
+  font-size: 32px;
+  font-weight: bold;
 }
 
 .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .admin-toggle {
-    background-color: #8B5E3C;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
+  background-color: #8b5e3c;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .notification-icon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* Roles Section */
 .roles-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
-.roles-header a{
-    text-decoration: none;
-    color: inherit;
+.roles-header a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .add-role-btn {
-    background-color: #00FF1A;
-    color: black;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 400;
+  background-color: #00ff1a;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 400;
 }
 
 .add-role-btn:hover {
-    background-color: #4CAF50;
-    transition: background-color 0.3s ease;
+  background-color: #4caf50;
+  transition: background-color 0.3s ease;
 }
 
 .roles-list {
-    display: flex;
-    flex-direction: column;
-    margin: 4% 10% 5% 10%;
-    gap: 40px;
+  display: flex;
+  flex-direction: column;
+  margin: 4% 10% 5% 10%;
+  gap: 40px;
 }
 
 .role-card {
-    background-color: #FFF5F9;
-    border-radius: 10px;
-    padding: 3%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff5f9;
+  border-radius: 10px;
+  padding: 3%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .role-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
 }
 
 .role-header h2 {
-    font-size: 17px;
-    font-weight: 545;
+  font-size: 17px;
+  font-weight: 545;
 }
 
 .role-actions {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
-.refresh-btn, .delete-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
+.refresh-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
 }
 
-.refresh-btn i, .delete-btn i {
-    font-size: 20px;
+.refresh-btn i,
+.delete-btn i {
+  font-size: 20px;
 }
 
 .delete-btn i {
-    color: #FF0000;
+  color: #ff0000;
 }
 
 .role-description {
-    background-color: #F0F0F0;
-    padding: 15px;
-    border-radius: 8px;
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .role-description p {
-    color: #333;
-    line-height: 1.5;
+  color: #333;
+  line-height: 1.5;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .main-content {
-        margin: 18% 3% 3% 3%;  
-    }
+  .main-content {
+    margin: 18% 3% 3% 3%;
+  }
 
-    .roles-list {
-        gap: 15px;
-    }
+  .roles-list {
+    gap: 15px;
+  }
 
-    .role-card {
-        padding: 15px;
-    }
+  .role-card {
+    padding: 15px;
+  }
 
-    .header-section {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-    }
+  .header-section {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
 }

@@ -8,12 +8,19 @@
 <body>
 <?php include(ROOT_PATH . '/app/views/components/navbar.view.php');?>
 <div class="container">
-    <h2>Service Selection</h2>
+    <h2>Service Preferences</h2>
     <div class="progress-bar">
         <div class="progress"></div>
     </div>
 
-    <form>
+    <form id="requirementForm">
+        <label for="gender">Worker's Gender preference</label>
+        <div class="radio-group">
+            <input type="radio" id="female-btn" name="gender" value="female" required checked>
+            <label for="female-btn">Female</label>
+            <input type="radio" id="male-btn" name="gender" value="male" required>
+            <label for="male-btn">Male</label>
+        </div>
         <label for="people">For how many people?</label>
         <div class="radio-group people-count">
             <input type="radio" id="people-1-2" name="people" value="1-2" required>
@@ -28,16 +35,18 @@
             <input type="radio" id="people-8-10" name="people" value="8-10">
             <label for="people-8-10">8-10</label>
         </div>
+        <div class="error-message" id="people-error"></div>
 
         <label>Meal Selection</label>
         <div class="checkbox-group">
-            <input type="checkbox" id="breakfast" name="meals[]" value="breakfast">
+            <input type="checkbox" id="breakfast" name="meals[]" value="breakfast" class="meal-checkbox">
             <label for="breakfast">Breakfast</label>
-            <input type="checkbox" id="lunch" name="meals[]" value="lunch">
+            <input type="checkbox" id="lunch" name="meals[]" value="lunch" class="meal-checkbox">
             <label for="lunch">Lunch</label>
-            <input type="checkbox" id="dinner" name="meals[]" value="dinner">
+            <input type="checkbox" id="dinner" name="meals[]" value="dinner" class="meal-checkbox">
             <label for="dinner">Dinner</label>
         </div>
+        <div class="error-message" id="meals-error"></div>
 
         <label>Dietary Preference</label>
         <div class="radio-group">
@@ -46,6 +55,7 @@
             <input type="radio" id="nonveg" name="diet" value="nonveg">
             <label for="nonveg">Non-Veg</label>
         </div>
+        <div class="error-message" id="diet-error"></div>
 
         <label>Add-ons</label>
         <div class="checkbox-group">
@@ -59,7 +69,9 @@
 
         <div class="total-container">
             <span class="total-label">Total Cost:</span>
-            <span class="total-amount">Rs. 00</span>
+            <span class="total-amount">
+                Rs. <?php echo isset($_SESSION['total_cost']) ? number_format($_SESSION['total_cost'], 2) : '0.00'; ?>
+            </span>
         </div>
 
         <div class="button-group">
@@ -78,6 +90,49 @@
         event.preventDefault();
         window.history.back(); // Navigate to the previous page
     });
+
+    const nxtButton = document.getElementById("nxt-btn");
+    nxtButton.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        // Validate the form
+        if (validateForm()) {
+            window.location.href = `${ROOT}/public/selectService/bookingInfo`;
+        }
+    });
+
+    function validateForm() {
+        let isValid = true;
+
+        // Clear previous error messages
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(element => {
+            element.textContent = '';
+        });
+
+        // Validate people selection
+        const peopleSelected = document.querySelector('input[name="people"]:checked');
+        if (!peopleSelected) {
+            document.getElementById('people-error').textContent = 'Please select number of people';
+            isValid = false;
+        }
+
+        // Validate meal selection (at least one must be checked)
+        const mealCheckboxes = document.querySelectorAll('.meal-checkbox:checked');
+        if (mealCheckboxes.length === 0) {
+            document.getElementById('meals-error').textContent = 'Please select at least one meal';
+            isValid = false;
+        }
+
+        // Validate dietary preference
+        const dietSelected = document.querySelector('input[name="diet"]:checked');
+        if (!dietSelected) {
+            document.getElementById('diet-error').textContent = 'Please select dietary preference';
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("form");
@@ -99,7 +154,6 @@
                 .catch(error => console.error("Error:", error));
         });
     });
-
 </script>
 </body>
 </html>
