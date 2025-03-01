@@ -53,7 +53,7 @@
 
 <div class="container">
     <h2>Search for a worker</h2>
-    <form id="jobForm" action="<?=ROOT?>/public/test/find" method="POST" enctype="multipart/form-data">
+    <form id="jobForm" action="<?=ROOT?>/public/SearchForWorker/find" method="POST" enctype="multipart/form-data">
     <label for="start-time">Start Time:</label>
         <select id="start-time" name="start-time"></select>
 

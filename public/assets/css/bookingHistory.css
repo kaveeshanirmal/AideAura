@@ -1,104 +1,106 @@
 /* bookingHistory.css */
 
 body {
-    font-family: "Arial", sans-serif;
-    background: linear-gradient(135deg, #e0f7fa, #e1bee7);
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 /* Container for the booking history */
 .booking-container {
-    margin-top: 90px;
-    margin-bottom: 10px;
-    max-width: 800px;
-    width: 800px;
-    padding: 40px 30px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    text-align: center;
+  margin-top: 90px;
+  margin-bottom: 10px;
+  max-width: 800px;
+  width: 800px;
+  padding: 40px 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
 
 .booking-container p {
-    font-size: 26px;
-    font-weight: 600;
-    color: #444;
-    margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 25px;
 }
 
 /* Table styling */
 .booking-table {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .booking-table th,
 .booking-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 16px;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
 }
 
 .booking-table th {
-    background-color: #e1bee7;
-    color: #555;
-    font-weight: 500;
+  background-color: #e1bee7;
+  color: #555;
+  font-weight: 500;
 }
 
 .booking-table tbody tr:hover {
-    background-color: #f0f8ff;
+  background-color: #f0f8ff;
 }
 
 /* Pagination styling */
 .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: #555;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #555;
+  margin-top: 20px;
 }
 
 .pagination button {
-    padding: 8px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 6px;
-    background-color: #4a90e2;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4a90e2;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .pagination button:disabled {
-    background-color: #bbb;
-    cursor: not-allowed;
+  background-color: #bbb;
+  cursor: not-allowed;
 }
 
 .pagination button:not(:disabled):hover {
-    background-color: #357abd;
+  background-color: #357abd;
 }
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 600px) {
-    .booking-table th,
-    .booking-table td {
-        font-size: 14px;
-        padding: 10px;
-    }
+  .booking-table th,
+  .booking-table td {
+    font-size: 14px;
+    padding: 10px;
+  }
 
-    .pagination {
-        flex-direction: column;
-    }
+  .pagination {
+    flex-direction: column;
+  }
 }
