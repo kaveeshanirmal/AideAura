@@ -158,8 +158,84 @@ window.validateForm = function () {
   return isValid;
 };
 
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeValidation);
 } else {
   initializeValidation();
 }
+
+//
+// Language dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Make sure elements exist before adding event listeners
+    const dropdownHeader = document.getElementById('language-dropdown-header');
+    const dropdownContent = document.getElementById('language-content');
+    
+    if (!dropdownHeader || !dropdownContent) {
+        console.error("Language dropdown elements not found!");
+        return;
+    }
+    
+    // Create arrow element if it doesn't exist
+    let dropdownArrow = dropdownHeader.querySelector('.dropdown-arrow');
+    if (!dropdownArrow) {
+        dropdownArrow = document.createElement('span');
+        dropdownArrow.className = 'dropdown-arrow';
+        dropdownArrow.innerHTML = '&#9662;';
+        dropdownHeader.appendChild(dropdownArrow);
+    }
+    
+    // Ensure we get all checkboxes within the dropdown
+    const checkboxes = dropdownContent.querySelectorAll('input[type="checkbox"]');
+    
+    // Make sure the click event works properly
+    dropdownHeader.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent any default behavior
+        console.log("Dropdown header clicked"); // Debug log
+        dropdownContent.classList.toggle('show');
+        
+        // Rotate arrow when dropdown is open
+        if (dropdownContent.classList.contains('show')) {
+            dropdownArrow.style.transform = 'rotate(180deg)';
+        } else {
+            dropdownArrow.style.transform = 'rotate(0)';
+        }
+    });
+    
+    // Rest of the code remains the same
+    // Update header text based on selected items
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateDropdownText();
+        });
+    });
+    
+    function updateDropdownText() {
+        const selectedLanguages = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedLanguages.push(checkbox.value);
+            }
+        });
+        
+        if (selectedLanguages.length === 0) {
+            dropdownHeader.textContent = 'Select languages';
+            dropdownHeader.appendChild(dropdownArrow);
+        } else if (selectedLanguages.length <= 2) {
+            dropdownHeader.textContent = selectedLanguages.join(', ');
+            dropdownHeader.appendChild(dropdownArrow);
+        } else {
+            dropdownHeader.textContent = `${selectedLanguages.length} languages selected`;
+            dropdownHeader.appendChild(dropdownArrow);
+        }
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!dropdownHeader.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.remove('show');
+            dropdownArrow.style.transform = 'rotate(0)';
+        }
+    });
+});

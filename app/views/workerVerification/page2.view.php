@@ -23,6 +23,50 @@
             <span class="details">Home Town</span>
             <input type="text" id="hometown" placeholder="Enter your hometown" required minlength="3">
           </div>
+  <!-- -->
+            <div class="input-box">
+            <span class="details">NIC / PassportID</span>
+            <input type="text" id="idnumber" placeholder="200 xxx xxx xxx" required pattern="\d{12}">
+        </div>
+  <!-- -->
+          <div class="input-box">
+            <span class="details">Nationality</span>
+            <select id="nationality" required>
+              <option value="" disabled selected>Select your nationality</option>
+              <option value="sinhalese">Sinhalese</option>
+              <option value="tamil">Tamil</option>
+              <option value="muslim">Muslim</option>
+              <option value="burger">Burger</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+  <!-- -->
+          <div class="input-box">
+<!-- Make sure this HTML structure is exactly as shown here -->
+<div class="form-group">
+  <label>Language skills</label>
+  <div class="custom-dropdown input-box" id="language-dropdown-container">
+    <div class="dropdown-header" id="language-dropdown-header">
+      Select languages
+      <span class="dropdown-arrow">&#9662;</span>
+    </div>
+    <div class="dropdown-content" id="language-content">
+      <div class="dropdown-item">
+        <input type="checkbox" id="sinhala" name="language[]" value="Sinhala">
+        <label for="sinhala">Sinhala</label>
+      </div>
+      <div class="dropdown-item">
+        <input type="checkbox" id="tamil" name="language[]" value="Tamil">
+        <label for="tamil">Tamil</label>
+      </div>
+      <div class="dropdown-item">
+        <input type="checkbox" id="english" name="language[]" value="English">
+        <label for="english">English</label>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
           <div class="input-box">
             <span class="details">Age</span>
             <select id="age" required>

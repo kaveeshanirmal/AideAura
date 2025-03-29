@@ -26,7 +26,7 @@
             <div class="worker-details-container">
                 <div class="details-grid">
                     <div class="detail-item">
-                        <span class="label">Name :</span>
+                        <span class="label">Full Name :</span>
                         <span class="value"><?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?></span>
                     </div>
                     <div class="detail-item">
@@ -90,7 +90,7 @@
                         <span class="value">No</span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Address :</span>
+                        <span class="label">Home Town :</span>
                         <span class="value">N/A</span>
                     </div>
                     <div class="detail-item">
