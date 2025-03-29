@@ -41,32 +41,26 @@
             </select>
           </div>
   <!-- -->
-          <div class="input-box">
-<!-- Make sure this HTML structure is exactly as shown here -->
-<div class="form-group">
-  <label>Language skills</label>
-  <div class="custom-dropdown input-box" id="language-dropdown-container">
-    <div class="dropdown-header" id="language-dropdown-header">
-      Select languages
-      <span class="dropdown-arrow">&#9662;</span>
+
+
+  <div class="input-box">
+  <span class="details">Language Skills</span>
+  <div class="custom-multi-select" id="multiSelect">
+    <div class="select-box">
+      <span id="selectedOptions">Select your languages</span>
+      <div class="arrow"></div>
     </div>
-    <div class="dropdown-content" id="language-content">
-      <div class="dropdown-item">
-        <input type="checkbox" id="sinhala" name="language[]" value="Sinhala">
-        <label for="sinhala">Sinhala</label>
-      </div>
-      <div class="dropdown-item">
-        <input type="checkbox" id="tamil" name="language[]" value="Tamil">
-        <label for="tamil">Tamil</label>
-      </div>
-      <div class="dropdown-item">
-        <input type="checkbox" id="english" name="language[]" value="English">
-        <label for="english">English</label>
-      </div>
+    <div class="options-list">
+      <label><input type="checkbox" value="Sinhala"> Sinhala</label>
+      <label><input type="checkbox" value="Tamil"> Tamil</label>
+      <label><input type="checkbox" value="English"> English</label>
     </div>
   </div>
 </div>
-    </div>
+
+
+
+
           <div class="input-box">
             <span class="details">Age</span>
             <select id="age" required>
