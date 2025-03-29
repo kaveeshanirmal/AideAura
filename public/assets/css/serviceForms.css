@@ -1,0 +1,216 @@
+:root {
+  --primary-brown: #8b4513;
+  --light-brown: #deb887;
+  --cream: #fdfbf7;
+  --dark-brown: #5c3317;
+  --light-shadow: rgba(139, 69, 19, 0.1);
+  --medium-shadow: rgba(139, 69, 19, 0.2);
+  --label-bg: #ffffff; /* New white background for labels */
+  --label-text: #8b4513; /* Text color matching primary brown */
+  --label-hover: #f8f1e7; /* Light cream color for hover state */
+}
+
+body {
+  /*background-color: var(--cream);*/
+  background-image: url(../images/booking_bg.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  background: white;
+  margin: 90px 5px;
+  padding: 30px 40px 40px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px var(--light-shadow);
+  width: 100%;
+  max-width: 700px;
+}
+
+h2 {
+  color: var(--primary-brown);
+  text-align: left;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+h2:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-brown);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.image-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.image-button {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px var(--light-shadow);
+  border: 3px solid transparent;
+}
+
+.image-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px var(--medium-shadow);
+  border-color: var(--light-brown);
+}
+
+.image-button.selected {
+  border-color: var(--primary-brown);
+  box-shadow:
+    0 0 0 2px var(--primary-brown),
+    0 8px 16px var(--medium-shadow);
+}
+
+.image-button img {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  border-bottom: 1px solid var(--light-brown);
+}
+
+.image-button:hover img {
+  transform: scale(1.05);
+}
+
+.image-button span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: var(--label-bg);
+  color: var(--label-text);
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  border-top: 2px solid var(--light-brown);
+}
+
+.image-button:hover span {
+  background: var(--label-hover);
+  color: var(--dark-brown);
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+}
+
+button {
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn-previous {
+  display: none;
+  background-color: var(--light-brown);
+  color: var(--dark-brown);
+}
+
+.btn-next {
+  display: none;
+  background-color: var(--primary-brown);
+  color: white;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--medium-shadow);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px var(--light-shadow);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--light-brown);
+  border-radius: 6px;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px var(--medium-shadow);
+}
+
+.progress {
+  width: 0;
+  height: 100%;
+  background-color: var(--primary-brown);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .image-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .image-button {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px;
+  }
+
+  .image-button {
+    height: 160px;
+  }
+
+  .image-button span {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

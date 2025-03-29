@@ -71,7 +71,7 @@ class serviceForms extends Controller
     public function testDatabase() {
         $result = $this->serviceModel->testDatabaseConnection();
         echo "<pre>";
-        echo "Controller Test Results:\n";
+        echo "Controller SearchForWorker Results:\n";
         print_r($result);
         echo "</pre>";
         die();
