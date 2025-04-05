@@ -43,24 +43,6 @@
   <!-- -->
 
 
-  <div class="input-box">
-  <span class="details">Language Skills</span>
-  <div class="custom-multi-select" id="multiSelect">
-    <div class="select-box">
-      <span id="selectedOptions">Select your languages</span>
-      <div class="arrow"></div>
-    </div>
-    <div class="options-list">
-      <label><input type="checkbox" value="Sinhala"> Sinhala</label>
-      <label><input type="checkbox" value="Tamil"> Tamil</label>
-      <label><input type="checkbox" value="English"> English</label>
-    </div>
-  </div>
-</div>
-
-
-
-
           <div class="input-box">
             <span class="details">Age</span>
             <select id="age" required>
@@ -94,18 +76,62 @@
             </select>
           </div>
 
-          <div class="input-box full-width">
-            <span class="details">Description</span>
-                <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
+          <div class="input-box">
+            <span class="details">Work locations (Area You Can)</span>
+            <select id="work-locations" required multiple>
+              <option value="Ampara">Ampara</option>
+              <option value="Anuradhapura">Anuradhapura</option>
+              <option value="Badulla">Badulla</option>
+              <option value="Batticaloa">Batticaloa</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Galle">Galle</option>
+              <option value="Gampaha">Gampaha</option>
+              <option value="Hambantota">Hambantota</option>
+              <option value="Jaffna">Jaffna</option>
+              <option value="Kalutara">Kalutara</option>
+              <option value="Kandy">Kandy</option>
+              <option value="Kegalle">Kegalle</option>
+              <option value="Kilinochchi">Kilinochchi</option>
+              <option value="Kurunegala">Kurunegala</option>
+              <option value="Mannar">Mannar</option>
+              <option value="Matale">Matale</option>
+              <option value="Matara">Matara</option>
+              <option value="Monaragala">Monaragala</option>
+              <option value="Mullaitivu">Mullaitivu</option>
+              <option value="Nuwara Eliya">Nuwara Eliya</option>
+              <option value="Polonnaruwa">Polonnaruwa</option>
+              <option value="Puttalam">Puttalam</option>
+              <option value="Ratnapura">Ratnapura</option>
+              <option value="Trincomalee">Trincomalee</option>
+              <option value="Vavuniya">Vavuniya</option>
+            </select>
           </div>
 
+
+          
           <div class="input-box full-width">
             <span class="details">Upload Certificates (If Any) </span>
             <input type="file" id="certificates" accept=".pdf,.doc,.docx,.jpg,.png">
           </div>
+        
+        <div class="input-box full-width">
+          <span class="details">Medical and Fitness Certificate </span>
+          <input type="file" id="certificates" accept=".pdf,.doc,.docx,.jpg,.png">
         </div>
+      
+      <div class="input-box full-width">
+        <span class="details">Description</span>
+            <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
+      </div>
+
+      <div class="input-box full-width">
+        <span class="details">Allergies or Physical Limitations</span>
+            <textarea id="description" placeholder="I have an allergy to cats and dogs." required></textarea>
+      </div>
+
+      </div>
         
-        
+         
         <div class="user_buttons">
           <div class="next_button_container">
             <button class="next_button" id="back2">Back</button>

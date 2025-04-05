@@ -96,7 +96,7 @@ form .input-box span.details {
 
 .user-details .input-box textarea {
   resize: none;
-  height: 80px;
+  height: 45px;
   padding-top: 10px;
   width: 100%;
 }
@@ -301,8 +301,11 @@ input:valid {
 /* Show options when active */
 .custom-multi-select.active .options-list {
   display: block;
+}
 
-
+form .input-box  #certificates {
+   padding-top: 8px; 
+}
 
 /* Responsive media query code for mobile devices */
 @media (max-width: 584px) {
