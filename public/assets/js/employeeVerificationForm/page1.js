@@ -115,6 +115,44 @@ function initializeValidation() {
       validateInput(this);
     });
   });
+  
+  // Add event listeners for gender selection
+  const genderRadios = document.querySelectorAll('input[name="gender"]');
+  const genderError = document.getElementById("gender-error");
+  
+  genderRadios.forEach((radio) => {
+    radio.addEventListener('change', function() {
+      genderError.style.display = "none";
+    });
+  });
+  
+  // Add event listeners for language selection
+  const languageCheckboxes = document.querySelectorAll('.options-list input[type="checkbox"]');
+  const languageError = document.getElementById("language-error");
+  const optionsList = document.querySelector('.options-list');
+  
+  languageCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', function() {
+      let languageSelected = false;
+      
+      // Check if any language is selected
+      languageCheckboxes.forEach((cb) => {
+        if (cb.checked) {
+          languageSelected = true;
+        }
+      });
+      
+      if (languageSelected) {
+        languageError.style.display = "none";
+        optionsList.classList.remove("invalid");
+        optionsList.classList.add("valid");
+      } else {
+        languageError.style.display = "block";
+        optionsList.classList.add("invalid");
+        optionsList.classList.remove("valid");
+      }
+    });
+  });
 }
 
 // Export validation function for navigation.js to use
@@ -149,8 +187,32 @@ window.validateForm = function () {
     genderError.style.display = "none";
   }
 
+  // Validate language skills selection
+  const languageCheckboxes = document.querySelectorAll('.options-list input[type="checkbox"]');
+  const languageError = document.getElementById("language-error");
+  const optionsList = document.querySelector('.options-list');
+  let languageSelected = false;
+
+  languageCheckboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      languageSelected = true;
+    }
+  });
+
+  if (!languageSelected) {
+    languageError.style.display = "block";
+    optionsList.classList.add("invalid");
+    optionsList.classList.remove("valid");
+    isValid = false;
+  } else {
+    languageError.style.display = "none";
+    optionsList.classList.remove("invalid");
+    optionsList.classList.add("valid");
+  }
+
   return isValid;
 };
+
 
 // Initialize validation when DOM is loaded and when script is loaded
 if (document.readyState === "loading") {

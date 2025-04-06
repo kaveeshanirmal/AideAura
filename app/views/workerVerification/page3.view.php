@@ -42,6 +42,12 @@
           </div>
           
           <div class="input-box full-width">
+        <span class="details">Allergies or Physical Limitations</span>
+            <textarea id="allergies" placeholder="I have an allergy to cats and dogs." required></textarea>
+      </div>
+
+
+          <div class="input-box full-width">
             <span class="details">Special Notes</span>
                 <textarea id="notes" placeholder="I would like to mention that ..."></textarea>
           </div>

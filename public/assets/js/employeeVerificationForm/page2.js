@@ -70,6 +70,7 @@ function validateInput(input) {
       }
       break;
 
+      
     case "age":
       if (!value) {
         showError(input, "Please select your age!");

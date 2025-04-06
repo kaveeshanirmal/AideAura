@@ -74,6 +74,13 @@ function validateInput(input) {
         return false;
       }
       break;
+
+    case "allergies":
+      if (!value) {
+        showError(input, "Please enter allergies details.!");
+        return false;
+      }
+      break;
   }
 
   hideError(input);

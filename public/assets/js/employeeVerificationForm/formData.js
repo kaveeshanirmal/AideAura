@@ -4,13 +4,16 @@ function saveFormData(page) {
   const formData = JSON.parse(localStorage.getItem(formDataKey) || "{}");
 
   if (page === "page1") {
-    formData.page1 = {
-      fullName: document.getElementById("fullName")?.value || "",
-      userName: document.getElementById("userName")?.value || "",
-      email: document.getElementById("email")?.value || "",
-      telephone: document.getElementById("telephone")?.value || "",
-      gender:
-        document.querySelector("input[name='gender']:checked")?.value || "",
+    const languages = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+    .map(cb => cb.value);
+
+  formData.page1 = {
+    fullName: document.getElementById("fullName")?.value || "",
+    userName: document.getElementById("userName")?.value || "",
+    email: document.getElementById("email")?.value || "",
+    telephone: document.getElementById("telephone")?.value || "",
+    gender: document.querySelector("input[name='gender']:checked")?.value || "",
+    languages: languages,
     };
   } else if (page === "page2") {
     formData.page2 = {
@@ -35,7 +38,7 @@ function restoreFormData(page) {
   const formData = JSON.parse(localStorage.getItem(formDataKey) || "{}");
 
   if (page === "page1" && formData.page1) {
-    const { fullName, userName, email, telephone, gender } = formData.page1;
+    const { fullName, userName, email, telephone, gender, languages } = formData.page1;
 
     const fullNameField = document.getElementById("fullName");
     if (fullNameField) fullNameField.value = fullName || "";
@@ -53,6 +56,14 @@ function restoreFormData(page) {
       `input[name='gender'][value='${gender}']`,
     );
     if (genderField) genderField.click();
+
+    if (Array.isArray(languages)) {
+      languages.forEach(lang => {
+        const checkbox = document.querySelector(`input[type='checkbox'][value='${lang}']`);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+
   } else if (page === "page2" && formData.page2) {
     const { hometown, age, service, experience, description } = formData.page2;
 
@@ -70,6 +81,7 @@ function restoreFormData(page) {
 
     const descriptionField = document.getElementById("description");
     if (descriptionField) descriptionField.value = description || "";
+
   } else if (page === "page3" && formData.page3) {
     const { workingWeekdays, workingWeekends, notes } = formData.page3;
 

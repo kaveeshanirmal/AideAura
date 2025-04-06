@@ -185,6 +185,15 @@ input:valid {
   border: 2px solid green;
 }
 
+.options-list.invalid {
+  padding: 10px;
+  border-radius: 5px;
+}
+.options-list.valid {
+  padding: 10px;
+  border-radius: 5px;
+}
+
 /* Responsive media query code for mobile devices */
 @media (max-width: 584px) {
   .container {

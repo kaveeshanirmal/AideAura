@@ -124,10 +124,6 @@
             <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
       </div>
 
-      <div class="input-box full-width">
-        <span class="details">Allergies or Physical Limitations</span>
-            <textarea id="description" placeholder="I have an allergy to cats and dogs." required></textarea>
-      </div>
 
       </div>
         
