@@ -1,11 +1,9 @@
-const ROOT = "<?php echo ROOT; ?>";
-
 document.addEventListener("DOMContentLoaded", function () {
   // Back button functionality
   const backButton = document.getElementById("back-btn");
   backButton.addEventListener("click", (event) => {
     event.preventDefault();
-    window.history.back(); // Navigate to the previous page
+    window.history.back();
   });
 
   // Modal and map elements
@@ -44,11 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "none";
     });
 
-    window.onclick = function (event) {
+    window.addEventListener("click", function (event) {
       if (event.target === modal) {
         modal.style.display = "none";
       }
-    };
+    });
   } else {
     console.error("Map elements not found!");
   }
@@ -58,12 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Initializing map...");
 
     if (map) {
-      map.remove(); // Remove existing map instance
+      map.remove();
     }
 
-    // Default location (Colombo, Sri Lanka) in case geolocation fails
     const defaultLocation = [6.9271, 79.8612];
-
     map = L.map("map").setView(defaultLocation, 13);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -72,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     marker = L.marker(defaultLocation, { draggable: true }).addTo(map);
 
-    // Try to get the user's current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -80,65 +75,53 @@ document.addEventListener("DOMContentLoaded", function () {
             position.coords.latitude,
             position.coords.longitude,
           ];
-          console.log("User's current location:", userLocation);
-
           map.setView(userLocation, 13);
           marker.setLatLng(userLocation);
+          updateAddressFromMarker();
         },
         (error) => {
           console.error("Geolocation error:", error);
         },
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
     }
 
-    marker.on("dragend", function () {
-      const latlng = marker.getLatLng();
-      console.log("Marker moved to:", latlng);
+    marker.on("dragend", updateAddressFromMarker);
+  }
 
-      fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`,
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.display_name) {
-            console.log("Address found:", data.display_name);
-            document.getElementById("service-location").value =
-              data.display_name;
-          } else {
-            alert("Could not fetch address.");
-          }
-        })
-        .catch((error) => console.error("Error fetching address:", error));
-    });
+  function updateAddressFromMarker() {
+    const latlng = marker.getLatLng();
+    fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.display_name) {
+          serviceLocationInput.value = data.display_name;
+        }
+      })
+      .catch((error) => console.error("Error fetching address:", error));
   }
 
   // Toggle collapsible sections
   const toggleButtons = document.querySelectorAll(".toggle-btn");
-
   toggleButtons.forEach((button) => {
     button.addEventListener("click", function () {
       const section = this.closest(".collapsible-section");
       const content = section.querySelector(".section-content");
       const summary = section.querySelector(".section-summary");
 
-      // Toggle classes for animation
       content.classList.toggle("collapsed");
       summary.classList.toggle("hidden");
       this.classList.toggle("expanded");
 
-      // Update the form values in summary when collapsing
       if (content.classList.contains("collapsed")) {
         updateSummaryValues(section);
       }
     });
   });
 
-  // Update summary values function
   function updateSummaryValues(section) {
     const summaryValues = section.querySelectorAll(".summary-value");
-
     summaryValues.forEach((summary) => {
       const fieldId = summary.getAttribute("data-field");
       const input = document.getElementById(fieldId);
@@ -148,27 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Form total calculation
-  const form = document.querySelector("form");
+  // Form elements
+  const form = document.getElementById("bookingInfoForm");
   const totalAmount = document.querySelector(".total-amount");
-
-  form.addEventListener("change", function () {
-    const formData = new FormData(form);
-
-    fetch(`${ROOT}/public/selectService/cookingService`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.total) {
-          totalAmount.textContent = `Rs. ${data.total}.00`;
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  });
-
-  // Add event listeners for real-time validation
   const fullName = document.getElementById("customer-name");
   const phoneNumber = document.getElementById("contact-phone");
   const email = document.getElementById("contact-email");
@@ -176,105 +141,141 @@ document.addEventListener("DOMContentLoaded", function () {
   const preferredDate = document.getElementById("preferred-date");
   const arrivalTime = document.getElementById("arrival-time");
   const acknowledgment = document.getElementById("data-acknowledgment");
+  const proceedToPaymentButton = document.getElementById("nxt-btn");
 
   // Clear errors when fields are changed
-  fullName.addEventListener("input", () => showError("name-error", false));
-  phoneNumber.addEventListener("input", () => showError("phone-error", false));
-  email.addEventListener("input", () => showError("email-error", false));
-  serviceLocation.addEventListener("input", () =>
-    showError("location-error", false),
-  );
-  preferredDate.addEventListener("change", () =>
-    showError("date-error", false),
-  );
-  arrivalTime.addEventListener("change", () => showError("time-error", false));
-  acknowledgment.addEventListener("change", () =>
-    showError("acknowledgment-error", false),
-  );
+  [
+    fullName,
+    phoneNumber,
+    email,
+    serviceLocation,
+    preferredDate,
+    arrivalTime,
+    acknowledgment,
+  ].forEach((field) => {
+    if (field) {
+      const errorId = field.id + "-error";
+      field.addEventListener("input", () => showError(errorId, false));
+    }
+  });
 
-  // Form validation
-  const nxtBtn = document.getElementById("nxt-btn");
-  nxtBtn.addEventListener("click", function () {
+  // Form validation function
+  function validateForm() {
     let isValid = true;
-
-    // Clear all errors first
     clearErrorMessages();
 
-    // Full Name Validation (Non-empty)
+    // Name validation
     if (fullName.value.trim() === "") {
       showError("name-error", true);
       isValid = false;
     }
 
-    // Phone Number Validation (10-digit)
+    // Phone validation
     const phonePattern = /^\d{10}$/;
     if (!phonePattern.test(phoneNumber.value.replace(/\s+/g, ""))) {
       showError("phone-error", true);
       isValid = false;
     }
 
-    // Email Validation
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email.value)) {
       showError("email-error", true);
       isValid = false;
     }
 
-    // Service Location Validation (Non-empty)
+    // Location validation
     if (serviceLocation.value.trim() === "") {
       showError("location-error", true);
       isValid = false;
     }
 
-    // Preferred Date Validation (Future Date)
+    // Date validation
     const today = new Date().toISOString().split("T")[0];
     if (preferredDate.value < today) {
       showError("date-error", true);
       isValid = false;
     }
 
-    // Arrival Time Validation (Future Time on the same day)
+    // Time validation
     if (preferredDate.value === today) {
       const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-
       const [timeHour, timeMinute] = arrivalTime.value.split(":").map(Number);
 
       if (
-        timeHour < currentHour ||
-        (timeHour === currentHour && timeMinute <= currentMinute)
+        timeHour < now.getHours() ||
+        (timeHour === now.getHours() && timeMinute <= now.getMinutes())
       ) {
         showError("time-error", true);
         isValid = false;
       }
     }
 
-    // Checkbox Validation
+    // Acknowledgment validation
     if (!acknowledgment.checked) {
       showError("acknowledgment-error", true);
       isValid = false;
     }
 
-    if (isValid) {
-      // Proceed to payment page or form submission
-      console.log("Form is valid! Proceeding to payment.");
-      // form.submit(); // Uncomment this to actually submit the form
-    } else {
-      // Scroll to the first error
+    if (!isValid) {
       const firstError = document.querySelector(
         '.error-message[style="display: block;"]',
       );
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+      firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  });
 
-  // Prevent navigation without confirmation
-  window.addEventListener("beforeunload", function (event) {
-    event.preventDefault();
-    event.returnValue =
-      "Are you sure you want to leave? Changes may not be saved.";
+    return isValid;
+  }
+
+  // Form submission handler
+  // Remove the form submit handler and only handle the button click
+  proceedToPaymentButton.addEventListener("click", async function (e) {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    const submitBtn = document.getElementById("nxt-btn");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Processing...";
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch(
+        `${ROOT}/public/selectService/submitBookingInfo`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        },
+      );
+
+      // First check if the response is JSON
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text();
+        console.error("Expected JSON, got:", text);
+        throw new Error("Server did not return JSON");
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("Form submitted successfully:", data);
+        // Navigate to payment page after successful submission
+        window.location.href = `${ROOT}/public/selectService/proceedPayment`;
+      } else {
+        alert(data.message || "Error submitting form");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Proceed to Payment";
+    }
   });
 });

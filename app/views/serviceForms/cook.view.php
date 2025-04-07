@@ -70,7 +70,7 @@
         <div class="total-container">
             <span class="total-label">Total Cost:</span>
             <span class="total-amount">
-                Rs. <?php echo isset($_SESSION['total_cost']) ? number_format($_SESSION['total_cost'], 2) : '0.00'; ?>
+                Rs. <?php echo isset($_SESSION['booking_info']['total_cost']) ? number_format($_SESSION['booking_info']['total_cost'], 2) : '0.00'; ?>
             </span>
         </div>
 
@@ -83,6 +83,8 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
+    const bookingInfo = <?php echo json_encode($_SESSION['booking_info']); ?>;
+    console.log(bookingInfo);
     const ROOT = "<?php echo ROOT; ?>";
 
     const backButton = document.getElementById("back-btn");
@@ -144,6 +146,9 @@
             fetch(`${ROOT}/public/selectService/cookingService`, {
                 method: "POST",
                 body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             })
                 .then(response => response.json())
                 .then(data => {

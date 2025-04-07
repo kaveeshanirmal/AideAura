@@ -145,18 +145,6 @@ button {
   letter-spacing: 0.5px;
 }
 
-.btn-previous {
-  display: none;
-  background-color: var(--light-brown);
-  color: var(--dark-brown);
-}
-
-.btn-next {
-  display: none;
-  background-color: var(--primary-brown);
-  color: white;
-}
-
 button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px var(--medium-shadow);
@@ -183,6 +171,16 @@ button:active {
   background-color: var(--primary-brown);
   border-radius: 6px;
   transition: width 0.5s ease;
+}
+
+.btn-previous {
+  background-color: var(--light-brown);
+  color: var(--dark-brown);
+}
+
+.btn-next {
+  background-color: var(--primary-brown);
+  color: white;
 }
 
 /* Responsive adjustments */

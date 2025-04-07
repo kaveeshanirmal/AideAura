@@ -9,3 +9,7 @@ define('DBNAME', 'aideaura');
 define('DBHOST', 'localhost');
 define('DBUSER', 'root');
 define('DBPASS', '');
+
+//payment config
+define('PAYHERE_MERCHANT_ID', '1230044');
+define('PAYHERE_MERCHANT_SECRET', 'NDI5MzY2MTg1NzQwOTMwMTMxMzYyNDY2MDUxNDUyMjA1Mjk2NDkxMQ==');
