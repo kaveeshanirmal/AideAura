@@ -307,6 +307,10 @@ form .input-box  #certificates {
    padding-top: 8px; 
 }
 
+form .input-box  #medical {
+   padding-top: 8px; 
+}
+
 /* Responsive media query code for mobile devices */
 @media (max-width: 584px) {
   .container {

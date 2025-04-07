@@ -107,8 +107,6 @@
             </select>
           </div>
 
-
-          
           <div class="input-box full-width">
             <span class="details">Upload Certificates (If Any) </span>
             <input type="file" id="certificates" accept=".pdf,.doc,.docx,.jpg,.png">
@@ -116,7 +114,7 @@
         
         <div class="input-box full-width">
           <span class="details">Medical and Fitness Certificate </span>
-          <input type="file" id="certificates" accept=".pdf,.doc,.docx,.jpg,.png">
+          <input type="file" id="medical" accept=".pdf,.doc,.docx,.jpg,.png">
         </div>
       
       <div class="input-box full-width">
@@ -124,6 +122,16 @@
             <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
       </div>
 
+      <div class="input-box full-width">
+        <span class="details">Bank Name and Branch code</span>
+            <textarea id="bankNameCode" placeholder="Commercial Bank of Ceylon PLC 172" required></textarea>
+      </div>
+
+
+      <div class="input-box">
+            <span class="details">Bank Account Number</span>
+            <input type="number" id="accountNum" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}">
+        </div>
 
       </div>
         

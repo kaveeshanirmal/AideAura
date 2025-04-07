@@ -1,6 +1,6 @@
 // Function to add error spans after each input field
 function addErrorSpans() {
-  const inputs = document.querySelectorAll(".input-box select");
+  const inputs = document.querySelectorAll(".input-box select, .input-box textarea");
   inputs.forEach((input) => {
     // Remove existing error span if it exists
     const existingErrorSpan =
@@ -76,12 +76,12 @@ function validateInput(input) {
       break;
 
     case "allergies":
-      if (!value) {
-        showError(input, "Please enter allergies details.!");
+      if (value.trim().length < 10) {
+        showError(input, "Please provide a description of your allergies or not!");
         return false;
       }
       break;
-  }
+      }
 
   hideError(input);
   return true;
@@ -97,6 +97,12 @@ function initializeValidation() {
       validateInput(this);
     });
   });
+
+  document.querySelectorAll(".input-box textarea").forEach((input) => {
+    input.addEventListener("input", function () {
+      validateInput(this);
+    });
+  });  
 }
 
 window.validateForm = function () {
@@ -107,6 +113,12 @@ window.validateForm = function () {
 
   // Validate all inputs
   document.querySelectorAll(".input-box select").forEach((input) => {
+    if (!validateInput(input)) {
+      isValid = false;
+    }
+  });
+
+  document.querySelectorAll(".input-box textarea").forEach((input) => {
     if (!validateInput(input)) {
       isValid = false;
     }

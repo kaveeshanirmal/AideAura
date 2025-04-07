@@ -21,6 +21,17 @@ class workerVerification extends Controller
             $inputData = json_decode(file_get_contents('php://input'), true);
 
         if ($inputData) {
+            $workLocations = $inputData['workLocations'] ?? null;
+            if (is_array($workLocations)) {
+                $workLocations = implode(',', $workLocations);
+            }
+            
+             // Process languages
+             $spokenLanguages = $inputData['languages'] ?? null;
+             if (is_array($spokenLanguages)) {
+                 $spokenLanguages = implode(',', $spokenLanguages);
+             }
+             
             // Map input data to match the table structure
             $data = [
                 'workerID' => $_SESSION['workerID'],
@@ -29,17 +40,25 @@ class workerVerification extends Controller
                 'email' => $inputData['email'] ?? null,
                 'phone_number' => $inputData['telephone'] ?? null,
                 'gender' => $inputData['gender'] ?? null,
+                'spokenLanguages' => $spokenLanguages,
                 'hometown' => $inputData['hometown'] ?? null,
+                'nic' => $inputData['nic'] ?? null,
+                'nationality' => $inputData['nationality'] ?? null,
                 'age_range' => $inputData['age'] ?? null,
                 'service_type' => $inputData['service'] ?? null,
                 'experience_level' => $inputData['experience'] ?? null,
+                'workLocations'=> $workLocations,
+                'certificates_path' => null, // Assuming certificates_path will be handled separately
+                'medical_path' => null, // Assuming medical_path will be handled separately
                 'description' => $inputData['description'] ?? null,
-                'special_notes' => $inputData['notes'] ?? null,
+                'bankNameCode' => $inputData['bankNameCode'] ?? null,
+                'accountNumber' => $inputData['accountNumber'] ?? null,
                 'working_weekdays' => $inputData['workingWeekdays'] ?? null,
                 'working_weekends' => $inputData['workingWeekends'] ?? null,
-                'certificates_path' => null, // Assuming certificates_path will be handled separately
+                'allergies' => $inputData['allergies'] ?? null,
+                'special_notes' => $inputData['notes'] ?? null,
                 'isEditable' => true,
-                'status' => 'pending'
+                'status' => 'pending',
             ];
 
             // Pass $data to the model to insert into the database
@@ -54,6 +73,7 @@ class workerVerification extends Controller
                     'status' => 'success',
                     'message' => 'Request submitted successfully',
                 ]);
+                exit(); 
             } else {
                 $_SESSION['message'] = "Failed to send request. Please try again.";
                 $_SESSION['message_type'] = "error";
@@ -87,17 +107,25 @@ class workerVerification extends Controller
             'email' => isset($_POST['email']) ? $_POST['email'] : $requestData->email,
             'phone_number' => isset($_POST['telephone']) ? $_POST['telephone'] : $requestData->phone_number,
             'gender' => isset($_POST['gender']) ? $_POST['gender'] : $requestData->gender,
+            'spokenLanguages' => isset($_POST['languages']) ? $_POST['languages'] : $requestData->languages,
             'hometown' => isset($_POST['hometown']) ? $_POST['hometown'] : $requestData->hometown,
+            'nic' => isset($_POST['nic']) ? $_POST['nic'] : $requestData->nic,
+            'nationality' => isset($_POST['nationality']) ? $_POST['nationality'] : $requestData->nationality,
             'age_range' => isset($_POST['age']) ? $_POST['age'] : $requestData->age_range,
             'service_type' => isset($_POST['service']) ? $_POST['service'] : $requestData->service_type,
             'experience_level' => isset($_POST['experience']) ? $_POST['experience'] : $requestData->experience_level,
+            'workLocations'=> isset($_POST['workLocations']) ? $_POST['workLocations'] : $requestData->workLocations,
+            'certificates_path' => null, // Assuming certificates_path will be handled separately
+            'medical_path' => null, // Assuming medical_path will be handled separately
             'description' => isset($_POST['description']) ? $_POST['description'] : $requestData->description,
-            'special_notes' => isset($_POST['notes']) ? $_POST['notes'] : $requestData->special_notes,
+            'bankNameCode' => isset($_POST['bankNameCode']) ? $_POST['bankNameCode'] : $requestData->bankNameCode,
+            'accountNumber' => isset($_POST['accountNumber']) ? $_POST['accountNumber'] : $requestData->accountNumber,
             'working_weekdays' => isset($_POST['workingWeekdays']) ? $_POST['workingWeekdays'] : $requestData->working_weekdays,
             'working_weekends' => isset($_POST['workingWeekends']) ? $_POST['workingWeekends'] : $requestData->working_weekends,
-            'certificates_path' => null, // Assuming certificates_path will be handled separately
+            'allergies' => isset($_POST['allergies']) ? $_POST['allergies'] : $requestData->allergies,
+            'special_notes' => isset($_POST['notes']) ? $_POST['notes'] : $requestData->special_notes,
             'isEditable' => true,
-            'status' => 'pending'
+            'status' => 'pending',
         ];
 
         // Update the request

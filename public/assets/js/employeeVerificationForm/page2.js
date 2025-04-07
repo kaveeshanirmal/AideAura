@@ -70,7 +70,20 @@ function validateInput(input) {
       }
       break;
 
-      
+    case "idnumber":
+      if (value.trim().length < 12) {
+        showError(input, "NIC/Passport number must 12 characters long!");
+        return false;
+      }
+      break;
+
+      case "nationality":
+        if (!value) {
+          showError(input, "Please select your nationality!");
+          return false;
+        }
+        break;
+
     case "age":
       if (!value) {
         showError(input, "Please select your age!");
@@ -92,16 +105,45 @@ function validateInput(input) {
       }
       break;
 
-    case "description":
-      if (value.trim().length < 10) {
-        showError(
-          input,
-          "Please provide a description of at least 10 characters!",
+      case "work-locations":
+        const selectedLocations = Array.from(input.selectedOptions);
+        if (selectedLocations.length === 0) {
+          showError(input, "Please select your work locations!");
+          return false;
+        }
+        break;
+
+        case "bankNameCode":
+      if (value.trim().length < 16) {
+        showError(input, "Account number must 16 digits long!");
+        return false;
+      }
+      break;
+      
+    case "bankNameCode":
+      if (!value) {
+        showError(input,"Please provide your Bank Name and Code!",
         );
         return false;
       }
       break;
-  }
+
+      case "medical":
+        const medicalFileInput = input;
+        if (medicalFileInput.files.length === 0) {
+          showError(input, "Medical and Fitness Certificate is required!");
+          return false;
+        } else {
+          const medicalFile = medicalFileInput.files[0];
+          const validExtensions = ["pdf", "doc", "docx", "jpg", "png"];
+          const fileExtension = medicalFile.name.split(".").pop().toLowerCase();
+          if (!validExtensions.includes(fileExtension)) {
+            showError(input, "Only PDF, DOC, DOCX, JPG, and PNG files are allowed!");
+            return false;
+          }
+        }
+        break;
+    }
 
   hideError(input);
 
