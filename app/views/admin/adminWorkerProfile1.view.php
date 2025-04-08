@@ -34,72 +34,87 @@
                         <span class="value"><?= htmlspecialchars($worker['username']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Date Of Birth :</span>
-                        <span class="value">N/A</span>
-                    </div>
-                    <div class="detail-item">
                         <span class="label">Nationality :</span>
-                        <span class="value">N/A</span>
+                        <span class="value"><?= htmlspecialchars($worker['Nationality']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Gender :</span>
-                        <span class="value">N/A</span>
+                        <span class="value"><?= htmlspecialchars($worker['Gender']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Contact :</span>
-                        <span class="value"><?= htmlspecialchars($worker['phone']) ?></span>
+                        <span class="value"><?= htmlspecialchars($worker['Contact']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Email :</span>
                         <span class="value"><?= htmlspecialchars($worker['email']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">ID/Passport No :</span>
-                        <span class="value">N/A</span>
+                        <span class="label">NIC/Passport No :</span>
+                        <span class="value"><?= htmlspecialchars($worker['NIC']) ?></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Age : </span>
+                        <span class="value"><?= htmlspecialchars($worker['Age']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Employment History / Experience :</span>
-                        <span class="value">N/A</span>
+                        <span class="value"><?= htmlspecialchars($worker['EmploymentExperience']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Skilled or Specialized Areas :</span>
                         <span class="value"><?= htmlspecialchars($worker['role']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Certificates :</span>
-                        <span class="value">N/A</span>
-                    </div>
-                    <div class="detail-item">
                         <span class="label">Spoken Languages :</span>
-                        <span class="value">N/A</span>
+                        <span class="value"><?= htmlspecialchars($worker['SpokenLanguages']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Work Area/Location :</span>
-                        <span class="value">N/A</span>
+                        <span class="label">Work Locations :</span>
+                        <span class="value"><?= htmlspecialchars($worker['WorkLocations']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Job Preferences :</span>
-                        <span class="value">N/A</span>
+                        <span class="label">Experience Level :</span>
+                        <span class="value"><?= htmlspecialchars($worker['ExperienceLevel']) ?></span>
                     </div>
-                    <div class="detail-item">
-                        <span class="label">Medical Fitness Certificate :</span>
-                        <span class="value">N/A</span>
-                    </div>
+
                     <div class="detail-item">
                         <span class="label">Allergies or Physical Limitations :</span>
-                        <span class="value">No</span>
+                        <span class="value"><?= htmlspecialchars($worker['AllergiesOrPhysicalLimitations']) ?></span>
                     </div>
+
+                    <div class="detail-item">
+                        <span class="label">Description :</span>
+                        <span class="value"><?= htmlspecialchars($worker['Description']) ?></span>
+                    </div>
+
                     <div class="detail-item">
                         <span class="label">Home Town :</span>
-                        <span class="value">N/A</span>
+                        <span class="value"><?= htmlspecialchars($worker['HomeTown']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Bank Details :</span>
-                        <span class="value">N/A</span>
+                        <span class="label">Bank Name and Branch Code :</span>
+                        <span class="value"><?= htmlspecialchars($worker['BankNameAndBranchCode']) ?></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Bank Account Number : </span>
+                        <span class="value"><?= htmlspecialchars($worker['BankAccountNumber']) ?></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Working Week Days : </span>
+                        <span class="value"><?= htmlspecialchars($worker['WorkingWeekDays']) ?></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Working Week Ends : </span>
+                        <span class="value"><?= htmlspecialchars($worker['WorkingWeekEnds']) ?></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Notes : </span>
+                        <span class="value"><?= htmlspecialchars($worker['Notes']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Date of profile created :</span>
-                        <span class="value"><?= htmlspecialchars($worker['createdAt']) ?></span>
+                        <span class="value"><?= htmlspecialchars($worker['Status']) ?></span>
                     </div>
                 </div>
             </div>
@@ -180,6 +195,12 @@
             </div>
         </main>
     </div>
+
+
+    <script>
+    const worker = <?= json_encode($worker); ?>;
+    console.log(worker);
+</script>
 
     <script>
         function openUpdateModal() {

@@ -4,6 +4,7 @@ class Admin extends Controller
 {
     private $customerComplaintModel;
     private $workerClicked = [];
+    public $selectedWorkerWorkerID;
 
     public function __construct()
     {
@@ -66,13 +67,49 @@ public function workerDetails()
         $workerData = $_POST['workerData'] ?? null;
 
         if ($workerData) {
-            $worker = json_decode($workerData, true);
+            $worker = json_decode($workerData, true); // decode as array
 
-            if (!empty($worker)) {
-                $this->view('admin/adminWorkerProfile1', ['worker' => $worker]);
+            if (!empty($worker) && isset($worker['userID'])) {
+                $workerModel = new WorkerModel();
+
+                // Fetch details using userID
+                $workerDetails = $workerModel->getWorkerDetails($worker['userID']);
+
+                // Use default details if not found
+                if (!$workerDetails || !is_array($workerDetails)) {
+                    $workerDetails = [
+                        'Nationality' => 'N/A',
+                        'Gender' => 'N/A',
+                        'Contact' => 'N/A',
+                        'NIC'=> 'N/A',
+                        'Age'=> 'N/A',
+                        'EmploymentExperience' => 'N/A',
+                        'SpokenLanguages'=> 'N/A',
+                        'WorkLocations' => 'N/A',
+                        'ExperienceLevel' => 'N/A',
+                        'AllergiesOrPhysicalLimitations' => 'N/A',
+                        'Description' => 'N/A',
+                        'HomeTown' => 'N/A',
+                        'BankNameAndBranchCode' => 'N/A',
+                        'BankAccountNumber' => 'N/A',
+                        'WorkingWeekDays'=> 'N/A',
+                        'WorkingWeekEnds'=> 'N/A', // Fixed key spacing
+                        'Notes' => 'N/A',
+                        'Status' => 'Not verified',
+                    ];
+                }
+
+                $workerAllDetails = array_merge($worker, $workerDetails);
+
+                $this->view('admin/adminWorkerProfile1', ['worker' => $workerAllDetails]);
+                        
+                // for certificate page get the store the userID
+                $this->selectedWorkerWorkerID = $workerDetails['workerID'];
+           
+           
             } else {
                 http_response_code(404);
-                echo "Worker not found.";
+                echo "Invalid worker data or missing userID.";
             }
         } else {
             http_response_code(400);
@@ -91,10 +128,19 @@ public function workerDetails()
     //     $this->view('admin/adminWorkerProfile1');
     // }
 
-    public function worker2()
-    {
+    public function workerCertificates(){
+       if ($this->selectedWorkerWorkerID) {
+            $workerModel = new WorkerModel();
+
+            // Fetch ceritficate details using userID
+            $workerDetails = $workerModel->getWorkerCertificates($this->selectedWorkerWorkerID);
+
+        }
+    
         $this->view('admin/adminWorkerProfile2');
     }
+
+
     public function workerSchedule()
     {
         $this->view('admin/adminWorkerProfileSchedule');

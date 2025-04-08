@@ -70,12 +70,12 @@ function validateInput(input) {
       }
       break;
 
-    case "idnumber":
-      if (value.trim().length < 12) {
-        showError(input, "NIC/Passport number must 12 characters long!");
-        return false;
-      }
-      break;
+      case "idnumber":
+        if (!/^\d{12}$/.test(value.trim())) {
+          showError(input, "NIC/Passport number must be exactly 12 digits!");
+          return false;
+        }
+        break;
 
       case "nationality":
         if (!value) {
@@ -121,12 +121,13 @@ function validateInput(input) {
       }
       break;
 
-      case "accountNumber":
-        if (value.trim().length < 16) {
-          showError(input, "Account number must 16 digits long!");
-          return false;
-        }
-        break;
+      
+case "accountNumber":
+  if (!/^\d{16}$/.test(value.trim())) {
+    showError(input, "Account number must be exactly 16 digits!");
+    return false;
+  }
+  break;
 
       case "medical":
         const medicalFileInput = input;

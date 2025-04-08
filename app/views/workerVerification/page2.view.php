@@ -26,8 +26,7 @@
   <!-- -->
             <div class="input-box">
             <span class="details">NIC / PassportID</span>
-            <input type="text" id="idnumber" placeholder="200 xxx xxx xxx" required pattern="\d{12}">
-        </div>
+            <input type="text" id="idnumber" placeholder="200 xxx xxx xxx" required pattern="\d{12}" maxlength="12" inputmode="numeric">        </div>
   <!-- -->
           <div class="input-box">
             <span class="details">Nationality</span>
@@ -130,8 +129,7 @@
 
       <div class="input-box">
             <span class="details">Bank Account Number</span>
-            <input type="number" id="accountNumber" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}">
-        </div>
+            <input type="text" id="accountNumber" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}" maxlength="16" inputmode="numeric">        </div>
 
       </div>
         
