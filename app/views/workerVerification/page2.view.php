@@ -130,7 +130,7 @@
 
       <div class="input-box">
             <span class="details">Bank Account Number</span>
-            <input type="number" id="accountNum" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}">
+            <input type="number" id="accountNumber" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}">
         </div>
 
       </div>

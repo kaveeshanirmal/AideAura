@@ -112,21 +112,21 @@ function validateInput(input) {
           return false;
         }
         break;
-
-        case "bankNameCode":
-      if (value.trim().length < 16) {
-        showError(input, "Account number must 16 digits long!");
-        return false;
-      }
-      break;
       
     case "bankNameCode":
       if (!value) {
-        showError(input,"Please provide your Bank Name and Code!",
+        showError(input,"Please provide your Bank Name and Branch Code!",
         );
         return false;
       }
       break;
+
+      case "accountNumber":
+        if (value.trim().length < 16) {
+          showError(input, "Account number must 16 digits long!");
+          return false;
+        }
+        break;
 
       case "medical":
         const medicalFileInput = input;

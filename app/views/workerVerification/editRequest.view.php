@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Request</title>
+    <!-- Placeholder for dynamic CSS -->
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/employeeVerificationForm/verificationRequestEdit.css">
 </head>
 <body>
@@ -31,14 +29,33 @@
                 <span class="details">Phone Number</span>
                 <input type="tel" name="telephone" value="<?= htmlspecialchars($requestData->phone_number ?? '') ?>" readonly>
             </div>
-            <div class="input-box gender-details">
-                <span class="details">Gender</span>
-                <div class="category">
-                    <label><input type="radio" name="gender" value="male" <?= ($requestData->gender ?? '') === 'male' ? 'checked' : '' ?> disabled> Male</label>
-                    <label><input type="radio" name="gender" value="female" <?= ($requestData->gender ?? '') === 'female' ? 'checked' : '' ?> disabled> Female</label>
-                    <label><input type="radio" name="gender" value="prefer-not-to-say" <?= ($requestData->gender ?? '') === 'prefer-not-to-say' ? 'checked' : '' ?> disabled> Prefer not to say</label>
-                </div>
             </div>
+
+                <div class="input-box gender-details">
+                    <span class="details">Gender</span>
+                    <div class="category">
+                        <label for="dot-1">
+                            <input type="radio" name="gender" id="dot-1" value="male" 
+                                <?= ($requestData->gender ?? '') === 'male' ? 'checked' : '' ?> 
+                                onclick="return false;" readonly>
+                            <span class="dot"></span>
+                            <span class="gender">Male</span>
+                        </label>
+                        <label for="dot-2">
+                            <input type="radio" name="gender" id="dot-2" value="female" 
+                                <?= ($requestData->gender ?? '') === 'female' ? 'checked' : '' ?> 
+                                onclick="return false;" readonly>
+                            <span class="dot"></span>
+                            <span class="gender">Female</span>
+                        </label>
+                        <label for="dot-3">
+                            <input type="radio" name="gender" id="dot-3" value="prefer-not-to-say" 
+                                <?= ($requestData->gender ?? '') === 'prefer-not-to-say' ? 'checked' : '' ?> 
+                                onclick="return false;" readonly>
+                            <span class="dot"></span>
+                            <span class="gender">Prefer not to say</span>
+                        </label>
+                    </div>
         </div>
 
         <!-- Section: Additional Details -->
@@ -46,7 +63,7 @@
             <!-- Language Skills -->
             <div class="input-box">
                 <span class="details">Language Skills</span>
-                <div class="options-list">
+                <div class="category">
                     <?php 
                         $languages = explode(',', $requestData->spokenLanguages ?? '');
                     ?>
@@ -60,6 +77,7 @@
                 <span class="details">Home Town</span>
                 <input type="text" name="hometown" value="<?= htmlspecialchars($requestData->hometown ?? '') ?>" readonly>
             </div>
+            
 
             <div class="input-box">
                 <span class="details">NIC / PassportID</span>
@@ -144,11 +162,50 @@
                 <span class="details">Description</span>
                 <textarea name="description" readonly><?= htmlspecialchars($requestData->description ?? '') ?></textarea>
             </div>
-        </div>
+
+            <div class="input-box full-width">
+                <span class="details">Bank Name and Branch Code</span>
+                <textarea name="bankNameCode" readonly><?= htmlspecialchars($requestData->bankNameCode ?? '') ?></textarea>
+            </div>
+            <div class="input-box full-width">
+                <span class="details">Account Number</span>
+                <input type="number" name="accountNumber" value="<?= htmlspecialchars($requestData->accountNumber ?? '') ?>" readonly>
+                </div>
+                        <!-- Section: Work Preferences -->
+                <div class="input-box">
+                    <span class="details">Working Hours (Week Days)</span>
+                    <select id="workingWeekdays" name="workingWeekdays" disabled>
+                        <option value="" disabled>Select working hours</option>
+                        <option value="4-6" <?= ($requestData->working_weekdays ?? '') === '4-6' ? 'selected' : '' ?>>4 - 6 hours</option>
+                        <option value="7-9" <?= ($requestData->working_weekdays ?? '') === '7-9' ? 'selected' : '' ?>>7 - 9 hours</option>
+                        <option value="10-12" <?= ($requestData->working_weekdays ?? '') === '10-12' ? 'selected' : '' ?>>10 - 12 hours</option>
+                        <option value="above_12" <?= ($requestData->working_weekdays ?? '') === 'above_12' ? 'selected' : '' ?>>More than 12 hours</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <span class="details">Working Hours (Weekends)</span>
+                    <select id="workingWeekends" name="workingWeekends" disabled>
+                        <option value="" disabled>Select working hours</option>
+                        <option value="4-6" <?= ($requestData->working_weekends ?? '') === '4-6' ? 'selected' : '' ?>>4 - 6 hours</option>
+                        <option value="7-9" <?= ($requestData->working_weekends ?? '') === '7-9' ? 'selected' : '' ?>>7 - 9 hours</option>
+                        <option value="10-12" <?= ($requestData->working_weekends ?? '') === '10-12' ? 'selected' : '' ?>>10 - 12 hours</option>
+                        <option value="above_12" <?= ($requestData->working_weekends ?? '') === 'above_12' ? 'selected' : '' ?>>More than 12 hours</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <span class="details">Allergies</span>
+                    <input type="text" name="allergies" value="<?= htmlspecialchars($requestData->allergies ?? '') ?>" readonly>
+                </div>
+                <div class="input-box full-width">
+                    <span class="details">Special Notes</span>
+                    <textarea id="notes" name="notes" readonly><?= htmlspecialchars($requestData->special_notes ?? '') ?></textarea>
+                </div>
+
 
         <!-- You can add submit or edit buttons here if needed -->
             <!-- Edit Button -->
-            <div class="user_buttons">
+             <!-- Edit Button -->
+             <div class="user_buttons">
                 <button type="button" class="next_button" id="edit-btn" onclick="makeEditable()">
                     Edit Application
                 </button>
@@ -158,6 +215,7 @@
             <div class="user_buttons" style="display: none;" id="submit-section">
                 <button type="submit" class="next_button" id="submit-btn">Submit Changes</button>
             </div>
+
         </form>
     </div>
     
@@ -188,11 +246,7 @@
         editBtn.style.display = 'none';
     }
     </script>
-    
+
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
-
-    </form>
-</div>
-
 </body>
 </html>

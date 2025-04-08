@@ -5,135 +5,176 @@ const initialFormData = {
   email: "john.doe@example.com",
   telephone: "1234567890",
   gender: "male",
-  hometown: "New York",
+  spokenLanguages: ["Sinhala", "English"],
+  nic: "123456789V",
+  nationality: "Sri Lankan",
   age: "26-35",
   service: "cleaning",
   experience: "intermediate",
-  description: "Experienced cleaning professional with 5 years of experience.",
+  description: "Experienced cleaner.",
+  workLocations: ["Colombo", "Gampaha"],
+  certificates: ["birth", "police"],
+  medical: ["hepatitis", "covid"],
+  bankNameCode: "BOC001",
+  accountNumber: "123456789012",
   workingWeekdays: "7-9",
   workingWeekends: "4-6",
-  notes: "Flexible and reliable service provider.",
+  allergies: "None",
+  notes: "Flexible schedule.",
 };
 
-// Function to populate form with initial data
+// Populate the form fields with initial data
 function populateForm(data) {
-  // Basic details
-  document.getElementById("fullName").value = data.fullName;
-  document.getElementById("fullName").disabled = true;
-  document.getElementById("userName").value = data.userName;
-  document.getElementById("userName").disabled = true;
-  document.getElementById("email").value = data.email;
-  document.getElementById("email").disabled = true;
-  document.getElementById("telephone").value = data.telephone;
-  document.getElementById("telephone").disabled = true;
+  const setInputValue = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.value = value;
+      el.disabled = true;
+    }
+  };
 
-  // Gender
-  document.querySelector(
-    `input[name="gender"][value="${data.gender}"]`,
-  ).checked = true;
-  const genderInputs = document.querySelectorAll('input[name="gender"]');
-  genderInputs.forEach((input) => (input.disabled = true));
+  setInputValue("fullName", data.fullName);
+  setInputValue("userName", data.userName);
+  setInputValue("email", data.email);
+  setInputValue("telephone", data.telephone);
 
-  // Additional details
-  document.getElementById("hometown").value = data.hometown;
-  document.getElementById("hometown").disabled = true;
-  document.getElementById("age").value = data.age;
-  document.getElementById("age").disabled = true;
-  document.getElementById("service").value = data.service;
-  document.getElementById("service").disabled = true;
-  document.getElementById("experience").value = data.experience;
-  document.getElementById("experience").disabled = true;
-  document.getElementById("description").value = data.description;
-  document.getElementById("description").disabled = true;
+  // Gender radio
+  if (data.gender) {
+    const genderRadio = document.querySelector(`input[name="gender"][value="${data.gender}"]`);
+    if (genderRadio) {
+      genderRadio.checked = true;
+      genderRadio.disabled = true;
+    }
+  }
 
-  // Work preferences
-  document.getElementById("workingWeekdays").value = data.workingWeekdays;
-  document.getElementById("workingWeekdays").disabled = true;
-  document.getElementById("workingWeekends").value = data.workingWeekends;
-  document.getElementById("workingWeekends").disabled = true;
-  document.getElementById("notes").value = data.notes;
-  document.getElementById("notes").disabled = true;
-
-  // Hide submit button initially
-  document.getElementById("submit").style.display = "none";
-
-  // Create edit button
-  const editButton = document.createElement("button");
-  editButton.textContent = "Edit";
-  editButton.classList.add("edit_button");
-  editButton.addEventListener("click", enableEditMode);
-  document.querySelector(".user_buttons").appendChild(editButton);
-}
-
-// Function to enable edit mode
-function enableEditMode() {
-  // Enable all form fields
-  const inputs = document.querySelectorAll("input, select, textarea");
-  inputs.forEach((input) => {
-    input.disabled = false;
+  // Language checkboxes
+  const langs = data.spokenLanguages || [];
+  langs.forEach(lang => {
+    const checkbox = document.querySelector(`input[type="checkbox"][value="${lang}"]`);
+    if (checkbox) {
+      checkbox.checked = true;
+      checkbox.disabled = true;
+    }
   });
 
-  // Show submit button
-  document.getElementById("submit").style.display = "block";
+  setInputValue("idnumber", data.nic);
+  setInputValue("nationality", data.nationality);
+  setInputValue("hometown", data.hometown);
+  setInputValue("age", data.age);
+  setInputValue("service", data.service);
+  setInputValue("experience", data.experience);
+  setInputValue("description", data.description);
 
-  // Remove edit button
-  const editButton = document.querySelector(".edit_button");
-  if (editButton) editButton.remove();
+  // Work locations
+  const workLocationsSelect = document.getElementById("work-locations");
+  if (workLocationsSelect) {
+    Array.from(workLocationsSelect.options).forEach(option => {
+      option.selected = data.workLocations?.includes(option.value);
+    });
+    workLocationsSelect.disabled = true;
+  }
+
+  // Certificates & Medicals
+  const checkCheckboxGroup = (name, values) => {
+    values.forEach(val => {
+      const cb = document.querySelector(`input[name="${name}"][value="${val}"]`);
+      if (cb) {
+        cb.checked = true;
+        cb.disabled = true;
+      }
+    });
+  };
+
+  checkCheckboxGroup("certificates", data.certificates || []);
+  checkCheckboxGroup("medical", data.medical || []);
+
+  setInputValue("bankNameCode", data.bankNameCode);
+  setInputValue("accountNumber", data.accountNumber);
+  setInputValue("workingWeekdays", data.workingWeekdays);
+  setInputValue("workingWeekends", data.workingWeekends);
+  setInputValue("allergies", data.allergies);
+  setInputValue("notes", data.notes);
+
+  // Hide submit and show edit
+  document.getElementById("submit").style.display = "none";
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  editBtn.classList.add("edit_button");
+  editBtn.addEventListener("click", enableEditMode);
+  document.querySelector(".user_buttons")?.appendChild(editBtn);
 }
 
-// Function to handle form submission
+function enableEditMode() {
+  const inputs = document.querySelectorAll("input, select, textarea");
+  inputs.forEach(input => {
+    if (input.type !== "radio" && input.type !== "checkbox") {
+      input.disabled = false;
+    } else {
+      input.disabled = false;
+      input.removeAttribute("readonly");
+    }
+  });
+
+  document.getElementById("submit").style.display = "block";
+  const editBtn = document.querySelector(".edit_button");
+  if (editBtn) editBtn.remove();
+}
+
 function handleSubmit(event) {
   event.preventDefault();
 
-  // Perform validation
   const form = event.target.closest("form");
   if (!form.checkValidity()) {
-    alert("Please fill out all required fields correctly.");
+    alert("Please fill out all required fields.");
     return;
   }
 
-  // Collect form data
-  const formData = {
-    fullName: document.getElementById("fullName").value,
-    userName: document.getElementById("userName").value,
-    email: document.getElementById("email").value,
-    telephone: document.getElementById("telephone").value,
-    gender: document.querySelector('input[name="gender"]:checked').value,
-    hometown: document.getElementById("hometown").value,
-    age: document.getElementById("age").value,
-    service: document.getElementById("service").value,
-    experience: document.getElementById("experience").value,
-    description: document.getElementById("description").value,
-    workingWeekdays: document.getElementById("workingWeekdays").value,
-    workingWeekends: document.getElementById("workingWeekends").value,
-    notes: document.getElementById("notes").value,
+  const getValues = (name) => {
+    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
   };
 
-  // Here you would typically send data to backend
+  const formData = {
+    fullName: document.getElementById("fullName")?.value || "",
+    userName: document.getElementById("userName")?.value || "",
+    email: document.getElementById("email")?.value || "",
+    telephone: document.getElementById("telephone")?.value || "",
+    gender: document.querySelector('input[name="gender"]:checked')?.value || "",
+    spokenLanguages: getValues("spokenLanguages[]"),
+    nic: document.getElementById("idnumber")?.value || "",
+    nationality: document.getElementById("nationality")?.value || "",
+    hometown: document.getElementById("hometown")?.value || "",
+    age: document.getElementById("age")?.value || "",
+    service: document.getElementById("service")?.value || "",
+    experience: document.getElementById("experience")?.value || "",
+    description: document.getElementById("description")?.value || "",
+    workLocations: Array.from(document.getElementById("work-locations")?.selectedOptions || []).map(option => option.value),
+    certificates: getValues("certificates"),
+    medical: getValues("medical"),
+    bankNameCode: document.getElementById("bankNameCode")?.value || "",
+    accountNumber: document.getElementById("accountNumber")?.value || "",
+    workingWeekdays: document.getElementById("workingWeekdays")?.value || "",
+    workingWeekends: document.getElementById("workingWeekends")?.value || "",
+    allergies: document.getElementById("allergies")?.value || "",
+    notes: document.getElementById("notes")?.value || "",
+  };
+
   console.log("Submitted Data:", formData);
   alert("Form submitted successfully!");
 
-  // Disable fields after submission
+  // Disable everything again
   const inputs = document.querySelectorAll("input, select, textarea");
-  inputs.forEach((input) => {
-    input.disabled = true;
-  });
-
-  // Hide submit button
+  inputs.forEach(input => input.disabled = true);
   document.getElementById("submit").style.display = "none";
 
-  // Recreate edit button
-  const editButton = document.createElement("button");
-  editButton.textContent = "Edit";
-  editButton.classList.add("edit_button");
-  editButton.addEventListener("click", enableEditMode);
-  document.querySelector(".user_buttons").appendChild(editButton);
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  editBtn.classList.add("edit_button");
+  editBtn.addEventListener("click", enableEditMode);
+  document.querySelector(".user_buttons")?.appendChild(editBtn);
 }
 
-// Initialize form when page loads
+// Initialize everything
 document.addEventListener("DOMContentLoaded", () => {
   populateForm(initialFormData);
-
-  // Add submit event listener
-  document.querySelector("form").addEventListener("submit", handleSubmit);
+  document.querySelector("form")?.addEventListener("submit", handleSubmit);
 });
