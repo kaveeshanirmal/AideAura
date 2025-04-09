@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="<?php echo ROOT; ?>/public/assets/css/serviceForms/bookingInfo.css">
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="<?php echo ROOT; ?>/public/assets/js/bookingInfo.js" defer></script>
+    <script>
+        const bookingInfo = <?php echo json_encode($_SESSION['booking_info']); ?>;
+        console.log(bookingInfo);
+        const ROOT = "<?php echo ROOT; ?>";
+    </script>
 </head>
 <body>
 <?php include(ROOT_PATH . '/app/views/components/navbar.view.php');?>
@@ -16,7 +21,7 @@
         <div class="progress"></div>
     </div>
 
-    <form>
+    <form id="bookingInfoForm">
         <!-- Personal Information Section (Collapsible) -->
         <div class="form-section collapsible-section">
             <div class="section-header">
@@ -28,19 +33,22 @@
             <div class="section-content collapsed">
                 <div class="form-row">
                     <label for="customer-name">Name</label>
-                    <input type="text" id="customer-name" name="customer_name" placeholder="Enter your full name" required value="Kasun Kalhara">
+                    <input type="text" id="customer-name" name="customer_name" placeholder="Enter your full name" required
+                           value="<?php echo isset($_SESSION['loggedIn']) && isset($user) ? htmlspecialchars($user->firstName . ' ' . $user->lastName) : 'N/A'; ?>">
                     <div id="name-error" class="error-message" style="display: none">Full Name is required.</div>
                 </div>
 
                 <div class="form-row">
                     <label for="contact-phone">Phone Number</label>
-                    <input type="tel" id="contact-phone" name="contact_phone" placeholder="e.g., 0712345678" required value="0712345678">
+                    <input type="tel" id="contact-phone" name="contact_phone" placeholder="e.g., 0712345678" required
+                           value="<?php echo isset($_SESSION['loggedIn']) && isset($user) ? htmlspecialchars($user->phone) : 'N/A'; ?>">
                     <div id="phone-error" class="error-message" style="display: none">Phone number must be exactly 10 digits.</div>
                 </div>
 
                 <div class="form-row">
                     <label for="contact-email">Email Address</label>
-                    <input type="email" id="contact-email" name="contact_email" placeholder="your.email@example.com" required value="KasunKalhara@example.com">
+                    <input type="email" id="contact-email" name="contact_email" placeholder="your.email@example.com" required
+                           value="<?php echo isset($_SESSION['loggedIn']) && isset($user) ? htmlspecialchars($user->email) : 'N/A'; ?>">
                     <div id="email-error" class="error-message" style="display: none">Please enter a valid email address.</div>
                 </div>
             </div>
@@ -48,15 +56,21 @@
             <div class="section-summary">
                 <div class="summary-row">
                     <span class="summary-label">Name:</span>
-                    <span class="summary-value" data-field="customer-name">Kasun Kalhara</span>
+                    <span class="summary-value" data-field="customer-name">
+                        <?php echo isset($_SESSION['loggedIn']) && isset($user) ? htmlspecialchars($user->firstName . ' ' . $user->lastName) : 'N/A'; ?>
+                    </span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Contact:</span>
-                    <span class="summary-value" data-field="contact-phone">0712345678</span>
+                    <span class="summary-value" data-field="contact-phone">
+                        <?php echo isset($_SESSION['loggedIn']) && isset($user) ? htmlspecialchars($user->phone) : 'N/A'; ?>
+                    </span>
                 </div>
                 <div class="summary-row">
                     <span class="summary-label">Email:</span>
-                    <span class="summary-value" data-field="contact-email">KasunKalhara@gmail.com</span>
+                    <span class="summary-value" data-field="contact-email">
+                        <?php echo isset($_SESSION['loggedIn']) && isset($user) ? htmlspecialchars($user->email) : 'N/A'; ?>
+                    </span>
                 </div>
             </div>
         </div>
@@ -96,7 +110,7 @@
             <div class="total-container">
                 <span class="total-label">Total Cost:</span>
                 <span class="total-amount">
-                    Rs. <?php echo isset($_SESSION['total_cost']) ? number_format($_SESSION['total_cost'], 2) : '0.00'; ?>
+                    Rs. <?php echo isset($_SESSION['booking_info']['total_cost']) ? number_format($_SESSION['booking_info']['total_cost'], 2) : '0.00'; ?>
                 </span>
             </div>
 
@@ -113,7 +127,7 @@
 
         <div class="button-group">
             <button type="button" class="btn-previous" id="back-btn">Previous</button>
-            <button type="button" class="btn-next" id="nxt-btn">Proceed to Payment</button>
+            <button type="button" class="btn-next" id="nxt-btn">Next</button>
         </div>
     </form>
 </div>

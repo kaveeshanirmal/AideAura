@@ -17,7 +17,7 @@
             <div class="dropdown">
                 <span class="dropdown-toggle">Services</span>
                 <div class="dropdown-menu">
-                    <a href="<?=ROOT?>/public/serviceForms" class="dropdown-item">Cooking</a>
+                    <a href="<?=ROOT?>/public/selectService/cook" class="dropdown-item">Cooking</a>
                 </div>
             </div>
         <?php endif; ?>
