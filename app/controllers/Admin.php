@@ -4,7 +4,7 @@ class Admin extends Controller
 {
     private $customerComplaintModel;
     private $workerClicked = [];
-    public $selectedWorkerWorkerID;
+    private $selectedWorkerRole = ['role' => 'N/A'];
 
     public function __construct()
     {
@@ -63,27 +63,33 @@ private function assignDynamicRoles($filteredWorkers)
 
 public function workerDetails()
 {
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $workerData = $_POST['workerData'] ?? null;
+        $userID = $_POST['workerData'] ?? null;
 
-        if ($workerData) {
-            $worker = json_decode($workerData, true); // decode as array
-
-            if (!empty($worker) && isset($worker['userID'])) {
-                $workerModel = new WorkerModel();
-
-                // Fetch details using userID
-                $workerDetails = $workerModel->getWorkerDetails($worker['userID']);
-
-                // Use default details if not found
+        if (!empty($userID)) {
+            $workerModel = new WorkerModel();
+    
+            // Fetch details using userID
+            $workerDetails = $workerModel->getWorkerDetails($userID);
+    
+                // Use default details + worker data in worker table if user not verified yet
                 if (!$workerDetails || !is_array($workerDetails)) {
+
+                $worker = $workerModel->findWorker($userID);
+
                     $workerDetails = [
+                        'userID' => $userID,
                         'Nationality' => 'N/A',
+                        'fullName' => $worker->fullName,
+                        'email' => $worker->email,
+                        'role' => $worker->role,
+                        'username' => $worker->username,
+                        'Contact' => $worker->phone,
                         'Gender' => 'N/A',
-                        'Contact' => 'N/A',
                         'NIC'=> 'N/A',
                         'Age'=> 'N/A',
-                        'EmploymentExperience' => 'N/A',
+                        'ServiceType' => 'N/A',
                         'SpokenLanguages'=> 'N/A',
                         'WorkLocations' => 'N/A',
                         'ExperienceLevel' => 'N/A',
@@ -99,45 +105,22 @@ public function workerDetails()
                     ];
                 }
 
-                $workerAllDetails = array_merge($worker, $workerDetails);
-
-                $this->view('admin/adminWorkerProfile1', ['worker' => $workerAllDetails]);
-                        
-                // for certificate page get the store the userID
-                $this->selectedWorkerWorkerID = $workerDetails['workerID'];
-           
-           
+                $this->view('admin/adminWorkerProfile1', ['worker' => $workerDetails]);
             } else {
                 http_response_code(404);
-                echo "Invalid worker data or missing userID.";
+                echo "Missing userID.";
             }
         } else {
             http_response_code(400);
-            echo "Worker details are missing.";
+            echo "Method not allowed .";
         }
-    } else {
-        http_response_code(405);
-        echo "Method Not Allowed.";
-    }
 }
 
-
-    // public function worker1()
-    // {
-
-    //     $this->view('admin/adminWorkerProfile1');
-    // }
-
     public function workerCertificates(){
-       if ($this->selectedWorkerWorkerID) {
             $workerModel = new WorkerModel();
-
-            // Fetch ceritficate details using userID
-            $workerDetails = $workerModel->getWorkerCertificates($this->selectedWorkerWorkerID);
-
-        }
-    
-        $this->view('admin/adminWorkerProfile2');
+            $workerDetails = $workerModel->getWorkerCertificates();
+            $finalData = array_merge($workerDetails, $this->selectedWorkerRole);
+        $this->view('admin/adminWorkerProfile2', ['data'=> $finalData]);
     }
 
 

@@ -2,6 +2,8 @@
 class WorkerModel 
 {
     use Model;
+
+    private $certificateData = [];
     
     public function getAllWorkers(){
         $this->setTable('worker');
@@ -17,14 +19,26 @@ class WorkerModel
             $this->setTable('verification_requests');
             $workerDetails = $this->find($workerID,'workerID');
             if($workerDetails){
+                // to get the role
+                $userModel = new UserModel();
+
                 $data = [
                 'workerID' => $workerDetails->workerID,
+                'fullName' => $workerDetails->full_name,
+
+                'userID' => $id,
+                'email' => $workerDetails->email,
+                'role'=> $userModel->getWorkerRole($id),
+                'username' => $workerDetails->username,
+                'certificates' => $workerDetails-> certificates_path,
+                'medical' => $workerDetails-> medical_path,
+
                 'Nationality' => $workerDetails->nationality,
                 'Gender' => $workerDetails->gender,
                 'Contact' => $workerDetails->phone_number,
                 'NIC'=> $workerDetails->nic,
                 'Age'=> $workerDetails->age_range,
-                'EmploymentExperience' => $workerDetails->experience_level,
+                'ServiceType' => $workerDetails->service_type,
                 'SpokenLanguages'=> $workerDetails->spokenLanguages,
                 'WorkLocations' => $workerDetails->workLocations,
                 'ExperienceLevel' => $workerDetails->experience_level,
@@ -37,7 +51,7 @@ class WorkerModel
                 'WorkingWeekEnds'=> $workerDetails->working_weekends,
                 'Notes' => $workerDetails->special_notes,
                 'Status' => $workerDetails->status,
-                ];
+                 ];
             return $data;
             } else {
                 return false;
@@ -45,8 +59,35 @@ class WorkerModel
         }
 
     }
-    
-    public function getWorkerCertificates($id){
 
+    // function to get worker details from users table using given userID
+    public function findWorker($id){
+        $this->setTable('users');
+        $worker = $this->find($id, 'userID');
+    
+        if ($worker) {
+            $worker->fullName = $worker->firstName . ' ' . $worker->lastName;
+    
+            // Assign worker role
+            $userModel = new UserModel();
+            $worker->role = $userModel->getWorkerRole($id);
+            
+            return (object)$worker;
+        }
+    
+        return false;
     }
+    
+    
+    public function getWorkerCertificates(){
+        // $this->setTable('verification_requests');
+        // $workerDetails = $this->find($id,'workerID');
+        // if($workerDetails){
+        //     $data = [
+        //     'fullName' => $workerDetails->full_name,
+        //     'certificates' => $workerDetails-> certificates_path,
+        //     'medical' => $workerDetails-> medical_path,
+        // //     ];
+            return $this->certificateData;
+}
 }

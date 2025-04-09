@@ -50,7 +50,7 @@
                     const input = document.createElement('input');
                     input.type = "hidden";
                     input.name = "workerData";
-                    input.value = JSON.stringify(worker);
+                    input.value = worker.userID;
 
                     form.appendChild(input);
                     document.body.appendChild(form);

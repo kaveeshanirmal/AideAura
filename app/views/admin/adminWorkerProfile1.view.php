@@ -17,7 +17,7 @@
                         <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker Avatar">
                     </div>
                     <div class="worker-title">
-                        <h2>MR. <?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?></h2>
+                        <h2>MR. <?= htmlspecialchars($worker['fullName']) ?></h2>
                         <p><?= htmlspecialchars($worker['role']) ?></p>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="details-grid">
                     <div class="detail-item">
                         <span class="label">Full Name :</span>
-                        <span class="value"><?= htmlspecialchars($worker['firstName'] . ' ' . $worker['lastName']) ?></span>
+                        <span class="value"><?= htmlspecialchars($worker['fullName']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">User Name :</span>
@@ -58,12 +58,8 @@
                         <span class="value"><?= htmlspecialchars($worker['Age']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Employment History / Experience :</span>
-                        <span class="value"><?= htmlspecialchars($worker['EmploymentExperience']) ?></span>
-                    </div>
-                    <div class="detail-item">
                         <span class="label">Skilled or Specialized Areas :</span>
-                        <span class="value"><?= htmlspecialchars($worker['role']) ?></span>
+                        <span class="value"><?= htmlspecialchars($worker['ServiceType']) ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="label">Spoken Languages :</span>
@@ -113,7 +109,7 @@
                         <span class="value"><?= htmlspecialchars($worker['Notes']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">Date of profile created :</span>
+                        <span class="label">Verification Status :</span>
                         <span class="value"><?= htmlspecialchars($worker['Status']) ?></span>
                     </div>
                 </div>
@@ -122,7 +118,7 @@
             <div class="action-buttons">
                 <button class="btn update" onclick="openUpdateModal()">Update</button>
                 <button class="btn schedule"><a href="workerSchedule">Availability schedule</a></button>
-                <button class="btn certificates"><a href="worker2">Certificates</a></button>
+                <button class="btn certificates"><a href="workerCertificates">Certificates</a></button>
             </div>
 
             <!-- Update Modal -->
