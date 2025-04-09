@@ -13,34 +13,34 @@
         <div class="progress"></div>
     </div>
 
-    <form>
+    <form id="serviceForm">
         <div class="image-group">
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/cook">
+                <a href="<?=ROOT?>/public/SelectService/cook" class="service-link" data-service="cook">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_cook.png" alt="Sample Image 1">
                     <span>Cook</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/maid">
+                <a href="<?=ROOT?>/public/SelectService/maid" class="service-link" data-service="maid">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_maid.png" alt="Sample Image 2">
                     <span>Maid</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/nanny">
+                <a href="<?=ROOT?>/public/SelectService/nanny" class="service-link" data-service="nanny">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_nanny.png" alt="Sample Image 3">
                     <span>Nanny</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/cook24">
+                <a href="<?=ROOT?>/public/SelectService/cook24" class="service-link" data-service="cook24">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_cook24.png" alt="Sample Image 4">
                     <span>Cook 24H Live-in</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/allRounder">
+                <a href="<?=ROOT?>/public/SelectService/allRounder" class="service-link" data-service="allRounder">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_allrounder.png" alt="Sample Image 5">
                     <span>All-rounder</span>
                 </a>
@@ -54,5 +54,34 @@
     </form>
 </div>
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
+
+<script>
+    const ROOT = "<?php echo ROOT; ?>";
+    document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('.service-link');
+
+        links.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                var service = this.dataset.service;
+                var href = this.href;
+
+                fetch(`${ROOT}/public/SelectService`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'service=' + encodeURIComponent(service)
+                })
+                    .then(function(response) {
+                        window.location.href = href;
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    });
+</script>
 </body>
 </html>
