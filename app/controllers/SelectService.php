@@ -75,7 +75,10 @@ class SelectService extends Controller
 
     private function calculateTotal($service)
     {
-        $cost = 0;
+        $total_price = 0;
+        $addon_price = 0;
+
+        // These should be stored in db
         if ($service == 'cook') {
             $people_cost = [
                 "1-2" => 500,
@@ -92,40 +95,43 @@ class SelectService extends Controller
 
             // Correct session variable access
             if (isset($_SESSION['booking_info']['num_people'])) {
-                $cost += $people_cost[$_SESSION['booking_info']['num_people']] ?? 0;
+                $total_price += $people_cost[$_SESSION['booking_info']['num_people']] ?? 0;
             }
 
             if (isset($_SESSION['booking_info']['num_meals'])) {
-                $cost = count($_SESSION['booking_info']['num_meals']) * $cost;
+                $total_price = count($_SESSION['booking_info']['num_meals']) * $total_price;
             }
 
             if (isset($_SESSION['booking_info']['addons'])) {
                 foreach ($_SESSION['booking_info']['addons'] as $addon) {
-                    $cost += $addon_cost[$addon] ?? 0;
+                    $addon_price += $addon_cost[$addon] ?? 0;
+                    $total_price += $addon_price;
                 }
             }
 
             if (isset($_SESSION['booking_info']['diet'])) {
                 if ($_SESSION['booking_info']['diet'] == 'veg') {
-                    $cost -= 150;
+                    $total_price -= 150;
                 }
             }
 
-            // Store the calculated cost in session
-            $_SESSION['booking_info']['total_cost'] = $cost;
+            // Store the calculated total_price in session
+            $_SESSION['booking_info']['total_cost'] = $total_price;
+            $_SESSION['booking_info']['base_price'] = $total_price - $addon_price;
+            $_SESSION['booking_info']['addon_price'] = $addon_price;
 
             // For AJAX requests, return JSON
             if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
                 $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
                 header("Content-Type: application/json");
-                echo json_encode(["total" => $cost]);
+                echo json_encode(["total" => $total_price]);
                 exit;
             }
 
-            // For non-AJAX requests, return the cost
-            return $cost;
+            // For non-AJAX requests, return the total_price
+            return $total_price;
         }
-        return $cost;
+        return $total_price;
     }
 
     public function bookingInfo()

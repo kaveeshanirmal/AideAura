@@ -127,7 +127,7 @@
 
         <div class="button-group">
             <button type="button" class="btn-previous" id="back-btn">Previous</button>
-            <button type="button" class="btn-next" id="nxt-btn">Proceed to Payment</button>
+            <button type="button" class="btn-next" id="nxt-btn">Next</button>
         </div>
     </form>
 </div>

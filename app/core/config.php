@@ -9,5 +9,3 @@ define('DBNAME', 'aideaura');
 define('DBHOST', 'localhost');
 define('DBUSER', 'root');
 define('DBPASS', '');
-
-//payment config

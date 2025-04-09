@@ -3,71 +3,130 @@
 class Payment extends Controller
 {
     private $userModel;
-    private $paymentModel;
-    private $merchantId = 'PAYHERE_MERCHANT_ID';
-    private $merchantSecret = 'PAYHERE_MERCHANT_SECRET';
+    private $merchantId;
+    private $merchantSecret;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
         // $this->paymentModel = new PaymentModel(); // Instantiate if needed
+        $this->merchantId = $_ENV["PAYHERE_MERCHANT_ID"];
+        $this->merchantSecret = $_ENV["PAYHERE_MERCHANT_SECRET"];
     }
 
     public function authorize()
     {
-        if (!isset($_SESSION['username']) || !isset($_SESSION['total_cost'])) {
-            $response = ['status' => 'error', 'message' => 'Session data missing (username or total_cost).'];
-            header('Content-Type: application/json');
-            echo json_encode($response);
-            exit();
+        // Validate session data
+        if (!isset($_SESSION['username'])) {
+            $response = ['status' => 'error', 'message' => 'User not logged in.'];
+            $this->jsonResponse($response, 401);
+            return;
         }
 
+        if (!isset($_SESSION['booking_info']['total_cost'])) {
+            $response = ['status' => 'error', 'message' => 'Booking information missing.'];
+            $this->jsonResponse($response, 400);
+            return;
+        }
+
+        // Get user data
         $userData = $this->userModel->findUserByUsername($_SESSION['username']);
         if (!$userData) {
             $response = ['status' => 'error', 'message' => 'User not found.'];
-            header('Content-Type: application/json');
-            echo json_encode($response);
-            exit();
+            $this->jsonResponse($response, 404);
+            return;
         }
 
+        // Generate payment parameters
         $orderId = uniqid();
-        $amount = $_SESSION['total_cost'];
+        $amount = number_format($_SESSION['booking_info']['total_cost'], 2, '.', '');
         $currency = "LKR";
-        $returnUrl = ROOT . "public/payment/success";
-        $cancelUrl = ROOT . "public/payment/cancel";
-        $notifyUrl = ROOT . "public/payment/notify";
 
-        $customer = [
-            'first_name' => $userData['firstName'],
-            'last_name' => $userData['lastName'],
-            'email' => $userData['email'],
-            'phone' => $userData['phone'],
-            'address' => $userData['address'],
-            'city' => 'Colombo',
-            'country' => 'Sri Lanka',
-        ];
+        // Generate security hash
+        $hash = strtoupper(md5(
+            $this->merchantId .
+            $orderId .
+            $amount .
+            $currency .
+            strtoupper(md5($this->merchantSecret))
+        ));
 
+        // Build payment data array
         $paymentData = [
             'merchant_id' => $this->merchantId,
-            'return_url' => $returnUrl,
-            'cancel_url' => $cancelUrl,
-            'notify_url' => $notifyUrl,
+            'return_url' => ROOT . "/public/payment/success",
+            'cancel_url' => ROOT . "/public/payment/cancel",
+            'notify_url' => ROOT . "/public/payment/notify",
             'order_id' => $orderId,
             'items' => 'Domestic Service Booking',
             'amount' => $amount,
             'currency' => $currency,
-            'first_name' => $customer['first_name'],
-            'last_name' => $customer['last_name'],
-            'email' => $customer['email'],
-            'phone' => $customer['phone'],
-            'address' => $customer['address'],
-            'city' => $customer['city'],
-            'country' => $customer['country'],
+            'authorize' => 1, // Hold the payment until a worker is found
+            'first_name' => $userData->firstName,
+            'last_name' => $userData->lastName,
+            'email' => $userData->email,
+            'phone' => $userData->phone,
+            'address' => $userData->address,
+            'city' => 'Colombo',
+            'country' => 'Sri Lanka',
+            'hash' => $hash
         ];
 
-        $response = ['status' => 'success', 'message' => 'Payment authorization initiated.', 'redirect_url' => 'https://sandbox.payhere.lk/pay/checkout', 'payment_data' => $paymentData];
+        // Output auto-submitting form
+        echo '<html>
+        <body>
+            <form id="payhereForm" action="https://sandbox.payhere.lk/pay/checkout" method="POST">';
+
+        foreach ($paymentData as $name => $value) {
+            echo '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '">';
+        }
+
+        echo '</form>
+            <script>
+                document.getElementById("payhereForm").submit();
+            </script>
+        </body>
+    </html>';
+        exit();
+    }
+
+    public function capturePayment($orderId) {
+        $apiUrl = "https://api.payhere.lk/merchant/v1/payment/capture";
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'merchant_id' => $this->merchantId,
+            'order_id' => $orderId,  // From your database
+            $amount = number_format($_SESSION['booking_info']['total_cost'], 2, '.', ''),      // Must match the authorized amount
+        ]));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . $this->merchantSecret,
+            'Content-Type: application/x-www-form-urlencoded'
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode == 200) {
+            // Payment captured successfully
+            return json_decode($response, true);
+        } else {
+            // Handle failure (log error, notify admin)
+            throw new Exception("Capture failed: " . $response);
+        }
+    }
+
+// Helper method for JSON responses
+    private function jsonResponse($data, $statusCode = 200)
+    {
+        http_response_code($statusCode);
         header('Content-Type: application/json');
-        echo json_encode($response);
+        echo json_encode($data);
+        exit();
     }
 
     public function success()
