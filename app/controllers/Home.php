@@ -7,17 +7,17 @@ class Home extends Controller
         $this->view('HeroSection');
     }
 
-    public function customerRedirect()
+    public function findWorkers()
     {
         if (isset($_SESSION['loggedIn'])) {
-            $this->view('EmployeeFindingScreen');
+            $this->view('serviceForms/serviceForms');
         } else {
             // login page
             header('Location: ' . ROOT . '/public/login');
         }
     }
 
-    public function workerRedirect()
+    public function findJobs()
     {
         if (isset($_SESSION['loggedIn'])) {
             // check whether the worker is verified or not
