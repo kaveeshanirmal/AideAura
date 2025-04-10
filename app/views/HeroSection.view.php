@@ -38,8 +38,10 @@
                 <!-- conditionally include hero buttons based on user role -->
                 <?php if(isset($_SESSION['userID']) && $_SESSION['role'] == 'worker'): ?>
                     <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findJobs'">Look for jobs</button>
-                <?php else: ?>
+                <?php elseif(isset($_SESSION['userID']) && $_SESSION['role'] == 'customer'): ?>
                     <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findWorkers'">Find a Worker</button>
+                <?php else: ?>
+                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/login'">Get Started</button>
                 <?php endif; ?>
                 <div class="background-1"></div>
             </section>
