@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 11:43 PM
+-- Generation Time: Apr 10, 2025 at 11:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,79 @@ SET time_zone = "+00:00";
 --
 -- Database: `aideaura`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `bookingID` bigint(20) UNSIGNED NOT NULL,
+  `customerID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `serviceType` varchar(50) NOT NULL,
+  `bookingDate` date NOT NULL,
+  `startTime` time NOT NULL,
+  `endTime` time NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `status` enum('pending','confirmed','completed','cancelled') DEFAULT 'pending',
+  `totalCost` decimal(10,2) NOT NULL,
+  `specialRequirements` text DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking_details`
+--
+
+CREATE TABLE `booking_details` (
+  `detailID` bigint(20) UNSIGNED NOT NULL,
+  `bookingID` bigint(20) UNSIGNED NOT NULL,
+  `detailType` varchar(50) NOT NULL,
+  `detailValue` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking_reviews`
+--
+
+CREATE TABLE `booking_reviews` (
+  `reviewID` bigint(20) UNSIGNED NOT NULL,
+  `bookingID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `customerID` bigint(20) UNSIGNED NOT NULL,
+  `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5),
+  `comment` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Triggers `booking_reviews`
+--
+DELIMITER $$
+CREATE TRIGGER `after_review_insert` AFTER INSERT ON `booking_reviews` FOR EACH ROW BEGIN
+    -- Update average rating and total reviews
+    UPDATE worker_stats
+    SET 
+        avg_rating = (
+            SELECT AVG(rating) 
+            FROM booking_reviews 
+            WHERE workerID = NEW.workerID
+        ),
+        total_reviews = (
+            SELECT COUNT(*) 
+            FROM booking_reviews 
+            WHERE workerID = NEW.workerID
+        )
+    WHERE workerID = NEW.workerID;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -399,11 +472,11 @@ CREATE TABLE `verified_workers` (
 
 INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileImage`, `address`, `email`, `phone_number`, `gender`, `spokenLanguages`, `hometown`, `nic`, `nationality`, `age_range`, `service_type`, `experience_level`, `workLocations`, `certificates_path`, `medical_path`, `description`, `bankNameCode`, `accountNumber`, `working_weekdays`, `working_weekends`, `created_at`, `verified_at`) VALUES
 (24, 'Nimali Perera', 'nimali', '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 'nimali.p@gmail.com', '0771234567', 'female', 'Sinhala,English', 'Colombo', '198022202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Colombo,Galle,Kandy', NULL, NULL, 'Experienced cook specializing in Sri Lankan cuisine. Can prepare both traditional and modern dishes.', 'BOC 4567', '1234567890123456', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(25, 'Kamal Silva', 'kamal', '/public/assets/images/avatar-image.png', '45, Main Street, Kandy', 'kamal.s@gmail.com', '0772345678', 'male', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(26, 'Suneetha Fernando', 'suneetha', '/public/assets/images/avatar-image.png', '78, Temple Road, Anuradhapura', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(27, 'Ranjit De Silva', 'ranjit', '/public/assets/images/avatar-image.png', '12, Beach Road, Galle', 'ranjit.d@gmail.com', '0774567890', 'male', 'Sinhala,Tamil', 'Galle', '198322202975', 'sinhalese', '36-50', 'cooking', 'intermediate', 'Galle,Matara,Hambantota', NULL, NULL, 'Specializes in seafood and coastal cuisine. Can prepare authentic Southern dishes.', 'HNB 5678', '4567890123456789', '10-12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(25, 'Kamal Silva', 'kamal', '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 'kamal.s@gmail.com', '0772345678', 'female', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(26, 'Suneetha Fernando', 'suneetha', '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(27, 'Ranjit De Silva', 'ranjit', '/public/assets/images/avatar-image.png', '12, Beach Road, Colombo', 'ranjit.d@gmail.com', '0774567890', 'female', 'Sinhala,Tamil', 'Galle', '198322202975', 'sinhalese', '36-50', 'cooking', 'intermediate', 'Galle,Matara,Hambantota', NULL, NULL, 'Specializes in seafood and coastal cuisine. Can prepare authentic Southern dishes.', 'HNB 5678', '4567890123456789', '10-12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (28, 'Priyanka Ratnayake', 'priyanka', '/public/assets/images/avatar-image.png', '34, Hill Street, Nuwara Eliya', 'priyanka.r@gmail.com', '0775678901', 'female', 'Sinhala,English', 'Nuwara Eliya', '198422202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Nuwara Eliya,Kandy,Badulla', NULL, NULL, 'Live-in cook with experience in both Sri Lankan and Indian cuisine. Good with vegetarian dishes.', 'Sampath 9012', '5678901234567890', 'above_12', 'above_12', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(29, 'Saman Bandara', 'saman', '/public/assets/images/avatar-image.png', '56, Lake Road, Negombo', 'saman.b@gmail.com', '0776789012', 'male', 'Sinhala,English', 'Negombo', '198522202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Negombo,Colombo,Gampaha', NULL, NULL, 'Expert in preparing meals for large families. Specializes in both local and continental cuisine.', 'Peoples 3456', '6789012345678901', 'above_12', '10-12', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(29, 'Saman Bandara', 'saman', '/public/assets/images/avatar-image.png', '56, Lake Road, Negombo', 'saman.b@gmail.com', '0776789012', 'female', 'Sinhala,English', 'Negombo', '198522202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Negombo,Colombo,Gampaha', NULL, NULL, 'Expert in preparing meals for large families. Specializes in both local and continental cuisine.', 'Peoples 3456', '6789012345678901', 'above_12', '10-12', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (30, 'Kumari Wijesinghe', 'kumari', '/public/assets/images/avatar-image.png', '89, Park Avenue, Kurunegala', 'kumari.w@gmail.com', '0777890123', 'female', 'Sinhala', 'Kurunegala', '198622202975', 'sinhalese', '26-35', 'cleaning', 'intermediate', 'Kurunegala,Colombo,Puttalam', NULL, NULL, 'Professional cleaner with experience in both homes and offices. Very thorough and detail-oriented.', 'DFCC 7890', '7890123456789012', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (31, 'Dinesh Gunawardena', 'dinesh', '/public/assets/images/avatar-image.png', '23, River Street, Matara', 'dinesh.g@gmail.com', '0778901234', 'male', 'Sinhala,Tamil', 'Matara', '198722202975', 'sinhalese', '18-25', 'cleaning', 'entry', 'Matara,Hambantota,Galle', NULL, NULL, 'Young and energetic cleaner. Willing to learn and take on any cleaning task.', 'Seylan 1234', '8901234567890123', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (32, 'Chamari Jayawardena', 'chamari', '/public/assets/images/avatar-image.png', '67, Flower Lane, Ratnapura', 'chamari.j@gmail.com', '0779012345', 'female', 'Sinhala,English', 'Ratnapura', '198822202975', 'sinhalese', '36-50', 'cleaning', 'expert', 'Ratnapura,Colombo,Kalutara', NULL, NULL, 'Experienced cleaner with specialization in post-construction cleaning and move-in/move-out cleaning.', 'NDB 5678', '9012345678901234', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
@@ -430,44 +503,65 @@ CREATE TABLE `worker` (
   `userID` bigint(20) UNSIGNED NOT NULL,
   `profileImage` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `address` varchar(255) NOT NULL,
-  `isVerified` tinyint(1) NOT NULL DEFAULT 0
+  `isVerified` tinyint(1) NOT NULL DEFAULT 0,
+  `availability_status` enum('online','offline','busy') DEFAULT 'offline'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `worker`
 --
 
-INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerified`) VALUES
-(13, 16, '/public/assets/images/avatar-image.png', '679/1, Ambillawatta Road, Boralesgamuwa, Colombo, Sri Lanka', 1),
-(15, 30, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0),
-(16, 31, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0),
-(17, 32, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0),
-(18, 33, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0),
-(19, 34, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0),
-(20, 35, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0),
-(21, 36, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0),
-(22, 39, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0),
-(23, 40, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0),
-(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 1),
-(25, 42, '/public/assets/images/avatar-image.png', '45, Main Street, Kandy', 1),
-(26, 43, '/public/assets/images/avatar-image.png', '78, Temple Road, Anuradhapura', 1),
-(27, 44, '/public/assets/images/avatar-image.png', '12, Beach Road, Galle', 1),
-(28, 45, '/public/assets/images/avatar-image.png', '34, Hill Street, Nuwara Eliya', 1),
-(29, 46, '/public/assets/images/avatar-image.png', '56, Lake Road, Negombo', 1),
-(30, 47, '/public/assets/images/avatar-image.png', '89, Park Avenue, Kurunegala', 1),
-(31, 48, '/public/assets/images/avatar-image.png', '23, River Street, Matara', 1),
-(32, 49, '/public/assets/images/avatar-image.png', '67, Flower Lane, Ratnapura', 1),
-(33, 50, '/public/assets/images/avatar-image.png', '90, Mountain View, Badulla', 1),
-(34, 51, '/public/assets/images/avatar-image.png', '11, Ocean Drive, Trincomalee', 1),
-(35, 52, '/public/assets/images/avatar-image.png', '22, Garden Path, Polonnaruwa', 1),
-(36, 53, '/public/assets/images/avatar-image.png', '33, Valley Road, Kegalle', 1),
-(37, 54, '/public/assets/images/avatar-image.png', '44, Sunset Boulevard, Kalutara', 1),
-(38, 55, '/public/assets/images/avatar-image.png', '55, Sunrise Avenue, Ampara', 1),
-(39, 56, '/public/assets/images/avatar-image.png', '66, Forest Lane, Monaragala', 1),
-(40, 57, '/public/assets/images/avatar-image.png', '77, Hilltop Road, Hambantota', 1),
-(41, 58, '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 1),
-(42, 59, '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 1),
-(43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1);
+INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerified`, `availability_status`) VALUES
+(13, 16, '/public/assets/images/avatar-image.png', '679/1, Ambillawatta Road, Boralesgamuwa, Colombo, Sri Lanka', 1, 'offline'),
+(15, 30, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
+(16, 31, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0, 'offline'),
+(17, 32, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0, 'offline'),
+(18, 33, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
+(19, 34, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0, 'offline'),
+(20, 35, '/public/assets/images/avatar-image.png', 'jkjhkjhlkhlkhlkhlk', 0, 'offline'),
+(21, 36, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
+(22, 39, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
+(23, 40, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
+(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 1, 'online'),
+(25, 42, '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 1, 'online'),
+(26, 43, '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 1, 'online'),
+(27, 44, '/public/assets/images/avatar-image.png', '12, Beach Road, Colombo', 1, 'online'),
+(28, 45, '/public/assets/images/avatar-image.png', '34, Hill Street, Colombo', 1, 'online'),
+(29, 46, '/public/assets/images/avatar-image.png', '56, Lake Road, Colombo', 1, 'online'),
+(30, 47, '/public/assets/images/avatar-image.png', '89, Park Avenue, Kurunegala', 1, 'offline'),
+(31, 48, '/public/assets/images/avatar-image.png', '23, River Street, Matara', 1, 'offline'),
+(32, 49, '/public/assets/images/avatar-image.png', '67, Flower Lane, Ratnapura', 1, 'offline'),
+(33, 50, '/public/assets/images/avatar-image.png', '90, Mountain View, Badulla', 1, 'offline'),
+(34, 51, '/public/assets/images/avatar-image.png', '11, Ocean Drive, Trincomalee', 1, 'offline'),
+(35, 52, '/public/assets/images/avatar-image.png', '22, Garden Path, Polonnaruwa', 1, 'offline'),
+(36, 53, '/public/assets/images/avatar-image.png', '33, Valley Road, Kegalle', 1, 'offline'),
+(37, 54, '/public/assets/images/avatar-image.png', '44, Sunset Boulevard, Kalutara', 1, 'offline'),
+(38, 55, '/public/assets/images/avatar-image.png', '55, Sunrise Avenue, Ampara', 1, 'offline'),
+(39, 56, '/public/assets/images/avatar-image.png', '66, Forest Lane, Monaragala', 1, 'offline'),
+(40, 57, '/public/assets/images/avatar-image.png', '77, Hilltop Road, Hambantota', 1, 'offline'),
+(41, 58, '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 1, 'offline'),
+(42, 59, '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 1, 'offline'),
+(43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline');
+
+--
+-- Triggers `worker`
+--
+DELIMITER $$
+CREATE TRIGGER `after_worker_insert` AFTER INSERT ON `worker` FOR EACH ROW BEGIN
+    INSERT INTO worker_stats (
+        workerID,
+        avg_rating,
+        total_reviews,
+        last_activity
+    ) VALUES (
+        NEW.workerID,
+        0.00,
+        0,
+        NOW()
+    );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -517,6 +611,55 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 (41, 5),
 (42, 5),
 (43, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `worker_stats`
+--
+
+CREATE TABLE `worker_stats` (
+  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `avg_rating` decimal(3,2) DEFAULT 0.00,
+  `total_reviews` int(10) UNSIGNED DEFAULT 0,
+  `last_activity` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `worker_stats`
+--
+
+INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_activity`) VALUES
+(13, 0.00, 0, '2025-04-10 20:54:43'),
+(15, 0.00, 0, '2025-04-10 19:45:30'),
+(16, 0.00, 0, '2025-04-10 19:45:30'),
+(17, 0.00, 0, '2025-04-10 19:45:30'),
+(18, 0.00, 0, '2025-04-10 19:45:30'),
+(19, 0.00, 0, '2025-04-10 19:45:30'),
+(20, 0.00, 0, '2025-04-10 19:45:30'),
+(21, 0.00, 0, '2025-04-10 19:45:30'),
+(22, 0.00, 0, '2025-04-10 19:45:30'),
+(23, 0.00, 0, '2025-04-10 19:45:30'),
+(24, 3.15, 34, '2025-04-06 19:45:30'),
+(25, 3.95, 12, '2025-04-03 19:45:30'),
+(26, 3.45, 10, '2025-04-04 19:45:30'),
+(27, 2.32, 30, '2025-04-07 19:45:30'),
+(28, 3.33, 10, '2025-04-08 19:45:30'),
+(29, 2.24, 22, '2025-04-09 19:45:30'),
+(30, 0.00, 0, '2025-04-10 19:45:30'),
+(31, 0.00, 0, '2025-04-10 19:45:30'),
+(32, 0.00, 0, '2025-04-10 19:45:30'),
+(33, 0.00, 0, '2025-04-10 19:45:30'),
+(34, 0.00, 0, '2025-04-10 19:45:30'),
+(35, 0.00, 0, '2025-04-10 19:45:30'),
+(36, 0.00, 0, '2025-04-10 19:45:30'),
+(37, 0.00, 0, '2025-04-10 19:45:30'),
+(38, 0.00, 0, '2025-04-10 19:45:30'),
+(39, 0.00, 0, '2025-04-10 19:45:30'),
+(40, 0.00, 0, '2025-04-10 19:45:30'),
+(41, 0.00, 0, '2025-04-10 19:45:30'),
+(42, 0.00, 0, '2025-04-10 19:45:30'),
+(43, 0.00, 0, '2025-04-10 19:45:30');
 
 -- --------------------------------------------------------
 
@@ -660,6 +803,30 @@ INSERT INTO `workingschedule` (`scheduleID`, `workerID`, `day_of_week`, `start_t
 --
 
 --
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`bookingID`),
+  ADD KEY `customerID` (`customerID`),
+  ADD KEY `workerID` (`workerID`);
+
+--
+-- Indexes for table `booking_details`
+--
+ALTER TABLE `booking_details`
+  ADD PRIMARY KEY (`detailID`),
+  ADD KEY `bookingID` (`bookingID`);
+
+--
+-- Indexes for table `booking_reviews`
+--
+ALTER TABLE `booking_reviews`
+  ADD PRIMARY KEY (`reviewID`),
+  ADD UNIQUE KEY `unique_booking_review` (`bookingID`),
+  ADD KEY `workerID` (`workerID`),
+  ADD KEY `customerID` (`customerID`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -733,6 +900,12 @@ ALTER TABLE `worker_roles`
   ADD KEY `roleID` (`roleID`);
 
 --
+-- Indexes for table `worker_stats`
+--
+ALTER TABLE `worker_stats`
+  ADD PRIMARY KEY (`workerID`);
+
+--
 -- Indexes for table `workingschedule`
 --
 ALTER TABLE `workingschedule`
@@ -742,6 +915,24 @@ ALTER TABLE `workingschedule`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `bookingID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `booking_details`
+--
+ALTER TABLE `booking_details`
+  MODIFY `detailID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `booking_reviews`
+--
+ALTER TABLE `booking_reviews`
+  MODIFY `reviewID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -802,6 +993,27 @@ ALTER TABLE `workingschedule`
 --
 
 --
+-- Constraints for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`),
+  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`);
+
+--
+-- Constraints for table `booking_details`
+--
+ALTER TABLE `booking_details`
+  ADD CONSTRAINT `booking_details_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`);
+
+--
+-- Constraints for table `booking_reviews`
+--
+ALTER TABLE `booking_reviews`
+  ADD CONSTRAINT `booking_reviews_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`),
+  ADD CONSTRAINT `booking_reviews_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`),
+  ADD CONSTRAINT `booking_reviews_ibfk_3` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`);
+
+--
 -- Constraints for table `customer`
 --
 ALTER TABLE `customer`
@@ -843,6 +1055,12 @@ ALTER TABLE `worker`
 ALTER TABLE `worker_roles`
   ADD CONSTRAINT `worker_roles_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE,
   ADD CONSTRAINT `worker_roles_ibfk_2` FOREIGN KEY (`roleID`) REFERENCES `jobroles` (`roleID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `worker_stats`
+--
+ALTER TABLE `worker_stats`
+  ADD CONSTRAINT `worker_stats_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`);
 
 --
 -- Constraints for table `workingschedule`

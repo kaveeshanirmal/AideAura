@@ -287,17 +287,27 @@ public function registerEmployee($data)
 
 
     // Updated delete method with validation for soft delete
-public function softDeleteEmployee($userID) {
-    $this->setTable('users');
-    
-    // Check if employee exists before deletion
-    $employee = $this->find($userID, 'userID');
-    if (!$employee) {
-        return false;
+    public function softDeleteEmployee($userID) {
+        $this->setTable('users');
+
+        // Check if employee exists before deletion
+        $employee = $this->find($userID, 'userID');
+        if (!$employee) {
+            return false;
+        }
+
+        // Perform soft delete instead of permanent deletion
+        return $this->softDelete($userID, 'userID', 'isDelete');
     }
-    
-    // Perform soft delete instead of permanent deletion
-    return $this->softDelete($userID, 'userID', 'isDelete'); 
-}
+
+    // Update worker's availability status
+    public function updateAvailability($workerID, $status)
+    {
+        $this->setTable('worker');
+        $data = [
+            'availability_status' => $status
+        ];
+        $this->update($workerID, $data, 'workerID');
+    }
 
 }

@@ -43,21 +43,35 @@ class SearchForWorker extends Controller
         $gender = $_SESSION['booking_info']['gender'] ?? '';
 
         // SQL query to find verified workers who match the criteria
+
+//      Weighted score calculation to sort the workers
+//      Weighted Score =
+//      (avg_rating / 5) * 60 +          -- 60% weight for rating quality
+//      (LOG(total_reviews + 1) * 20) +  -- 20% weight for review count (log-scaled for fairness)
+//      (IF last_activity < 7 days ago: 20 ELSE 0) -- 20% for recent activity
+
+
         $query = "SELECT
             vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
-            vw.profileImage, vw.address, j.name AS jobRole
+            vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
+            ((wst.avg_rating / 5) * 60) + 
+            (LOG(wst.total_reviews + 1) * 20) + 
+            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 20, 0)) AS score
           FROM verified_workers vw
           JOIN worker w ON vw.workerID = w.workerID
           JOIN users u ON w.userID = u.userID
           JOIN worker_roles wr ON vw.workerID = wr.workerID
           JOIN jobroles j ON wr.roleID = j.roleID
           JOIN workingschedule ws ON vw.workerID = ws.workerID
-          WHERE vw.gender = :gender
+          JOIN worker_stats wst ON w.workerID = wst.workerID
+          WHERE w.availability_status = 'online'
+          AND vw.gender = :gender
           AND j.name = :jobType
           AND vw.address LIKE :location
           AND ws.day_of_week = :weekday
           AND ws.start_time <= TIME(:startTime)
-          AND ws.end_time >= TIME(:startTime)";
+          AND ws.end_time >= TIME(:startTime)
+          ORDER BY score DESC";
 
         // Fetch all matching workers using get_all()
         $data = $this->get_all($query, [

@@ -3,10 +3,12 @@
 class Login extends Controller
 {
     private $userModel;
+    private $workerStatsModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
+        $this->workerStatsModel = new WorkerStats(); // Instantiate WorkerStats
     }
     public function index($a = '', $b = '', $c = '')
     {
@@ -39,6 +41,10 @@ class Login extends Controller
                 if ($role === 'customer') {
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'worker') {
+                    // Update last login time
+                    $this->workerStatsModel->updateLastLogin($user->workerID);
+                    // Update the availability status
+                    $this->userModel->updateAvailability($user->workerID, 'online');
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'admin') {
                     // Admin and other dashboards
@@ -66,6 +72,10 @@ class Login extends Controller
     public function logout()
     {
         // Destroy session and redirect to home
+        // For workers, update their availability status
+        if (isset($_SESSION['workerID'])) {
+            $this->userModel->updateAvailability($_SESSION['workerID'], 'offline');
+        }
         session_destroy();
         header('Location: ' . ROOT . '/public/home');
     }

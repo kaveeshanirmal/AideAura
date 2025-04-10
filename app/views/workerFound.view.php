@@ -57,6 +57,7 @@
                 <p><strong>Name:</strong> <?= htmlspecialchars($worker->firstName . ' ' . $worker->lastName) ?></p>
                 <p><strong>Gender:</strong> <?= htmlspecialchars($worker->gender) ?></p>
                 <p><strong>Job Role:</strong> <?= htmlspecialchars($worker->jobRole) ?></p>
+                <p><strong>Score:</strong> <?= htmlspecialchars($worker->score) ?></p>
             </div>
             <hr>
         <?php endforeach; ?>

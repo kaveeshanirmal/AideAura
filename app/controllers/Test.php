@@ -7,4 +7,9 @@ class Test extends Controller
         $this->view('BrowseWorker');
     }
 
+    public function testTime()
+    {
+        $this->view('testTime');
+    }
+
 }
