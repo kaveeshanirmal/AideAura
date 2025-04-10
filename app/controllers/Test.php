@@ -4,7 +4,7 @@ class Test extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('payment/paymentForm');
+        $this->view('BrowseWorker');
     }
 
 }

@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Payment Summary</title>
-    <link rel="stylesheet" href="<?php echo ROOT; ?>/public/assets/css/paymentdetail.css">
+    <link rel="stylesheet" href="<?php echo ROOT; ?>/public/assets/css/bookingSummary.css">
 </head>
 <body>
 <?php include(ROOT_PATH . '/app/views/components/navbar.view.php');?>
 <div class="container">
-    <h2>Payment Summary</h2>
+    <h2>Booking Summary</h2>
     <div class="progress-bar">
         <div class="progress"></div>
     </div>
 
     <div class="summary-container">
         <div class="summary-section">
-            <h3 class="section-title">Booking Summary</h3>
+            <h3 class="section-title">Booking Details</h3>
 
             <div class="summary-row">
                 <span class="summary-label">Service Type:</span>
@@ -168,7 +168,7 @@
 
         <div class="button-group">
             <button type="button" class="btn-previous" id="back-btn">Previous</button>
-            <button type="button" class="btn-next" id="pay-btn">Proceed to Payment</button>
+            <button type="button" class="btn-next" id="pay-btn">Find a Worker</button>
         </div>
     </div>
 </div>
@@ -190,7 +190,7 @@
         if (payButton) {
             payButton.addEventListener("click", (event) => {
                 event.preventDefault();
-                const redirectUrl = `${ROOT}/public/payment/authorize`;
+                const redirectUrl = `${ROOT}/public/SearchForWorker/processing`;
                 console.log("Redirecting to:", redirectUrl);
                 window.location.href = redirectUrl;
             });
