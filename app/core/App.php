@@ -36,7 +36,7 @@ class App
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
             'SearchForWorker' => ['index', 'find', 'workerFound', 'processing'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
-            'Home' => ['customerRedirect'],
+            'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal', 'bookingInfo', 'bookingSummary', 'submitBookingInfo'],
         ],
 
@@ -44,7 +44,7 @@ class App
             'WorkerProfile' => ['index', 'personalInfo', 'update', 'workingSchedule', 'faq'],
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
-            'Home'=> ['workerRedirect'],
+            'Home'=> ['findJobs'],
         ]
     ];
 
