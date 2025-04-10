@@ -14,7 +14,7 @@ class SelectService extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $service = $_POST['service'] ?? '';
-            $validServices = ['cook', 'maid', 'nanny', 'cook24', 'allRounder'];
+            $validServices = ['Cook', 'Maid', 'Nanny', 'Cook 24-hour Live in', 'All rounder'];
             if (in_array($service, $validServices)) {
                 // Save to session or database
                 $_SESSION['booking_info']['serviceType'] = $service;
@@ -177,7 +177,7 @@ class SelectService extends Controller
         exit();
     }
 
-    public function proceedPayment()
+    public function bookingSummary()
     {
         // Debug session data
         $sessionDebug = json_encode($_SESSION);
@@ -187,7 +187,7 @@ class SelectService extends Controller
             $data = $this->userModel->findUserByUsername($_SESSION['username']);
         }
 
-        $this->view('payment/paymentdetail', [
+        $this->view('bookingSummary', [
             'user' => $data,
             'booking_info' => $_SESSION['booking_info'],
             'session_debug' => $sessionDebug

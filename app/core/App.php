@@ -34,9 +34,10 @@ class App
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
+            'SearchForWorker' => ['index', 'find', 'workerFound', 'processing'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['customerRedirect'],
-            'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal', 'bookingInfo', 'proceedPayment', 'submitBookingInfo'],
+            'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal', 'bookingInfo', 'bookingSummary', 'submitBookingInfo'],
         ],
 
         'worker' => [

@@ -61,7 +61,6 @@ class Payment extends Controller
             'items' => 'Domestic Service Booking',
             'amount' => $amount,
             'currency' => $currency,
-            'authorize' => 1, // Hold the payment until a worker is found
             'first_name' => $userData->firstName,
             'last_name' => $userData->lastName,
             'email' => $userData->email,
@@ -88,36 +87,6 @@ class Payment extends Controller
         </body>
     </html>';
         exit();
-    }
-
-    public function capturePayment($orderId) {
-        $apiUrl = "https://api.payhere.lk/merchant/v1/payment/capture";
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'merchant_id' => $this->merchantId,
-            'order_id' => $orderId,  // From your database
-            $amount = number_format($_SESSION['booking_info']['total_cost'], 2, '.', ''),      // Must match the authorized amount
-        ]));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . $this->merchantSecret,
-            'Content-Type: application/x-www-form-urlencoded'
-        ]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($httpCode == 200) {
-            // Payment captured successfully
-            return json_decode($response, true);
-        } else {
-            // Handle failure (log error, notify admin)
-            throw new Exception("Capture failed: " . $response);
-        }
     }
 
 // Helper method for JSON responses

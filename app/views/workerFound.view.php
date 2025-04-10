@@ -55,11 +55,8 @@
             <img src="<?=ROOT?>/<?= htmlspecialchars($worker->profileImage) ?>" alt="Worker Image" class="profile-image">
             <div class="worker-info">
                 <p><strong>Name:</strong> <?= htmlspecialchars($worker->firstName . ' ' . $worker->lastName) ?></p>
-                <p><strong>Username:</strong> <?= htmlspecialchars($worker->username) ?></p>
-                <p><strong>Phone:</strong> <?= htmlspecialchars($worker->phone) ?></p>
-                <p><strong>Email:</strong> <?= htmlspecialchars($worker->email) ?></p>
+                <p><strong>Gender:</strong> <?= htmlspecialchars($worker->gender) ?></p>
                 <p><strong>Job Role:</strong> <?= htmlspecialchars($worker->jobRole) ?></p>
-                <p><strong>Address:</strong> <?= htmlspecialchars($worker->address) ?></p>
             </div>
             <hr>
         <?php endforeach; ?>

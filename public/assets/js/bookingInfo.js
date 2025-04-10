@@ -265,8 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.success) {
         console.log("Form submitted successfully:", data);
-        // Navigate to payment page after successful submission
-        window.location.href = `${ROOT}/public/selectService/proceedPayment`;
+        window.location.href = `${ROOT}/public/selectService/bookingSummary`;
       } else {
         alert(data.message || "Error submitting form");
       }
@@ -275,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("An error occurred. Please try again.");
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = "Proceed to Payment";
+      submitBtn.textContent = "Booking Summary";
     }
   });
 });

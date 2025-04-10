@@ -16,31 +16,31 @@
     <form id="serviceForm">
         <div class="image-group">
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/cook" class="service-link" data-service="cook">
+                <a href="<?=ROOT?>/public/SelectService/cook" class="service-link" data-service="Cook">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_cook.png" alt="Sample Image 1">
                     <span>Cook</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/maid" class="service-link" data-service="maid">
+                <a href="<?=ROOT?>/public/SelectService/maid" class="service-link" data-service="Maid">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_maid.png" alt="Sample Image 2">
                     <span>Maid</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/nanny" class="service-link" data-service="nanny">
+                <a href="<?=ROOT?>/public/SelectService/nanny" class="service-link" data-service="Nanny">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_nanny.png" alt="Sample Image 3">
                     <span>Nanny</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/cook24" class="service-link" data-service="cook24">
+                <a href="<?=ROOT?>/public/SelectService/cook24" class="service-link" data-service="Cook 24-hour Live in">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_cook24.png" alt="Sample Image 4">
                     <span>Cook 24H Live-in</span>
                 </a>
             </div>
             <div class="image-button">
-                <a href="<?=ROOT?>/public/SelectService/allRounder" class="service-link" data-service="allRounder">
+                <a href="<?=ROOT?>/public/SelectService/allRounder" class="service-link" data-service="All rounder">
                     <img src="<?php echo ROOT; ?>/public/assets/images/service_allrounder.png" alt="Sample Image 5">
                     <span>All-rounder</span>
                 </a>
