@@ -12,3 +12,6 @@ require 'App.php';
 require 'loadenv.php';
 
 loadEnv(dirname(__DIR__, 2) . '/.env');
+
+// Set Timezone
+date_default_timezone_set('Asia/Colombo');

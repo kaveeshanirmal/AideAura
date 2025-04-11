@@ -17,7 +17,11 @@
             <div class="dropdown">
                 <span class="dropdown-toggle">Services</span>
                 <div class="dropdown-menu">
-                    <a href="<?=ROOT?>/public/selectService/cook" class="dropdown-item">Cooking</a>
+                    <a href="<?=ROOT?>/public/selectService/cook" class="dropdown-item" data-service="Cook">Cooking</a>
+                    <a href="<?=ROOT?>/public/selectService/maid" class="dropdown-item" data-service="Maid">Maid</a>
+                    <a href="<?=ROOT?>/public/selectService/nanny" class="dropdown-item" data-service="Nanny">Nanny</a>
+                    <a href="<?=ROOT?>/public/selectService/cook24" class="dropdown-item" data-service="Cook 24-hour Live in">Cook 24H</a>
+                    <a href="<?=ROOT?>/public/selectService/allRounder" class="dropdown-item" data-service="All rounder">All-rounder</a>
                 </div>
             </div>
         <?php endif; ?>
@@ -47,18 +51,47 @@
     document.addEventListener('DOMContentLoaded', function() {
         const dropdownToggle = document.querySelector('.dropdown-toggle');
         const dropdownMenu = document.querySelector('.dropdown-menu');
+        const ROOT = "<?php echo ROOT; ?>";
 
         // Toggle dropdown on mobile/touch devices
-        dropdownToggle.addEventListener('click', function(e) {
+        dropdownToggle.addEventListener('hover', function(e) {
             e.preventDefault();
             dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
         });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        // Close dropdown when hovering outside
+        document.addEventListener('hover', function(e) {
             if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
                 dropdownMenu.style.display = 'none';
             }
+        });
+
+        // Handle service selection from dropdown
+        const serviceLinks = document.querySelectorAll('.dropdown-item');
+        serviceLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const service = this.dataset.service;
+                const href = this.href;
+
+                fetch(`${ROOT}/public/SelectService`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'service=' + encodeURIComponent(service)
+                })
+                    .then(function(response) {
+                        if (response.ok) {
+                            window.location.href = href;
+                        } else {
+                            console.error('Error saving service selection');
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
+            });
         });
     });
 </script>
