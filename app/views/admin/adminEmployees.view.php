@@ -23,6 +23,7 @@
                     <div class="input-group">
                         <label for="employeeRole">Role:</label>
                         <select id="employeeRole" class="role-select">
+                        <option value="" selected disabled>-- Select Role --</option>
                             <option value="hrManager">hrManager</option>
                             <option value="financeManager">financeManager</option>
                             <option value="opManager">opManager</option>
@@ -266,30 +267,47 @@
         `).join('');
     }
 
-    // Search employees in the stored array
     function searchEmployees() {
-        const role = document.getElementById('employeeRole').value.toLowerCase();
-        const userID = document.getElementById('employeeId').value.trim();
-
-        const filteredEmployees = allEmployees.filter(employee => {
-            const matchesRole = role ? employee.role.toLowerCase() === role : true;
-            const matchesUserID = userID ? employee.userID.includes(userID) : true;
-            return matchesRole && matchesUserID;
-        });
-
-        renderTable(filteredEmployees);
-    }
-
-    // Reset the table to show all employees
+    const role = document.getElementById('employeeRole').value;
+    const userID = document.getElementById('employeeId').value.trim();
+    
+    // Create request body
+    const filters = {
+        role: role,
+        userID: userID
+    };
+    
+    // Send request to search endpoint
+    fetch('<?=ROOT?>/public/adminEmployees/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(filters)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            renderTable(result.employees);
+        } else {
+            showNotification(result.message || 'Search failed', 'error');
+        }
+    })
+    .catch(error => showNotification('An unexpected error occurred', 'error'));
+}
+    // Function to reset the search filters and reload all employees
     function resetEmployees() {
-        renderTable(allEmployees);
+        // Clear input fields
+        document.getElementById('employeeRole').value = '';
+        document.getElementById('employeeId').value = '';
+
+        // Re-render all employees
+        loadEmployees();
     }
+
 
     // Load employees on page load
-    window.onload = loadEmployees;
-</script>
-
-
+    window.onload = () => {
+    loadEmployees();
+};
     </script>
 </body>
 </html>

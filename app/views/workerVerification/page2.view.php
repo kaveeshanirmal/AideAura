@@ -107,15 +107,15 @@
           </div>
 
           <div class="input-box full-width">
-            <span class="details">Upload Certificates (If Any) </span>
-            <input type="file" id="certificates" accept=".pdf,.doc,.docx,.jpg,.png">
-          </div>
-        
-        <div class="input-box full-width">
-          <span class="details">Medical and Fitness Certificate </span>
-          <input type="file" id="medical" accept=".pdf,.doc,.docx,.jpg,.png">
-        </div>
-      
+    <span class="details">Upload Certificates (If Any)</span>
+    <input type="file" name="certificateFile" id="certificateFile" accept=".pdf,.doc,.docx,.jpg,.png">
+</div>
+
+<div class="input-box full-width">
+    <span class="details">Medical and Fitness Certificate</span>
+    <input type="file" name="medicalFile" id="medicalFile" accept=".pdf,.doc,.docx,.jpg,.png">
+</div>
+
       <div class="input-box full-width">
         <span class="details">Description</span>
             <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
