@@ -117,10 +117,28 @@ public function workerDetails()
 }
 
     public function workerCertificates(){
-            $workerModel = new WorkerModel();
-            $workerDetails = $workerModel->getWorkerCertificates();
-            $finalData = array_merge($workerDetails, $this->selectedWorkerRole);
-        $this->view('admin/adminWorkerProfile2', ['data'=> $finalData]);
+
+        //     $workerModel = new WorkerModel();
+        //     $workerDetails = $workerModel->getWorkerCertificates();
+        //     $finalData = array_merge($workerDetails, $this->selectedWorkerRole);
+        // $this->view('admin/adminWorkerProfile2', ['data'=> $finalData]);
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST['worker'] ?? null;
+            $worker = json_decode($data, true);
+
+            $workerData = [
+                'userID' => $worker['userID'],
+                'fullName' => $worker['fullName'],
+                'certificates' => $worker['certificates'],
+                 'medical' => $worker['medical'],
+            ];
+            $this->view('admin/adminWorkerProfile2', ['worker'=> $workerData]);
+    }
+    else {
+        http_response_code(400);
+        echo "Method not allowed .";
+    }
     }
 
 

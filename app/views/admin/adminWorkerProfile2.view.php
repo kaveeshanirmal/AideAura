@@ -15,55 +15,55 @@
             <div class="dashboard-container">
            <div class="back-header">
            <form action="workerDetails" method="POST" style="display: inline;">
-    <input type="hidden" name="userID" value="<?= htmlspecialchars($worker['userID']) ?>">
+    <input type="hidden" name="workerData" value="<?= htmlspecialchars($worker['userID']) ?>">
     <button type="submit" class="back-button">
         <span class="back-icon"><</span>
     </button>
 </form>
 
-                <div class="profile-header"><a href="workers">
-                    <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile Icon" class="profile-icon">
-                    <div class="profile-info">
-                        <h2>MR. Kamal Rupasinghe</h2>
-                        <p>Certificates</p>
-                        </a>
+               <div class="document-card">
+                   <div class="document-icon"></div>
+                   <div class="document-info">
+                       <h3><?= htmlspecialchars($worker['certificates']) ?></h3>
+                       <p>
+                           <?php
+                           $certPath = ROOT_PATH . "/public/uploads/" . $worker['certificates'];
+                           if (file_exists($certPath)) {
+                               echo round(filesize($certPath) / 1048576, 2) . " Mb";
+                           } else {
+                               echo "File not found";
+                           }
+                           ?>
+                       </p>
+                   </div>
+               </div>
+               
+                <div class="document-icon"></div>
+                <div class="document-info">
+                    <h3><?= htmlspecialchars($worker['medical']) ?></h3>
+                    <p>
+                        <?php
+                            $medicalPath = ROOT_PATH . "/public/uploads/" . $worker['medical'];
+                            if (file_exists($medicalPath)) {
+                                echo round(filesize($medicalPath) / 1048576, 2) . " Mb";
+                            } else {
+                                echo "File not found";
+                            }
+                            ?>
+                            <div class="document-card">
+                        </p>
                     </div>
                 </div>
-                </div>
-                <div class="profile-sectionnew">
-
-                    <div class="documents-container">
-                        <div class="document-card">
-                            <div class="document-icon"></div>
-                            <div class="document-info">
-                                <h3>Master Chef Certificate Of Levenro Garden Hotel Schole.pdf</h3>
-                                <p>4.32 Mb</p>
-                            </div>
-                        </div>
+                
 
                         <div class="document-card">
                             <div class="document-icon"></div>
                             <div class="document-info">
-                                <h3><?= htmlspecialchars($worker['certificates']) ?></h3>
+                                <h3><?= htmlspecialchars($worker['medical']) ?></h3>
                                 <p>3.79 Mb</p>
                             </div>
                         </div>
 
-                        <div class="document-card">
-                            <div class="document-icon"></div>
-                            <div class="document-info">
-                                <h3>NIC.pdf</h3>
-                                <p>3.79 Mb</p>
-                            </div>
-                        </div>
-
-                        <div class="document-card">
-                            <div class="document-icon"></div>
-                            <div class="document-info">
-                                <h3>Birth Certificate.pdf</h3>
-                                <p>1.22 Mb</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
