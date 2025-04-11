@@ -1,0 +1,177 @@
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, rgba(104, 78, 47, 0.8), rgba(71, 44, 12, 0.8)),url('../../public/assets/images/Employee_Finding_Screen_Background.png');
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+
+.container {
+    background: #dfdddb;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    max-width: 700px;
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
+    text-align: center;
+}
+
+.container h2 {
+    font-weight: 100;
+    text-align: center;
+}
+
+.heading {
+    color: #5b3a29;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    border-bottom: 2px solid #a17852;
+    padding-bottom: 10px;
+}
+
+/* Worker Card Styles */
+.worker-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #654747;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-align: center;
+}
+
+.worker-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile Image Styles */
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+}
+
+/* Worker Info Styles */
+.worker-info {
+    text-align: left;
+    color: #000000;
+    font-weight: 400;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Responsive width */
+}
+
+.worker-info p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.worker-info p strong {
+    color: #555;
+    min-width: 100px; /* Ensure proper alignment */
+    text-align: right;
+    margin-right: 10px;
+}
+
+/* Button Styles */
+.buttons {
+    display: flex;
+    flex-direction: column; /* Stack the buttons vertically */
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 40px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.accept-btn {
+    background-color: #28a745;
+    color: white;
+    font-size: 18px; /* Make it slightly larger */
+    padding: 14px 50px;
+    box-shadow: 0 0 10px #28a74566;
+}
+
+.accept-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 0 15px #28a745;
+}
+
+.reject-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 30px; /* Smaller than Accept button */
+    box-shadow: 0 0 10px #dc354566;
+}
+
+.reject-btn:hover {
+    background-color: #c82333;
+    box-shadow: 0 0 15px #dc3545;
+}
+
+/* Stars and No Results */
+.stars {
+    color: #e0a96d;
+    font-size: 18px;
+}
+
+.no-results {
+    color: #a33e3e;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+    animation: fadeIn 0.8s ease;
+}
