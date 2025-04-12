@@ -1,0 +1,431 @@
+:root {
+  --primary-brown: #8b4513;
+  --light-brown: #deb887;
+  --cream: #fdfbf7;
+  --dark-brown: #5c3317;
+  --light-shadow: rgba(139, 69, 19, 0.1);
+  --medium-shadow: rgba(139, 69, 19, 0.2);
+  --label-bg: #ffffff;
+  --label-text: #8b4513;
+  --label-hover: #f8f1e7;
+}
+
+body {
+  background-image: url(../../images/booking_bg.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  background: white;
+  margin: 90px 5px;
+  padding: 30px 40px 40px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px var(--light-shadow);
+  width: 100%;
+  max-width: 700px;
+}
+
+h2 {
+  color: var(--primary-brown);
+  text-align: left;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+  font-size: 22px;
+}
+
+h2:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-brown);
+}
+
+/* Section styling */
+.form-section {
+  border-bottom: 1px solid var(--light-brown);
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-title {
+  color: var(--dark-brown);
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* Collapsible section styling */
+.collapsible-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.section-header h3 {
+  margin: 0;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  box-shadow: none;
+}
+
+.toggle-btn:hover {
+  background-color: var(--light-shadow);
+  transform: none;
+  box-shadow: none;
+}
+
+.toggle-icon {
+  display: block;
+  width: 14px;
+  height: 14px;
+  position: relative;
+}
+
+.toggle-icon:before,
+.toggle-icon:after {
+  content: "";
+  position: absolute;
+  background-color: var(--primary-brown);
+  transition: all 0.3s ease;
+}
+
+.toggle-icon:before {
+  width: 14px;
+  height: 2px;
+  top: 6px;
+  left: 0;
+}
+
+.toggle-icon:after {
+  width: 2px;
+  height: 14px;
+  top: 0;
+  left: 6px;
+}
+
+.toggle-btn.expanded .toggle-icon:after {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+/* Section content collapsible animations */
+.section-content {
+  overflow: hidden;
+  max-height: 1000px;
+  transition: max-height 0.5s ease;
+}
+
+.section-content.collapsed {
+  max-height: 0;
+}
+
+/* Section summary styling */
+.section-summary {
+  background-color: var(--cream);
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-summary.hidden {
+  display: none;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+}
+
+.summary-label {
+  color: var(--dark-brown);
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 80px;
+}
+
+.summary-value {
+  color: var(--primary-brown);
+  font-size: 14px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+button {
+  padding: 0.75rem 1.8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn-previous {
+  background-color: var(--light-brown);
+  color: var(--dark-brown);
+}
+
+.btn-next {
+  background-color: var(--primary-brown);
+  color: white;
+}
+
+#pick-location {
+  background-color: var(--primary-brown);
+  color: white;
+  font-size: 13px;
+  padding: 0.25rem 1rem;
+  border: none;
+  border-radius: 8px;
+  width: 25%;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--medium-shadow);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px var(--light-shadow);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background-color: var(--light-brown);
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px var(--medium-shadow);
+}
+
+.progress {
+  width: 66%;
+  height: 100%;
+  background-color: var(--primary-brown);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+/* Form element styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Single column layout */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 3px;
+}
+
+/* Input styling */
+input {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+
+/* Input field styling */
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+input[type="time"] {
+  appearance: none;
+  background-color: #fff;
+  border: 2px solid var(--light-brown);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  width: 50%;
+  color: var(--dark-brown);
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-brown);
+  box-shadow: 0 0 0 3px var(--light-shadow);
+}
+
+input:hover {
+  border-color: var(--primary-brown);
+}
+
+/* Input placeholder styling */
+::placeholder {
+  color: #bbb;
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+/* Label styling */
+form label {
+  display: block;
+  color: var(--primary-brown);
+  font-weight: 600;
+  margin-bottom: 4px;
+  margin-left: 70px;
+  font-size: 14px;
+}
+
+.total-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--label-bg);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--primary-brown);
+  box-shadow: 0 4px 8px var(--light-shadow);
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.total-label {
+  color: var(--dark-brown);
+  padding-right: 10px;
+}
+
+.total-amount {
+  color: var(--primary-brown);
+  font-size: 18px;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: -3px;
+  margin-bottom: 5px;
+}
+
+/* Checkbox styling */
+.acknowledgment-row {
+  margin: 10px 0 5px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: auto;
+  height: 16px;
+  width: 16px;
+  margin-top: 2px;
+  accent-color: var(--primary-brown);
+  cursor: pointer;
+}
+
+.checkbox-label {
+  color: var(--dark-brown);
+  font-size: 13px;
+  font-weight: 400;
+  margin: 0;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.checkbox-container:hover .checkbox-label {
+  color: var(--primary-brown);
+}
+
+/* Animation for focus state */
+input:focus {
+  animation: pulse 1.5s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(139, 69, 19, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 69, 19, 0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .container {
+    padding: 20px;
+  }
+
+  button {
+    padding: 0.65rem 1.3rem;
+    font-size: 0.85rem;
+  }
+
+  input {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="date"],
+  input[type="time"] {
+    width: 100%;
+  }
+}

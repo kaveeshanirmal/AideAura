@@ -1,5 +1,4 @@
 <?php
-
 class UserModel
 {
     use Model; // Use the Model trait
@@ -154,6 +153,25 @@ public function registerEmployee($data)
         return $this->all(); // Use the get_all method from the Database trait
     }
 
+    // Get specific role of a worker based on userID  ,, can be easily implement using sql join query
+    public function getWorkerRole($id)
+    {
+        $this->setTable('worker');
+        $worker = $this->find($id, 'userID'); // find already uses get_row
+        if ($worker) {
+            $workerId = $worker->workerID;
+            $this->setTable('worker_roles');
+            $workerRole = $this->find($workerId, 'workerID');
+            if ($workerRole) {
+                $RoleId = $workerRole->roleID;
+                $this->setTable('jobRoles');
+                $workerRoleRaw = $this->find($RoleId, 'roleID');
+                return $workerRoleRaw->name ?? null; // Return role name or null
+            }
+        }
+        return null; // Default if worker or role not found
+    }
+    
 
     // Update user information
     public function updateUserInfo($id, $data)
@@ -213,44 +231,46 @@ public function registerEmployee($data)
     }
 
 
-
-    public function searchEmployees($filters) {
-        $this->setTable('employees');
-        
+    public function searchEmployees($filters = []) {
         $conditions = [];
         $params = [];
-        
-        // Build search conditions based on filters
+    
+        // Add filter for role if provided
         if (!empty($filters['role'])) {
-            $conditions[] = "role LIKE :role";
-            $params['role'] = "%" . trim($filters['role']) . "%";
+            $conditions[] = "role = :role"; // Use '=' for exact match
+            $params['role'] = trim($filters['role']);
         }
-        
-        if (!empty($filters['email'])) {
-            $conditions[] = "email LIKE :email";
-            $params['email'] = "%" . trim($filters['email']) . "%";
+    
+        // Add filter for userID if provided
+        if (!empty($filters['userID'])) {
+            $conditions[] = "userID = :userID"; // Use '=' for exact match
+            $params['userID'] = trim($filters['userID']);
         }
-        
-        if (!empty($filters['status'])) {
-            $conditions[] = "status LIKE :status";
-            $params['status'] = "%" . trim($filters['status']) . "%";
-        }
-        
-        if (!empty($filters['employeeID'])) {
-            $conditions[] = "employeeID LIKE :employeeID";
-            $params['employeeID'] = "%" . trim($filters['employeeID']) . "%";
-        }
-
-        $sql = "SELECT * FROM employees";
+    
+        // Base query
+        $sql = "SELECT * FROM users";
+    
+        // Add WHERE clause only if conditions exist
         if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' OR ', $conditions);
+            $sql .= " WHERE " . implode(' AND ', $conditions);
+        } else {
+            // If no filters, return an empty result set (optional)
+            return [];
         }
-        
-        // Add ordering to ensure consistent results
-        $sql .= " ORDER BY employeeID DESC";
-        
-        return $this->query($sql, $params);
+    
+        // Add ordering
+        $sql .= " ORDER BY userID DESC";
+    
+        try {
+            // Execute query
+            return $this->get_all($sql, $params);
+        } catch (Exception $e) {
+            error_log("Error searching employees: " . $e->getMessage());
+            return [];
+        }
     }
+    
+    
 
     // Updated delete method with validatio+n
     public function deleteEmployee($userID) {
@@ -264,4 +284,30 @@ public function registerEmployee($data)
     
     return $this->delete($userID, 'userID'); // Ensure 'userID' is the correct column name in your table
     }
+
+
+    // Updated delete method with validation for soft delete
+    public function softDeleteEmployee($userID) {
+        $this->setTable('users');
+
+        // Check if employee exists before deletion
+        $employee = $this->find($userID, 'userID');
+        if (!$employee) {
+            return false;
+        }
+
+        // Perform soft delete instead of permanent deletion
+        return $this->softDelete($userID, 'userID', 'isDelete');
+    }
+
+    // Update worker's availability status
+    public function updateAvailability($workerID, $status)
+    {
+        $this->setTable('worker');
+        $data = [
+            'availability_status' => $status
+        ];
+        $this->update($workerID, $data, 'workerID');
+    }
+
 }

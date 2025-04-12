@@ -253,6 +253,11 @@ a {
     font-weight: 500;
 }
 
+.add-employee-btn:hover {
+    background-color: #4CAF50;
+    transition: background-color 0.3s ease;
+}
+
 /* Employee Details */
 .employee-details {
     left: 90%;
@@ -271,6 +276,11 @@ a {
     border-radius: 12px;
     cursor: pointer;
 }
+
+.search-btn-container .search-btn:hover {
+    background-color: #00FF00;
+}
+
 
 /* Table Styles */
 .table-container {

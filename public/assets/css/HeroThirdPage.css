@@ -12,10 +12,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(to bottom, #3d0505, #3d1a05dc),url(../images/Hero_Screen_3_Background.png); 
-  background-size: cover;           
-  background-position: center;      
-  background-repeat: no-repeat;     
+  background-image:
+    linear-gradient(to bottom, #3d0505, #3d1a05dc),
+    url(../images/Hero_Screen_3_Background.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .testimonial {

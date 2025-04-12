@@ -58,6 +58,20 @@
         </div>
         <span id="gender-error" style="color: red; display: none;">Please select your gender</span>
         
+        <div class="input-box">
+  <span class="details" id="languages">Language Skills</span>
+  <div class="custom-select">
+    <div class="options-list">
+      <label><input type="checkbox" name="languages[]" value="Sinhala"> Sinhala</label>
+      <label><input type="checkbox" name="languages[]" value="Tamil"> Tamil</label>
+      <label><input type="checkbox" name="languages[]" value="English"> English</label>
+    </div>
+  </div>
+</div>
+<span id="language-error" style="color: red; font-size: 12px; display: none;">Please select at least one language</span>
+
+      
+
         <div class="user_buttons">
           <div class="next_button_container">
             <button class="next_button" id="back1">Back</button>

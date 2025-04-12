@@ -1,80 +1,82 @@
 /* Ensure the header fits within the container */
 .service-header {
-    position: sticky;
-    width: 100%; /* Takes full width of the parent container */
-    max-width: 100%; /* Ensures it doesn’t overflow */
-    height: 90px;
-    top: 0;
-    left: 0;
-    margin: 0; /* Remove auto margins */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Stack the progress bar and service-header vertically */
-    align-items: flex-start; /* Align items to the left */
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1; /* Ensure the service-header stays on top */
-    padding: 0; /* Remove any internal spacing */
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+  position: sticky;
+  width: 100%; /* Takes full width of the parent container */
+  max-width: 100%; /* Ensures it doesn’t overflow */
+  height: 90px;
+  top: 0;
+  left: 0;
+  margin: 0; /* Remove auto margins */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Stack the progress bar and service-header vertically */
+  align-items: flex-start; /* Align items to the left */
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1; /* Ensure the service-header stays on top */
+  padding: 0; /* Remove any internal spacing */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 /* Content inside the header aligns properly */
 .service-header-content {
-    height: 85px; /* Increased height to match header minus progress bar */
-    display: flex;
-    align-items: center; /* Vertical center */
-    width: 100%;
-    padding: 0 15px;
-    box-sizing: border-box;
-    position: relative;
+  height: 85px; /* Increased height to match header minus progress bar */
+  display: flex;
+  align-items: center; /* Vertical center */
+  width: 100%;
+  padding: 0 15px;
+  box-sizing: border-box;
+  position: relative;
 }
 
 /* Styling for the back arrow */
 .service-header .back-arrow {
-    font-size: 22px;
-    cursor: pointer;
-    color: #5a5a5a;
-    transition: color 0.3s;
-    margin-right: 15px; /* Add space between arrow and title */
-    display: flex; /* Add this */
-    align-items: center; /* Add this */
-    height: 100%; /* Add this */
+  font-size: 22px;
+  cursor: pointer;
+  color: #5a5a5a;
+  transition: color 0.3s;
+  margin-right: 15px; /* Add space between arrow and title */
+  display: flex; /* Add this */
+  align-items: center; /* Add this */
+  height: 100%; /* Add this */
 }
 
 .service-header .back-arrow:hover {
-    color: #333; /* Slightly darker color on hover */
+  color: #333; /* Slightly darker color on hover */
 }
 
 /* Heading inside the header */
 .service-header h2 {
-    font-size: 18px;
-    margin: 0; /* Remove extra margins */
-    color: #333;
-    text-align: left; /* Left align the text */
-    padding-left: 30px; /* Add padding to move text away from back arrow */
-    width: 100%; /* Take full width */
-    text-align: left; /* Center the text */
-    padding: 0; /* Remove left padding */
-    white-space: nowrap; /* Prevent text wrapping if the container shrinks */
-    line-height: 85px; /* Match the header-content height */
+  font-size: 18px;
+  margin: 0; /* Remove extra margins */
+  color: #333;
+  text-align: left; /* Left align the text */
+  padding-left: 30px; /* Add padding to move text away from back arrow */
+  width: 100%; /* Take full width */
+  text-align: left; /* Center the text */
+  padding: 0; /* Remove left padding */
+  white-space: nowrap; /* Prevent text wrapping if the container shrinks */
+  line-height: 85px; /* Match the header-content height */
 }
 
 /* Progress bar container to match the header */
 .progress-bar-container {
-    width: 100%; /* Matches the width of the header */
-    height: 5px;
-    background-color: #e0e0e0;
-    border-radius: 3px;
-    margin: 0;
-    position: relative; /* Adjusts positioning within the header */
+  width: 100%; /* Matches the width of the header */
+  height: 5px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  margin: 0;
+  position: relative; /* Adjusts positioning within the header */
 }
 
 /* Dynamic progress bar inside the container */
 .progress-bar {
-    height: 100%;
-    width: 0%; /* Starts at 0% and can grow dynamically */
-    background: linear-gradient(to right, #00bcd4, #4c8bf5); /* Gradient effect */
-    border-radius: 3px;
-    transition: width 0.3s, background 0.3s; /* Smooth width and background transition */
+  height: 100%;
+  width: 0%; /* Starts at 0% and can grow dynamically */
+  background: linear-gradient(to right, #00bcd4, #4c8bf5); /* Gradient effect */
+  border-radius: 3px;
+  transition:
+    width 0.3s,
+    background 0.3s; /* Smooth width and background transition */
 }

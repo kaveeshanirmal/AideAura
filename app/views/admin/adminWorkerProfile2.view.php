@@ -9,16 +9,19 @@
 <body>
     <div class="container">
         <!-- Sidebar Component -->
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php');  ?>      
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="main-content">
             <!-- Navbar Component -->
             <div class="dashboard-container">
            <div class="back-header">
-                <button class="back-button">
-                    <span class="back-icon"><a href="worker1" class="back-button"> < </a>
-                    </span>
-                </button>
-                <div class="profile-header"><a href="worker1">
+           <form action="workerDetails" method="POST" style="display: inline;">
+    <input type="hidden" name="userID" value="<?= htmlspecialchars($worker['userID']) ?>">
+    <button type="submit" class="back-button">
+        <span class="back-icon"><</span>
+    </button>
+</form>
+
+                <div class="profile-header"><a href="workers">
                     <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile Icon" class="profile-icon">
                     <div class="profile-info">
                         <h2>MR. Kamal Rupasinghe</h2>
@@ -41,7 +44,7 @@
                         <div class="document-card">
                             <div class="document-icon"></div>
                             <div class="document-info">
-                                <h3>Colombo Central Hospital Medical Fitness Report.pdf</h3>
+                                <h3><?= htmlspecialchars($worker['certificates']) ?></h3>
                                 <p>3.79 Mb</p>
                             </div>
                         </div>

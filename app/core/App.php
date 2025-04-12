@@ -9,53 +9,42 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'worker1', 'worker2', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'paymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails','assignDynamicRoles', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'deleteRoles' , 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
-            'AdminEmployees' => ['index', 'update', 'delete'],
+            'AdminEmployees' => ['index', 'update', 'delete' , 'search'],
 
             'AdminRoles1' => ['index', 'edit'],
         ],
 
         'hrManager' => [
-            'HRverificationRequest'=> ['index'],
-            'HRworkerSchedules' => ['index'],
-            'HRworkerProfileSchedule' => ['index'],
-            'HRworkerProfileManagement1' => ['index'],
-            'HRworkerProfileManagement2'=> ['index'],
-            'HRworkerProfileManagement' => ['index'],
-            'HRworkerInquiries' => ['index'],
+            'HrManager' => ['index', 'workerInfo', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
         ],
 
         'opManager' => [
-            'OPMcomplaintManagement' => ['index'],
-            'OPMworkerSchedules' => ['index'],
-            'OPMspecialRequests' => ['index'],
-
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
         ],
         
         'financeManager' => [
-            'AccountantPaymentHistory' => ['index'],
-            'AccountantPaymentIssues' => ['index'],
-            'AccountantPayrate' => ['index'],
-            'AccountantReports' => ['index'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'paymentIssues', 'reports'],
         ],
 
         'customer'=> [
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
-            'Payment'> ['index', 'paymentDetail', 'paymentComplete', 'paymentProceed'],
-            'Home' => ['customerRedirect'],
-            'ServiceForms' => ['index', 'getForm', 'testDataBase'],
+            'SearchForWorker' => ['index', 'find', 'workerFound', 'processing'],
+            'Payment' => ['authorize', 'success', 'cancel', 'notify'],
+            'Home' => ['findWorkers'],
+            'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal', 'bookingInfo', 'bookingSummary', 'submitBookingInfo'],
         ],
 
         'worker' => [
             'WorkerProfile' => ['index', 'personalInfo', 'update', 'workingSchedule', 'faq'],
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
-            'Home'=> ['workerRedirect'],
+            'Home'=> ['findJobs'],
         ]
     ];
 
@@ -69,6 +58,8 @@ class App
         'Signup' => ['index'],
         'Login' => ['index', 'logout'],
         'Unauthorized' => ['index'],
+        'SearchForWorker' => ['index', 'find', 'workerFound'],
+        'Test' => ['index', 'testTime'],
     ];
     private function splitURL()
     {

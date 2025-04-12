@@ -3,10 +3,12 @@
 class Login extends Controller
 {
     private $userModel;
+    private $workerStatsModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
+        $this->workerStatsModel = new WorkerStats(); // Instantiate WorkerStats
     }
     public function index($a = '', $b = '', $c = '')
     {
@@ -24,6 +26,7 @@ class Login extends Controller
             if ($user && password_verify($password, $user->password)) {
                 $role = $user->role;
                 // Set session variables
+                session_start(); // Ensure the session is started
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['userID'] = $user->userID;
                 $_SESSION['role'] = $role;
@@ -38,16 +41,20 @@ class Login extends Controller
                 if ($role === 'customer') {
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'worker') {
+                    // Update last login time
+                    $this->workerStatsModel->updateLastLogin($user->workerID);
+                    // Update the availability status
+                    $this->userModel->updateAvailability($user->workerID, 'online');
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'admin') {
                     // Admin and other dashboards
-                    header('Location: ' . ROOT . '/public/Admin/adminReports');
+                    header('Location: ' . ROOT . '/public/Admin');
                 } elseif ($role === 'hrManager') {
-                    header('Location: ' . ROOT . '/public/HRworkerProfileManagement');
+                    header('Location: ' . ROOT . '/public/HrManager');
                 } elseif ($role === 'opManager') {
-                    header('Location: ' . ROOT . '/public/OPMcomplaintManagement');
+                    header('Location: ' . ROOT . '/public/OpManager');
                 } elseif ($role === 'financeManager') {
-                    header('Location: ' . ROOT . '/public/AccountantReports');
+                    header('Location: ' . ROOT . '/public/FinanceManager');
                 }
             } else {
                 // Handle invalid login attempt
@@ -65,6 +72,10 @@ class Login extends Controller
     public function logout()
     {
         // Destroy session and redirect to home
+        // For workers, update their availability status
+        if (isset($_SESSION['workerID'])) {
+            $this->userModel->updateAvailability($_SESSION['workerID'], 'offline');
+        }
         session_destroy();
         header('Location: ' . ROOT . '/public/home');
     }

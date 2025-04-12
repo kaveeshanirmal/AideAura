@@ -9,7 +9,7 @@
 <body>
     
 <div class="main-container">
-<?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+    <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
     <div class="content-container">
         <main class="content-wrapper">
             <!-- Customer Payments Section -->

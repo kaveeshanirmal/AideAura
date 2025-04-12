@@ -11,7 +11,7 @@
     <!-- Notification container -->
     <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/admin_navbar.view.php'); ?>
+        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <div class="main-content">
             <div class="employee-details">
                 <button class="add-employee-btn">
@@ -21,7 +21,7 @@
             <div class="employee-controls">
                 <div class="search-filters">
                     <div class="input-group">
-                        <label>Role:</label>
+                        <label for="employeeRole">Role:</label>
                         <select id="employeeRole" class="role-select">
                             <option value="hrManager">hrManager</option>
                             <option value="financeManager">financeManager</option>
@@ -30,15 +30,14 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>User ID:</label>
+                        <label for="employeeId">User ID:</label>
                         <input type="text" id="employeeId" class="id-input">
-                    </div>
-                    <div class="input-group">
-                        <label>Email:</label>
-                        <input type="email" id="employeeEmail" class="email-input">
                     </div>
                     <div class="search-btn-container">
                         <button class="search-btn" onclick="searchEmployees()">Search</button>
+                    </div>
+                    <div class="search-btn-container">
+                        <button class="search-btn" onclick="resetEmployees()">Reset</button>
                     </div>
                 </div>
             </div>
@@ -164,6 +163,7 @@
         }
 
         function updateEmployee() {
+            try {
             const userID = document.getElementById('updateEmployeeId').value;
             const data = {
                 userID,
@@ -185,15 +185,18 @@
                 if (result.success) {
                     closeUpdateModal();
                     showNotification('Employee updated successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Update failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch{
+            (error => showNotification('An unexpected error occurred', 'error'));
+        }
         }
 
         function deleteEmployee(userID) {
+            try {
             if (!confirm('Are you sure you want to delete this employee?')) return;
 
             fetch('<?=ROOT?>/public/adminEmployees/delete', {
@@ -205,13 +208,88 @@
             .then(result => {
                 if (result.success) {
                     showNotification('Employee deleted successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Delete failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch {
+         (error => showNotification('An unexpected error occurred', 'error'));
         }
+    }
+
+    // Global array to store all employees
+    let allEmployees = [];
+
+    // Function to load all employees initially
+    function loadEmployees() {
+        try {
+        fetch('<?=ROOT?>/public/adminEmployees/all')
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    allEmployees = result.employees;
+                    renderTable(allEmployees);
+                } else {
+                    showNotification('Failed to load employees', 'error');
+                }
+            })
+        } catch {
+            (error => showNotification('An unexpected error occurred', 'error'));
+    }
+}
+
+    // Function to render the employee table
+    function renderTable(employees) {
+        const tableBody = document.getElementById('employeeTableBody');
+        tableBody.innerHTML = employees.map(employee => `
+            <tr>
+                <td>${employee.userID}</td>
+                <td>${employee.username}</td>
+                <td>${employee.firstName}</td>
+                <td>${employee.lastName}</td>
+                <td>${employee.role}</td>
+                <td>${employee.phone}</td>
+                <td>${employee.email}</td>
+                <td>${employee.createdAt}</td>
+                <td>
+                    <button class="update-btn" onclick="showUpdateModal(this)">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="delete-btn" onclick="deleteEmployee('${employee.userID}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Search employees in the stored array
+    function searchEmployees() {
+        const role = document.getElementById('employeeRole').value.toLowerCase();
+        const userID = document.getElementById('employeeId').value.trim();
+
+        const filteredEmployees = allEmployees.filter(employee => {
+            const matchesRole = role ? employee.role.toLowerCase() === role : true;
+            const matchesUserID = userID ? employee.userID.includes(userID) : true;
+            return matchesRole && matchesUserID;
+        });
+
+        renderTable(filteredEmployees);
+    }
+
+    // Reset the table to show all employees
+    function resetEmployees() {
+        renderTable(allEmployees);
+    }
+
+    // Load employees on page load
+    window.onload = loadEmployees;
+</script>
+
+
     </script>
 </body>
 </html>
