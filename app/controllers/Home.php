@@ -32,5 +32,7 @@ class Home extends Controller
             header('Location: ' . ROOT . '/public/login');
         }
     }
+
 }
+
 
