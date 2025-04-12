@@ -316,15 +316,13 @@
     .catch(error => showNotification('An unexpected error occurred', 'error'));
     renderTable([]); // Show "no employees found" row on error
 }
-    // Function to reset the search filters and reload all employees
-    function resetEmployees() {
-        // Clear input fields
-        document.getElementById('employeeRole').value = '';
-        document.getElementById('employeeId').value = '';
 
-        // Re-render all employees
-        loadEmployees();
-    }
+// Function to reset the search filters and reload all employees
+// Simplified function to reset the search filters
+function resetEmployees() {
+    // Simply reload the page to show all employees again
+    location.reload();
+}
 
 
     // Load employees on page load
