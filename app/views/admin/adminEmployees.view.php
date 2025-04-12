@@ -59,6 +59,14 @@
                         </tr>
                     </thead>
                     <tbody id="employeeTableBody">
+                    <?php if (empty($employees)): ?>
+        <tr>
+            <td colspan="10" style="text-align: center; font-style: italic;">
+                No employee found.
+            </td>
+        </tr>
+    <?php else: ?>
+                        
                         <?php foreach ($employees as $employee): ?>
                         <tr data-id="<?= htmlspecialchars($employee->userID) ?>" data-username="<?= htmlspecialchars($employee->username) ?>" data-firstname="<?= htmlspecialchars($employee->firstName) ?>" data-lastname="<?= htmlspecialchars($employee->lastName) ?>" data-role="<?= htmlspecialchars($employee->role) ?>" data-phone="<?= htmlspecialchars($employee->phone) ?>" data-email="<?= htmlspecialchars($employee->email) ?>" data-createdAt="<?= htmlspecialchars($employee->createdAt) ?>">
                             <td><?= htmlspecialchars($employee->userID) ?></td>
@@ -81,6 +89,7 @@
                             </td>
                         </tr>
                         <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -243,6 +252,18 @@
     // Function to render the employee table
     function renderTable(employees) {
         const tableBody = document.getElementById('employeeTableBody');
+       
+    if (employees.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="10" style="text-align: center; color: #888;">
+                    No employees found matching your search.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+       
         tableBody.innerHTML = employees.map(employee => `
             <tr>
                 <td>${employee.userID}</td>
@@ -288,10 +309,12 @@
         if (result.success) {
             renderTable(result.employees);
         } else {
+            renderTable([]); // Show "no employees found" row
             showNotification(result.message || 'Search failed', 'error');
         }
     })
     .catch(error => showNotification('An unexpected error occurred', 'error'));
+    renderTable([]); // Show "no employees found" row on error
 }
     // Function to reset the search filters and reload all employees
     function resetEmployees() {
