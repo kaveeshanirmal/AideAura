@@ -34,7 +34,7 @@ private function getFilteredEmployees() {
     
     // Filter employees based on allowed roles
     $filteredEmployees = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-        return in_array($employee->role, $allowedRoles) && ($employee->isDelete === NULL);
+        return in_array($employee->role, $allowedRoles) && ($employee->isDelete === 0);
     });
     
     if (!$filteredEmployees) {

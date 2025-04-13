@@ -19,7 +19,7 @@ class App
         ],
 
         'hrManager' => [
-            'HrManager' => ['index', 'workerInfo', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
+            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
         ],
 
         'opManager' => [

@@ -235,7 +235,7 @@ public function registerEmployee($data)
         $this->setTable('users');
         
         // Make sure we're only getting non-deleted employees
-        return $this->filter($filters, "isDelete IS NULL"); 
+        return $this->filter($filters, "isDelete = 0"); 
     }
 
     // Updated delete method with validatio+n

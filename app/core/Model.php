@@ -91,7 +91,7 @@ Trait Model
     return $this->query($query, ['id' => $id]);
     }
 
-    public function filter(array $filters = [], $additionalConditions = "isDelete IS NULL") {
+    public function filter(array $filters = [], $additionalConditions = "isDelete = 0") {
         $sql = "SELECT * FROM {$this->table} WHERE $additionalConditions";
         $params = [];
         
