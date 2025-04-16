@@ -9,7 +9,7 @@
         const WORKERS_DATA = <?= isset($workers) ? json_encode($workers, JSON_HEX_TAG) : '[]'; ?>;
         const ROOT_PATH = "<?= htmlspecialchars(ROOT) ?>";
     </script>
-    <script src="<?= htmlspecialchars(ROOT) ?>/public/assets/js/admin/adminWorkerProfile.js" defer></script>
+    <script src="<?= htmlspecialchars(ROOT) ?>/public/assets/js/hr/workerProfile.js" defer></script>
 </head>
 <body>
 <div class="dashboard-container">

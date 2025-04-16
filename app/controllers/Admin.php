@@ -79,6 +79,7 @@ public function workerDetails()
                 $worker = $workerModel->findWorker($userID);
 
                     $workerDetails = [
+                        'requestID'=>'N/A',
                         'userID' => $userID,
                         'Nationality' => 'N/A',
                         'fullName' => $worker->fullName,
@@ -115,6 +116,54 @@ public function workerDetails()
             echo "Method not allowed .";
         }
 }
+
+public function updateVerificationStatus() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        header('Content-Type: application/json');
+        
+        // Get and validate input
+        $requestID = isset($_POST['requestID']) ? $_POST['requestID'] : null;
+        $status = isset($_POST['status']) ? $_POST['status'] : null;
+        
+        // Validate input
+        if (!$requestID || !$status) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Missing required parameters.'
+            ]);
+            return;
+        }
+        
+        // Log the received data for debugging
+        error_log("Updating verification status: requestID=$requestID, status=$status");
+        
+        $requestModel = new VerificationRequestModel();
+        $data = ['Status' => $status];
+        
+        $updated = $requestModel->updateRequest($data, $requestID);
+        
+        if ($updated) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Verification status updated successfully.'
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Failed to update verification status.'
+            ]);
+        }
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Invalid request method.'
+        ]);
+    }
+}
+
+
+    
 
     public function workerCertificates(){
 

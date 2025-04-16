@@ -18,9 +18,13 @@ function updateStatus(status) {
     }
     
     const userID = document.getElementById('userID').value;
+    //Get the current source from the hidden input
+    const currentSourceEl = document.getElementById('currentSource');
+    const currentSource = currentSourceEl ? currentSourceEl.value : 'workerProfiles';
+
     console.log(requestID, userID, status);
     
-    fetch(`${ROOT}/public/admin/updateVerificationStatus`, {
+    fetch(`${ROOT}/public/HrManager/updateVerificationStatus`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -41,14 +45,22 @@ function updateStatus(status) {
             setTimeout(() => {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = `${ROOT}/public/admin/workerDetails`;
+                form.action = `${ROOT}/public/HrManager/workerDetails`;
                 
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'workerData';
-                input.value = userID;
+                // Add workerData input (userID)
+                const workerInput = document.createElement('input');
+                workerInput.type = 'hidden';
+                workerInput.name = 'workerData';
+                workerInput.value = userID;
                 
-                form.appendChild(input);
+                // Add source input with the current source
+                const sourceInput = document.createElement('input');
+                sourceInput.type = 'hidden';
+                sourceInput.name = 'source';
+                sourceInput.value = currentSource;
+                
+                form.appendChild(workerInput);
+                form.appendChild(sourceInput);
                 document.body.appendChild(form);
                 form.submit();
             }, 2000);
@@ -61,3 +73,4 @@ function updateStatus(status) {
         showNotification('An error occurred while updating.', 'error');
     });
 }
+
