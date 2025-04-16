@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 
 session_start();
 require "../app/core/init.php";
+//echo $undefined_variable;
 
 // Debugging line to check session status
 // var_dump($_SESSION);

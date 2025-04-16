@@ -22,7 +22,9 @@
 </head>
 
 <body>
+<
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
+
     <div>
         <!-- Section 1 -->
         <div id="body-1">

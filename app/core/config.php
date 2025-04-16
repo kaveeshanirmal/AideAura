@@ -1,11 +1,12 @@
 <?php
 
-$ROOT = $_SERVER['DOCUMENT_ROOT'];
-echo "ROOT path is: " . $ROOT;
-
-define('ROOT', 'http://localhost/AideAura');
+//define('ROOT', 'http://localhost/AideAura');
 //define('ROOT', 'http://192.168.1.127:8000/AideAura');
-define('ROOT_PATH', dirname(__DIR__, 2));
+define('ROOT', "http://" . $_SERVER['SERVER_NAME'] . "/AideAura");
+
+//define('ROOT_PATH', dirname(__DIR__, 2));
+$path = $_SERVER['DOCUMENT_ROOT'] . "/AideAura";
+define("ROOT_PATH", $path);
 
 //database config
 define('DBNAME', 'aideaura');
