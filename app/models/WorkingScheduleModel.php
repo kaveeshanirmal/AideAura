@@ -36,6 +36,14 @@ class WorkingScheduleModel
         }
     }
 
+    public function getAllSchedules()
+    {
+        return $this->all();
+    }
+
+     
+
+
     public function getScheduleByWorkerId($workerId)
     {
         $query = "SELECT * FROM workingschedule WHERE workerID = :workerId ORDER BY FIELD(days_of_week, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')";

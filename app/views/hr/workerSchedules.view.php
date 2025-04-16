@@ -6,7 +6,12 @@
     <title>HR Dashboard - Worker Scheduling</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/hrWorkerSchedules.css">
 </head>
+<script>
+    const schedules = <?= json_encode($schedules) ?>;
+    console.log(schedules);
+</script>
 <body>
+
     <div class="container">
         <!-- Navbar Component -->
         <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>

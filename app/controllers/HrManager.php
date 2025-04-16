@@ -48,10 +48,12 @@ class HrManager extends Controller
         }, $filteredWorkers);
     }
 
+    // fetch details of worker from verification request table if not the users table
     public function workerDetails()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userID = $_POST['workerData'] ?? null;
+        // to go back to the verification request page if needed.
         $source = $_POST['source'] ?? 'workerProfiles'; // Default source is workerProfiles
 
         if (!empty($userID)) {
@@ -179,7 +181,10 @@ class HrManager extends Controller
 
     public function workerSchedules()
     {
-        $this->view('hr/workerSchedules');
+        $workingScheduleModel = new WorkingScheduleModel();
+        $allSchedules = $workingScheduleModel->getAllSchedules();
+        error_log("All schedules in controller: " . json_encode($allSchedules));
+        $this->view('hr/workerSchedules',['schedules'=> $allSchedules]);
     }
 
     public function verificationRequests()
