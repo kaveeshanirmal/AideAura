@@ -56,7 +56,8 @@ class SearchForWorker extends Controller
             vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
             ((wst.avg_rating / 5) * 60) + 
             (LOG(wst.total_reviews + 1) * 20) + 
-            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 20, 0)) AS score
+            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 20, 0)) AS score,
+            wst.avg_rating, wst.total_reviews
           FROM verified_workers vw
           JOIN worker w ON vw.workerID = w.workerID
           JOIN users u ON w.userID = u.userID
@@ -100,8 +101,8 @@ class SearchForWorker extends Controller
         // Clear session data after use
         unset($_SESSION['workers']);
 
-        // Pass workers data to the view
-        $this->view('workerFound', ['workers' => $workers]);
+        // Pass the first worker to the view
+        $this->view('workerFound', ['worker' => $workers[0]]);
     }
 
     public function processing()
