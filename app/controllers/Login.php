@@ -35,7 +35,10 @@ class Login extends Controller
                 $_SESSION['customerID'] = isset($user->customerID) ? $user->customerID : null;
                 $_SESSION['username'] = $user->username;
                 $_SESSION['isVerified'] = isset($user->isVerified) ? $user->isVerified : null;
+                
                 //echo "Role: " . $_SESSION['role']; //debugging
+                //echo "User role from DB: " . $user->role;
+
                 // Redirect based on user role
                 // 'admin','hrManager','opManager','financeManager','customer','worker'
                
