@@ -230,47 +230,13 @@ public function registerEmployee($data)
         return true; // Update failed
     }
 
-
+ 
     public function searchEmployees($filters = []) {
-        $conditions = [];
-        $params = [];
-    
-        // Add filter for role if provided
-        if (!empty($filters['role'])) {
-            $conditions[] = "role = :role"; // Use '=' for exact match
-            $params['role'] = trim($filters['role']);
-        }
-    
-        // Add filter for userID if provided
-        if (!empty($filters['userID'])) {
-            $conditions[] = "userID = :userID"; // Use '=' for exact match
-            $params['userID'] = trim($filters['userID']);
-        }
-    
-        // Base query
-        $sql = "SELECT * FROM users";
-    
-        // Add WHERE clause only if conditions exist
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
-        } else {
-            // If no filters, return an empty result set (optional)
-            return [];
-        }
-    
-        // Add ordering
-        $sql .= " ORDER BY userID DESC";
-    
-        try {
-            // Execute query
-            return $this->get_all($sql, $params);
-        } catch (Exception $e) {
-            error_log("Error searching employees: " . $e->getMessage());
-            return [];
-        }
+        $this->setTable('users');
+        
+        // Make sure we're only getting non-deleted employees
+        return $this->filter($filters, "isDelete = 0"); 
     }
-    
-    
 
     // Updated delete method with validatio+n
     public function deleteEmployee($userID) {

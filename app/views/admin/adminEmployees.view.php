@@ -23,6 +23,7 @@
                     <div class="input-group">
                         <label for="employeeRole">Role:</label>
                         <select id="employeeRole" class="role-select">
+                        <option value="" selected disabled>-- Select Role --</option>
                             <option value="hrManager">hrManager</option>
                             <option value="financeManager">financeManager</option>
                             <option value="opManager">opManager</option>
@@ -58,6 +59,14 @@
                         </tr>
                     </thead>
                     <tbody id="employeeTableBody">
+                    <?php if (empty($employees)): ?>
+        <tr>
+            <td colspan="10" style="text-align: center; font-style: italic;">
+                No employee found.
+            </td>
+        </tr>
+    <?php else: ?>
+                        
                         <?php foreach ($employees as $employee): ?>
                         <tr data-id="<?= htmlspecialchars($employee->userID) ?>" data-username="<?= htmlspecialchars($employee->username) ?>" data-firstname="<?= htmlspecialchars($employee->firstName) ?>" data-lastname="<?= htmlspecialchars($employee->lastName) ?>" data-role="<?= htmlspecialchars($employee->role) ?>" data-phone="<?= htmlspecialchars($employee->phone) ?>" data-email="<?= htmlspecialchars($employee->email) ?>" data-createdAt="<?= htmlspecialchars($employee->createdAt) ?>">
                             <td><?= htmlspecialchars($employee->userID) ?></td>
@@ -80,6 +89,7 @@
                             </td>
                         </tr>
                         <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -242,6 +252,18 @@
     // Function to render the employee table
     function renderTable(employees) {
         const tableBody = document.getElementById('employeeTableBody');
+       
+    if (employees.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="10" style="text-align: center; color: #888;">
+                    No employees found matching your search.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+       
         tableBody.innerHTML = employees.map(employee => `
             <tr>
                 <td>${employee.userID}</td>
@@ -266,30 +288,47 @@
         `).join('');
     }
 
-    // Search employees in the stored array
     function searchEmployees() {
-        const role = document.getElementById('employeeRole').value.toLowerCase();
-        const userID = document.getElementById('employeeId').value.trim();
+    const role = document.getElementById('employeeRole').value;
+    const userID = document.getElementById('employeeId').value.trim();
+    
+    // Create request body
+    const filters = {
+        role: role,
+        userID: userID
+    };
+    
+    // Send request to search endpoint
+    fetch('<?=ROOT?>/public/adminEmployees/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(filters)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            renderTable(result.employees);
+        } else {
+            renderTable([]); // Show "no employees found" row
+            showNotification(result.message || 'Search failed', 'error');
+        }
+    })
+    .catch(error => showNotification('An unexpected error occurred', 'error'));
+    renderTable([]); // Show "no employees found" row on error
+}
 
-        const filteredEmployees = allEmployees.filter(employee => {
-            const matchesRole = role ? employee.role.toLowerCase() === role : true;
-            const matchesUserID = userID ? employee.userID.includes(userID) : true;
-            return matchesRole && matchesUserID;
-        });
+// Function to reset the search filters and reload all employees
+// Simplified function to reset the search filters
+function resetEmployees() {
+    // Simply reload the page to show all employees again
+    location.reload();
+}
 
-        renderTable(filteredEmployees);
-    }
-
-    // Reset the table to show all employees
-    function resetEmployees() {
-        renderTable(allEmployees);
-    }
 
     // Load employees on page load
-    window.onload = loadEmployees;
-</script>
-
-
+    window.onload = () => {
+    loadEmployees();
+};
     </script>
 </body>
 </html>

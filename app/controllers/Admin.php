@@ -79,6 +79,7 @@ public function workerDetails()
                 $worker = $workerModel->findWorker($userID);
 
                     $workerDetails = [
+                        'requestID'=>'N/A',
                         'userID' => $userID,
                         'Nationality' => 'N/A',
                         'fullName' => $worker->fullName,
@@ -116,11 +117,77 @@ public function workerDetails()
         }
 }
 
+public function updateVerificationStatus() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        header('Content-Type: application/json');
+        
+        // Get and validate input
+        $requestID = isset($_POST['requestID']) ? $_POST['requestID'] : null;
+        $status = isset($_POST['status']) ? $_POST['status'] : null;
+        
+        // Validate input
+        if (!$requestID || !$status) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Missing required parameters.'
+            ]);
+            return;
+        }
+        
+        // Log the received data for debugging
+        error_log("Updating verification status: requestID=$requestID, status=$status");
+        
+        $requestModel = new VerificationRequestModel();
+        $data = ['Status' => $status];
+        
+        $updated = $requestModel->updateRequest($data, $requestID);
+        
+        if ($updated) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Verification status updated successfully.'
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Failed to update verification status.'
+            ]);
+        }
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Invalid request method.'
+        ]);
+    }
+}
+
+
+    
+
     public function workerCertificates(){
-            $workerModel = new WorkerModel();
-            $workerDetails = $workerModel->getWorkerCertificates();
-            $finalData = array_merge($workerDetails, $this->selectedWorkerRole);
-        $this->view('admin/adminWorkerProfile2', ['data'=> $finalData]);
+
+        //     $workerModel = new WorkerModel();
+        //     $workerDetails = $workerModel->getWorkerCertificates();
+        //     $finalData = array_merge($workerDetails, $this->selectedWorkerRole);
+        // $this->view('admin/adminWorkerProfile2', ['data'=> $finalData]);
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST['worker'] ?? null;
+            $worker = json_decode($data, true);
+
+            $workerData = [
+                'userID' => $worker['userID'],
+                'fullName' => $worker['fullName'],
+                'certificates' => $worker['certificates'],
+                 'medical' => $worker['medical'],
+            ];
+            $this->view('admin/adminWorkerProfile2', ['worker'=> $workerData]);
+    }
+    else {
+        http_response_code(400);
+        echo "Method not allowed .";
+    }
     }
 
 

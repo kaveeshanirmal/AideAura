@@ -25,6 +25,7 @@ class WorkerModel
                 $data = [
                 'workerID' => $workerDetails->workerID,
                 'fullName' => $workerDetails->full_name,
+                'requestID'=> $workerDetails->requestID,
 
                 'userID' => $id,
                 'email' => $workerDetails->email,
@@ -60,6 +61,15 @@ class WorkerModel
 
     }
 
+    public function findUserIDbyWorkerID($id){
+        $this->setTable('worker');
+        $worker = $this->find($id, 'workerID');
+        if ($worker) {
+            return $worker->userID; // Return the userID associated with the workerID
+        }
+        return null; // Return null if not found
+    }
+
     // function to get worker details from users table using given userID
     public function findWorker($id){
         $this->setTable('users');
@@ -77,7 +87,6 @@ class WorkerModel
     
         return false;
     }
-    
     
     public function getWorkerCertificates(){
         // $this->setTable('verification_requests');

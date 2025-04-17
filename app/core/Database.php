@@ -25,6 +25,7 @@ trait Database
     // Execute a query (no results expected)
     public function query($query, $data = [])
     {
+        
         $con = $this->connect();
         $stm = $con->prepare($query);
 
