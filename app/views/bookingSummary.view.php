@@ -58,69 +58,34 @@
                 </span>
             </div>
 
-            <div class="summary-row">
-                <span class="summary-label">People Count:</span>
-                <span class="summary-value">
-                    <?php
-                    if(isset($_SESSION['booking_info']['num_people'])) {
-                        if(is_array($_SESSION['booking_info']['num_people'])) {
-                            echo htmlspecialchars(implode(', ', $_SESSION['booking_info']['num_people']));
+            <!-- Dynamically display service-specific fields -->
+            <?php
+            $excludedKeys = [
+                'serviceType', 'total_cost', 'base_price', 'addon_price',
+                'customer_name', 'contact_phone', 'contact_email',
+                'service_location', 'preferred_date', 'arrival_time',
+                'data_acknowledgment', 'gender'
+            ];
+            foreach ($_SESSION['booking_info'] as $key => $value) {
+                if (in_array($key, $excludedKeys) || empty($value)) {
+                    continue;
+                }
+                $label = ucwords(str_replace(['_', '-'], ' ', $key));
+                ?>
+                <div class="summary-row">
+                    <span class="summary-label"><?php echo $label; ?>:</span>
+                    <span class="summary-value">
+                        <?php
+                        if (is_array($value)) {
+                            echo htmlspecialchars(implode(', ', array_map('ucfirst', $value)));
                         } else {
-                            echo htmlspecialchars($_SESSION['booking_info']['num_people']);
+                            echo htmlspecialchars(ucfirst($value));
                         }
-                    } else {
-                        echo 'N/A';
-                    }
-                    ?>
-                </span>
-            </div>
+                        ?>
+                    </span>
+                </div>
+            <?php } ?>
 
-            <div class="summary-row">
-                <span class="summary-label">Meals:</span>
-                <span class="summary-value">
-                    <?php
-                    if(isset($_SESSION['booking_info']['num_meals'])) {
-                        if(is_array($_SESSION['booking_info']['num_meals'])) {
-                            echo htmlspecialchars(implode(', ', array_map('ucfirst', $_SESSION['booking_info']['num_meals'])));
-                        } else {
-                            echo htmlspecialchars(ucfirst($_SESSION['booking_info']['num_meals']));
-                        }
-                    } else {
-                        echo 'N/A';
-                    }
-                    ?>
-                </span>
-            </div>
-
-            <div class="summary-row">
-                <span class="summary-label">Diet:</span>
-                <span class="summary-value">
-                    <?php
-                    if(isset($_SESSION['booking_info']['diet'])) {
-                        if(is_array($_SESSION['booking_info']['diet'])) {
-                            echo htmlspecialchars(implode(', ', array_map('ucfirst', $_SESSION['booking_info']['diet'])));
-                        } else {
-                            echo htmlspecialchars(ucfirst($_SESSION['booking_info']['diet']));
-                        }
-                    } else {
-                        echo 'N/A';
-                    }
-                    ?>
-                </span>
-            </div>
-
-            <div class="summary-row">
-                <span class="summary-label">Add-ons:</span>
-                <span class="summary-value">
-                    <?php
-                    if(isset($_SESSION['booking_info']['addons']) && is_array($_SESSION['booking_info']['addons'])) {
-                        echo htmlspecialchars(implode(', ', array_map('ucfirst', $_SESSION['booking_info']['addons'])));
-                    } else {
-                        echo 'None';
-                    }
-                    ?>
-                </span>
-            </div>
         </div>
 
         <div class="summary-section">

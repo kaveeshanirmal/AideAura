@@ -83,8 +83,6 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
-    const bookingInfo = <?php echo json_encode($_SESSION['booking_info']); ?>;
-    console.log(bookingInfo);
     const ROOT = "<?php echo ROOT; ?>";
 
     const backButton = document.getElementById("back-btn");
@@ -143,7 +141,7 @@
         form.addEventListener("change", function () {
             const formData = new FormData(form);
 
-            fetch(`${ROOT}/public/selectService/cookingService`, {
+            fetch(`${ROOT}/public/selectService/cookPricing`, {
                 method: "POST",
                 body: formData,
                 headers: {

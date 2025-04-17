@@ -95,8 +95,6 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
-    const bookingInfo = <?php echo json_encode($_SESSION['booking_info']); ?>;
-    console.log(bookingInfo);
     const ROOT = "<?php echo ROOT; ?>";
 
     const backButton = document.getElementById("back-btn");
@@ -130,12 +128,6 @@
             isValid = false;
         }
 
-        // Validate date
-        if (!document.getElementById('care-date').value) {
-            document.getElementById('date-error').textContent = 'Please select a date';
-            isValid = false;
-        }
-
         return isValid;
     }
 
@@ -143,14 +135,10 @@
         const form = document.querySelector("form");
         const totalAmount = document.querySelector(".total-amount");
 
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById("care-date").min = today;
-
         form.addEventListener("change", function () {
             const formData = new FormData(form);
 
-            fetch(`${ROOT}/public/selectService/nannyService`, {
+            fetch(`${ROOT}/public/selectService/nannyPricing`, {
                 method: "POST",
                 body: formData,
                 headers: {
