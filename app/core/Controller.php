@@ -5,7 +5,7 @@ class Controller
     public function view($name, $data = [])
     {
         $filename = "../app/views/" . $name . ".view.php";
-        echo "Looking for view at: " . $filename; // Debug line
+        //echo "Looking for view at: " . $filename; // Debug line
         
         if (file_exists($filename)) {
             // Extract the data array into variables
