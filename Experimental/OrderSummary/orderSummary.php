@@ -14,7 +14,7 @@ $booking = [
     'duration' => '6 hours',
     'location' => 'Horowpathana, Galenpidunuwawa, Apt 203',
     'payment_method' => 'Debit Card',
-    'status' => 'Confirmed',
+    'status' => 'Denied',
     'total' => 3250.00,
 ];
 
