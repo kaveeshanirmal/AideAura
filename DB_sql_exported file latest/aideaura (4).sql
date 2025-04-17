@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2025 at 11:27 PM
+-- Generation Time: Apr 17, 2025 at 12:40 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -157,7 +157,7 @@ CREATE TABLE `jobroles` (
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `description` varchar(255) NOT NULL,
-  `isDelete` int(1) DEFAULT NULL
+  `isDelete` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -165,15 +165,15 @@ CREATE TABLE `jobroles` (
 --
 
 INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VALUES
-(1, 'Cook', 'assets/images/service_cook.png', 'Prepares and cooks meals according to dietary preferences', NULL),
-(2, 'Cook 24-hour Live in', 'assets/images/service_cook24.png', 'Provides round-the-clock meal preparation and kitchen care.', NULL),
-(3, 'Maid', 'assets/images/service_maid.png', 'Manages cleaning, laundry, and household upkeep', NULL),
-(4, 'Nanny', 'assets/images/service_nanny.png', 'Cares for children, including supervision, meals, and activities', NULL),
-(5, 'All rounder', 'assets/images/service_allrounder.png', 'Performs various household tasks and maintenance as needed', NULL),
-(6, 'test', 'public/assets/images/roles/20230816_125947.jpg', '                 kjsffjgjhsdflkgjhfdlkghdlksghlkfjglk          ', NULL),
-(8, 'test2', 'public/assets/images/roles/20230816_125947.jpg', '                            isfgkdjgdkjgkjfgkfng', NULL),
-(9, 'test3', 'public/assets/images/roles/', '                            agfsdgsdgfsggfg', NULL),
-(11, 'test4', 'public/assets/images/roles/', '                        gghgkjhgkjgkjhgkjg    ', NULL),
+(1, 'Cook', 'assets/images/service_cook.png', 'Prepares and cooks meals according to dietary preferences', 0),
+(2, 'Cook 24-hour Live in', 'assets/images/service_cook24.png', 'Provides round-the-clock meal preparation and kitchen care.', 0),
+(3, 'Maid', 'assets/images/service_maid.png', 'Manages cleaning, laundry, and household upkeep', 0),
+(4, 'Nanny', 'assets/images/service_nanny.png', 'Cares for children, including supervision, meals, and activities', 0),
+(5, 'All rounder', 'assets/images/service_allrounder.png', 'Performs various household tasks and maintenance as needed', 0),
+(6, 'test', 'public/assets/images/roles/20230816_125947.jpg', '                 kjsffjgjhsdflkgjhfdlkghdlksghlkfjglk          ', 0),
+(8, 'test2', 'public/assets/images/roles/20230816_125947.jpg', '                            isfgkdjgdkjgkjfgkfng', 0),
+(9, 'test3', 'public/assets/images/roles/', '                            agfsdgsdgfsggfg', 0),
+(11, 'test4', 'public/assets/images/roles/', '                        gghgkjhgkjgkjhgkjg    ', 0),
 (13, 'test5', 'public/assets/images/roles/', '                            hjbhhgkhgjhgjhgjhbjhjhb', 1),
 (15, 'test6', 'public/assets/images/roles/', '                            hjbhhgkhgjhgjhgjhbjhjhb', 1),
 (17, 'test7', 'public/assets/images/roles/678ba62c9d8d9_20230816_125951.jpg', 'vfgzdsgfdgdfgfdgf', 1),
@@ -181,7 +181,7 @@ INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VA
 (19, 'test10', 'public/assets/images/roles/678ba6d536779_20230816_125947.jpg', 'guiggggghgvhghg', 1),
 (20, 'test11', 'public/assets/images/roles/678ba7111b07f_20230816_125947.jpg', 'kjjkkjkjkjnkn', 1),
 (53, 'Cleaner1H', 'public/assets/images/roles/67a0c9eb6a121_20230816_125947.jpg', 'dfsfdsgfdgdfghhdhdhhh', 1),
-(54, 'cleaner2,5', 'public/assets/images/roles/67a0cb549a71e_20230816_125947.jpg', 'fhgdshfghdfhgdfhgkdfhghdfkghkg', NULL),
+(54, 'cleaner2,5', 'public/assets/images/roles/67a0cb549a71e_20230816_125947.jpg', 'fhgdshfghdfhgdfhgkdfhghdfkghkg', 0),
 (55, 'testcase 3', 'public/assets/images/roles/67a0cc487114e_20230816_125947.jpg', 'dhsafhjkdfkjasfkjhdaslkjfjkdaflkjdsaflkasdlkfjhlkjfhlkasdjdfhkajhfgdk', 1),
 (56, 'test001', 'public/assets/images/roles/67ae21d830cf1_20230816_125951.jpg', 'ujfjsfjdsjklksdjlksdjflkjsdkljsajkfdslkjfsljfdslakflk', 1),
 (57, 'test case 000', 'public/assets/images/roles/67ae2d36d0c3e_WhatsApp Image 2025-02-05 at 21.41.00_a7ba958f.jpg', 'dhuadfashfdsahfkjshakjfhaskhdkh', 1);
@@ -220,7 +220,7 @@ CREATE TABLE `payment_rates` (
   `BasePrice` decimal(11,2) DEFAULT NULL,
   `BaseHours` decimal(11,2) DEFAULT NULL,
   `CreatedDate` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `isDelete` int(1) DEFAULT NULL
+  `isDelete` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -228,12 +228,12 @@ CREATE TABLE `payment_rates` (
 --
 
 INSERT INTO `payment_rates` (`ServiceID`, `ServiceType`, `BasePrice`, `BaseHours`, `CreatedDate`, `isDelete`) VALUES
-(1, 'cook', 200.00, 2.50, '2025-02-03 17:22:38', NULL),
-(2, 'Nanny', 100.00, 1.00, '2025-02-03 16:57:58', NULL),
+(1, 'cook', 300.00, 3.50, '2025-04-12 13:26:55', 0),
+(2, 'Nanny', 100.00, 1.00, '2025-04-12 13:25:34', 0),
 (3, 'Cleaner1H', 150.00, 1.50, '2025-02-13 23:21:56', 1),
-(4, 'cleaner2,5', 0.00, 0.00, '2025-02-03 19:27:40', NULL),
-(5, 'testcase 3', 0.00, 0.00, '2025-02-03 19:31:44', NULL),
-(6, 'test001', 8000.00, 1.25, '2025-02-13 22:20:22', NULL),
+(4, 'cleaner2,5', 0.00, 0.00, '2025-04-12 13:25:34', 0),
+(5, 'testcase 3', 0.00, 0.00, '2025-04-12 13:25:34', 0),
+(6, 'test001', 8000.00, 1.25, '2025-04-12 13:25:34', 0),
 (7, 'test case 000', 0.00, 0.00, '2025-02-13 23:15:36', 1);
 
 -- --------------------------------------------------------
@@ -252,7 +252,7 @@ CREATE TABLE `users` (
   `phone` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isDelete` int(1) DEFAULT NULL
+  `isDelete` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -260,31 +260,31 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `password`, `phone`, `email`, `createdAt`, `isDelete`) VALUES
-(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', NULL),
-(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', NULL),
-(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', NULL),
-(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', NULL),
-(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794651, 'kasun@gmail.com', '2024-12-28 09:33:03', NULL),
-(27, 'opmanager', 'Waruna', 'Chathuranga', 'financeManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', NULL),
-(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 1),
-(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 1),
-(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', NULL),
-(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', NULL),
-(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', NULL),
-(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', NULL),
-(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', NULL),
-(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', NULL),
-(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', NULL),
-(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', NULL),
-(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', NULL),
-(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', NULL),
-(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, 'kamal.s@gmail.com', '2025-04-09 21:35:19', NULL),
-(43, 'suneetha', 'Suneetha', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', NULL),
-(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', NULL),
-(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', NULL),
-(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', NULL),
-(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', NULL),
-(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', NULL),
+(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', 0),
+(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', 0),
+(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', 0),
+(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', 0),
+(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794652, 'kasun@gmail.com', '2024-12-28 09:33:03', 0),
+(27, 'opmanager', 'Waruna', 'Chathuranga', 'financeManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', 0),
+(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 0),
+(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 0),
+(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', 0),
+(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', 0),
+(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', 0),
+(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', 0),
+(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', 0),
+(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', 0),
+(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', 0),
+(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', 0),
+(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', 0),
+(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', 0),
+(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, '', '2025-04-09 21:35:19', 0),
+(43, 'suneetha', '', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', 0),
+(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', 0),
+(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', 0),
+(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', 0),
+(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', 0),
+(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', 0),
 (49, 'chamari', 'Chamari', 'Jayawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 779012345, 'chamari.j@gmail.com', '2025-04-09 21:35:19', NULL),
 (50, 'ruwan', 'Ruwan', 'Rajapakse', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 770123456, 'ruwan.r@gmail.com', '2025-04-09 21:35:19', NULL),
 (51, 'nilmini', 'Nilmini', 'Herath', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 711234567, 'nilmini.h@gmail.com', '2025-04-09 21:35:19', NULL),
@@ -296,7 +296,9 @@ INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `pas
 (57, 'dilani', 'Dilani', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 717890123, 'dilani.p@gmail.com', '2025-04-09 21:35:19', NULL),
 (58, 'chaminda', 'Chaminda', 'Vithanage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 718901234, 'chaminda.v@gmail.com', '2025-04-09 21:35:19', NULL),
 (59, 'sandamali', 'Sandamali', 'Gamage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 719012345, 'sandamali.g@gmail.com', '2025-04-09 21:35:19', NULL),
-(60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 710123456, 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL);
+(60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 710123456, 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL),
+(61, 'maid1', 'Ruwan', 'Sarathchandra', 'worker', '$2y$10$AUuFUcoDvlvn7yfRlLB/kOjNIUrCpPjhPv.7wzmrPd95BF.kfztAq', 248794653, 'veen1234@gamil.com', '2025-04-11 03:53:08', NULL),
+(62, 'admin2', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$vhVgFH0qottLKQmDqmmypubv5GJddVOtN8cRkU7rVqE1w2v0F3Ke.', 585964582, 'pasan@gmai.com', '2025-04-11 14:01:13', 1);
 
 -- --------------------------------------------------------
 
@@ -340,13 +342,11 @@ CREATE TABLE `verification_requests` (
 --
 
 INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `username`, `email`, `phone_number`, `gender`, `spokenLanguages`, `hometown`, `nic`, `nationality`, `age_range`, `service_type`, `experience_level`, `workLocations`, `certificates_path`, `medical_path`, `description`, `bankNameCode`, `accountNumber`, `working_weekdays`, `working_weekends`, `allergies`, `special_notes`, `isEditable`, `status`, `created_at`, `updated_at`) VALUES
-(20, 21, 'Ruwan DHA', 'cook24', 'veen1234@gamil.com', '0789456123', 'female', '', 'homagama', '123456963', 'burger', '18-25', 'babysitting', 'entry', 'Ampara,Anuradhapura,Badulla', NULL, NULL, 'kbkbjkbgnb', 'BOC 1235', '2147483647', 'above_12', 'above_12', 'gbjhgjghjgj', 'gjhgjghjghjghj', 1, 'pending', '2025-04-07 14:29:32', '2025-04-08 07:39:52'),
-(24, 22, 'Chandunu Sadaruwan', 'nanny1', 'pasan@gmail.com', '0789456123', 'female', 'Tamil', 'homagama', '2147483647', '', '26-35', 'cleaning', 'entry', 'Puttalam', NULL, NULL, 'czxvdfgbhfghfh', 'gfhgfhfghfghfh', '2147483647', '7-9', '10-12', 'ghgfhgfhfghfhf', 'fghgfhgfhfghfgh', 1, 'pending', '2025-04-08 07:56:42', '2025-04-08 07:56:42'),
-(25, 23, 'Kusum Chamara', 'maidtest1', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', 'fghgfhgfhgh', 'ghghghhgsdffadwa', 1, 'pending', '2025-04-08 11:20:22', '2025-04-08 11:20:22'),
-(26, 13, 'Kaveesha Nirmal', 'kavee', 'kaveesha@gmail.com', '0774871617', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '26-35', 'babysitting', 'intermediate', 'Ratnapura', NULL, NULL, '', 'Com bank', '2211123455522234', '10-12', '7-9', 'No allergies', '', 1, 'pending', '2025-04-09 20:59:26', '2025-04-09 20:59:26'),
-(27, 24, 'Nimali Perera', 'nimali', 'nimali.p@gmail.com', '0771234567', 'female', 'Sinhala,English', 'Colombo', '198022202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Colombo,Galle,Kandy', NULL, NULL, 'Experienced cook specializing in Sri Lankan cuisine. Can prepare both traditional and modern dishes.', 'BOC 4567', '1234567890123456', 'above_12', '7-9', 'None', 'Available for special events and parties', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(28, 25, 'Kamal Silva', 'kamal', 'kamal.s@gmail.com', '0772345678', 'male', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', 'Shellfish', 'Can prepare diabetic-friendly meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(29, 26, 'Suneetha Fernando', 'suneetha', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', 'None', 'Best at preparing rice and curry meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(20, 21, 'Ruwan DHA', 'cook24', 'veen1234@gamil.com', '0789456123', 'female', '', 'homagama', '123456963', 'burger', '18-25', 'babysitting', 'entry', 'Ampara,Anuradhapura,Badulla', NULL, NULL, 'kbkbjkbgnb', 'BOC 1235', '2147483647', 'above_12', 'above_12', 'gbjhgjghjgj', 'gjhgjghjghjghj', 1, 'approved', '2025-04-07 14:29:32', '2025-04-16 14:52:19'),
+(24, 22, 'Chandunu Sadaruwan', 'nanny1', 'pasan@gmail.com', '0789456123', 'female', 'Tamil', 'homagama', '2147483647', '', '26-35', 'cleaning', 'entry', 'Puttalam', NULL, NULL, 'czxvdfgbhfghfh', 'gfhgfhfghfghfh', '2147483647', '7-9', '10-12', 'ghgfhgfhfghfhf', 'fghgfhgfhfghfgh', 1, 'rejected', '2025-04-08 07:56:42', '2025-04-16 14:57:12'),
+(25, 23, 'Kusum Chamara', 'maidtest1', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', 'fghgfhgfhgh', 'ghghghhgsdffadwa', 1, 'approved', '2025-04-08 11:20:22', '2025-04-16 14:58:16'),
+(28, 25, 'Kamal Silva', 'kamal', 'kamal.s@gmail.com', '0772345678', 'male', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', 'Shellfish', 'Can prepare diabetic-friendly meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-16 15:17:53'),
+(29, 26, 'Suneetha Fernando', 'suneetha', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', 'None', 'Best at preparing rice and curry meals', 0, 'pending', '2025-04-09 21:35:20', '2025-04-16 14:34:55'),
 (30, 27, 'Ranjit De Silva', 'ranjit', 'ranjit.d@gmail.com', '0774567890', 'male', 'Sinhala,Tamil', 'Galle', '198322202975', 'sinhalese', '36-50', 'cooking', 'intermediate', 'Galle,Matara,Hambantota', NULL, NULL, 'Specializes in seafood and coastal cuisine. Can prepare authentic Southern dishes.', 'HNB 5678', '4567890123456789', '10-12', '7-9', 'None', 'Can cook for large gatherings', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (31, 28, 'Priyanka Ratnayake', 'priyanka', 'priyanka.r@gmail.com', '0775678901', 'female', 'Sinhala,English', 'Nuwara Eliya', '198422202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Nuwara Eliya,Kandy,Badulla', NULL, NULL, 'Live-in cook with experience in both Sri Lankan and Indian cuisine. Good with vegetarian dishes.', 'Sampath 9012', '5678901234567890', 'above_12', 'above_12', 'None', 'Available for long-term contracts', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (32, 29, 'Saman Bandara', 'saman', 'saman.b@gmail.com', '0776789012', 'male', 'Sinhala,English', 'Negombo', '198522202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Negombo,Colombo,Gampaha', NULL, NULL, 'Expert in preparing meals for large families. Specializes in both local and continental cuisine.', 'Peoples 3456', '6789012345678901', 'above_12', '10-12', 'Peanuts', 'Can manage kitchen inventory', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
@@ -361,9 +361,10 @@ INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `user
 (41, 38, 'Manori Dissanayake', 'manori', 'manori.d@gmail.com', '0715678901', 'female', 'Sinhala,English,Tamil', 'Ampara', '199422202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Ampara,Batticaloa,Monaragala', NULL, NULL, 'Experienced all-rounder with skills in cooking, cleaning, and childcare. Very reliable.', 'Sampath 8901', '5678901234567890', 'above_12', 'above_12', 'None', 'Can handle all household tasks', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (42, 39, 'Jagath Karunaratne', 'jagath', 'jagath.k@gmail.com', '0716789012', 'male', 'Sinhala', 'Monaragala', '199522202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Monaragala,Wellawaya,Buttala', NULL, NULL, 'Skilled in both indoor plant care and outdoor gardening. Can do basic landscaping.', 'Peoples 2345', '6789012345678901', '10-12', '4-6', 'Pollen', 'Can maintain vegetable gardens', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (43, 40, 'Dilani Perera', 'dilani', 'dilani.p@gmail.com', '0717890123', 'female', 'Sinhala,English', 'Hambantota', '199622202975', 'sinhalese', '18-25', 'housekeeping', 'entry', 'Hambantota,Matara,Galle', NULL, NULL, 'Young and energetic all-rounder willing to learn various household tasks.', 'DFCC 6789', '7890123456789012', '7-9', '4-6', 'None', 'Quick learner and adaptable', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(44, 41, 'Chaminda Vithanage', 'chaminda', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', 'None', 'Can supervise other household staff', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(45, 42, 'Sandamali Gamage', 'sandamali', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', 'None', 'Can prepare traditional Eastern dishes', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(46, 43, 'Prasanna Jayasuriya', 'prasanna', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', 'None', 'Can advise on suitable plants for your area', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20');
+(44, 41, 'Chaminda Vithanage', 'chaminda', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', 'None', 'Can supervise other household staff', 0, 'rejected', '2025-04-09 21:35:20', '2025-04-16 12:26:38'),
+(45, 42, 'Sandamali Gamage', 'sandamali', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', 'None', 'Can prepare traditional Eastern dishes', 0, 'approved', '2025-04-09 21:35:20', '2025-04-16 14:59:25'),
+(46, 43, 'Prasanna Jayasuriya', 'prasanna', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', 'None', 'Can advise on suitable plants for your area', 0, 'rejected', '2025-04-09 21:35:20', '2025-04-16 14:30:43'),
+(53, 44, 'Test data', 'maid1', 'kamal@gmail.com', '0718529632', 'female', 'Tamil', 'kjiuohuytrrr', '200300120540', '', '18-25', 'babysitting', 'entry', 'Ampara', NULL, NULL, 'rtrtertertret', 'frtrffffff', '4563852414569753', '4-6', '4-6', 'dfgdgdfgdfgdfg', 'dfgdgdgdfgdfg', 1, 'rejected', '2025-04-11 07:58:56', '2025-04-16 14:32:57');
 
 --
 -- Triggers `verification_requests`
@@ -471,8 +472,11 @@ CREATE TABLE `verified_workers` (
 --
 
 INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileImage`, `address`, `email`, `phone_number`, `gender`, `spokenLanguages`, `hometown`, `nic`, `nationality`, `age_range`, `service_type`, `experience_level`, `workLocations`, `certificates_path`, `medical_path`, `description`, `bankNameCode`, `accountNumber`, `working_weekdays`, `working_weekends`, `created_at`, `verified_at`) VALUES
-(24, 'Nimali Perera', 'nimali', '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 'nimali.p@gmail.com', '0771234567', 'female', 'Sinhala,English', 'Colombo', '198022202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Colombo,Galle,Kandy', NULL, NULL, 'Experienced cook specializing in Sri Lankan cuisine. Can prepare both traditional and modern dishes.', 'BOC 4567', '1234567890123456', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(25, 'Kamal Silva', 'kamal', '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 'kamal.s@gmail.com', '0772345678', 'female', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(13, 'Kaveesha Nirmal', 'kavee', '/public/assets/images/avatar-image.png', '679/1, Ambillawatta Road, Boralesgamuwa, Colombo, Sri Lanka', 'kaveesha@gmail.com', '0774871617', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '26-35', 'babysitting', 'intermediate', 'Ratnapura', NULL, NULL, '', 'Com bank', '2211123455522234', '10-12', '7-9', '2025-04-09 20:59:26', '2025-04-16 06:38:30'),
+(21, 'Ruwan DHA', 'cook24', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'veen1234@gamil.com', '0789456123', 'female', '', 'homagama', '123456963', 'burger', '18-25', 'babysitting', 'entry', 'Ampara,Anuradhapura,Badulla', NULL, NULL, 'kbkbjkbgnb', 'BOC 1235', '2147483647', 'above_12', 'above_12', '2025-04-07 14:29:32', '2025-04-16 14:52:19'),
+(22, 'Chandunu Sadaruwan', 'nanny1', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'pasan@gmail.com', '0789456123', 'female', 'Tamil', 'homagama', '2147483647', '', '26-35', 'cleaning', 'entry', 'Puttalam', NULL, NULL, 'czxvdfgbhfghfh', 'gfhgfhfghfghfh', '2147483647', '7-9', '10-12', '2025-04-08 07:56:42', '2025-04-16 07:17:57'),
+(23, 'Kusum Chamara', 'maidtest1', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', '2025-04-08 11:20:22', '2025-04-16 14:58:16'),
+(25, 'Kamal Silva', 'kamal', '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 'kamal.s@gmail.com', '0772345678', 'male', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-16 15:17:53'),
 (26, 'Suneetha Fernando', 'suneetha', '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (27, 'Ranjit De Silva', 'ranjit', '/public/assets/images/avatar-image.png', '12, Beach Road, Colombo', 'ranjit.d@gmail.com', '0774567890', 'female', 'Sinhala,Tamil', 'Galle', '198322202975', 'sinhalese', '36-50', 'cooking', 'intermediate', 'Galle,Matara,Hambantota', NULL, NULL, 'Specializes in seafood and coastal cuisine. Can prepare authentic Southern dishes.', 'HNB 5678', '4567890123456789', '10-12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (28, 'Priyanka Ratnayake', 'priyanka', '/public/assets/images/avatar-image.png', '34, Hill Street, Nuwara Eliya', 'priyanka.r@gmail.com', '0775678901', 'female', 'Sinhala,English', 'Nuwara Eliya', '198422202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Nuwara Eliya,Kandy,Badulla', NULL, NULL, 'Live-in cook with experience in both Sri Lankan and Indian cuisine. Good with vegetarian dishes.', 'Sampath 9012', '5678901234567890', 'above_12', 'above_12', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
@@ -489,8 +493,21 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 (39, 'Jagath Karunaratne', 'jagath', '/public/assets/images/avatar-image.png', '66, Forest Lane, Monaragala', 'jagath.k@gmail.com', '0716789012', 'male', 'Sinhala', 'Monaragala', '199522202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Monaragala,Wellawaya,Buttala', NULL, NULL, 'Skilled in both indoor plant care and outdoor gardening. Can do basic landscaping.', 'Peoples 2345', '6789012345678901', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (40, 'Dilani Perera', 'dilani', '/public/assets/images/avatar-image.png', '77, Hilltop Road, Hambantota', 'dilani.p@gmail.com', '0717890123', 'female', 'Sinhala,English', 'Hambantota', '199622202975', 'sinhalese', '18-25', 'housekeeping', 'entry', 'Hambantota,Matara,Galle', NULL, NULL, 'Young and energetic all-rounder willing to learn various household tasks.', 'DFCC 6789', '7890123456789012', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (41, 'Chaminda Vithanage', 'chaminda', '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(42, 'Sandamali Gamage', 'sandamali', '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20');
+(42, 'Sandamali Gamage', 'sandamali', '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-16 14:59:25'),
+(43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(44, 'Test data', 'maid1', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'kamal@gmail.com', '0718529632', 'female', 'Tamil', 'kjiuohuytrrr', '200300120540', '', '18-25', 'babysitting', 'entry', 'Ampara', NULL, NULL, 'rtrtertertret', 'frtrffffff', '4563852414569753', '4-6', '4-6', '2025-04-11 07:58:56', '2025-04-16 07:00:18');
+
+--
+-- Triggers `verified_workers`
+--
+DELIMITER $$
+CREATE TRIGGER `after_verified_worker_insert` AFTER INSERT ON `verified_workers` FOR EACH ROW BEGIN
+    UPDATE worker
+    SET isVerified = 1
+    WHERE workerID = NEW.workerID;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -522,7 +539,7 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (21, 36, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
 (22, 39, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
 (23, 40, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
-(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 1, 'online'),
+(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 0, 'online'),
 (25, 42, '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 1, 'online'),
 (26, 43, '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 1, 'online'),
 (27, 44, '/public/assets/images/avatar-image.png', '12, Beach Road, Colombo', 1, 'online'),
@@ -541,7 +558,8 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (40, 57, '/public/assets/images/avatar-image.png', '77, Hilltop Road, Hambantota', 1, 'offline'),
 (41, 58, '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 1, 'offline'),
 (42, 59, '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 1, 'offline'),
-(43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline');
+(43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline'),
+(44, 61, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline');
 
 --
 -- Triggers `worker`
@@ -610,7 +628,8 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 (40, 5),
 (41, 5),
 (42, 5),
-(43, 5);
+(43, 5),
+(44, 3);
 
 -- --------------------------------------------------------
 
@@ -630,7 +649,7 @@ CREATE TABLE `worker_stats` (
 --
 
 INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_activity`) VALUES
-(13, 0.00, 0, '2025-04-10 20:54:43'),
+(13, 0.00, 0, '2025-04-12 10:40:34'),
 (15, 0.00, 0, '2025-04-10 19:45:30'),
 (16, 0.00, 0, '2025-04-10 19:45:30'),
 (17, 0.00, 0, '2025-04-10 19:45:30'),
@@ -659,7 +678,8 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 (40, 0.00, 0, '2025-04-10 19:45:30'),
 (41, 0.00, 0, '2025-04-10 19:45:30'),
 (42, 0.00, 0, '2025-04-10 19:45:30'),
-(43, 0.00, 0, '2025-04-10 19:45:30');
+(43, 0.00, 0, '2025-04-10 19:45:30'),
+(44, 0.00, 0, '2025-04-11 07:11:22');
 
 -- --------------------------------------------------------
 
@@ -968,19 +988,19 @@ ALTER TABLE `payment_rates`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `verification_requests`
 --
 ALTER TABLE `verification_requests`
-  MODIFY `requestID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `requestID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `worker`
 --
 ALTER TABLE `worker`
-  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `workingschedule`
