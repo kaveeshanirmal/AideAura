@@ -12,4 +12,4 @@ define("ROOT_PATH", $path);
 define('DBNAME', 'aideaura');
 define('DBHOST', 'localhost');
 define('DBUSER', 'root');
-define('DBPASS', '');
+define('DBPASS', ''); 
