@@ -3,10 +3,12 @@
 class SelectService extends Controller
 {
     private $userModel;
+    private $pricingModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
+        $this->pricingModel = new PricingModel(); // Instantiate PricingModel
     }
     public function index($a = '', $b = '', $c = '')
     {
@@ -31,107 +33,127 @@ class SelectService extends Controller
 
     public function cook()
     {
+        if (isset($_SESSION['booking_info'])) {
+            unset($_SESSION['booking_info']);
+            $_SESSION['booking_info']['serviceType'] = 'Cook';
+        }
         $this->view('serviceForms/cook');
     }
 
-    public function cookingService()
+    public function cookPricing()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_SESSION['booking_info']['gender'] = $_POST['gender'] ?? '';
-            $_SESSION['booking_info']['num_people'] = $_POST['people'] ?? '';
-            $_SESSION['booking_info']['num_meals'] = $_POST['meals'] ?? [];
-            $_SESSION['booking_info']['diet'] = $_POST['diet'] ?? '';
-            $_SESSION['booking_info']['addons'] = $_POST['addons'] ?? [];
-
-            $total = $this->calculateTotal("cook");
-            $_SESSION['booking_info']['total_cost'] = $total;
-
-            // Only output JSON for AJAX requests
-            if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
-                $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
-                return;
-            }
-        }
+        $this->calculatePricing('Cook');
     }
+
     public function maid()
     {
+        if (isset($_SESSION['booking_info'])) {
+            unset($_SESSION['booking_info']);
+            $_SESSION['booking_info']['serviceType'] = 'Maid';
+        }
         $this->view('serviceForms/maid');
+    }
+
+    public function maidPricing()
+    {
+        $this->calculatePricing('Maid');
     }
 
     public function nanny()
     {
+        if (isset($_SESSION['booking_info'])) {
+            unset($_SESSION['booking_info']);
+            $_SESSION['booking_info']['serviceType'] = 'Nanny';
+        }
         $this->view('serviceForms/nanny');
+    }
+
+    public function nannyPricing(){
+        $this->calculatePricing('Nanny');
     }
 
     public function cook24()
     {
+        if (isset($_SESSION['booking_info'])) {
+            unset($_SESSION['booking_info']);
+            $_SESSION['booking_info']['serviceType'] = 'Cook 24-hour Live in';
+        }
         $this->view('serviceForms/cook24');
     }
 
+//    public function cook24Pricing(){}
+
     public function allRounder()
     {
+        if (isset($_SESSION['booking_info'])) {
+            unset($_SESSION['booking_info']);
+            $_SESSION['booking_info']['serviceType'] = 'All rounder';
+        }
         $this->view('serviceForms/allRounder');
     }
 
-    private function calculateTotal($service)
+//    public function allRounderPricing(){}
+
+    public function calculatePricing($service)
     {
-        $total_price = 0;
-        $addon_price = 0;
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Get the form fields specific to this service
+            $formFields = $this->getServiceFormFields($service);
 
-        // These should be stored in db
-        if ($service == 'cook') {
-            $people_cost = [
-                "1-2" => 500,
-                "3-5" => 700,
-                "5-7" => 850,
-                "8-10" => 1000,
-            ];
-
-            $addon_cost = [
-                "dishwashing" => 500,
-                "desserts" => 200,
-                "shopping" => 500,
-            ];
-
-            // Correct session variable access
-            if (isset($_SESSION['booking_info']['num_people'])) {
-                $total_price += $people_cost[$_SESSION['booking_info']['num_people']] ?? 0;
+            // Update session with form data
+            foreach ($formFields as $key => $value) {
+                $_SESSION['booking_info'][$key] = $value;
             }
 
-            if (isset($_SESSION['booking_info']['num_meals'])) {
-                $total_price = count($_SESSION['booking_info']['num_meals']) * $total_price;
-            }
+            // Calculate total cost
+            $prices = $this->pricingModel->calculateServiceTotal($service, $formFields);
 
-            if (isset($_SESSION['booking_info']['addons'])) {
-                foreach ($_SESSION['booking_info']['addons'] as $addon) {
-                    $addon_price += $addon_cost[$addon] ?? 0;
-                    $total_price += $addon_price;
-                }
-            }
+            // Store price details in session
+            $_SESSION['booking_info']['total_cost'] = $prices['total_price'];
+            $_SESSION['booking_info']['base_price'] = $prices['base_price'];
+            $_SESSION['booking_info']['addon_price'] = $prices['addon_price'];
 
-            if (isset($_SESSION['booking_info']['diet'])) {
-                if ($_SESSION['booking_info']['diet'] == 'veg') {
-                    $total_price -= 150;
-                }
-            }
-
-            // Store the calculated total_price in session
-            $_SESSION['booking_info']['total_cost'] = $total_price;
-            $_SESSION['booking_info']['base_price'] = $total_price - $addon_price;
-            $_SESSION['booking_info']['addon_price'] = $addon_price;
-
-            // For AJAX requests, return JSON
+            // Return JSON response for AJAX requests
             if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
                 $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
-                header("Content-Type: application/json");
-                echo json_encode(["total" => $total_price]);
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'total' => $prices['total_price'],
+                    'formFields' => $formFields,
+                ]);
                 exit;
             }
-
-            // For non-AJAX requests, return the total_price
-            return $total_price;
         }
-        return $total_price;
+    }
+
+    private function getServiceFormFields($service): array
+    {
+        $fieldsMap = [
+            'Cook' => [
+                'gender' => $_POST['gender'] ?? '',
+                'num_people' => $_POST['people'] ?? '',
+                'num_meals' => $_POST['meals'] ?? [],
+                'diet' => $_POST['diet'] ?? '',
+                'addons' => $_POST['addons'] ?? [],
+            ],
+            'Maid' => [
+                'gender' => $_POST['gender'] ?? '',
+                'property-size' => $_POST['property-size'] ?? '',
+                'services' => $_POST['services'] ?? [],
+                'intensity' => $_POST['intensity'] ?? '',
+                'addons' => $_POST['addons'] ?? [],
+            ],
+            'Nanny' => [
+                'gender' => $_POST['gender'] ?? '',
+                'children-count' => $_POST['children-count'] ?? '',
+                'children-ages' => $_POST['children-ages'] ?? [],
+                'service-duration' => $_POST['service-duration'] ?? '',
+                'care-level' => $_POST['care-level'] ?? '',
+                'addons' => $_POST['addons'] ?? [],
+            ]
+        ];
+
+        return $fieldsMap[$service] ?? [];
     }
 
     public function bookingInfo()
@@ -182,14 +204,20 @@ class SelectService extends Controller
         // Debug session data
         $sessionDebug = json_encode($_SESSION);
 
-        $data = null;
+        $userData = null;
         if(isset($_SESSION['username'])) {
-            $data = $this->userModel->findUserByUsername($_SESSION['username']);
+            $userData = $this->userModel->findUserByUsername($_SESSION['username']);
         }
 
+        if (!isset($_SESSION['booking_info']['serviceType'])) {
+            header("Location: " . ROOT . "/public/SelectService");
+            exit;
+        }
+        $bookingData = $this->pricingModel->getServicePricing($_SESSION['booking_info']['serviceType']);
+
         $this->view('bookingSummary', [
-            'user' => $data,
-            'booking_info' => $_SESSION['booking_info'],
+            'user' => $userData,
+            'booking_info' => $bookingData,
             'session_debug' => $sessionDebug
         ]);
     }
