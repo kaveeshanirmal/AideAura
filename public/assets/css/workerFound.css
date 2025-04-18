@@ -1,0 +1,224 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background:
+    linear-gradient(to bottom, rgba(104, 78, 47, 0.8), rgba(71, 44, 12, 0.8)),
+    url("../../../public/assets/images/Employee_Finding_Screen_Background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /*overflow: hidden;*/
+}
+
+.container {
+  box-sizing: border-box;
+  margin: 100px 5px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #dfdddb;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  animation: fadeIn 1s ease-in-out;
+  text-align: center;
+}
+
+.container h2 {
+  font-weight: 100;
+  text-align: center;
+}
+
+.heading {
+  color: #5b3a29;
+  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  border-bottom: 2px solid #a17852;
+  padding-bottom: 10px;
+}
+
+/* Worker Card Styles */
+.worker-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #654747;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+  text-align: center;
+}
+
+.worker-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile Image Styles */
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+  transform: scale(1.05);
+}
+
+/* Worker Info Styles */
+.worker-info {
+  text-align: left;
+  color: #000000;
+  font-weight: 400;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Responsive width */
+}
+
+.worker-info p {
+  display: flex;
+  justify-content: flex-start; /* Changed from space-between to flex-start */
+  margin: 8px 0;
+  font-size: 17px;
+  font-weight: 500;
+  align-items: center; /* Ensure vertical alignment */
+}
+
+.worker-info p strong {
+  color: #555;
+  width: 90px; /* Reduced from 100px */
+  text-align: left; /* Changed from right to left */
+  margin-right: 15px; /* Increased slightly for spacing */
+}
+
+/* Button Styles */
+.buttons {
+  display: flex;
+  flex-direction: column; /* Stack the buttons vertically */
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+button {
+  padding: 12px 40px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+}
+
+.accept-btn {
+  background-color: #8b4513; /* primary-brown */
+  color: #fdfbf7; /* cream */
+  font-size: 18px;
+  padding: 14px 50px;
+}
+
+.accept-btn:hover {
+  background-color: #5c3317; /* dark-brown */
+  box-shadow: 0 6px 12px rgba(139, 69, 19, 0.2); /* medium-shadow */
+}
+
+.reject-btn {
+  background-color: #ffffff; /* label-bg */
+  color: #8b4513; /* label-text / primary-brown */
+  border: 1px solid #deb887; /* light-brown */
+  padding: 10px 30px;
+}
+
+.reject-btn:hover {
+  background-color: #f8f1e7; /* label-hover */
+  color: #5c3317; /* dark-brown */
+  box-shadow: 0 6px 12px rgba(139, 69, 19, 0.1); /* light-shadow */
+}
+
+/* Stars and No Results */
+.stars {
+  color: #e0a96d;
+  font-size: 18px;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stars-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.star {
+  color: #ccc; /* Empty star color */
+  font-size: 20px;
+}
+
+.star.filled {
+  color: #f8ce0b; /* Filled star color - gold/yellow */
+}
+
+.star.half-filled {
+  position: relative;
+  color: #ccc;
+}
+
+.star.half-filled:before {
+  content: "★";
+  position: absolute;
+  color: #f8ce0b;
+  width: 50%;
+  overflow: hidden;
+}
+
+.rating-text {
+  color: #666;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.no-results {
+  color: #a33e3e;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 0.8s ease;
+}
