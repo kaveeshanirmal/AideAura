@@ -5,36 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Dashboard - Worker Scheduling</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/hrWorkerSchedules.css">
-    <style>
-        /* Additional styles to ensure consistent card sizing */
-        .schedule-item {
-            min-height: 80px;
-            width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Ensure table cells have consistent sizing */
-        td {
-            width: 14.28%; /* Equal width for 7 days */
-            box-sizing: border-box;
-        }
-        
-        /* Loading indicator */
-        .loading {
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
-            color: #777;
-        }
-    </style>
 </head>
 <script>
     const schedules = <?= json_encode($schedules) ?>;
     console.log(schedules);
 </script>
 <body>
+    <!-- Add notification element -->
+<div id="notification" class="notification hidden"></div>
 
     <div class="container">
         <!-- Navbar Component -->
@@ -115,6 +93,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.querySelector('.nav-btn.next');
     const mainScheduleGrid = document.getElementById('main-schedule-grid');
     loadScheduleView('week', 0); // Load initial schedule view
+ // Get references to all needed elements
+   const matchCustomerBtn = document.getElementById('match-customer-btn');
+    const customerIdInput = document.getElementById('customer-id');
+    const notification = document.getElementById('notification');
+    
+     // Debug check if elements exist
+     console.log("Match button exists:", !!matchCustomerBtn);
+    console.log("Customer ID input exists:", !!customerIdInput);
+    console.log("Notification div exists:", !!notification);
+
+       // Notification function
+       const showNotification = (message, type) => {
+        notification.textContent = message;
+        notification.className = `notification ${type} show`;
+        
+        setTimeout(() => {
+            notification.className = 'notification hidden';
+        }, 3000);
+    };
     
     let currentView = 'week'; // Default view
     let offset = 0; // Offset for navigation (days, weeks, or months)
@@ -135,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch(error => {
         console.error('Error loading schedule view:', error);
-    });
+        showNotification('Failed to load schedule view', 'error');    });
 }
 
     // Function to fetch schedule view via AJAX
@@ -173,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>Please try again or contact support if the problem persists.</p>
                 </div>
             `;
+            showNotification('Failed to fetch schedule view', 'error');
         });
     }
     
@@ -278,11 +276,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 modal.style.display = 'flex';
             } else {
-                alert('No schedules found for this worker ID');
-            }
+                showNotification('No schedules found for this worker ID', 'warning');            }
         } else {
-            alert('Please enter a Worker ID');
-        }
+            showNotification('Please enter a Worker ID', 'error');        }
     });
 
     // Hide modal on close button click
@@ -297,20 +293,94 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Match customer button functionality
-    document.getElementById('match-customer-btn').addEventListener('click', function() {
-        const customerId = document.getElementById('customer-id').value;
-        if (customerId) {
-            // Here you would typically make an AJAX request to match the worker with a customer
-            alert(`Matching worker with customer ID: ${customerId}`);
-        } else {
-            alert('Please enter a Customer ID');
-        }
-    });
+  // Store worker ID from modal
+  let currentWorkerId = null;
+  const updateCurrentWorkerId = function(workerId) {
+        console.log("Setting current worker ID to:", workerId);
+        currentWorkerId = workerId;
+    };
+
+ // Add click event listener to the match button
+ if (matchCustomerBtn) {
+        matchCustomerBtn.addEventListener('click', function(event) {
+            console.log("Match button clicked");
+            event.preventDefault(); // Prevent form submission if in a form
+            
+            const customerId = customerIdInput.value;
+            console.log("Customer ID:", customerId);
+            console.log("Current Worker ID:", currentWorkerId);
+            
+            // Validate inputs
+            if (!customerId) {
+                showNotification('Please enter a Customer ID', 'error');
+                return;
+            }
+            
+            if (!currentWorkerId) {
+                // If we don't have the worker ID stored, try to get it from the input
+                const workerId = document.getElementById('worker-id-input').value;
+                if (workerId) {
+                    currentWorkerId = workerId;
+                } else {
+                    showNotification('Worker ID not found', 'error');
+                    return;
+                }
+            }
+            
+            console.log("Sending match request for worker", currentWorkerId, "and customer", customerId);
+            
+            // Create form data for the request
+            const formData = new FormData();
+            formData.append('workerID', currentWorkerId);
+            formData.append('customerID', customerId);
+            
+            // Send the request to the workerMatching endpoint
+            fetch('<?=ROOT?>/public/HrManager/workerMatching', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log("Response status:", response.status);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error("Error response:", text);
+                        throw new Error(text || 'Server returned error: ' + response.status);
+                    });
+                }
+                return response.text();
+            })
+            .then(result => {
+                console.log("Success response:", result);
+                // Try to parse as JSON if possible
+                try {
+                    const data = JSON.parse(result);
+                    showNotification(data.message || `Worker ${currentWorkerId} successfully matched with customer ${customerId}`, 
+                        data.success ? 'success' : 'error');
+                } catch (e) {
+                    // If not JSON, just show success message
+                    showNotification(`Worker ${currentWorkerId} successfully matched with customer ${customerId}`, 'success');
+                }
+                
+                // Clear the customer ID field
+                customerIdInput.value = '';
+                    // Refresh the schedule view
+               fetchScheduleView(currentView, offset);
+               modal.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error matching worker with customer:', error);
+                showNotification(error.message || 'Error during matching process', 'error');
+            });
+        });
+        
+        console.log("Match button event listener attached");
+    } else {
+        console.error("Could not find match-customer-btn element!");
+    }
 });
 
 // Load initial schedule view when the page loads
-fetchScheduleView(currentView, offset);
+// fetchScheduleView(currentView, offset);
     </script>
 </body>
 </html>

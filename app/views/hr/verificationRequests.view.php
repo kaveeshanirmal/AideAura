@@ -32,7 +32,6 @@
                 <div class="request-info">
                     <div class="request-main">
                         <h3><?php echo htmlspecialchars($request->full_name); ?></h3>
-                        <h5><?php echo htmlspecialchars($request->full_name); ?></h5>
                     </div>
                     <div class="request-details">
                         <span class="date">Created <?php echo htmlspecialchars($request->created_at); ?></span>

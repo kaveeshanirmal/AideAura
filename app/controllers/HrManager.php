@@ -517,6 +517,45 @@ public function getScheduleView()
         }
     }
 
+
+    public function workerMatching()
+    {
+        error_log("workerMatching function called");
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            error_log("POST request received");
+            
+            $workerID = $_POST['workerID'] ?? null;
+            $customerID = $_POST['customerID'] ?? null;
+            
+            error_log("Worker ID: " . ($workerID ?? 'null'));
+            error_log("Customer ID: " . ($customerID ?? 'null'));
+    
+            // Set content type to text/plain for simplicity
+            header('Content-Type: text/plain');
+            
+            if ($workerID && $customerID) {
+                // Here you would typically add code to save the match in your database
+                // For example:
+                // $matchingModel = new WorkerCustomerMatchModel();
+                // $result = $matchingModel->createMatch($workerID, $customerID);
+                
+                error_log("Match successful for Worker $workerID and Customer $customerID");
+                echo "Match successful";
+                return;
+            } else {
+                error_log("Missing workerID or customerID");
+                http_response_code(400);
+                echo "WorkerID or CustomerID is missing.";
+                return;
+            }
+        } else {
+            error_log("Method not allowed: " . $_SERVER['REQUEST_METHOD']);
+            http_response_code(405);
+            echo "Method not allowed.";
+            return;
+        }
+    }
     public function workerInquiries()
     {
         $this->view('hr/workerInquiries');
