@@ -9,7 +9,7 @@
 <body>
 <?php include(ROOT_PATH . '/app/views/components/navbar.view.php');?>
   <header>
-    <h2>There are no matches for your request at the moment,</h2>
+      <h2>Not the perfect match? Explore other great options below!</h2>
     <h1>Try our recommended alternatives!</h1>
   </header>
 
