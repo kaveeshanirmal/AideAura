@@ -7,7 +7,26 @@ const showNotification = (message, type) => {
 };
 
 
-
+function viewAvailabilitySchedule(userID) {
+    console.log("Viewing availability schedule for userID:", userID);
+    
+    // Redirect to the availability schedule page with the userID as parameter
+    // window.location.href = `${ROOT}/public/HrManager/getAvailabilitySchedule?userID=${userID}`;
+    
+    // Alternative approach: Submit a form to use POST method
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `${ROOT}/public/HrManager/getAvailabilitySchedule`;
+    
+    const userIDInput = document.createElement('input');
+    userIDInput.type = 'hidden';
+    userIDInput.name = 'userID';
+    userIDInput.value = userID;
+    
+    form.appendChild(userIDInput);
+    document.body.appendChild(form);
+    form.submit();
+}
 function updateStatus(status) {
     const requestID = document.getElementById('requestID').value;
     

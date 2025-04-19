@@ -174,10 +174,10 @@ class HrManager extends Controller
         $this->view('hr/workerCertificates');
     }
 
-    public function availabilitySchedule()
-    {
-        $this->view('hr/availabilitySchedule');
-    }
+    // public function availabilitySchedule()
+    // {
+    //     $this->view('hr/availabilitySchedule');
+    // }
 
     // public function workerSchedules()
     // {
@@ -202,6 +202,66 @@ class HrManager extends Controller
     //     error_log("All schedules in controller: " . json_encode($allSchedules));
     //     $this->view('hr/workerSchedules',['schedules'=> $allSchedules]);
     // }
+
+    public function getAvailabilitySchedule()
+{
+    // Get the userID from either GET or POST request
+    $userID = null;
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $userID = $_POST['userID'] ?? null;
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $userID = $_GET['userID'] ?? null;
+    }
+    
+    if (!$userID) {
+        http_response_code(400);
+        echo "UserID is missing.";
+        return;
+    }
+    
+    $workerModel = new WorkerModel();
+    $workerID = $workerModel->findWorkerIDbyUserID($userID);
+    $worker = $workerModel->findWorker($userID);
+    
+    if (!$workerID) {
+        http_response_code(404);
+        echo "WorkerID not found for the given UserID.";
+        return;
+    }
+    
+    $workingScheduleModel = new WorkingScheduleModel();
+    $allSchedules = $workingScheduleModel->getScheduleByWorkerID($workerID);
+    
+    if ($allSchedules) {
+        foreach ($allSchedules as $schedule) {
+            // Add role and userID to the schedule object
+            $schedule->userID = $worker->userID;
+            $schedule->fullName = $worker->fullName;
+            $schedule->role = $worker->role;
+        }
+        
+        // Generate default week view
+        $currentDate = new DateTime();
+        $initialWeekView = $this->generateScheduleView($allSchedules, 'week', $currentDate);
+        
+        // Pass data to the view
+        $this->view('hr/availabilitySchedule', [
+            'schedule' => $allSchedules,
+            'initialView' => $initialWeekView,
+            'userID' => $userID,
+            'worker' => $worker
+        ]);
+    } else {
+        // Show empty schedule instead of error
+        $this->view('hr/availabilitySchedule', [
+            'schedule' => [],
+            'initialView' => '<div class="no-schedule">No schedules found for this worker.</div>',
+            'userID' => $userID,
+            'worker' => $worker
+        ]);
+    }
+}
 
     public function workerSchedules()
 {
@@ -429,28 +489,55 @@ class HrManager extends Controller
         return $output;
     }
 
-public function getScheduleView()
+    public function getScheduleView()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $view = $_POST['view'] ?? 'week';
         $offset = (int)($_POST['offset'] ?? 0);
+        $userID = $_POST['userID'] ?? null;
         
         $workingScheduleModel = new WorkingScheduleModel();
-        $allSchedules = $workingScheduleModel->getAllSchedules();
         
-        // to get the userID using workerID
-        $workerModel = new WorkerModel();
-        
-        foreach ($allSchedules as $schedule) {
-            $workerID = $schedule->workerID;
-            $userID = $workerModel->findUserIDbyWorkerID($workerID);
+        // If userID is provided, get schedules only for that user
+        if ($userID) {
+            $workerModel = new WorkerModel();
+            $workerID = $workerModel->findWorkerIDbyUserID($userID);
             
+            if (!$workerID) {
+                echo '<div class="error-message">Worker not found.</div>';
+                return;
+            }
+            
+            $allSchedules = $workingScheduleModel->getScheduleByWorkerID($workerID);
             $worker = $workerModel->findWorker($userID);
             
-            // add role and userID to the schedule object
-            $schedule->userID = $worker->userID;
-            $schedule->fullName = $worker->fullName;
-            $schedule->role = $worker->role;
+            // Add user information to each schedule
+            if ($allSchedules) {
+                foreach ($allSchedules as $schedule) {
+                    $schedule->userID = $worker->userID;
+                    $schedule->fullName = $worker->fullName;
+                    $schedule->role = $worker->role;
+                }
+            } else {
+                // Return empty schedule message
+                echo '<div class="no-schedule">No schedules found for this worker.</div>';
+                return;
+            }
+        } else {
+            // Get all schedules
+            $allSchedules = $workingScheduleModel->getAllSchedules();
+            
+            // Add user information to each schedule
+            $workerModel = new WorkerModel();
+            foreach ($allSchedules as $schedule) {
+                $workerID = $schedule->workerID;
+                $userID = $workerModel->findUserIDbyWorkerID($workerID);
+                $worker = $workerModel->findWorker($userID);
+                
+                $schedule->userID = $worker->userID;
+                $schedule->fullName = $worker->fullName;
+                $schedule->role = $worker->role;
+            }
         }
         
         // Calculate the date based on offset and view
@@ -475,6 +562,53 @@ public function getScheduleView()
     header('Location: /hr/workerSchedules');
     exit;
 }
+
+// public function getScheduleView()
+// {
+//     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//         $view = $_POST['view'] ?? 'week';
+//         $offset = (int)($_POST['offset'] ?? 0);
+        
+//         $workingScheduleModel = new WorkingScheduleModel();
+//         $allSchedules = $workingScheduleModel->getAllSchedules();
+        
+//         // to get the userID using workerID
+//         $workerModel = new WorkerModel();
+        
+//         foreach ($allSchedules as $schedule) {
+//             $workerID = $schedule->workerID;
+//             $userID = $workerModel->findUserIDbyWorkerID($workerID);
+            
+//             $worker = $workerModel->findWorker($userID);
+            
+//             // add role and userID to the schedule object
+//             $schedule->userID = $worker->userID;
+//             $schedule->fullName = $worker->fullName;
+//             $schedule->role = $worker->role;
+//         }
+        
+//         // Calculate the date based on offset and view
+//         $currentDate = new DateTime();
+        
+//         if ($view === 'day') {
+//             $currentDate->modify("$offset days");
+//         } elseif ($view === 'week') {
+//             $currentDate->modify("$offset weeks");
+//         } elseif ($view === 'month') {
+//             $currentDate->modify("$offset months");
+//         }
+        
+//         // Generate view based on current view type
+//         $html = $this->generateScheduleView($allSchedules, $view, $currentDate);
+        
+//         echo $html;
+//         return;
+//     }
+    
+//     // If not a POST request, redirect to schedule page
+//     header('Location: /hr/workerSchedules');
+//     exit;
+// }
 
     public function verificationRequests()
     {

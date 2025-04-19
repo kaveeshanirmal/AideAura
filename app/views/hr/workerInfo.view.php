@@ -129,15 +129,18 @@
     <input type="hidden" id="userID" value="<?= htmlspecialchars($worker['userID']) ?>">
     <input type="hidden" id="requestID" value="<?= htmlspecialchars($worker['requestID']) ?>">
 
-    <?php if (strtolower($worker['Status']) !== 'approved'): ?>
+    <?php if (strtolower($worker['Status']) !== (strtolower('approved') || worker['Status']) !== 'Not verified'): ?>
         <!-- Approve -->
         <button class="btn verify" onclick="updateStatus('approved')">Approve Request</button>
 
         <!-- Reject -->
         <button class="btn verify" onclick="updateStatus('rejected')">Reject Request</button>
+        <?php endif; ?>
+        
+    <!-- View Availability Schedule -->
+    <?php if (strtolower($worker['Status']) !== 'Not verified'): ?>
+    <button class="btn schedule" onclick="viewAvailabilitySchedule(<?= (int)$worker['userID'] ?>)">Availability Schedule</button>
     <?php endif; ?>
-
-    <button class="btn schedule"><a href="workerSchedule">See Schedule</a></button>
 </div>
 
         

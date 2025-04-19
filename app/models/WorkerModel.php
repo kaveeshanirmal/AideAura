@@ -61,6 +61,15 @@ class WorkerModel
 
     }
 
+    public function findWorkerIDbyUserID($id){
+        $this->setTable('worker');
+        $worker = $this->find($id, 'userID');
+        if($worker){
+            return $worker->workerID;
+        }
+        return null;
+    }
+
     public function findUserIDbyWorkerID($id){
         $this->setTable('worker');
         $worker = $this->find($id, 'workerID');
