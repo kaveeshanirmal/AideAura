@@ -10,6 +10,7 @@ require 'Model.php';
 require 'Controller.php';
 require 'App.php';
 require 'loadenv.php';
+require 'HelperFunctions.php';
 
 loadEnv(dirname(__DIR__, 2) . '/.env');
 
