@@ -613,7 +613,7 @@ class HrManager extends Controller
     public function verificationRequests()
     {
          $verificationRequestsModel = new VerificationRequestModel();
-         $pendingRequests = $verificationRequestsModel->getPendingRequests();
+         $pendingRequests = $verificationRequestsModel->getPendingOrRejectedRequests();
          if ($pendingRequests){
          $this->view('hr/verificationRequests', ['verificationRequests' => $pendingRequests]);
          } else {
