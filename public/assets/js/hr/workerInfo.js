@@ -27,6 +27,7 @@ function viewAvailabilitySchedule(userID) {
     document.body.appendChild(form);
     form.submit();
 }
+
 function updateStatus(status) {
     const requestID = document.getElementById('requestID').value;
     
