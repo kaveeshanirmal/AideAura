@@ -445,6 +445,7 @@ public function updateVerificationStatus() {
         $this->view('admin/adminPaymentHistory');
     }
 
+    //worker and customer compaints
     public function workerInquiries()
     {
         $complaints = $this->customerComplaintModel->getAllComplaints();
