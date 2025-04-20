@@ -1,10 +1,18 @@
-//Notification Functionality
-const notification = document.getElementById('notification');
-const showNotification = (message, type) => {
-    notification.textContent = message;
-    notification.className = `notification ${type} show`;
-    setTimeout(() => notification.className = 'notification hidden',2000);
-};
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize notification element
+    const notification = document.getElementById('notification');
+    
+    // Define notification function in global scope
+    window.showNotification = function(message, type) {
+        if (notification) {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            setTimeout(() => notification.className = 'notification hidden', 2000);
+        } else {
+            console.error('Notification element not found');
+        }
+    };
+});
 
 function showUpdateModal(button) {
     const row = button.closest('tr');

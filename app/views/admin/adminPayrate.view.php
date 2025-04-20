@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - payment rates</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPayrate.css">
-    <script href="<?=ROOT?>/public/assets/js/adminPayrate.js"></script>
+    <script src="<?=ROOT?>/public/assets/js/admin/adminPayrate.js"></script>
 </head>
 <body>
-
+<input type="hidden" id="rootUrl" value="<?=ROOT?>">
  <!-- Notification container -->
 <div id="notification" class="notification hidden"></div>
 <div class="dashboard-container">
@@ -87,6 +87,5 @@
             </form>
         </div>
     </div>
-</div>
 </body>
 </html>
