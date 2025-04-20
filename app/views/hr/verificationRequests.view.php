@@ -31,9 +31,12 @@
             <div class="verification-card">
                 <div class="request-info">
                     <div class="request-main">
-                        <h3><?php echo htmlspecialchars($request->full_name); ?></h3>
-                    </div>
-                    <div class="request-details">
+                    <h3><?php echo htmlspecialchars($request->full_name); ?></h3>
+            <!-- Apply the status class dynamically -->
+            <span class="status-badge <?php echo htmlspecialchars(strtolower($request->status)); ?>">
+                <?php echo htmlspecialchars($request->status); ?>
+            </span>  
+            </div>                  <div class="request-details">
                         <span class="date">Created <?php echo htmlspecialchars($request->created_at); ?></span>
                         <span class="date">Updated <?php echo htmlspecialchars($request->updated_at); ?></span>
                     </div>
