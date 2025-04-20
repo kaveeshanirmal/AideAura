@@ -88,12 +88,12 @@ class SearchForWorker extends Controller
         $_SESSION['workers'] = $data;
 
         // Redirect to workerFound view
-        header("Location: " . ROOT . "/public/SearchForWorker/workerFound");
+        header("Location: " . ROOT . "/public/SearchForWorker/searchResults");
         exit;
 
     }
 
-    public function workerFound()
+    public function searchResults()
     {
         // Retrieve workers from session or default to an empty array
         $workers = $_SESSION['workers'] ?? [];
@@ -108,6 +108,11 @@ class SearchForWorker extends Controller
     public function processing()
     {
         $this->view('EmployeeFindingScreen');
+    }
+
+    public function browseWorkers()
+    {
+        $this->view('BrowseWorker');
     }
 }
 

@@ -46,5 +46,15 @@
     <?php endif; ?>
 </div>
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
+<script>
+    document.querySelector('.accept-btn').addEventListener('click', function() {
+        alert('Worker accepted!');
+        // Redirect to booking page or perform any other action
+    });
+    document.querySelector('.reject-btn').addEventListener('click', function() {
+        window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/browseWorkers";
+    });
+
+</script>
 </body>
 </html>

@@ -34,7 +34,7 @@ class App
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
-            'SearchForWorker' => ['index', 'find', 'workerFound', 'processing'],
+            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
@@ -59,6 +59,7 @@ class App
         'Login' => ['index', 'logout'],
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
+        'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],
         'Test' => ['index', 'testTime'],
     ];
     private function splitURL()
