@@ -23,7 +23,7 @@ class App
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'generateScheduleView', 'getScheduleView' ,'workerMatching'],
         ],
         
         'financeManager' => [
