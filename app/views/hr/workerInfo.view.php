@@ -129,21 +129,34 @@
     <input type="hidden" id="userID" value="<?= htmlspecialchars($worker['userID']) ?>">
     <input type="hidden" id="requestID" value="<?= htmlspecialchars($worker['requestID']) ?>">
 
-    <?php if (strtolower($worker['Status']) !== 'approved'): ?>
+    <?php if (strtolower($worker['Status']) === (strtolower('approved'))): ?>
+               <!-- View Availability Schedule -->
+        <button class="btn schedule" onclick="viewAvailabilitySchedule(<?= (int)$worker['userID'] ?>)">Availability Schedule</button>
+
+    <?php elseif (strtolower($worker['Status']) === (strtolower('rejected'))): ?>
+                <!-- Approve -->
+                <button class="btn verify" onclick="updateStatus('approved')">Approve Request</button>
+        <!-- View Availability Schedule -->
+        <button class="btn schedule" onclick="viewAvailabilitySchedule(<?= (int)$worker['userID'] ?>)">Availability Schedule</button>
+
+
+    <?php elseif (strtolower($worker['Status']) === (strtolower('pending'))): ?>
         <!-- Approve -->
         <button class="btn verify" onclick="updateStatus('approved')">Approve Request</button>
 
         <!-- Reject -->
         <button class="btn verify" onclick="updateStatus('rejected')">Reject Request</button>
-    <?php endif; ?>
-
-    <button class="btn schedule"><a href="workerSchedule">See Schedule</a></button>
+        <!-- View Availability Schedule -->
+        <button class="btn schedule" onclick="viewAvailabilitySchedule(<?= (int)$worker['userID'] ?>)">Availability Schedule</button>
+        <?php endif; ?>
+        
 </div>
 
         
         </main>
     </div>
 </body> 
-<script>const ROOT = "<?=ROOT?>";</script>
+<script>const ROOT = "<?=ROOT?>";
+console.log(<?= json_encode($worker, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>);</script>
 <script src="<?=ROOT?>/public/assets/js/hr/workerInfo.js"></script>
 </html>

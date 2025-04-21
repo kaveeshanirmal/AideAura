@@ -9,7 +9,7 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'deleteRoles' , 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'deleteRoles' , 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
@@ -19,15 +19,15 @@ class App
         ],
 
         'hrManager' => [
-            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'findWorkerUserID', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'workerInquiries'],
+            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'getScheduleViewOfWorker','findWorkerUserID', 'workerCertificates', 'getAvailabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'orkerMatching','workerInquiries'],
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'generateScheduleView', 'getScheduleView' ,'workerMatching'],
         ],
         
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'paymentIssues', 'reports'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'paymentIssues', 'reports'],
         ],
 
         'customer'=> [

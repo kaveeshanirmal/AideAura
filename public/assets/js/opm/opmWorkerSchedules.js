@@ -1,8 +1,3 @@
-/**
- * Worker Scheduling JavaScript
- * Handles all the interactive functionality for the HR worker scheduling dashboard
- */
-
 document.addEventListener('DOMContentLoaded', function() {
     // DOM element references
     const viewScheduleBtn = document.getElementById('view-schedule-btn');
@@ -56,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('view', view);
         formData.append('offset', offset);
         
-        fetch(`${ROOT_URL}/HrManager/getScheduleView`, {
+        fetch(`${ROOT_URL}/OpManager/getScheduleView`, {
             method: 'POST',
             body: formData
         })
@@ -85,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('offset', offset);
         
         // Make AJAX request
-        fetch(`${ROOT_URL}/HrManager/getScheduleView`, {
+        fetch(`${ROOT_URL}/OpManager/getScheduleView`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -267,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('customerID', customerId);
             
             // Send the request to the workerMatching endpoint
-            fetch(`${ROOT_URL}/HrManager/workerMatching`, {
+            fetch(`${ROOT_URL}/OpManager/workerMatching`, {
                 method: 'POST',
                 body: formData
             })

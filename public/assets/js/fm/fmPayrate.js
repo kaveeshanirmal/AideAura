@@ -59,7 +59,7 @@ function updateEmployee() {
     showNotification('Updating payment rates...', 'info');
     
     const rootUrl = document.getElementById('rootUrl').value; // Ensure this value is set in your HTML
-    fetch(`${rootUrl}/public/Admin/updatePaymentRates`, {
+    fetch(`${rootUrl}/public/FinanceManager/updatePaymentRates`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
