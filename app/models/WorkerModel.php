@@ -107,5 +107,16 @@ class WorkerModel
         //     'medical' => $workerDetails-> medical_path,
         // //     ];
             return $this->certificateData;
-}
+    }
+
+    public function isBooked($workerID, $date, $startTime)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID AND bookingDate = :bookingDate AND (startTime <= :startTime)";
+        return $this->get_all($query, [
+            'workerID' => $workerID,
+            'bookingDate' => $date,
+            'startTime' => $startTime
+        ]);
+    }
 }

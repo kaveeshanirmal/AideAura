@@ -140,8 +140,6 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
-    const ROOT = "<?php echo ROOT; ?>";
-
     document.addEventListener('DOMContentLoaded', function() {
         const backButton = document.getElementById("back-btn");
         if (backButton) {

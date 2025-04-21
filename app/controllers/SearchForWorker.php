@@ -2,7 +2,13 @@
 
 class SearchForWorker extends Controller
 {
-    use Database;
+    use Model;
+    private $workerModel;
+
+    public function __construct()
+    {
+        $this->workerModel = new WorkerModel();
+    }
     public function index($a = '', $b = '', $c = '')
     {
         $this->view('searchAlgorithm');
@@ -84,6 +90,16 @@ class SearchForWorker extends Controller
             'endTime'   => $startTime
         ]);
 
+        // For all found workers check whether they are already booked
+        foreach ($data as $key => $worker) {
+            $workerID = $worker->workerID;
+            $isBooked = $this->workerModel->isBooked($workerID, $date, $startTime);
+            if ($isBooked) {
+                unset($data[$key]); // Remove booked workers from the result
+            }
+        }
+        // reindex the array
+        $data = array_values($data);
         // Store results in session
         $_SESSION['workers'] = $data;
 
@@ -98,11 +114,9 @@ class SearchForWorker extends Controller
         // Retrieve workers from session or default to an empty array
         $workers = $_SESSION['workers'] ?? [];
 
-        // Clear session data after use
-        unset($_SESSION['workers']);
-
-        // Pass the first worker to the view
-        $this->view('workerFound', ['worker' => $workers[0]]);
+        // Pass the first worker to the view if set
+        $firstWorker = !empty($workers) ? $workers[0] : null;
+        $this->view('workerFound', ['worker' => $firstWorker]);
     }
 
     public function processing()

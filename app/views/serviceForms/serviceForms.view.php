@@ -56,7 +56,6 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
-    const ROOT = "<?php echo ROOT; ?>";
     document.addEventListener('DOMContentLoaded', function() {
         var links = document.querySelectorAll('.service-link');
 

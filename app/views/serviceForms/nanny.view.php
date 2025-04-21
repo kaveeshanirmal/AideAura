@@ -95,7 +95,6 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
-    const ROOT = "<?php echo ROOT; ?>";
 
     const backButton = document.getElementById("back-btn");
     backButton.addEventListener("click", (event) => {

@@ -389,11 +389,11 @@ form label {
 
 /* Animation for focus state */
 input:focus {
-  animation: pulse 1.5s infinite;
+  animation: smallPulse 1.5s infinite;
   animation-timing-function: ease-in-out;
 }
 
-@keyframes pulse {
+@keyframes smallPulse {
   0% {
     box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.4);
   }

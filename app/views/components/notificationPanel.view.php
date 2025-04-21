@@ -1,6 +1,5 @@
 <!-- Notification Side Panel -->
 <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/notificationPanel.css">
-<script> const ROOT = "<?php echo ROOT; ?>"; </script>
 <script src="<?=ROOT?>/public/assets/js/notificationPanel.js"></script>
 
 <div id="notification-panel" class="notification-panel">

@@ -48,8 +48,30 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 <script>
     document.querySelector('.accept-btn').addEventListener('click', function() {
-        alert('Worker accepted!');
-        // Redirect to booking page or perform any other action
+        const workerID = "<?php echo htmlspecialchars($worker->workerID); ?>";
+        console.log(workerID);
+
+        const formData = new FormData();
+        formData.append('workerID', workerID);
+
+        fetch("<?php echo ROOT; ?>/public/booking/bookWorker", {
+            method: "POST",
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+            if (data.status === 'success') {
+                console.log(data);
+                alert("Worker booked successfully!");
+                //window.location.href = "<?php //echo ROOT; ?>///public/home";
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while booking the worker.");
+        });
     });
     document.querySelector('.reject-btn').addEventListener('click', function() {
         window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/browseWorkers";
