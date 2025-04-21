@@ -89,7 +89,7 @@
                     <div id="chat-interface" style="display: none; height: 100%; flex-direction: column;">
                         <div class="chat-header">
                             <div class="customer-info">
-                                <img id="customer-avatar" src="/public/assets/images/avatar-image.png" alt="Customer Avatar" class="customer-avatar">
+                            <img id="customer-avatar" src="<?= ROOT ?>/public/assets/images/avatar-image.png" alt="Customer Avatar" class="customer-avatar">
                                 <div class="customer-details">
                                     <h3 id="customer-name">Customer Name</h3>
                                     <p id="customer-id">Customer ID: </p>

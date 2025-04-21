@@ -1,434 +1,478 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Global variables
-  let currentComplaintId = null;
-  let currentCustomerId = null;
+  // DOM Elements
+  const complaintsList = document.getElementById('complaints-list');
+  const noChatSelected = document.getElementById('no-chat-selected');
+  const chatInterface = document.getElementById('chat-interface');
   const chatMessages = document.getElementById('chat-messages');
   const chatForm = document.getElementById('chat-form');
   const messageInput = document.getElementById('message-input');
-  const chatInterface = document.getElementById('chat-interface');
-  const noChat = document.getElementById('no-chat-selected');
-  const complaintsList = document.getElementById('complaints-list');
-  
-  // Modal elements
-  const resolveModal = document.getElementById('resolveModal');
-  const deleteModal = document.getElementById('deleteModal');
+  const customerName = document.getElementById('customer-name');
+  const customerId = document.getElementById('customer-id');
+  const issueType = document.getElementById('issue-type');
+  const issuePriority = document.getElementById('issue-priority');
   const resolveButton = document.getElementById('resolveButton');
   const deleteButton = document.getElementById('deleteButton');
+  const resolveModal = document.getElementById('resolveModal');
+  const deleteModal = document.getElementById('deleteModal');
   const confirmResolve = document.getElementById('confirmResolve');
   const cancelResolve = document.getElementById('cancelResolve');
   const confirmDelete = document.getElementById('confirmDelete');
   const cancelDelete = document.getElementById('cancelDelete');
-  
-  // Filter and sort elements
   const issueFilter = document.getElementById('issueFilter');
   const prioritySort = document.getElementById('prioritySort');
   const statusFilter = document.getElementById('statusFilter');
-  
-  // Debug logging function
-  function logDebug(message, data) {
-      console.log(`DEBUG: ${message}`, data || '');
-  }
-  
-  logDebug('DOM Content Loaded');
-  
-  // Add event listeners to complaint items
-  function addComplaintItemListeners() {
-      const complaintItems = document.querySelectorAll('.complaint-item');
-      logDebug(`Found ${complaintItems.length} complaint items`);
-      
-      complaintItems.forEach(item => {
-          item.addEventListener('click', function() {
-              logDebug('Complaint item clicked', this.dataset);
+
+  // Current complaint ID
+  let currentComplaintId = null;
+
+  console.log("ROOT value:", ROOT);
+  console.log("Complete URL:", `${ROOT}/complaint/details/1`);
+  console.log('Script is running');
+
+  // Event Listeners
+  if (complaintsList) {
+      // Delegate event listener for complaint items
+      complaintsList.addEventListener('click', function(e) {
+          const complaintItem = e.target.closest('.complaint-item');
+          if (complaintItem) {
+              // Remove active class from all complaints
+              document.querySelectorAll('.complaint-item').forEach(item => {
+                  item.classList.remove('active');
+              });
               
-              // Remove active class from all items
-              complaintItems.forEach(i => i.classList.remove('active'));
+              // Add active class to selected complaint
+              complaintItem.classList.add('active');
               
-              // Add active class to clicked item
-              this.classList.add('active');
-              
-              // Get complaint ID and customer ID
-              currentComplaintId = this.dataset.complaintId;
-              currentCustomerId = this.dataset.customerId;
-              
-              logDebug(`Selected complaint ID: ${currentComplaintId}, customer ID: ${currentCustomerId}`);
-              
-              // Load complaint details and chat history
-              loadComplaintDetails(currentComplaintId);
-              
-              // Show chat interface, hide no-chat message
-              noChat.style.display = 'none';
-              chatInterface.style.display = 'flex';
-          });
+              // Get complaint ID
+              const complaintId = complaintItem.dataset.complaintId;
+              loadComplaintDetails(complaintId);
+          }
       });
   }
-  
-  // Load complaint details
-  function loadComplaintDetails(complaintId) {
-      logDebug(`Loading details for complaint ID: ${complaintId}`);
-      
-      // First fetch the complaint details directly from the DOM for immediate display
-      const selectedComplaint = document.querySelector(`.complaint-item[data-complaint-id="${complaintId}"]`);
-      if (selectedComplaint) {
-          logDebug('Found complaint item in DOM', selectedComplaint);
-          
-          // Extract basic information from the selected complaint item
-          const customerIdText = selectedComplaint.querySelector('.customer-id').textContent;
-          const issueText = selectedComplaint.querySelector('.complaint-issue').textContent.trim();
-          const priorityBadge = selectedComplaint.querySelector('.priority-badge');
-          const priority = priorityBadge ? priorityBadge.textContent.trim() : '';
-          const status = selectedComplaint.querySelector('.status-badge').textContent.trim();
-          const description = selectedComplaint.querySelector('.complaint-preview').textContent.trim();
-          
-          // Update customer info in header
-          document.getElementById('customer-name').textContent = customerIdText;
-          document.getElementById('customer-id').textContent = `Customer ID: ${currentCustomerId}`;
-          document.getElementById('issue-type').textContent = `Issue Type: ${issueText.replace(priority, '').trim()}`;
-          
-          // Update priority badge
-          const headerPriorityBadge = document.getElementById('issue-priority');
-          headerPriorityBadge.textContent = priority;
-          headerPriorityBadge.className = `priority-badge priority-${priority.toLowerCase()}`;
-          
-          // Update resolve button based on status
-          if (status === 'Resolved') {
-              resolveButton.textContent = 'Resolved';
-              resolveButton.disabled = true;
-              resolveButton.classList.add('disabled');
-          } else {
-              resolveButton.textContent = 'Mark as Resolved';
-              resolveButton.disabled = false;
-              resolveButton.classList.remove('disabled');
-          }
-          
-          // Display initial complaint
-          displayInitialComplaint({
-              customerID: currentCustomerId,
-              description: description,
-              status: status,
-              issue: issueText.replace(priority, '').trim(),
-              priority: priority,
-              submitted_at: new Date().toISOString() // This is a placeholder; we should get the actual date from the server
-          });
-      }
-      
-      // Now fetch the complete details from the server
-      fetch(`${ROOT}/admin/complaints/details/${complaintId}`)
-          .then(response => {
-              logDebug('Complaint details response status:', response.status);
-              return response.json();
-          })
-          .then(data => {
-              logDebug('Complaint details response data:', data);
-              
-              if (data.success) {
-                  // Update customer info with more complete data from the server
-                  document.getElementById('customer-name').textContent = data.customerName || `Customer #${data.complaint.customerID}`;
-                  document.getElementById('customer-id').textContent = `Customer ID: ${data.complaint.customerID}`;
-                  document.getElementById('issue-type').textContent = `Issue Type: ${data.complaint.issue}`;
-                  
-                  const priorityBadge = document.getElementById('issue-priority');
-                  priorityBadge.textContent = data.complaint.priority;
-                  priorityBadge.className = `priority-badge priority-${data.complaint.priority.toLowerCase()}`;
-                  
-                  // Redisplay initial complaint with complete data
-                  displayInitialComplaint(data.complaint);
-                  
-                  // Load chat history
-                  loadChatHistory(complaintId);
-              } else {
-                  console.error('Failed to load complaint details');
-              }
-          })
-          .catch(error => {
-              console.error('Error loading complaint details:', error);
-              // Even if the API call fails, still try to load chat history
-              loadChatHistory(complaintId);
-          });
+
+  // Filters change event listeners
+  if (issueFilter) {
+      issueFilter.addEventListener('change', applyFilters);
   }
-  
-  // Display the initial complaint message
-  function displayInitialComplaint(complaint) {
-      logDebug('Displaying initial complaint', complaint);
-      
-      chatMessages.innerHTML = ''; // Clear previous messages
-      
-      // Create and append the initial complaint message
-      const complaintMessage = document.createElement('div');
-      complaintMessage.className = 'message customer-message';
-      complaintMessage.innerHTML = `
-          <div class="message-header">
-              <span class="sender">Customer #${complaint.customerID}</span>
-              <span class="timestamp">${formatDate(complaint.submitted_at)}</span>
-          </div>
-          <div class="message-content">
-              <p>${complaint.description}</p>
-          </div>
-      `;
-      chatMessages.appendChild(complaintMessage);
+
+  if (prioritySort) {
+      prioritySort.addEventListener('change', applyFilters);
   }
-  
-  // Load chat history from updates table
-  function loadChatHistory(complaintId) {
-      logDebug(`Loading chat history for complaint ID: ${complaintId}`);
-      
-      fetch(`${ROOT}/admin/complaints/chat/${complaintId}`)
-          .then(response => {
-              logDebug('Chat history response status:', response.status);
-              return response.json();
-          })
-          .then(data => {
-              logDebug('Chat history response data:', data);
-              
-              // Add all chat updates (don't clear previous messages, as initial complaint is already displayed)
-              if (data.updates && data.updates.length > 0) {
-                  data.updates.forEach(update => {
-                      const messageDiv = document.createElement('div');
-                      // Determine if message is from admin or customer
-                      // Check if isAdmin property exists, otherwise look for an adminID or similar field
-                      const isAdmin = update.isAdmin || update.adminID || false;
-                      
-                      messageDiv.className = isAdmin ? 'message admin-message' : 'message customer-message';
-                      messageDiv.innerHTML = `
-                          <div class="message-header">
-                              <span class="sender">${isAdmin ? 'Admin' : `Customer #${currentCustomerId}`}</span>
-                              <span class="timestamp">${formatDate(update.updated_at)}</span>
-                          </div>
-                          <div class="message-content">
-                              <p>${update.comments}</p>
-                          </div>
-                          ${update.status ? `<div class="status-update">Status updated to: <span class="status-badge status-${update.status.toLowerCase().replace(' ', '-')}">${update.status}</span></div>` : ''}
-                      `;
-                      chatMessages.appendChild(messageDiv);
-                  });
-              } else {
-                  logDebug('No chat updates found');
-              }
-              
-              // Scroll to bottom of chat
-              chatMessages.scrollTop = chatMessages.scrollHeight;
-          })
-          .catch(error => {
-              console.error('Error loading chat history:', error);
-              // Add a message explaining that chat history couldn't be loaded
-              const errorMessage = document.createElement('div');
-              errorMessage.className = 'system-message';
-              errorMessage.innerHTML = `
-                  <p>Couldn't load message history. Please try again later.</p>
-              `;
-              chatMessages.appendChild(errorMessage);
-          });
+
+  if (statusFilter) {
+      statusFilter.addEventListener('change', applyFilters);
   }
-  
-  // Format date to readable format
-  function formatDate(dateString) {
-      try {
-          const date = new Date(dateString);
-          return date.toLocaleDateString('en-US', { 
-              month: 'short', 
-              day: 'numeric', 
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-          });
-      } catch (e) {
-          console.error('Error formatting date:', e);
-          return 'Unknown date';
-      }
-  }
-  
-  // Submit new message
+
+  // Chat form submission
   if (chatForm) {
       chatForm.addEventListener('submit', function(e) {
           e.preventDefault();
           
           if (!currentComplaintId) {
-              alert('Please select a complaint first');
+              showToast('Please select a complaint first', 'error');
               return;
           }
           
           const message = messageInput.value.trim();
-          if (message === '') return;
-          
-          logDebug(`Sending message for complaint ID: ${currentComplaintId}`, message);
-          
-          // Create new message object
-          const newMessage = {
-              complaintID: currentComplaintId,
-              comments: message,
-              status: 'In Progress' // Default status for new admin messages
-          };
-          
-          // Add admin message to chat immediately for better UX
-          const adminMessage = document.createElement('div');
-          adminMessage.className = 'message admin-message';
-          adminMessage.innerHTML = `
-              <div class="message-header">
-                  <span class="sender">Admin</span>
-                  <span class="timestamp">${formatDate(new Date())}</span>
-              </div>
-              <div class="message-content">
-                  <p>${message}</p>
-              </div>
-              <div class="status-update">Status updated to: <span class="status-badge status-in-progress">In Progress</span></div>
-          `;
-          chatMessages.appendChild(adminMessage);
-          
-          // Scroll to bottom of chat
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-          
-          // Clear input field
-          messageInput.value = '';
-          
-          // Update complaint item status in the list
-          updateComplaintItemStatus(currentComplaintId, 'In Progress');
-          
-          // Send message to server
-          fetch(`${ROOT}/admin/complaints/respond`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest'
-              },
-              body: JSON.stringify(newMessage)
-          })
-          .then(response => {
-              logDebug('Send message response status:', response.status);
-              return response.json();
-          })
-          .then(data => {
-              logDebug('Send message response data:', data);
-              
-              if (!data.success) {
-                  alert('Failed to send message. Please try again.');
-              }
-          })
-          .catch(error => {
-              console.error('Error sending message:', error);
-              alert('Failed to send message. Please try again.');
-          });
+          if (message) {
+              sendReply(message);
+          }
       });
   }
-  
-  // Handle resolve button click
+
+  // Resolve button click
   if (resolveButton) {
       resolveButton.addEventListener('click', function() {
-          if (!currentComplaintId) return;
+          if (!currentComplaintId) {
+              showToast('Please select a complaint first', 'error');
+              return;
+          }
           
-          logDebug('Resolve button clicked');
-          
-          // Show resolve confirmation modal
-          resolveModal.style.display = 'block';
+          resolveModal.style.display = 'flex';
       });
   }
-  
-  // Handle delete button click
+
+  // Delete button click
   if (deleteButton) {
       deleteButton.addEventListener('click', function() {
-          if (!currentComplaintId) return;
+          if (!currentComplaintId) {
+              showToast('Please select a complaint first', 'error');
+              return;
+          }
           
-          logDebug('Delete button clicked');
-          
-          // Show delete confirmation modal
-          deleteModal.style.display = 'block';
+          deleteModal.style.display = 'flex';
       });
   }
-  
-  // Modal confirm and cancel buttons
+
+  // Confirm resolve
   if (confirmResolve) {
       confirmResolve.addEventListener('click', function() {
-          logDebug('Confirm resolve clicked');
-          
-          // Create resolve message object
-          const resolveMessage = {
-              complaintID: currentComplaintId,
-              comments: "This complaint has been marked as resolved.",
-              status: 'Resolved'
-          };
-          
-          // Update UI immediately
-          resolveButton.textContent = 'Resolved';
-          resolveButton.disabled = true;
-          resolveButton.classList.add('disabled');
-          
-          // Update complaint status in the list
-          updateComplaintItemStatus(currentComplaintId, 'Resolved');
-          
-          // Add status update message to chat
-          const statusUpdate = document.createElement('div');
-          statusUpdate.className = 'message admin-message';
-          statusUpdate.innerHTML = `
-              <div class="message-header">
-                  <span class="sender">Admin</span>
-                  <span class="timestamp">${formatDate(new Date())}</span>
-              </div>
-              <div class="message-content">
-                  <p>This complaint has been marked as resolved.</p>
-              </div>
-              <div class="status-update">Status updated to: <span class="status-badge status-resolved">Resolved</span></div>
-          `;
-          chatMessages.appendChild(statusUpdate);
-          
-          // Scroll to bottom of chat
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-          
-          // Close modal
+          resolveComplaint();
           resolveModal.style.display = 'none';
-          
-          // Send resolve request to server
-          fetch(`${ROOT}/admin/complaints/resolve/${currentComplaintId}`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest'
-              },
-              body: JSON.stringify(resolveMessage)
-          })
-          .then(response => {
-              logDebug('Resolve complaint response status:', response.status);
-              return response.json();
-          })
-          .then(data => {
-              logDebug('Resolve complaint response data:', data);
-              
-              if (!data.success) {
-                  alert('Failed to resolve complaint on the server. The UI has been updated, but the change may not be saved.');
-              }
-          })
-          .catch(error => {
-              console.error('Error resolving complaint:', error);
-              alert('Failed to resolve complaint on the server. The UI has been updated, but the change may not be saved.');
-          });
       });
   }
-  
+
+  // Cancel resolve
   if (cancelResolve) {
       cancelResolve.addEventListener('click', function() {
           resolveModal.style.display = 'none';
       });
   }
-  
+
+  // Confirm delete
   if (confirmDelete) {
       confirmDelete.addEventListener('click', function() {
-          logDebug('Confirm delete clicked');
-          
-          // Close modal
+          deleteComplaint();
           deleteModal.style.display = 'none';
-          
-          // Send delete request to server
-          fetch(`${ROOT}/admin/complaints/delete/${currentComplaintId}`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest'
-              }
-          })
+      });
+  }
+
+  // Cancel delete
+  if (cancelDelete) {
+      cancelDelete.addEventListener('click', function() {
+          deleteModal.style.display = 'none';
+      });
+  }
+
+  // Functions
+
+  /**
+   * Load complaint details
+   * @param {string} complaintId - The ID of the complaint
+   */
+  function loadComplaintDetails(complaintId) {
+      currentComplaintId = complaintId;
+      
+      // Show chat interface and hide empty state
+      noChatSelected.style.display = 'none';
+      chatInterface.style.display = 'flex';
+      
+      // Clear previous messages
+      chatMessages.innerHTML = '';
+      
+      // Add loading spinner
+      chatMessages.innerHTML = '<div class="loading-spinner"><div></div><div></div><div></div></div>';
+      
+      // Fetch complaint details
+      fetch(`${ROOT}/public/ComplaintController/details/${complaintId}`)
           .then(response => {
-              logDebug('Delete complaint response status:', response.status);
-              return response.json();
+              if (!response.ok) {
+                  throw new Error(`Server responded with status: ${response.status}`);
+              }
+              return response.text().then(text => {
+                  console.log('Raw response:', text);
+                  try {
+                      return JSON.parse(text);
+                  } catch (e) {
+                      console.error('Failed to parse JSON response:', e);
+                      throw new Error('Invalid JSON response from server');
+                  }
+              });
           })
           .then(data => {
-              logDebug('Delete complaint response data:', data);
+              if (data.success) {
+                  const complaint = data.complaint;
+                  
+                  // Update customer info
+                  customerName.textContent = data.customerName;
+                  customerId.textContent = `Customer ID: ${complaint.customerID}`;
+                  issueType.textContent = `Issue: ${complaint.issue}`;
+                  issuePriority.textContent = complaint.priority;
+                  issuePriority.className = `priority-badge priority-${complaint.priority.toLowerCase()}`;
+                  
+                  // Load chat history
+                  loadChatHistory(complaintId);
+                  
+                  // Check if complaint is already resolved
+                  if (complaint.status === 'Resolved') {
+                      resolveButton.disabled = true;
+                      resolveButton.classList.add('disabled');
+                      messageInput.disabled = true;
+                      chatForm.querySelector('button[type="submit"]').disabled = true;
+                  } else {
+                      resolveButton.disabled = false;
+                      resolveButton.classList.remove('disabled');
+                      messageInput.disabled = false;
+                      chatForm.querySelector('button[type="submit"]').disabled = false;
+                  }
+              } else {
+                  showToast(data.message || 'Failed to load complaint details', 'error');
+              }
+          })
+          .catch(error => {
+              console.error('Error fetching complaint details:', error);
+              showToast('Error loading complaint details. Check console for details.', 'error');
+          });
+  }
+
+  /**
+   * Load chat history for a complaint
+   * @param {string} complaintId - The ID of the complaint
+   */
+  function loadChatHistory(complaintId) {
+      fetch(`${ROOT}/public/ComplaintController/chat/${complaintId}`)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`Server responded with status: ${response.status}`);
+              }
+              return response.text().then(text => {
+                  console.log('Raw chat response:', text);
+                  try {
+                      return JSON.parse(text);
+                  } catch (e) {
+                      console.error('Failed to parse JSON response:', e);
+                      throw new Error('Invalid JSON response from server');
+                  }
+              });
+          })
+          .then(data => {
+              // Clear loading spinner
+              chatMessages.innerHTML = '';
               
+              if (data.success) {
+                  // Add initial complaint as first message
+                  fetch(`${ROOT}/public/ComplaintController/details/${complaintId}`)
+                      .then(response => {
+                          if (!response.ok) {
+                              throw new Error(`Server responded with status: ${response.status}`);
+                          }
+                          return response.text().then(text => {
+                              console.log('Raw details response within chat:', text);
+                              try {
+                                  return JSON.parse(text);
+                              } catch (e) {
+                                  console.error('Failed to parse JSON response:', e);
+                                  throw new Error('Invalid JSON response from server');
+                              }
+                          });
+                      })
+                      .then(detailsData => {
+                          if (detailsData.success) {
+                              const complaint = detailsData.complaint;
+                              
+                              // Add initial complaint message
+                              const initialMessageDiv = document.createElement('div');
+                              initialMessageDiv.className = 'message customer-message';
+                              initialMessageDiv.innerHTML = `
+                                  <div class="message-content">
+                                      <div class="message-header">
+                                          <span class="sender">${detailsData.customerName}</span>
+                                          <span class="timestamp">${formatDate(complaint.submitted_at)}</span>
+                                      </div>
+                                      <div class="message-body">
+                                          <p>${complaint.description}</p>
+                                      </div>
+                                  </div>
+                              `;
+                              chatMessages.appendChild(initialMessageDiv);
+                              
+                              // Add all updates/replies
+                              const updates = data.updates || [];
+                              updates.forEach(update => {
+                                  const messageDiv = document.createElement('div');
+                                  messageDiv.className = update.isAdmin == 1 ? 'message admin-message' : 'message customer-message';
+                                  messageDiv.innerHTML = `
+                                      <div class="message-content">
+                                          <div class="message-header">
+                                              <span class="sender">${update.isAdmin == 1 ? 'Admin' : detailsData.customerName}</span>
+                                              <span class="timestamp">${formatDate(update.updated_at)}</span>
+                                          </div>
+                                          <div class="message-body">
+                                              <p>${update.comments}</p>
+                                          </div>
+                                          ${update.status ? `<div class="status-update">Status changed to: <span class="status-badge status-${update.status.toLowerCase().replace(' ', '-')}">${update.status}</span></div>` : ''}
+                                      </div>
+                                  `;
+                                  chatMessages.appendChild(messageDiv);
+                              });
+                              
+                              // Scroll to bottom
+                              chatMessages.scrollTop = chatMessages.scrollHeight;
+                          }
+                      })
+                      .catch(error => {
+                          console.error('Error fetching complaint details:', error);
+                          showToast('Error loading complaint details for chat history', 'error');
+                      });
+              } else {
+                  showToast(data.message || 'Failed to load chat history', 'error');
+              }
+          })
+          .catch(error => {
+              console.error('Error fetching chat history:', error);
+              showToast('Error loading chat history. Check console for details.', 'error');
+          });
+  }
+
+  /**
+   * Send a reply to the complaint
+   * @param {string} message - The message to send
+   */
+  function sendReply(message) {
+      // Disable form while sending
+      messageInput.disabled = true;
+      chatForm.querySelector('button[type="submit"]').disabled = true;
+      
+      // Create payload
+      const payload = {
+          complaintID: currentComplaintId,
+          comments: message,
+          status: 'In Progress'
+      };
+      
+      // Send request
+      fetch(`${ROOT}/public/ComplaintController/respond`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`Server responded with status: ${response.status}`);
+              }
+              return response.text().then(text => {
+                  console.log('Raw response from respond:', text);
+                  try {
+                      return JSON.parse(text);
+                  } catch (e) {
+                      console.error('Failed to parse JSON response:', e);
+                      throw new Error('Invalid JSON response from server');
+                  }
+              });
+          })
+          .then(data => {
+              if (data.success) {
+                  // Clear input field
+                  messageInput.value = '';
+                  
+                  // Reload chat history
+                  loadChatHistory(currentComplaintId);
+                  
+                  // Update the complaint status in the list
+                  const complaintItem = document.querySelector(`.complaint-item[data-complaint-id="${currentComplaintId}"]`);
+                  if (complaintItem) {
+                      const statusBadge = complaintItem.querySelector('.status-badge');
+                      if (statusBadge) {
+                          statusBadge.textContent = 'In Progress';
+                          statusBadge.className = 'status-badge status-in-progress';
+                      }
+                  }
+                  
+                  showToast('Reply sent successfully', 'success');
+              } else {
+                  showToast(data.message || 'Failed to send reply', 'error');
+              }
+              
+              // Re-enable form
+              messageInput.disabled = false;
+              chatForm.querySelector('button[type="submit"]').disabled = false;
+              messageInput.focus();
+          })
+          .catch(error => {
+              console.error('Error sending reply:', error);
+              showToast('Error sending reply. Check console for details.', 'error');
+              
+              // Re-enable form
+              messageInput.disabled = false;
+              chatForm.querySelector('button[type="submit"]').disabled = false;
+          });
+  }
+
+  /**
+   * Resolve a complaint
+   */
+  function resolveComplaint() {
+      // Create payload
+      const payload = {
+          complaintID: currentComplaintId,
+          solution: 'This complaint has been marked as resolved.'
+      };
+      
+      // Send request
+      fetch(`${ROOT}/public/complaint/resolve`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`Server responded with status: ${response.status}`);
+              }
+              return response.text().then(text => {
+                  console.log('Raw response from resolve:', text);
+                  try {
+                      return JSON.parse(text);
+                  } catch (e) {
+                      console.error('Failed to parse JSON response:', e);
+                      throw new Error('Invalid JSON response from server');
+                  }
+              });
+          })
+          .then(data => {
+              if (data.success) {
+                  // Update UI
+                  resolveButton.disabled = true;
+                  resolveButton.classList.add('disabled');
+                  messageInput.disabled = true;
+                  chatForm.querySelector('button[type="submit"]').disabled = true;
+                  
+                  // Update the complaint status in the list
+                  const complaintItem = document.querySelector(`.complaint-item[data-complaint-id="${currentComplaintId}"]`);
+                  if (complaintItem) {
+                      const statusBadge = complaintItem.querySelector('.status-badge');
+                      if (statusBadge) {
+                          statusBadge.textContent = 'Resolved';
+                          statusBadge.className = 'status-badge status-resolved';
+                      }
+                  }
+                  
+                  // Reload chat history
+                  loadChatHistory(currentComplaintId);
+                  
+                  showToast('Complaint resolved successfully', 'success');
+              } else {
+                  showToast(data.message || 'Failed to resolve complaint', 'error');
+              }
+          })
+          .catch(error => {
+              console.error('Error resolving complaint:', error);
+              showToast('Error resolving complaint. Check console for details.', 'error');
+          });
+  }
+
+  /**
+   * Delete a complaint
+   */
+  function deleteComplaint() {
+      // Send request
+      fetch(`${ROOT}/ComplaintController/delete`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              complaintId: currentComplaintId
+          })
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`Server responded with status: ${response.status}`);
+              }
+              return response.text().then(text => {
+                  console.log('Raw response from delete:', text);
+                  try {
+                      return JSON.parse(text);
+                  } catch (e) {
+                      console.error('Failed to parse JSON response:', e);
+                      throw new Error('Invalid JSON response from server');
+                  }
+              });
+          })
+          .then(data => {
               if (data.success) {
                   // Remove complaint from list
                   const complaintItem = document.querySelector(`.complaint-item[data-complaint-id="${currentComplaintId}"]`);
@@ -438,82 +482,91 @@ document.addEventListener('DOMContentLoaded', function() {
                   
                   // Reset current complaint
                   currentComplaintId = null;
-                  currentCustomerId = null;
                   
-                  // Hide chat interface, show no-chat message
+                  // Show empty state
+                  noChatSelected.style.display = 'flex';
                   chatInterface.style.display = 'none';
-                  noChat.style.display = 'flex';
+                  
+                  showToast('Complaint deleted successfully', 'success');
               } else {
-                  alert('Failed to delete complaint. Please try again.');
+                  showToast(data.message || 'Failed to delete complaint', 'error');
               }
           })
           .catch(error => {
               console.error('Error deleting complaint:', error);
-              alert('Failed to delete complaint. Please try again.');
+              showToast('Error deleting complaint. Check console for details.', 'error');
           });
-      });
   }
-  
-  if (cancelDelete) {
-      cancelDelete.addEventListener('click', function() {
-          deleteModal.style.display = 'none';
-      });
-  }
-  
-  // Update complaint item status in the list
-  function updateComplaintItemStatus(complaintId, status) {
-      const complaintItem = document.querySelector(`.complaint-item[data-complaint-id="${complaintId}"]`);
-      if (complaintItem) {
-          const statusBadge = complaintItem.querySelector('.status-badge');
-          if (statusBadge) {
-              statusBadge.className = `status-badge status-${status.toLowerCase().replace(' ', '-')}`;
-              statusBadge.textContent = status;
-          }
-      }
-  }
-  
-  // Filter and sort functionality
-  function applyFiltersAndSort() {
-      const issueType = issueFilter.value;
-      const priority = prioritySort.value;
-      const status = statusFilter.value;
+
+  /**
+   * Apply filters to the complaints list
+   */
+  function applyFilters() {
+      // Get filter values
+      const issueValue = issueFilter.value;
+      const priorityValue = prioritySort.value;
+      const statusValue = statusFilter.value;
       
-      logDebug('Applying filters', { issueType, priority, status });
+      // Create payload
+      const payload = {
+          issueType: issueValue,
+          priority: priorityValue === 'high-to-low' ? 'high' : (priorityValue === 'low-to-high' ? 'low' : 'all'),
+          status: statusValue
+      };
       
-      fetch(`${ROOT}/admin/complaints/filter`, {
+      // Send request
+      fetch(`${ROOT}/public/complaint/filter`, {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
+              'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-              issueType: issueType,
-              priority: priority,
-              status: status
+          body: JSON.stringify(payload)
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`Server responded with status: ${response.status}`);
+              }
+              return response.text().then(text => {
+                  console.log('Raw response from filter:', text);
+                  try {
+                      return JSON.parse(text);
+                  } catch (e) {
+                      console.error('Failed to parse JSON response:', e);
+                      throw new Error('Invalid JSON response from server');
+                  }
+              });
           })
-      })
-      .then(response => {
-          logDebug('Filter complaints response status:', response.status);
-          return response.json();
-      })
-      .then(data => {
-          logDebug('Filter complaints response data:', data);
-          
-          if (data.success) {
-              // Update complaints list
-              complaintsList.innerHTML = '';
-              
-              if (data.complaints.length > 0) {
+          .then(data => {
+              if (data.success) {
+                  // Clear current list
+                  complaintsList.innerHTML = '';
+                  
+                  // Check if there are complaints
+                  if (data.complaints.length === 0) {
+                      complaintsList.innerHTML = `
+                          <div class="empty-state">
+                              <p>No complaints found.</p>
+                          </div>
+                      `;
+                      return;
+                  }
+                  
+                  // Add complaints to list
                   data.complaints.forEach(complaint => {
                       const complaintItem = document.createElement('div');
                       complaintItem.className = 'complaint-item';
                       complaintItem.dataset.complaintId = complaint.complaintID;
                       complaintItem.dataset.customerId = complaint.customerID;
                       
+                      // Check if this is the currently selected complaint
+                      if (currentComplaintId && complaint.complaintID === currentComplaintId) {
+                          complaintItem.classList.add('active');
+                      }
+                      
                       complaintItem.innerHTML = `
                           <div class="complaint-header">
                               <span class="customer-id">Customer #${complaint.customerID}</span>
-                              <span class="complaint-date">${formatDate(complaint.submitted_at).split(',')[0]}</span>
+                              <span class="complaint-date">${formatDate(complaint.submitted_at)}</span>
                           </div>
                           <div class="complaint-issue">
                               ${complaint.issue}
@@ -522,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
                               </span>
                           </div>
                           <div class="complaint-preview">
-                              ${complaint.description.substring(0, 60)}${complaint.description.length > 60 ? '...' : ''}
+                              ${complaint.description.length > 60 ? complaint.description.substring(0, 60) + '...' : complaint.description}
                           </div>
                           <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '-')}">
                               ${complaint.status}
@@ -531,112 +584,160 @@ document.addEventListener('DOMContentLoaded', function() {
                       
                       complaintsList.appendChild(complaintItem);
                   });
-                  
-                  // Add event listeners to new complaint items
-                  addComplaintItemListeners();
               } else {
-                  complaintsList.innerHTML = `
-                      <div class="empty-state">
-                          <p>No complaints found.</p>
-                      </div>
-                  `;
+                  showToast(data.message || 'Failed to apply filters', 'error');
               }
-          } else {
-              console.error('Failed to filter complaints');
+          })
+          .catch(error => {
+              console.error('Error applying filters:', error);
+              showToast('Error applying filters. Check console for details.', 'error');
+          });
+  }
+
+  /**
+   * Format date for display
+   * @param {string} dateStr - The date string to format
+   * @returns {string} - The formatted date
+   */
+  function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+      });
+  }
+
+  /**
+   * Show a toast notification
+   * @param {string} message - The message to show
+   * @param {string} type - The type of toast (success, error, info)
+   */
+  function showToast(message, type = 'info') {
+      // Check if toast container exists
+      let toastContainer = document.querySelector('.toast-container');
+      
+      if (!toastContainer) {
+          // Create toast container
+          toastContainer = document.createElement('div');
+          toastContainer.className = 'toast-container';
+          document.body.appendChild(toastContainer);
+      }
+      
+      // Create toast
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.textContent = message;
+      
+      // Add toast to container
+      toastContainer.appendChild(toast);
+      
+      // Show toast
+      setTimeout(() => {
+          toast.classList.add('show');
+      }, 10);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => {
+              toast.remove();
+          }, 300);
+      }, 3000);
+  }
+
+  // Add CSS for toast notifications if not already added
+  if (!document.querySelector('#toast-styles')) {
+      const style = document.createElement('style');
+      style.id = 'toast-styles';
+      style.textContent = `
+          .toast-container {
+              position: fixed;
+              top: 20px;
+              right: 20px;
+              z-index: 9999;
           }
-      })
-      .catch(error => {
-          console.error('Error filtering complaints:', error);
-      });
+          
+          .toast {
+              background-color: #333;
+              color: white;
+              padding: 12px 20px;
+              border-radius: 4px;
+              margin-bottom: 10px;
+              opacity: 0;
+              transform: translateX(100%);
+              transition: all 0.3s ease;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          }
+          
+          .toast.show {
+              opacity: 1;
+              transform: translateX(0);
+          }
+          
+          .toast-success {
+              background-color: #4CAF50;
+          }
+          
+          .toast-error {
+              background-color: #F44336;
+          }
+          
+          .toast-info {
+              background-color: #2196F3;
+          }
+          
+          .loading-spinner {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100px;
+          }
+          
+          .loading-spinner div {
+              width: 12px;
+              height: 12px;
+              background-color: #3498db;
+              border-radius: 50%;
+              margin: 0 5px;
+              animation: bounce 1.4s infinite ease-in-out both;
+          }
+          
+          .loading-spinner div:nth-child(1) {
+              animation-delay: -0.32s;
+          }
+          
+          .loading-spinner div:nth-child(2) {
+              animation-delay: -0.16s;
+          }
+          
+          @keyframes bounce {
+              0%, 80%, 100% {
+                  transform: scale(0);
+              } 40% {
+                  transform: scale(1);
+              }
+          }
+      `;
+      document.head.appendChild(style);
   }
+
+  // Check if there's a complaint ID in the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const complaintIdParam = urlParams.get('id');
   
-  // Add event listeners to filter and sort controls
-  if (issueFilter) {
-      issueFilter.addEventListener('change', applyFiltersAndSort);
-  }
-  
-  if (prioritySort) {
-      prioritySort.addEventListener('change', applyFiltersAndSort);
-  }
-  
-  if (statusFilter) {
-      statusFilter.addEventListener('change', applyFiltersAndSort);
-  }
-  
-  // Close modals when clicking outside
-  window.addEventListener('click', function(event) {
-      if (event.target === resolveModal) {
-          resolveModal.style.display = 'none';
+  if (complaintIdParam) {
+      // Find the complaint item
+      const complaintItem = document.querySelector(`.complaint-item[data-complaint-id="${complaintIdParam}"]`);
+      if (complaintItem) {
+          // Simulate click
+          complaintItem.click();
+          
+          // Scroll to the complaint item
+          complaintItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-      if (event.target === deleteModal) {
-          deleteModal.style.display = 'none';
-      }
-  });
-  
-  // Initialize page
-  addComplaintItemListeners();
-  
-  // Add a fallback strategy if API endpoints aren't working yet
-  // This makes the interface work even without the backend API endpoints
-  const complaintItems = document.querySelectorAll('.complaint-item');
-  if (complaintItems.length > 0) {
-      logDebug('Adding fallback click handler to first complaint');
-      // Add a special handler for development/testing
-      complaintItems[0].addEventListener('dblclick', function() {
-          logDebug('Fallback: Double-clicked first complaint');
-          
-          // Force display of chat interface with mock data
-          noChat.style.display = 'none';
-          chatInterface.style.display = 'flex';
-          
-          // Extract data from DOM
-          const customerIdText = this.querySelector('.customer-id').textContent;
-          const issueText = this.querySelector('.complaint-issue').textContent.trim();
-          const priorityBadge = this.querySelector('.priority-badge');
-          const priority = priorityBadge ? priorityBadge.textContent.trim() : '';
-          const status = this.querySelector('.status-badge').textContent.trim();
-          const description = this.querySelector('.complaint-preview').textContent.trim();
-          
-          // Update header info
-          document.getElementById('customer-name').textContent = customerIdText;
-          document.getElementById('customer-id').textContent = customerIdText;
-          document.getElementById('issue-type').textContent = `Issue Type: ${issueText.replace(priority, '').trim()}`;
-          
-          const headerPriorityBadge = document.getElementById('issue-priority');
-          headerPriorityBadge.textContent = priority;
-          headerPriorityBadge.className = `priority-badge priority-${priority.toLowerCase()}`;
-          
-          // Display chat messages
-          chatMessages.innerHTML = '';
-          
-          // Add initial complaint
-          const complaintMessage = document.createElement('div');
-          complaintMessage.className = 'message customer-message';
-          complaintMessage.innerHTML = `
-              <div class="message-header">
-                  <span class="sender">${customerIdText}</span>
-                  <span class="timestamp">${formatDate(new Date())}</span>
-              </div>
-              <div class="message-content">
-                  <p>${description}</p>
-              </div>
-          `;
-          chatMessages.appendChild(complaintMessage);
-          
-          // Add a mock response
-          const mockResponse = document.createElement('div');
-          mockResponse.className = 'message admin-message';
-          mockResponse.innerHTML = `
-              <div class="message-header">
-                  <span class="sender">Admin</span>
-                  <span class="timestamp">${formatDate(new Date())}</span>
-              </div>
-              <div class="message-content">
-                  <p>Thank you for your complaint. We are looking into this issue.</p>
-              </div>
-              <div class="status-update">Status updated to: <span class="status-badge status-in-progress">In Progress</span></div>
-          `;
-          chatMessages.appendChild(mockResponse);
-      });
   }
 });
