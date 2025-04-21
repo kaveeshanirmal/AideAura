@@ -46,7 +46,7 @@ define('ROOT', 'http://localhost/aideaura');
     <div class="center-logo"></div>
   </div>
 
-  <p class="status-text">Feeling Bored ?</p>
+  <p class="status-text">You will be notified when this is done : ) until then,</p>
   <button class="cta-button">Take a ROADTRIP!</button>
   
   <div class="action-container">
