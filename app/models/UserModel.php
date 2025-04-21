@@ -276,4 +276,20 @@ public function registerEmployee($data)
         $this->update($workerID, $data, 'workerID');
     }
 
+    public function getUserID($id, $role)
+    {
+        if($role === 'worker') {
+            $this->setTable('worker');
+            $worker = $this->find($id, 'workerID');
+            if ($worker) {
+                return $worker->userID; // Return the userID associated with the workerID
+            }
+        } elseif ($role === 'customer') {
+            $this->setTable('customer');
+            $customer = $this->find($id, 'customerID');
+            if ($customer) {
+                return $customer->userID; // Return the userID associated with the customerID
+            }
+        }
+    }
 }

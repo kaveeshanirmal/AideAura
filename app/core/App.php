@@ -38,6 +38,7 @@ class App
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
+            'Booking' => ['index', 'bookWorker'],
         ],
 
         'worker' => [
