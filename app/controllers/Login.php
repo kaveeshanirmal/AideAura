@@ -4,7 +4,7 @@ class Login extends Controller
 {
     private $userModel;
     private $workerStatsModel;
-
+    
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
@@ -13,7 +13,7 @@ class Login extends Controller
     public function index($a = '', $b = '', $c = '')
     {
         $errorMessage = '';
-
+        //echo "Inside login controller";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Collect and sanitize user input
             $username = trim($_POST['username']);
