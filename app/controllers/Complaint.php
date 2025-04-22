@@ -1,5 +1,5 @@
 <?php
-class ComplaintController extends Controller
+class Complaint extends Controller
 {
     private $customerComplaintModel;
     
@@ -40,6 +40,7 @@ class ComplaintController extends Controller
      */
     public function details($complaintId)
     {
+        
         $complaint = $this->customerComplaintModel->getComplaintById($complaintId);
         
         if (!$complaint) {
@@ -53,9 +54,9 @@ class ComplaintController extends Controller
         
         // Get customer information using UserModel
         $userModel = new UserModel();
-        $customerId = $complaint['customerID'];
-        $customer = $userModel->find($customerId);
-        $customerName = $customer ? $customer['fullName'] : 'Customer #' . $customerId;
+        $customerId = $complaint->customerID;
+        $customer = $userModel->find($customerId, 'userID');
+        $customerName = $customer ? $customer->fullName : 'Customer #' . $customerId;
         
         header('Content-Type: application/json');
         echo json_encode([
@@ -123,9 +124,10 @@ class ComplaintController extends Controller
             'complaintID' => $json->complaintID,
             'comments' => $json->comments,
             'status' => $status,
-            'isAdmin' => 1,
-            'adminID' => $_SESSION['id'] ?? 1, // Default to admin ID 1 if not in session
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s'),
+            'userID' => $_SESSION['userID'],
+            'role' => $_SESSION['role']
+            
         ];
         
         $result = $this->customerComplaintModel->submitComplaintUpdates($updateData);
@@ -169,9 +171,9 @@ class ComplaintController extends Controller
             'complaintID' => $complaintId,
             'comments' => $json['solution'],
             'status' => 'Resolved',
-            'isAdmin' => 1,
-            'adminID' => $_SESSION['id'] ?? 1,
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s'),
+            'userID' => $_SESSION['userID'],
+            'role' => $_SESSION['role']
         ];
         
         // Creating a record at complaints_updates table
@@ -252,47 +254,55 @@ class ComplaintController extends Controller
      * Filter and sort complaints
      */
     public function filter()
-    {
-        header('Content-Type: application/json');
-        
-        // Get JSON data
-        $json = json_decode(file_get_contents('php://input'));
-        
-        $issueType = isset($json->issueType) ? $json->issueType : 'all';
-        $priority = isset($json->priority) ? $json->priority : 'all';
-        $status = isset($json->status) ? $json->status : 'all';
-        
-        // Build filter array
-        $filters = [];
-        if ($issueType !== 'all') {
-            $filters['issue'] = $issueType;
-        }
-        
-        if ($status !== 'all') {
-            $filters['status'] = $status;
-        }
-        
-        // Apply filters
-        $complaints = empty($filters) 
-            ? $this->customerComplaintModel->getAllComplaints() 
-            : $this->customerComplaintModel->filter($filters);
-        
-        // Sort by priority if requested
-        if ($priority !== 'all') {
-            usort($complaints, function($a, $b) use ($priority) {
-                if ($priority === 'high') {
-                    // High to low priority
-                    return strcmp($b['priority'], $a['priority']);
-                } else {
-                    // Low to high priority
-                    return strcmp($a['priority'], $b['priority']);
-                }
-            });
-        }
-        
-        echo json_encode([
-            'success' => true,
-            'complaints' => $complaints
-        ]);
+{
+    header('Content-Type: application/json');
+    
+    // Get JSON data
+    $json = json_decode(file_get_contents('php://input'));
+    
+    $issueType = isset($json->issueType) ? $json->issueType : 'all';
+    $priority = isset($json->priority) ? $json->priority : 'all';
+    $status = isset($json->status) ? $json->status : 'all';
+    
+    // Build filter array
+    $filters = [];
+    if ($issueType !== 'all') {
+        $filters['issue_type'] = $issueType;
     }
+    
+    if ($status !== 'all') {
+        $filters['status'] = $status;
+    }
+    
+    // Apply filters
+    $complaints = empty($filters) 
+        ? $this->customerComplaintModel->getAllComplaints() 
+        : $this->customerComplaintModel->filter($filters);
+    
+    // Convert to array if it's an object (for sorting purposes)
+    $complaints = is_array($complaints) ? $complaints : (array)$complaints;
+    
+    // Sort by priority if requested
+    if ($priority !== 'all') {
+        usort($complaints, function($a, $b) use ($priority) {
+            // Ensure we're accessing the 'priority' field correctly
+            $priorityOrder = ['Low' => 1, 'Medium' => 2, 'High' => 3, 'Critical' => 4];
+            
+            $priorityA = isset($priorityOrder[$a->priority]) ? $priorityOrder[$a->priority] : 0;
+            $priorityB = isset($priorityOrder[$b->priority]) ? $priorityOrder[$b->priority] : 0;
+            
+            if ($priority === 'high') {
+                return $priorityB - $priorityA; // High to Low
+            } else {
+                return $priorityA - $priorityB; // Low to High
+            }
+        });
+    }
+    
+    echo json_encode([
+        'success' => true,
+        'complaints' => $complaints
+    ]);
+}
+
 }

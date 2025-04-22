@@ -13,7 +13,9 @@
 <body>
 <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
     <div class="dashboard-container">
-        
+    <!-- <button id="testButton" style="padding: 10px; margin: 10px; background: red; color: white;">
+    Test Direct API Call
+</button> -->
         <div class="container">
             <div class="main-content">
                 <!-- Complaints List Sidebar -->

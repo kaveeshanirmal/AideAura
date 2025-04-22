@@ -3,6 +3,7 @@
 class CustomerComplaintModel
 {
     use Model; // Use the Model trait
+    
 
     public function __construct()
     {
@@ -53,5 +54,21 @@ class CustomerComplaintModel
         $this->setTable('customercomplaints_updates');
         return $this->find($id, 'complaintID');
     }
+
+    public function filter($filters)
+    {
+        $this->setTable('customercomplaints');
+
+        $query = "SELECT * FROM customercomplaints WHERE 1";
+        $params = [];
+
+        foreach ($filters as $column => $value) {
+            $query .= " AND {$column} = :{$column}";
+            $params[$column] = $value;
+        }
+
+        return $this->get_all($query, $params);
+    }
+
 
 }

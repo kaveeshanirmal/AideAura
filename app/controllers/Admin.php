@@ -448,8 +448,8 @@ public function updateVerificationStatus() {
     
     public function workerInquiries()
 {
-    require_once "../app/controllers/ComplaintController.php";
-    $complaintController = new ComplaintController();
+    require_once "../app/controllers/Complaint.php";
+    $complaintController = new Complaint();
     $complaintController->adminIndex();
 }
 

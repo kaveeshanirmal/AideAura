@@ -17,19 +17,19 @@ class App
 
             'AdminRoles1' => ['index', 'edit'],
             
-            'ComplaintController' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+            'Complaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'hrManager' => [
             'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'findWorkerUserID', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
             
-            'ComplaintController' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+            'Complaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'opManager' => [
             'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
             
-            'ComplaintController' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+            'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
         
         'financeManager' => [

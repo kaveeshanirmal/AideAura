@@ -2,6 +2,11 @@
 class UserModel
 {
     use Model; // Use the Model trait
+    
+    public function __construct()
+    {
+        $this->setTable('users');
+    }
 
     // Register a new user
     public function register($data, $role)
