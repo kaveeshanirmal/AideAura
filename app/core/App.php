@@ -9,15 +9,13 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'deleteRoles' , 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
             'AdminEmployees' => ['index', 'update', 'delete' , 'search'],
 
-            'AdminRoles1' => ['index', 'edit'],
-            
-            'Complaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+            // 'AdminRoles1' => ['index', 'edit'],
         ],
 
         'hrManager' => [

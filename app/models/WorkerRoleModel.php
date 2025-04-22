@@ -27,6 +27,22 @@ class WorkerRoleModel {
        return true;
     }
 
+    public function updateRole($id,$data)
+    {
+        $this->setTable('jobroles');
+        $roleData = [
+            'name' => $data['name'],
+            'description' => $data['description'],
+        ];
+       $result =  $this->update($id,$roleData, 'roleID');
+    
+       if($result){
+        return true;
+       } else {
+        return false;
+       }
+
+    }
 
     public function softDeleteRole($roleID){
        $this->setTable('jobroles');

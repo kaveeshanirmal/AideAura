@@ -634,6 +634,47 @@ public function updateVerificationStatus() {
         exit;
     }    
     
+    public function updateRole(){
+        try {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                header('Content-Type: application/json');
+
+                $json = file_get_contents('php://input');
+                $data = json_decode($json,true);
+
+                if(!$data || !isset($data['roleID']) || !isset($data['name']) || !isset($data['description'])) {
+                    echo json_encode([
+                        'success'=> false, 'message' => 'Invalid data provided']);
+                        return; 
+                }
+
+                $roleID = $data['roleID'];
+                $roleData = [
+                    'name' => $data['name'],
+                    'description' => $data['description'],
+                ];
+
+                $workerRoleModel = new WorkerRoleModel();
+        $result = $workerRoleModel->updateRole($roleID,$roleData);
+        
+        if($result){
+            echo json_encode([
+                'success'=> true ]);
+        } else {
+            echo json_encode ([
+                'success' => false, 'message' => 'Failed to update role']);
+        }
+            } else {
+                echo json_encode([
+                    'success' => false, 'message' => 'Invalid request method']);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false, 'message' => $e-> getMessage()
+        ]);
+        }
+    }
+
     public function deleteRoles() {
         try{
             // log raw input
