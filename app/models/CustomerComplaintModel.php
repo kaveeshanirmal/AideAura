@@ -70,5 +70,23 @@ class CustomerComplaintModel
         return $this->get_all($query, $params);
     }
 
+    /**
+     * Get complaints by specific issue type
+     *
+     * @param string $issueType The issue type to filter by
+     * @return array Complaints matching the issue type
+     */
+    public function getComplaintsByType($issueType)
+    {
+        // Ensure we're using the complaints table
+        $this->setTable('customercomplaints');
+        
+        // Create filter array with issue_type
+        $filters = ['issue_type' => $issueType];
+        
+        // Use the existing filter method
+        return $this->filter($filters);
+    }
+
 
 }

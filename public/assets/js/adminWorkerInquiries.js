@@ -282,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     // Display the sender name based on role
                                     const senderName = role === 'admin' ? 'Admin' : 
                                                         role === 'opManager' ? 'Operational Manager' : 
+                                                        role === 'financeManager' ? 'Finance Manager' :
                                                         detailsData.customerName;
   
                                     messageDiv.innerHTML = `
