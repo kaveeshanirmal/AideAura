@@ -1,29 +1,45 @@
 // Toggle availability status
 function toggleAvailability() {
   const button = document.getElementById("availability");
-  const icon = button.querySelector("i");
+  const isAvailable = button.classList.contains("available");
 
-  if (button.classList.contains("available")) {
-    // Switch to Not Available state
-    button.classList.remove("available");
-    button.classList.add("not-available");
-    icon.classList.remove("bx-check-circle");
-    icon.classList.add("bx-x-circle");
-    button.innerHTML = '<i class="bx bx-x-circle"></i> Not Available';
+  fetch("<?= ROOT ?>/dashboard/availability", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      availability: !isAvailable,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        const icon = button.querySelector("i");
 
-    // Here you would typically send the status to the server
-    // Example: updateAvailabilityStatus(false);
-  } else {
-    // Switch to Available state
-    button.classList.remove("not-available");
-    button.classList.add("available");
-    icon.classList.remove("bx-x-circle");
-    icon.classList.add("bx-check-circle");
-    button.innerHTML = '<i class="bx bx-check-circle"></i> Available';
-
-    // Here you would typically send the status to the server
-    // Example: updateAvailabilityStatus(true);
-  }
+        if (isAvailable) {
+          // Switch to Not Available state
+          button.classList.remove("available");
+          button.classList.add("not-available");
+          icon.classList.remove("bx-check-circle");
+          icon.classList.add("bx-x-circle");
+          button.innerHTML = '<i class="bx bx-x-circle"></i> Not Available';
+        } else {
+          // Switch to Available state
+          button.classList.remove("not-available");
+          button.classList.add("available");
+          icon.classList.remove("bx-x-circle");
+          icon.classList.add("bx-check-circle");
+          button.innerHTML = '<i class="bx bx-check-circle"></i> Available';
+        }
+      } else {
+        alert("Failed to update availability");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to update availability");
+    });
 }
 
 // Format city input
@@ -48,12 +64,32 @@ function submitLocation() {
 
   formatCity();
 
-  // Here you would typically send the data to the server
-  alert(`Location updated to ${city}, ${district}`);
+  fetch("<?= ROOT ?>/dashboard/updateLocation", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      district: district,
+      city: city,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        alert("Location updated successfully");
+      } else {
+        alert("Failed to update location");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to update location");
+    });
 }
 
 // Accept job request
-function acceptJob(button) {
+function acceptJob(button, bookingId) {
   const jobItem = button.closest(".job-request-item");
   const jobTitle = jobItem.querySelector(".job-title").textContent;
 
@@ -66,18 +102,50 @@ function acceptJob(button) {
   const denyButton = jobItem.querySelector(".btn-deny");
   denyButton.disabled = true;
 
-  // Here you would typically send the acceptance to the server
-  setTimeout(() => {
-    jobItem.style.opacity = "0.6";
-  }, 1000);
-
-  alert(`You have accepted the ${jobTitle} job request`);
+  // Send acceptance to server
+  fetch("<?= ROOT ?>/bookings/accept", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      bookingId: bookingId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status !== "success") {
+        alert("Failed to accept booking");
+        // Revert UI changes if failed
+        button.innerHTML = '<i class="bx bx-check"></i> Accept';
+        button.disabled = false;
+        denyButton.disabled = false;
+        jobItem.style.backgroundColor = "";
+      } else {
+        setTimeout(() => {
+          jobItem.style.opacity = "0.6";
+        }, 1000);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to accept booking");
+      // Revert UI changes if failed
+      button.innerHTML = '<i class="bx bx-check"></i> Accept';
+      button.disabled = false;
+      denyButton.disabled = false;
+      jobItem.style.backgroundColor = "";
+    });
 }
 
 // Deny job request
-function denyJob(button) {
+function denyJob(button, bookingId) {
   const jobItem = button.closest(".job-request-item");
   const jobTitle = jobItem.querySelector(".job-title").textContent;
+
+  if (!confirm(`Are you sure you want to decline the "${jobTitle}" request?`)) {
+    return;
+  }
 
   // Add visual feedback
   jobItem.style.backgroundColor = "rgba(244, 67, 54, 0.1)";
@@ -88,12 +156,40 @@ function denyJob(button) {
   const acceptButton = jobItem.querySelector(".btn-accept");
   acceptButton.disabled = true;
 
-  // Here you would typically send the denial to the server
-  setTimeout(() => {
-    jobItem.style.opacity = "0.6";
-  }, 1000);
-
-  alert(`You have declined the ${jobTitle} job request`);
+  // Send denial to server
+  fetch("<?= ROOT ?>/bookings/deny", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      bookingId: bookingId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status !== "success") {
+        alert("Failed to decline booking");
+        // Revert UI changes if failed
+        button.innerHTML = '<i class="bx bx-x"></i> Decline';
+        button.disabled = false;
+        acceptButton.disabled = false;
+        jobItem.style.backgroundColor = "";
+      } else {
+        setTimeout(() => {
+          jobItem.style.opacity = "0.6";
+        }, 1000);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to decline booking");
+      // Revert UI changes if failed
+      button.innerHTML = '<i class="bx bx-x"></i> Decline';
+      button.disabled = false;
+      acceptButton.disabled = false;
+      jobItem.style.backgroundColor = "";
+    });
 }
 
 // Filter bookings based on tab selection
@@ -119,7 +215,7 @@ function filterBookings(filter) {
 }
 
 // Complete booking
-function completeBooking(button) {
+function completeBooking(button, bookingId) {
   const bookingItem = button.closest(".booking-item");
   const bookingTitle = bookingItem.querySelector(".booking-title").textContent;
 
@@ -130,17 +226,57 @@ function completeBooking(button) {
   // Remove action buttons and add status indicator
   const actionsDiv = bookingItem.querySelector(".booking-actions");
   actionsDiv.innerHTML = `
-    <div class="booking-status completed">
-      <i class='bx bx-check-circle'></i> Completed
-    </div>
-  `;
+        <div class="booking-status completed">
+            <i class='bx bx-check-circle'></i> Completed
+        </div>
+    `;
 
-  // Here you would typically send the completion to the server
-  alert(`You have marked "${bookingTitle}" as completed`);
+  // Send completion to server
+  fetch("<?= ROOT ?>/bookings/complete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      bookingId: bookingId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status !== "success") {
+        alert("Failed to mark booking as completed");
+        // Revert UI changes if failed
+        bookingItem.classList.remove("completed");
+        bookingItem.classList.add("upcoming");
+        actionsDiv.innerHTML = `
+                <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
+                    <i class='bx bx-check-circle'></i> Complete
+                </button>
+                <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
+                    <i class='bx bx-x-circle'></i> Cancel
+                </button>
+            `;
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to mark booking as completed");
+      // Revert UI changes if failed
+      bookingItem.classList.remove("completed");
+      bookingItem.classList.add("upcoming");
+      actionsDiv.innerHTML = `
+            <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
+                <i class='bx bx-check-circle'></i> Complete
+            </button>
+            <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
+                <i class='bx bx-x-circle'></i> Cancel
+            </button>
+        `;
+    });
 }
 
 // Cancel booking
-function cancelBooking(button) {
+function cancelBooking(button, bookingId) {
   const bookingItem = button.closest(".booking-item");
   const bookingTitle = bookingItem.querySelector(".booking-title").textContent;
 
@@ -155,70 +291,99 @@ function cancelBooking(button) {
   // Remove action buttons and add status indicator
   const actionsDiv = bookingItem.querySelector(".booking-actions");
   actionsDiv.innerHTML = `
-    <div class="booking-status cancelled">
-      <i class='bx bx-x-circle'></i> Cancelled
-    </div>
-  `;
+        <div class="booking-status cancelled">
+            <i class='bx bx-x-circle'></i> Cancelled
+        </div>
+    `;
 
-  // Here you would typically send the cancellation to the server
-  alert(`You have cancelled "${bookingTitle}"`);
+  // Send cancellation to server
+  fetch("<?= ROOT ?>/bookings/cancel", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      bookingId: bookingId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status !== "success") {
+        alert("Failed to cancel booking");
+        // Revert UI changes if failed
+        bookingItem.classList.remove("cancelled");
+        bookingItem.classList.add("upcoming");
+        actionsDiv.innerHTML = `
+                <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
+                    <i class='bx bx-check-circle'></i> Complete
+                </button>
+                <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
+                    <i class='bx bx-x-circle'></i> Cancel
+                </button>
+            `;
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to cancel booking");
+      // Revert UI changes if failed
+      bookingItem.classList.remove("cancelled");
+      bookingItem.classList.add("upcoming");
+      actionsDiv.innerHTML = `
+            <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
+                <i class='bx bx-check-circle'></i> Complete
+            </button>
+            <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
+                <i class='bx bx-x-circle'></i> Cancel
+            </button>
+        `;
+    });
 }
 
 // View job details
 function viewJobDetails(jobItem, jobId) {
-  // Get job data from the clicked item (in a real app, you would fetch from server)
-  const jobData = {
-    customer: jobItem.querySelector(".job-title").textContent,
-    contact: "Loading...", // These would come from your AJAX call
-    email: "Loading...",
-    gender: "Loading...",
-    people: "Loading...",
-    meals: "Loading...",
-    diet: "Loading...",
-    addons: "Loading...",
-    basePrice: "Loading...",
-    addonPrice: "Loading...",
-    totalPrice: "Loading...",
-  };
+  // Fetch job details from server
+  fetch(`${ROOT}/bookings/details/${jobId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        const booking = data.booking;
+        const customer = data.customer;
+        const date = new Date(booking.date);
 
-  // Populate modal with initial data
-  document.getElementById("detail-customer").textContent = jobData.customer;
-  document.getElementById("detail-contact").textContent = jobData.contact;
-  document.getElementById("detail-email").textContent = jobData.email;
-  document.getElementById("detail-gender").textContent = jobData.gender;
-  document.getElementById("detail-people").textContent = jobData.people;
-  document.getElementById("detail-meals").textContent = jobData.meals;
-  document.getElementById("detail-diet").textContent = jobData.diet;
-  document.getElementById("detail-addons").textContent = jobData.addons;
-  document.getElementById("detail-base-price").textContent = jobData.basePrice;
-  document.getElementById("detail-addon-price").textContent =
-    jobData.addonPrice;
-  document.getElementById("detail-total-price").textContent =
-    jobData.totalPrice;
+        // Populate modal with data
+        document.getElementById("detail-customer").textContent =
+          customer.full_name;
+        document.getElementById("detail-contact").textContent =
+          customer.contact_no;
+        document.getElementById("detail-email").textContent = customer.email;
+        document.getElementById("detail-service").textContent =
+          booking.service_type;
+        document.getElementById("detail-date").textContent =
+          date.toLocaleDateString();
+        document.getElementById("detail-time").textContent = booking.time_slot;
+        document.getElementById("detail-location").textContent =
+          `${customer.city}, ${customer.district}`;
+        document.getElementById("detail-requests").textContent =
+          booking.special_requests || "None";
+        document.getElementById("detail-total-price").textContent =
+          `Rs. ${booking.price.toFixed(2)}`;
 
-  // Store reference to the job item
-  const modal = document.getElementById("jobDetailsModal");
-  modal.jobItem = jobItem;
-  modal.jobId = jobId;
+        // Store reference to the job item
+        const modal = document.getElementById("jobDetailsModal");
+        modal.jobItem = jobItem;
+        modal.jobId = jobId;
 
-  // Show modal
-  modal.style.display = "block";
-
-  // In a real implementation, you would now fetch the details via AJAX:
-  /*
-    fetch(`get_job_details.php?id=${jobId}`)
-        .then(response => response.json())
-        .then(data => {
-            // Update modal with real data
-            document.getElementById('detail-customer').textContent = data.customer_name;
-            document.getElementById('detail-contact').textContent = data.contact_phone;
-            // ... and so on for all fields
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to load job details');
-        });
-    */
+        // Show modal
+        modal.style.display = "block";
+      } else {
+        alert("Failed to load job details");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Failed to load job details");
+    });
 }
 
 // Close modal
@@ -245,7 +410,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("modalAcceptBtn")
     .addEventListener("click", function () {
-      acceptJob(modal.jobItem);
+      const jobId = modal.jobId;
+      const jobItem = modal.jobItem;
+      const acceptButton = jobItem.querySelector(".btn-accept");
+      acceptJob(acceptButton, jobId);
       closeModal();
     });
 
@@ -253,23 +421,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("modalDenyBtn")
     .addEventListener("click", function () {
-      denyJob(modal.jobItem);
+      const jobId = modal.jobId;
+      const jobItem = modal.jobItem;
+      const denyButton = jobItem.querySelector(".btn-deny");
+      denyJob(denyButton, jobId);
       closeModal();
     });
 });
-
-// Update your existing job request items to include view details button
-// Modify your job request items HTML to include:
-/*
-<div class="job-actions">
-    <button class="btn-view" onclick="viewJobDetails(this.closest('.job-request-item'))">
-        <i class='bx bx-show'></i> View
-    </button>
-    <button class="btn-accept" onclick="viewJobDetails(this.closest('.job-request-item'))">
-        <i class='bx bx-check'></i> Accept
-    </button>
-    <button class="btn-deny" onclick="denyJob(this.closest('.job-request-item'))">
-        <i class='bx bx-x'></i> Decline
-    </button>
-</div>
-*/
