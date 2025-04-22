@@ -4,7 +4,7 @@ class Login extends Controller
 {
     private $userModel;
     private $workerStatsModel;
-
+    
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
@@ -13,7 +13,7 @@ class Login extends Controller
     public function index($a = '', $b = '', $c = '')
     {
         $errorMessage = '';
-
+        //echo "Inside login controller";
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Collect and sanitize user input
             $username = trim($_POST['username']);
@@ -27,6 +27,7 @@ class Login extends Controller
                 $role = $user->role;
                 // Set session variables
                 session_start(); // Ensure the session is started
+                
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['userID'] = $user->userID;
                 $_SESSION['role'] = $role;
@@ -34,10 +35,13 @@ class Login extends Controller
                 $_SESSION['customerID'] = isset($user->customerID) ? $user->customerID : null;
                 $_SESSION['username'] = $user->username;
                 $_SESSION['isVerified'] = isset($user->isVerified) ? $user->isVerified : null;
+                
+                //echo "Role: " . $_SESSION['role']; //debugging
+                //echo "User role from DB: " . $user->role;
 
                 // Redirect based on user role
                 // 'admin','hrManager','opManager','financeManager','customer','worker'
-
+               
                 if ($role === 'customer') {
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'worker') {

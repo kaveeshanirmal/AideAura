@@ -9,25 +9,31 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'deleteRoles' , 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'paymentIssues', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
             'AdminEmployees' => ['index', 'update', 'delete' , 'search'],
 
-            'AdminRoles1' => ['index', 'edit'],
+            // 'AdminRoles1' => ['index', 'edit'],
         ],
 
         'hrManager' => [
-            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'getScheduleViewOfWorker','findWorkerUserID', 'workerCertificates', 'getAvailabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'orkerMatching','workerInquiries'],
+            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'findWorkerUserID', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
+            
+            'Complaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'generateScheduleView', 'getScheduleView' ,'workerMatching'],
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'workerInquiries'],
+            
+            'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
         
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'paymentIssues', 'reports'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports'],
+
+            'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'customer'=> [
@@ -109,43 +115,43 @@ class App
     }
 
     public function loadController()
-{
-    $URL = $this->splitURL();
-
-    // Select controller
-    $filename = "../app/controllers/" . ucfirst($URL[0]) . ".php";
-    if (file_exists($filename))
     {
-        require $filename;
-        $this->controller = ucfirst($URL[0]);
-    }
-    else
-    {
-        require "../app/controllers/_404.php";
-        $this->controller = '_404';
-    }
+        $URL = $this->splitURL();
 
-    $controller = new $this->controller;
-
-    // Select method
-    if (!empty($URL[1]))
-    {
-        if (method_exists($controller, $URL[1]))
+        // Select controller
+        $filename = "../app/controllers/" . ucfirst($URL[0]) . ".php";
+        if (file_exists($filename))
         {
-            $this->method = $URL[1];
+            require $filename;
+            $this->controller = ucfirst($URL[0]);
+        }
+        else
+        {
+            require "../app/controllers/_404.php";
+            $this->controller = '_404';
+        }
+
+        $controller = new $this->controller;
+
+        // Select method
+        if (!empty($URL[1]))
+        {
+            if (method_exists($controller, $URL[1]))
+            {
+                $this->method = $URL[1];
+            }
+        }
+
+        // Remove the controller and method from the $URL array
+        $params = array_slice($URL, 2);
+
+        // Check if the controller and method are public or have access
+        if ($this->isPublic($this->controller, $this->method) || $this->checkAccess($this->controller, $this->method)) {
+            call_user_func_array([$controller, $this->method], $params);
+        } else {
+            // Redirect to unauthorized access page
+            header("Location: /aideAura/public/unauthorized");
+            exit();
         }
     }
-
-    // Remove the controller and method from the $URL array
-    $params = array_slice($URL, 2);
-
-    // Check if the controller and method are public or have access
-    if ($this->isPublic($this->controller, $this->method) || $this->checkAccess($this->controller, $this->method)) {
-        call_user_func_array([$controller, $this->method], $params);
-    } else {
-        // Redirect to unauthorized access page
-        header("Location: /aideAura/public/unauthorized");
-        exit();
-    }
-}
 }

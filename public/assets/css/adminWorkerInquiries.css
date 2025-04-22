@@ -1,302 +1,573 @@
-/* Admin Complaints Management Styles */
-body {
-  font-family: Arial, sans-serif;
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: #f8f9fa;
-  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .dashboard-container {
-  display: flex;
+  padding-top: 85px; /* Height of navbar */
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
-  margin-top: 90px;
-  margin-bottom: 20px;
   flex: 1;
-  padding: 20px;
+  display: flex;
+  overflow: hidden;
 }
 
 .main-content {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 60px); /* Subtract navbar height */
+  background-color: #f5f7fa;
 }
 
-/* Filters Container Styling */
-.filters-container {
+
+/* Complaint List Sidebar */
+.complaints-sidebar {
+  width: 30%;
+  background-color: #fff;
+  border-right: 1px solid #e1e4e8;
   display: flex;
-  gap: 1rem;
-  margin-bottom: 20px;
-  background-color: #eef3ff;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-header {
   padding: 15px;
-  border-radius: 8px;
+  border-bottom: 1px solid #e1e4e8;
+  background-color: #f8f9fa;
+}
+
+.sidebar-header h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.filters-container {
+  padding: 10px 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #e1e4e8;
 }
 
 .filters-container label {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 3px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.filters-container select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 0.9rem;
+}
+
+.complaints-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.complaint-item {
+  padding: 15px;
+  border-bottom: 1px solid #e1e4e8;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.complaint-item:hover {
+  background-color: #f1f4f9;
+}
+
+.complaint-item.active {
+  background-color: #e7f0ff;
+  border-left: 3px solid #1a73e8;
+}
+
+.complaint-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.customer-id {
+  font-weight: bold;
+  color: #333;
+}
+
+.complaint-date {
   color: #666;
-  margin-right: 10px;
+  font-size: 0.8em;
+}
+
+.complaint-issue {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.complaint-preview {
+  color: #666;
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+}
+
+.status-pending {
+  background-color: #fff8e6;
+  color: #d4a017;
+}
+
+.status-in-progress {
+  background-color: #e6f9ff;
+  color: #0288d1;
+}
+
+.status-resolved {
+  background-color: #e6ffe6;
+  color: #2e7d32;
+}
+
+.priority-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  color: #fff;
+  margin-left: 5px;
+}
+
+.priority-low {
+  background-color: #8bc34a;
+}
+
+.priority-medium {
+  background-color: #ffa726;
+}
+
+.priority-high {
+  background-color: #ef5350;
+}
+
+.priority-critical {
+  background-color: #d32f2f;
+}
+
+/* Chat Interface */
+.chat-container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fa;
+}
+
+.chat-header {
+  padding: 15px;
+  border-bottom: 1px solid #e1e4e8;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.customer-info {
   display: flex;
   align-items: center;
 }
 
-.filters-container select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
-  font-size: 14px;
+.customer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  background-color: #e1e4e8;
 }
 
-/* Complaints Table Styling */
-.complaints-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+.customer-details h3 {
+  margin: 0;
+  font-size: 1em;
 }
 
-.complaints-table thead {
-  background-color: #f0f0f0;
+.customer-details p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9em;
 }
 
-.complaints-table th {
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #ddd;
+.issue-details {
+  margin-top: 5px;
 }
 
-.complaints-table tbody tr {
-  transition: background-color 0.3s ease;
+.issue-type {
+  font-weight: bold;
+  color: #444;
 }
 
-.complaints-table tbody tr:hover {
-  background-color: #f9f9f9;
+.action-buttons button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 0.9em;
+  transition: background-color 0.2s;
 }
 
-.complaints-table td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #eee;
-}
-
-/* Priority Highlighting */
-.complaints-table td:nth-child(4) {
-  font-weight: 500;
-}
-
-.complaints-table td:nth-child(4):contains("Critical") {
-  color: #d9534f;
-}
-
-.complaints-table td:nth-child(4):contains("High") {
-  color: #f0ad4e;
-}
-
-.complaints-table td:nth-child(4):contains("Low") {
-  color: #5cb85c;
-}
-
-/* Action Button Styling */
-.reply-button {
+.resolve-button {
   background-color: #4caf50;
   color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.reply-button:hover {
-  background-color: #45a049;
+.resolve-button:hover {
+  background-color: #3d8b40;
 }
 
 .delete-button {
   background-color: #f44336;
   color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .delete-button:hover {
-  background-color: #da190b;
+  background-color: #d32f2f;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-  .filters-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .complaints-table {
-    font-size: 14px;
-  }
-
-  .complaints-table th,
-  .complaints-table td {
-    padding: 8px 10px;
-  }
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fa;
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.overlay-content {
-  position: relative;
-  background-color: #ffffff;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  width: 100%;
-  max-width: 450px;
-}
-
-h3 {
-  margin-top: 0;
+/* Chat Messages Styling */
+.message {
   margin-bottom: 20px;
-  color: #333;
-  font-size: 1.2rem;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  width: 100%;
+  display: flex;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.customer-message {
+  justify-content: flex-start;
 }
 
-.form-group label {
-  display: block;
+.admin-message {
+  justify-content: flex-end;
+}
+
+.opManager-message {
+  justify-content: flex-end;
+}
+
+.message-content {
+  max-width: 70%;
+  border-radius: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.customer-message .message-content {
+  background-color: #f1f0f0;
+  border-bottom-left-radius: 0;
+}
+
+.admin-message .message-content {
+  background-color: #216ab8;
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 5px;
+  font-size: 0.8rem;
+}
+
+.admin-message .message-header {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.opManager-message .message-content {
+  background-color: #20638d; /* Green color to distinguish from admin blue */
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.opManager-message .message-header {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.opManager-message .status-update {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.financeManager-message {
+  justify-content: flex-end;
+}
+
+.financeManager-message .message-content {
+  background-color: #ffc107; /* Yellow/orange shade */
+  color: black;
+  border-bottom-right-radius: 0;
+}
+
+.financeManager-message .message-header {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.financeManager-message .status-update {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+
+.message-body p {
+  margin: 0;
+}
+
+.status-update {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.admin-message .status-update {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.system-message {
+  background-color: #f1f1f1;
+  color: #666;
+  font-style: italic;
+  align-self: center;
+  border-radius: 10px;
+  max-width: 90%;
+  text-align: center;
+  padding: 8px 15px;
+  font-size: 0.9em;
+}
+
+.message-time {
+  display: block;
+  font-size: 0.7em;
+  margin-top: 5px;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.chat-input {
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #e1e4e8;
+}
+
+.chat-form {
+  display: flex;
+  align-items: flex-start;
+}
+
+.chat-input textarea {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none;
+  outline: none;
+  height: 80px;
+  font-size: 0.95em;
+}
+
+.chat-input textarea:focus {
+  border-color: #1a73e8;
+}
+
+.chat-input button {
+  padding: 0 20px;
+  height: 80px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.chat-input button:hover {
+  background-color: #1565c0;
+}
+
+.no-chat-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  background-color: #fff;
+}
+
+.no-chat-selected i {
+  font-size: 4em;
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
+.no-chat-selected h3 {
+  margin-bottom: 10px;
   color: #555;
 }
 
-#solutionText {
+.no-chat-selected p {
+  color: #888;
+}
+
+/* Confirmation Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  resize: vertical;
-  min-height: 100px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.form-actions {
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  color: #333;
+}
+
+.modal-actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
-.form-actions button {
+.modal-actions button {
   padding: 8px 15px;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 4px;
-  background-color: #f4f4f4;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.2s;
+}
+
+.cancel-button {
+  background-color: #f1f1f1;
   color: #333;
 }
 
-#submitReplyButton {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+.cancel-button:hover {
+  background-color: #e0e0e0;
 }
 
-#confirmDeleteButton {
-  background-color: #dc3545;
+.confirm-button {
+  background-color: #4caf50;
   color: white;
-  border-color: #dc3545;
 }
 
-.response-message {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 4px;
+.confirm-button:hover {
+  background-color: #3d8b40;
+}
+
+/* Empty state */
+.empty-state {
   text-align: center;
+  padding: 40px 20px;
+  color: #666;
 }
 
-.response-message.success {
-  background-color: #dff0d8;
-  color: #3c763d;
+.empty-state p {
+  margin: 10px 0;
+  color: #888;
 }
 
-.response-message.error {
-  background-color: #f2dede;
-  color: #a94442;
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .main-content {
+      flex-direction: column;
+      height: calc(100vh - 60px);
+  }
+  
+  .complaints-sidebar {
+      width: 100%;
+      max-height: 40%;
+  }
+  
+  .chat-container {
+      width: 100%;
+      height: 60%;
+  }
 }
 
-#closeMessageButton {
-  display: block;
-  margin: 15px auto 0;
-  padding: 8px 15px;
-  background-color: #f4f4f4;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.description-tooltip {
-  position: relative;
-  cursor: help;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.description-tooltip::after {
-  content: attr(data-full-description);
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  z-index: 1;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #333;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  white-space: normal;
-  width: 300px;
-  transition: opacity 0.3s;
-}
-
-.description-tooltip:hover::after {
-  visibility: visible;
-  opacity: 1;
+@media (max-width: 768px) {
+  .chat-header {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+  
+  .action-buttons {
+      margin-top: 10px;
+      display: flex;
+      width: 100%;
+  }
+  
+  .action-buttons button {
+      flex: 1;
+      margin: 5px;
+  }
+  
+  .chat-form {
+      flex-direction: column;
+  }
+  
+  .chat-input button {
+      margin-left: 0;
+      margin-top: 10px;
+      height: 40px;
+      width: 100%;
+  }
 }

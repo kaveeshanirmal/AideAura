@@ -2,6 +2,11 @@
 class UserModel
 {
     use Model; // Use the Model trait
+    
+    public function __construct()
+    {
+        $this->setTable('users');
+    }
 
     // Register a new user
     public function register($data, $role)
@@ -74,7 +79,7 @@ class UserModel
         ];
         $this->insert($customerData);
     }
-    // If role is 'customer', add data to 'customer' table
+    // If role is 'hrManager', add data to 'hrManager' table
     else if ($role === 'hrManager') {
         $this->setTable('hrManager');
 
@@ -118,6 +123,7 @@ public function registerEmployee($data)
     // Find a user by username (for login)
     public function findUserByUsername($username)
     {
+
         $this->setTable('users'); // Set the table to 'users'
 
         $query = "SELECT * FROM " . $this->getTable() . " WHERE username = :username LIMIT 1";
@@ -139,6 +145,10 @@ public function registerEmployee($data)
             // Merge the role-specific data with the user data
             if ($roleData) {
                 $user = (object) array_merge((array) $user, (array) $roleData);
+            }else {
+                // Handle other roles like admin, financeManager, HR, operationalManager
+                // No need for extra queries for these roles; just return the user
+                $roleData = null;
             }
 
             return $user;

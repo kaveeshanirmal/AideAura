@@ -1,5 +1,6 @@
 # Turn on URL rewriting
 RewriteEngine On
+RewriteBase /AideAura/public/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

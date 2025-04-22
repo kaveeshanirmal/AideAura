@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 04:40 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Apr 22, 2025 at 09:00 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -117,7 +117,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`customerID`, `userID`, `profileImage`, `address`) VALUES
-(3, 24, '/public/assets/images/avatar-image.png', '20, embillawatta road');
+(3, 24, '/public/assets/images/avatar-image.png', '20, embillawatta road'),
+(4, 62, '/public/assets/images/avatar-image.png', '123,colombo');
 
 -- --------------------------------------------------------
 
@@ -129,7 +130,7 @@ DROP TABLE IF EXISTS `customercomplaints`;
 CREATE TABLE `customercomplaints` (
   `complaintID` bigint(20) UNSIGNED NOT NULL,
   `customerID` bigint(20) UNSIGNED NOT NULL,
-  `issue_type` varchar(100) NOT NULL,
+  `issue_type` enum('General Issues','Service Issues','Booking Issues','Payment Issues','Technical Issues','Account Issues','Complaint/Feedback','Help Requests') NOT NULL,
   `issue` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `status` enum('Pending','In Progress','Resolved') DEFAULT 'Pending',
@@ -137,6 +138,16 @@ CREATE TABLE `customercomplaints` (
   `submitted_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customercomplaints`
+--
+
+INSERT INTO `customercomplaints` (`complaintID`, `customerID`, `issue_type`, `issue`, `description`, `status`, `priority`, `submitted_at`, `updated_at`) VALUES
+(1, 3, 'Service Issues', 'Worker arrived late', 'The assigned worker arrived over 45 minutes late without prior notice.', 'In Progress', 'Medium', '2025-04-22 05:39:32', '2025-04-22 05:40:07'),
+(2, 3, 'General Issues', 'Worker was rude', 'The worker displayed a rude attitude and refused to complete all assigned tasks.', 'In Progress', 'High', '2025-04-22 05:39:32', '2025-04-22 05:39:32'),
+(3, 4, 'Payment Issues', 'Overcharged for service', 'I was charged more than the quoted price for basic cleaning.', 'Pending', 'Critical', '2025-04-22 05:39:32', '2025-04-22 05:39:32'),
+(4, 4, 'Technical Issues', 'App crashed during booking', 'The app crashed multiple times while I was trying to book a service.', 'Resolved', 'Low', '2025-04-22 05:39:32', '2025-04-22 05:39:32');
 
 -- --------------------------------------------------------
 
@@ -146,12 +157,22 @@ CREATE TABLE `customercomplaints` (
 
 DROP TABLE IF EXISTS `customercomplaints_updates`;
 CREATE TABLE `customercomplaints_updates` (
-  `updateID` bigint(20) UNSIGNED NOT NULL,
+  `updateID` int(11) NOT NULL,
   `complaintID` bigint(20) UNSIGNED NOT NULL,
   `status` enum('Pending','In Progress','Resolved') DEFAULT 'In Progress',
   `comments` text DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `userID` int(11) DEFAULT NULL,
+  `role` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customercomplaints_updates`
+--
+
+INSERT INTO `customercomplaints_updates` (`updateID`, `complaintID`, `status`, `comments`, `updated_at`, `userID`, `role`) VALUES
+(1, 1, 'In Progress', 'will look in to this asap mam', '2025-04-22 05:49:09', 20, 'admin'),
+(2, 1, 'In Progress', 'we warned the worker and will make sure it never happens mam', '2025-04-22 06:52:41', 20, 'admin');
 
 -- --------------------------------------------------------
 
@@ -165,7 +186,7 @@ CREATE TABLE `jobroles` (
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `description` varchar(255) NOT NULL,
-  `isDelete` int(1) DEFAULT 0
+  `isDelete` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -173,15 +194,15 @@ CREATE TABLE `jobroles` (
 --
 
 INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VALUES
-(1, 'Cook', 'assets/images/service_cook.png', 'Prepares and cooks meals according to dietary preferences', 0),
-(2, 'Cook 24-hour Live in', 'assets/images/service_cook24.png', 'Provides round-the-clock meal preparation and kitchen care.', 0),
-(3, 'Maid', 'assets/images/service_maid.png', 'Manages cleaning, laundry, and household upkeep', 0),
-(4, 'Nanny', 'assets/images/service_nanny.png', 'Cares for children, including supervision, meals, and activities', 0),
-(5, 'All rounder', 'assets/images/service_allrounder.png', 'Performs various household tasks and maintenance as needed', 0),
-(6, 'test', 'public/assets/images/roles/20230816_125947.jpg', '                 kjsffjgjhsdflkgjhfdlkghdlksghlkfjglk          ', 0),
-(8, 'test2', 'public/assets/images/roles/20230816_125947.jpg', '                            isfgkdjgdkjgkjfgkfng', 0),
-(9, 'test3', 'public/assets/images/roles/', '                            agfsdgsdgfsggfg', 0),
-(11, 'test4', 'public/assets/images/roles/', '                        gghgkjhgkjgkjhgkjg    ', 0),
+(1, 'Cook', 'assets/images/service_cook.png', 'Prepares and cooks meals according to dietary preferences', NULL),
+(2, 'Cook 24-hour Live in', 'assets/images/service_cook24.png', 'Provides round-the-clock meal preparation and kitchen care.', NULL),
+(3, 'Maid', 'assets/images/service_maid.png', 'Manages cleaning, laundry, and household upkeep', NULL),
+(4, 'Nanny', 'assets/images/service_nanny.png', 'Cares for children, including supervision, meals, and activities', NULL),
+(5, 'All rounder', 'assets/images/service_allrounder.png', 'Performs various household tasks and maintenance as needed', NULL),
+(6, 'test', 'public/assets/images/roles/20230816_125947.jpg', '                 kjsffjgjhsdflkgjhfdlkghdlksghlkfjglk          ', NULL),
+(8, 'test2', 'public/assets/images/roles/20230816_125947.jpg', '                            isfgkdjgdkjgkjfgkfng', NULL),
+(9, 'test3', 'public/assets/images/roles/', '                            agfsdgsdgfsggfg', NULL),
+(11, 'test4', 'public/assets/images/roles/', '                        gghgkjhgkjgkjhgkjg    ', NULL),
 (13, 'test5', 'public/assets/images/roles/', '                            hjbhhgkhgjhgjhgjhbjhjhb', 1),
 (15, 'test6', 'public/assets/images/roles/', '                            hjbhhgkhgjhgjhgjhbjhjhb', 1),
 (17, 'test7', 'public/assets/images/roles/678ba62c9d8d9_20230816_125951.jpg', 'vfgzdsgfdgdfgfdgf', 1),
@@ -189,7 +210,7 @@ INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VA
 (19, 'test10', 'public/assets/images/roles/678ba6d536779_20230816_125947.jpg', 'guiggggghgvhghg', 1),
 (20, 'test11', 'public/assets/images/roles/678ba7111b07f_20230816_125947.jpg', 'kjjkkjkjkjnkn', 1),
 (53, 'Cleaner1H', 'public/assets/images/roles/67a0c9eb6a121_20230816_125947.jpg', 'dfsfdsgfdgdfghhdhdhhh', 1),
-(54, 'cleaner2,5', 'public/assets/images/roles/67a0cb549a71e_20230816_125947.jpg', 'fhgdshfghdfhgdfhgkdfhghdfkghkg', 0),
+(54, 'cleaner2,5', 'public/assets/images/roles/67a0cb549a71e_20230816_125947.jpg', 'fhgdshfghdfhgdfhgkdfhghdfkghkg', NULL),
 (55, 'testcase 3', 'public/assets/images/roles/67a0cc487114e_20230816_125947.jpg', 'dhsafhjkdfkjasfkjhdaslkjfjkdaflkjdsaflkasdlkfjhlkjfhlkasdjdfhkajhfgdk', 1),
 (56, 'test001', 'public/assets/images/roles/67ae21d830cf1_20230816_125951.jpg', 'ujfjsfjdsjklksdjlksdjflkjsdkljsajkfdslkjfsljfdslakflk', 1),
 (57, 'test case 000', 'public/assets/images/roles/67ae2d36d0c3e_WhatsApp Image 2025-02-05 at 21.41.00_a7ba958f.jpg', 'dhuadfashfdsahfkjshakjfhaskhdkh', 1);
@@ -221,6 +242,30 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+CREATE TABLE `notifications` (
+  `notificationID` int(11) NOT NULL,
+  `userID` bigint(20) UNSIGNED NOT NULL,
+  `type` enum('worker','customer') NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`notificationID`, `userID`, `type`, `title`, `message`, `is_read`, `created_at`) VALUES
+(2, 24, 'worker', 'Welcome to AideAura', 'Hello there, welcome to the dream platform of domestic workers', 0, '2025-04-18 14:47:03');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment_rates`
 --
 
@@ -231,7 +276,7 @@ CREATE TABLE `payment_rates` (
   `BasePrice` decimal(11,2) DEFAULT NULL,
   `BaseHours` decimal(11,2) DEFAULT NULL,
   `CreatedDate` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `isDelete` int(1) DEFAULT 0
+  `isDelete` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -360,7 +405,7 @@ CREATE TABLE `users` (
   `phone` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isDelete` int(1) DEFAULT 0
+  `isDelete` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -368,31 +413,31 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `password`, `phone`, `email`, `createdAt`, `isDelete`) VALUES
-(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', 0),
-(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', 0),
-(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', 0),
-(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', 0),
-(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794652, 'kasun@gmail.com', '2024-12-28 09:33:03', 0),
-(27, 'opmanager', 'Waruna', 'Chathuranga', 'financeManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', 0),
-(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 0),
-(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 0),
-(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', 0),
-(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', 0),
-(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', 0),
-(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', 0),
-(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', 0),
-(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', 0),
-(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', 0),
-(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', 0),
-(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', 0),
-(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', 0),
-(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, '', '2025-04-09 21:35:19', 0),
-(43, 'suneetha', '', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', 0),
-(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', 0),
-(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', 0),
-(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', 0),
-(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', 0),
-(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', 0),
+(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', NULL),
+(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', NULL),
+(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', NULL),
+(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', NULL),
+(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794651, 'kasun@gmail.com', '2024-12-28 09:33:03', NULL),
+(27, 'opmanager', 'Waruna', 'Chathuranga', 'opManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', NULL),
+(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 1),
+(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 1),
+(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', NULL),
+(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', NULL),
+(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', NULL),
+(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', NULL),
+(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', NULL),
+(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', NULL),
+(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', NULL),
+(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', NULL),
+(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', NULL),
+(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', NULL),
+(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, 'kamal.s@gmail.com', '2025-04-09 21:35:19', NULL),
+(43, 'suneetha', 'Suneetha', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', NULL),
+(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', NULL),
+(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', NULL),
+(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', NULL),
+(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', NULL),
+(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', NULL),
 (49, 'chamari', 'Chamari', 'Jayawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 779012345, 'chamari.j@gmail.com', '2025-04-09 21:35:19', NULL),
 (50, 'ruwan', 'Ruwan', 'Rajapakse', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 770123456, 'ruwan.r@gmail.com', '2025-04-09 21:35:19', NULL),
 (51, 'nilmini', 'Nilmini', 'Herath', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 711234567, 'nilmini.h@gmail.com', '2025-04-09 21:35:19', NULL),
@@ -405,8 +450,8 @@ INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `pas
 (58, 'chaminda', 'Chaminda', 'Vithanage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 718901234, 'chaminda.v@gmail.com', '2025-04-09 21:35:19', NULL),
 (59, 'sandamali', 'Sandamali', 'Gamage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 719012345, 'sandamali.g@gmail.com', '2025-04-09 21:35:19', NULL),
 (60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 710123456, 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL),
-(61, 'maid1', 'Ruwan', 'Sarathchandra', 'worker', '$2y$10$AUuFUcoDvlvn7yfRlLB/kOjNIUrCpPjhPv.7wzmrPd95BF.kfztAq', 248794653, 'veen1234@gamil.com', '2025-04-11 03:53:08', NULL),
-(62, 'admin2', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$vhVgFH0qottLKQmDqmmypubv5GJddVOtN8cRkU7rVqE1w2v0F3Ke.', 585964582, 'pasan@gmai.com', '2025-04-11 14:01:13', 1);
+(61, 'workertest', 'dew', 'rew', 'worker', '$2y$10$nHWKNB7yjpV42i4Sjp7TaO7CYeOVywXckl1QYwD0yXS644THikMZ6', 771234567, 'mew@gmail.com', '2025-04-17 07:23:34', NULL),
+(62, 'customer', 'messy', 'lessy', 'customer', '$2y$10$XI5uskAFoWDaa9kG2.h8cOCZ1due8bgRP1Yryf2QcgGQz3QvuSA1C', 771234566, 'fry@gmail.com', '2025-04-17 07:33:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -604,19 +649,6 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 (42, 'Sandamali Gamage', 'sandamali', '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20');
 
---
--- Triggers `verified_workers`
---
-DROP TRIGGER IF EXISTS `after_verified_worker_insert`;
-DELIMITER $$
-CREATE TRIGGER `after_verified_worker_insert` AFTER INSERT ON `verified_workers` FOR EACH ROW BEGIN
-    UPDATE worker
-    SET isVerified = 1
-    WHERE workerID = NEW.workerID;
-END
-$$
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
@@ -648,7 +680,7 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (21, 36, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
 (22, 39, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
 (23, 40, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
-(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 0, 'online'),
+(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 1, 'online'),
 (25, 42, '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 1, 'online'),
 (26, 43, '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 1, 'online'),
 (27, 44, '/public/assets/images/avatar-image.png', '12, Beach Road, Colombo', 1, 'online'),
@@ -668,7 +700,7 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (41, 58, '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 1, 'offline'),
 (42, 59, '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 1, 'offline'),
 (43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline'),
-(44, 61, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline');
+(44, 61, '/public/assets/images/avatar-image.png', 'mew', 0, 'offline');
 
 --
 -- Triggers `worker`
@@ -740,7 +772,8 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 (41, 5),
 (42, 5),
 (43, 5),
-(44, 3);
+(44, 1),
+(44, 2);
 
 -- --------------------------------------------------------
 
@@ -761,7 +794,7 @@ CREATE TABLE `worker_stats` (
 --
 
 INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_activity`) VALUES
-(13, 0.00, 0, '2025-04-12 10:40:34'),
+(13, 0.00, 0, '2025-04-10 20:54:43'),
 (15, 0.00, 0, '2025-04-10 19:45:30'),
 (16, 0.00, 0, '2025-04-10 19:45:30'),
 (17, 0.00, 0, '2025-04-10 19:45:30'),
@@ -791,7 +824,7 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 (41, 0.00, 0, '2025-04-10 19:45:30'),
 (42, 0.00, 0, '2025-04-10 19:45:30'),
 (43, 0.00, 0, '2025-04-10 19:45:30'),
-(44, 0.00, 0, '2025-04-11 07:11:22');
+(44, 0.00, 0, '2025-04-22 06:59:01');
 
 -- --------------------------------------------------------
 
@@ -936,26 +969,10 @@ INSERT INTO `workingschedule` (`scheduleID`, `workerID`, `day_of_week`, `start_t
 --
 
 --
--- Indexes for table `bookings`
+-- Indexes for table `customercomplaints_updates`
 --
-ALTER TABLE `bookings`
-  ADD PRIMARY KEY (`bookingID`),
-  ADD KEY `customerID` (`customerID`),
-  ADD KEY `workerID` (`workerID`);
-
---
--- Indexes for table `customer`
---
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customerID`),
-  ADD KEY `userID` (`userID`);
-
---
--- Indexes for table `customercomplaints`
---
-ALTER TABLE `customercomplaints`
-  ADD PRIMARY KEY (`complaintID`),
-  ADD KEY `customerID` (`customerID`);
+ALTER TABLE `customercomplaints_updates`
+  ADD PRIMARY KEY (`updateID`);
 
 --
 -- Indexes for table `jobroles`
@@ -1003,22 +1020,10 @@ ALTER TABLE `workingschedule`
 --
 
 --
--- AUTO_INCREMENT for table `bookings`
+-- AUTO_INCREMENT for table `customercomplaints_updates`
 --
-ALTER TABLE `bookings`
-  MODIFY `bookingID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `customer`
---
-ALTER TABLE `customer`
-  MODIFY `customerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `customercomplaints`
---
-ALTER TABLE `customercomplaints`
-  MODIFY `complaintID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `customercomplaints_updates`
+  MODIFY `updateID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `jobroles`
@@ -1030,7 +1035,7 @@ ALTER TABLE `jobroles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `worker`
@@ -1047,25 +1052,6 @@ ALTER TABLE `workingschedule`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `bookings`
---
-ALTER TABLE `bookings`
-  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`),
-  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`);
-
---
--- Constraints for table `customer`
---
-ALTER TABLE `customer`
-  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
-
---
--- Constraints for table `customercomplaints`
---
-ALTER TABLE `customercomplaints`
-  ADD CONSTRAINT `customercomplaints_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `worker`

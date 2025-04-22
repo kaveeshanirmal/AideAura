@@ -3,7 +3,7 @@
 Trait Model
 {
     use Database;
-
+    protected $table; // This line fixes the issue for PHP 8.2+
     // Set the table name dynamically
     public function setTable($table)
     {

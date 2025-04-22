@@ -21,7 +21,7 @@
 ?>
 
 <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/<?=$_SESSION['role']?>_navbar.css">
-<?php include ROOT_PATH . '\app\views\components\\' . $_SESSION['role'] . 'Menubar.view.php'; ?>
+<?php include ROOT_PATH . '/app/views/components/' . $_SESSION['role'] . 'Menubar.view.php'; ?>
 <div class="header">
     <div class="right-section">
         <img class="icon" id="profile-toggle" src="<?=ROOT?>/public/assets/images/Menu.png" alt="profile logo">
