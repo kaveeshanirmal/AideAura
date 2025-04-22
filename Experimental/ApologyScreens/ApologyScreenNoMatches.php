@@ -110,7 +110,7 @@
         // Countdown and redirect script
         let countdown = 5; // seconds
         const timerElement = document.getElementById('timer');
-        const redirectURL = '<?=ROOT?>/Experimental/BrowseWorker/BrowseWorker.html'; // Change this to the desired redirect URL
+        const redirectURL = '<?=ROOT?>/public'; // Change this to the desired redirect URL
 
         const countdownInterval = setInterval(() => {
             countdown--;
