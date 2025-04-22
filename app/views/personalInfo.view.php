@@ -4,7 +4,7 @@
 
 <div class="main-content">
     <h1>Personal Information</h1>
-    <form class="personal-info-form" id="personalInfoForm" method="POST" action="<?=ROOT?>/public/profile/update" enctype="multipart/form-data">
+    <form class="personal-info-form" id="personalInfoForm" method="POST" action="<?=ROOT?>/public/<?=$_SESSION['role']=='worker' ? 'workerProfile' : 'customerProfile'?>/update" enctype="multipart/form-data">
         <div class="form-group">
             <label for="profileImage">Profile Photo</label>
             <div>

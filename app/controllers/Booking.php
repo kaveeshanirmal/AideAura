@@ -103,4 +103,72 @@ class Booking extends Controller
         ]);
         exit;
     }
+
+    public function getBooking($bookingID)
+    {
+        header('Content-Type: application/json');
+
+        if (!isset($_SESSION['userID'])) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+            exit;
+        }
+
+        $booking = $this->bookingModel->getBookingDetails($bookingID);
+
+        if ($booking) {
+            echo json_encode(['status' => 'success', 'booking' => $booking]);
+        } else {
+            http_response_code(404);
+            echo json_encode(['status' => 'error', 'message' => 'Booking not found']);
+        }
+    }
+
+    public function accept()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method. POST required.']);
+            exit;
+        }
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $bookingID = $data['bookingID'] ?? null;
+
+        if (!$bookingID) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Booking ID is required']);
+            exit;
+        }
+
+        $workerID = $_SESSION['workerID'];
+
+        $updateSuccess = $this->bookingModel->updateBookingStatus($bookingID, 'accepted');
+        if (!$updateSuccess) {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to update booking status']);
+            exit;
+        }
+
+        // create notifications for both customer and worker
+        $this->notificationModel->create(
+            $this->userModel->getUserID($workerID, 'worker'),
+            'Booking Accepted',
+            'You have accepted a booking.',
+            'Navigate to your dashboard to view the details.'
+        );
+
+        $customerID = $this->bookingModel->getCustomerIdByBookingId($bookingID);
+        $this->notificationModel->create(
+            $this->userModel->getUserID($customerID, 'customer'),
+            'Booking Accepted',
+            'Your booking has been accepted.',
+            'Proceed with payment to confirm the booking.'
+        );
+
+        echo json_encode(['status' => 'success', 'message' => 'Booking accepted successfully']);
+    }
 }

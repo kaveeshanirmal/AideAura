@@ -4,6 +4,12 @@ class WorkerModel
     use Model;
 
     private $certificateData = [];
+    private $bookingModel;
+
+    public function __construct()
+    {
+        $this->bookingModel = new BookingModel();
+    }
     
     public function getAllWorkers(){
         $this->setTable('worker');
@@ -118,5 +124,96 @@ class WorkerModel
             'bookingDate' => $date,
             'startTime' => $startTime
         ]);
+    }
+
+    public function updateAvailability($workerID, $status): bool
+    {
+        $this->setTable('worker');
+        return $this->update($workerID, ['availability_status' => $status], 'workerID');
+    }
+
+    public function getWorkerAvailability($workerID)
+    {
+        $this->setTable('worker');
+        $worker = $this->find($workerID, 'workerID');
+        return $worker ? $worker->availability_status : null;
+    }
+
+    public function getWorkerProfileInfo($workerID): array
+    {
+        // Get base worker info
+        $this->setTable('worker');
+        $worker = $this->find($workerID, 'workerID');
+
+        // Get verification details
+        $this->setTable('verified_workers');
+        $verification = $this->find($workerID, 'workerID');
+
+        // Get worker stats
+        $this->setTable('worker_stats');
+        $stats = $this->find($workerID, 'workerID');
+
+        return [
+            'full_name' => $verification->full_name ?? '',
+            'profileImage' => $worker->profileImage ?? '',
+            'rating' => $stats->avg_rating ?? 0,
+            'reviews' => $stats->total_reviews ?? 0,
+            'roles' => $this->getWorkerRoles($workerID),
+            'workLocation' => $verification->workLocations ?? '',
+        ];
+    }
+
+    public function getWorkerRoles($workerID)
+    {
+        $this->setTable('worker_roles');
+        $query = "SELECT r.name FROM worker_roles wr JOIN jobroles r ON wr.roleID = r.roleID WHERE wr.workerID = :workerID";
+        $roleObjects = $this->get_all($query, ['workerID' => $workerID]);
+
+        // Extract just the name values from each role object
+        $roleNames = [];
+        foreach ($roleObjects as $role) {
+            $roleNames[] = $role->name;
+        }
+
+        return $roleNames;
+    }
+
+    public function getNewBookingRequests($workerID)
+    {
+        $this->setTable('bookings');
+
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID AND status = 'pending'";
+        $bookings = $this->get_all($query, ['workerID' => $workerID]);
+
+        $result = [];
+        foreach ($bookings as $booking) {
+            $result[] = [
+                'key' => $booking->bookingID,
+                'value' => $this->bookingModel->getBookingDetails($booking->bookingID)
+            ];
+        }
+        return $result;
+    }
+
+    public function getAllBookings($workerID)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID";
+        $bookings = $this->get_all($query, ['workerID' => $workerID]);
+
+        $result = [];
+        foreach ($bookings as $booking) {
+            $result[] = [
+                'key' => $booking->bookingID,
+                'value' => $this->bookingModel->getBookingDetails($booking->bookingID)
+            ];
+        }
+        return $result;
+    }
+
+    public function updateWorkLocation($workerID, $newLocation)
+    {
+        $this->setTable('verified_workers');
+        return $this->update($workerID, ['workLocations' => $newLocation], 'workerID');
     }
 }

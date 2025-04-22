@@ -74,7 +74,7 @@ class SearchForWorker extends Controller
           WHERE w.availability_status = 'online'
           AND vw.gender = :gender
           AND j.name = :jobType
-          AND vw.address LIKE :location
+          AND vw.workLocations LIKE :location
           AND ws.day_of_week = :weekday
           AND ws.start_time <= TIME(:startTime)
           AND ws.end_time >= TIME(:startTime)

@@ -98,8 +98,8 @@ class CustomerProfile extends Controller
                 echo "Failed to update profile. Please try again.";
             }
 
-            // Redirect back to the profile page
-            // header("Location: " . ROOT . "/public/profile/personalInfo");
+//             Redirect back to the profile page
+             header("Location: " . ROOT . "/public/customerProfile/personalInfo");
             exit();
         }
     }

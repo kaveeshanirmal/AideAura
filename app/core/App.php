@@ -44,7 +44,7 @@ class App
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
-            'Booking' => ['index', 'bookWorker'],
+            'Booking' => ['index', 'bookWorker', 'getBooking'],
         ],
 
         'worker' => [
@@ -52,6 +52,8 @@ class App
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
             'Home'=> ['findJobs'],
+            'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation'],
+            'Booking' => ['getBooking', 'accept', 'reject'],
         ]
     ];
 

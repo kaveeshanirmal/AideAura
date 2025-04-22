@@ -652,7 +652,8 @@ CREATE TABLE `worker` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
   `profileImage` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
-  `address` varchar(255) NOT NULL,
+  `address` varchar(255) NO
+      T NULL,
   `isVerified` tinyint(1) NOT NULL DEFAULT 0,
   `availability_status` enum('online','offline','busy') DEFAULT 'offline'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

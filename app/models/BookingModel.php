@@ -46,6 +46,28 @@ class BookingModel
     public function updateBookingStatus($bookingID, $status)
     {
         $this->setTable('bookings');
-        $this->update($bookingID, ['status' => $status], 'bookingID');
+        return $this->update($bookingID, ['status' => $status], 'bookingID');
+    }
+
+    public function getBookingDetails($bookingID)
+    {
+        $this->setTable('bookings');
+        $booking = $this->find($bookingID, 'bookingID');
+        if ($booking) {
+            $this->setTable('booking_details');
+            $details = $this->get_all("SELECT * FROM booking_details WHERE bookingID = :bookingID", ['bookingID' => $bookingID]);
+            return [
+                'booking' => $booking,
+                'details' => $details
+            ];
+        }
+        return null;
+    }
+
+    public function getCustomerIdByBookingId($bookingID)
+    {
+        $this->setTable('bookings');
+        $customer = $this->find($bookingID, 'bookingID');
+        return $customer ? $customer->customerID : null;
     }
 }
