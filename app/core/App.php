@@ -30,11 +30,6 @@ class App
             'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
             
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
-            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'getScheduleViewOfWorker','findWorkerUserID', 'workerCertificates', 'getAvailabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'orkerMatching','workerInquiries'],
-        ],
-
-        'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'generateScheduleView', 'getScheduleView' ,'workerMatching'],
         ],
         
         'financeManager' => [
