@@ -46,7 +46,7 @@ class BookingModel
     public function updateBookingStatus($bookingID, $status)
     {
         $this->setTable('bookings');
-        $this->update($bookingID, ['status' => $status], 'bookingID');
+        return $this->update($bookingID, ['status' => $status], 'bookingID');
     }
 
     public function getBookingDetails($bookingID)
@@ -62,5 +62,12 @@ class BookingModel
             ];
         }
         return null;
+    }
+
+    public function getCustomerIdByBookingId($bookingID)
+    {
+        $this->setTable('bookings');
+        $customer = $this->find($bookingID, 'bookingID');
+        return $customer ? $customer->customerID : null;
     }
 }

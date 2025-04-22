@@ -99,7 +99,7 @@ class WorkerProfile extends Controller
             }
 
             // Redirect back to the profile page
-            // header("Location: " . ROOT . "/public/profile/personalInfo");
+             header("Location: " . ROOT . "/public/workerProfile/personalInfo");
             exit();
         }
     }

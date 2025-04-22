@@ -1,15 +1,136 @@
+function pollForNewRequests() {
+  fetch(`${ROOT}/public/dashboard/getJobRequests`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success" && data.data.length > 0) {
+        // Store the requests in a global variable
+        window.latestRequests = data.data;
+        console.log("Saved the bookingData to the window", data);
+        updateJobRequestsList(data.data);
+      }
+    })
+    .catch((error) => {});
+}
+
+// Update job requests list with new data
+function updateJobRequestsList(requests) {
+  const jobRequestList = document.getElementById("jobRequestList");
+
+  if (!requests || requests.length === 0) {
+    jobRequestList.innerHTML = `
+        <div class="no-jobs-message">
+            <i class='bx bx-info-circle'></i>
+            <p>No new job requests available at the moment.</p>
+        </div>
+    `;
+    return;
+  }
+
+  // Get existing booking IDs to avoid duplicates
+  const existingBookingIds = Array.from(
+    document.querySelectorAll(".job-request-item"),
+  ).map((item) => item.getAttribute("data-booking-id"));
+
+  let newItemsAdded = false;
+
+  requests.forEach((request) => {
+    let bookingData = request.value.booking;
+    // const bookingId = bookingData.bookingID;
+    const bookingId = request.key;
+    // const bookingDetails = request.value.details;
+    const bookingIdStr = String(bookingId);
+
+    // Skip if this booking ID already exists in the DOM
+    if (existingBookingIds.includes(bookingIdStr)) {
+      return;
+    }
+
+    newItemsAdded = true;
+
+    const dateValue = bookingData.bookingDate;
+    const dateObj = dateValue ? new Date(dateValue) : new Date();
+    const serviceType = bookingData.serviceType;
+    const location = bookingData.location;
+
+    // Create a new item element
+    const newItem = document.createElement("div");
+    newItem.className = "job-request-item";
+    newItem.setAttribute("data-booking-id", bookingIdStr);
+
+    newItem.innerHTML = `
+        <div class="job-date">
+            <div class="job-date-day">${dateObj.getDate()}</div>
+            <div class="job-date-weekday">${dateObj.toLocaleDateString("en-US", { weekday: "short" })}</div>
+        </div>
+        <div class="job-info">
+            <h4 class="job-title">${serviceType}</h4>
+            <div class="job-location">
+                <i class='bx bx-map'></i>
+                <span>${location}</span>
+            </div>
+        </div>
+        <div class="job-actions">
+            <button class="btn-view" onclick="viewJobDetails(this.closest('.job-request-item'), ${bookingIdStr})">
+                <i class='bx bx-show'></i> View
+            </button>
+            <button class="btn-accept" onclick="acceptJob(this, ${bookingIdStr})">
+                <i class='bx bx-check'></i> Accept
+            </button>
+            <button class="btn-deny" onclick="denyJob(this, ${bookingIdStr})">
+                <i class='bx bx-x'></i> Decline
+            </button>
+        </div>
+    `;
+
+    // Remove no-jobs-message if it exists
+    const noJobsMessage = jobRequestList.querySelector(".no-jobs-message");
+    if (noJobsMessage) {
+      jobRequestList.removeChild(noJobsMessage);
+    }
+
+    // Add the new item at the beginning of the list
+    if (jobRequestList.firstChild) {
+      jobRequestList.insertBefore(newItem, jobRequestList.firstChild);
+    } else {
+      jobRequestList.appendChild(newItem);
+    }
+  });
+
+  // If no items were added and no existing items are present
+  if (!newItemsAdded && existingBookingIds.length === 0) {
+    jobRequestList.innerHTML = `
+        <div class="no-jobs-message">
+            <i class='bx bx-info-circle'></i>
+            <p>No new job requests available at the moment.</p>
+        </div>
+    `;
+  }
+}
+
+// Start polling when page loads
+document.addEventListener("DOMContentLoaded", function () {
+  // Poll every 20 seconds
+  setInterval(pollForNewRequests, 20000);
+});
+
 // Toggle availability status
 function toggleAvailability() {
   const button = document.getElementById("availability");
   const isAvailable = button.classList.contains("available");
 
-  fetch("<?= ROOT ?>/dashboard/availability", {
+  fetch(`${ROOT}/public/dashboard/availability`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      availability: !isAvailable,
+      availability: isAvailable ? "offline" : "online",
     }),
   })
     .then((response) => response.json())
@@ -44,39 +165,51 @@ function toggleAvailability() {
 
 // Format city input
 function formatCity() {
-  const cityInput = document.getElementById("city");
+  const cityInput = document.getElementById("new-location");
   if (cityInput.value) {
+    // First trim any extra whitespace
     cityInput.value = cityInput.value.trim();
-    cityInput.value =
-      cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1);
+
+    // Split the string by spaces to get individual words
+    const words = cityInput.value.split(" ");
+
+    // Capitalize the first letter of each word
+    const capitalizedWords = words.map((word) => {
+      if (word.length > 0) {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }
+      return word;
+    });
+
+    // Join the words back together with spaces
+    cityInput.value = capitalizedWords.join(" ");
   }
 }
 
 // Submit location
 function submitLocation() {
-  const district = document.getElementById("district").value;
-  const city = document.getElementById("city").value;
+  formatCity();
+  const newLocation = document.getElementById("new-location").value;
 
-  if (!city) {
-    alert("Please enter a city");
+  if (!newLocation) {
+    alert("Please enter a new location");
     return;
   }
 
-  formatCity();
-
-  fetch("<?= ROOT ?>/dashboard/updateLocation", {
+  fetch(`${ROOT}/public/dashboard/updateLocation`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      district: district,
-      city: city,
+      newLocation: newLocation,
     }),
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.status === "success") {
+        const locationField = document.querySelector(".current-location");
+        locationField.textContent = newLocation;
         alert("Location updated successfully");
       } else {
         alert("Failed to update location");
@@ -103,13 +236,13 @@ function acceptJob(button, bookingId) {
   denyButton.disabled = true;
 
   // Send acceptance to server
-  fetch("<?= ROOT ?>/bookings/accept", {
+  fetch(`${ROOT}/public/booking/accept`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      bookingId: bookingId,
+      bookingID: bookingId,
     }),
   })
     .then((response) => response.json())
@@ -342,48 +475,217 @@ function cancelBooking(button, bookingId) {
 
 // View job details
 function viewJobDetails(jobItem, jobId) {
-  // Fetch job details from server
-  fetch(`${ROOT}/bookings/details/${jobId}`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === "success") {
-        const booking = data.booking;
-        const customer = data.customer;
-        const date = new Date(booking.date);
+  if (!window.latestRequests) {
+    console.log("No requests data yet, polling now...");
+    pollForNewRequests(); // Trigger immediate poll
+    setTimeout(() => {
+      viewJobDetails(jobItem, jobId); // Retry after polling
+    }, 1000);
+    return;
+  }
+  // Find the job in our polling data
+  console.log("found requests from window");
+  console.log(window.latestRequests);
+  const requests = window.latestRequests || [];
+  const matchingRequest = requests.find((req) => req.key == jobId);
 
-        // Populate modal with data
-        document.getElementById("detail-customer").textContent =
-          customer.full_name;
-        document.getElementById("detail-contact").textContent =
-          customer.contact_no;
-        document.getElementById("detail-email").textContent = customer.email;
-        document.getElementById("detail-service").textContent =
-          booking.service_type;
-        document.getElementById("detail-date").textContent =
-          date.toLocaleDateString();
-        document.getElementById("detail-time").textContent = booking.time_slot;
-        document.getElementById("detail-location").textContent =
-          `${customer.city}, ${customer.district}`;
-        document.getElementById("detail-requests").textContent =
-          booking.special_requests || "None";
-        document.getElementById("detail-total-price").textContent =
-          `Rs. ${booking.price.toFixed(2)}`;
+  if (matchingRequest) {
+    console.log("Match found in local data:", matchingRequest);
+    const bookingData = matchingRequest.value.booking;
+    const bookingDetails = matchingRequest.value.details;
 
-        // Store reference to the job item
-        const modal = document.getElementById("jobDetailsModal");
-        modal.jobItem = jobItem;
-        modal.jobId = jobId;
+    const detailsMap = bookingDetails.reduce((acc, detail) => {
+      acc[detail.detailType] = detail.detailValue;
+      return acc;
+    }, {});
 
-        // Show modal
-        modal.style.display = "block";
-      } else {
-        alert("Failed to load job details");
+    // Clear previous content
+    const detailsGrid = document.querySelector(".job-details-grid");
+    detailsGrid.innerHTML = "";
+
+    // Add common fields - these are guaranteed to exist
+    const date = new Date(bookingData.bookingDate);
+
+    // Create and add standard fields
+    // Updated standard fields section
+    const standardFields = {
+      Customer: detailsMap.customer_name,
+      "Service Type": bookingData.serviceType,
+      Date: date.toLocaleDateString(),
+      "Time Slot": bookingData.startTime,
+      Location: bookingData.location,
+    };
+
+    const priceFields = [
+      {
+        label: "Base Price",
+        value: `Rs. ${Number(detailsMap.base_price || 0).toFixed(2)}`,
+      },
+      {
+        label: "Add-on Price",
+        value: `Rs. ${Number(detailsMap.addon_price || 0).toFixed(2)}`,
+      },
+      {
+        label: "Total Price",
+        value: `Rs. ${Number(bookingData.totalCost || 0).toFixed(2)}`,
+        isTotal: true,
+      },
+    ];
+
+    // Add standard fields
+    for (const [label, value] of Object.entries(standardFields)) {
+      if (value) {
+        addDetailItem(detailsGrid, label, value);
       }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Failed to load job details");
+    }
+
+    // Define keys to exclude
+    const excludedKeys = [
+      "bookingID",
+      "customer_name",
+      "contact_phone",
+      "contact_email",
+      "serviceType",
+      "bookingDate",
+      "startTime",
+      "endTime",
+      "location",
+      "status",
+      "workerID",
+      "customerID",
+      "createdAt",
+    ];
+
+    // Add dynamic fields from bookingDetails
+    bookingDetails.forEach((detail) => {
+      const key = detail.detailType;
+      const value = detail.detailValue;
+
+      if (!excludedKeys.includes(key) && value && value !== "") {
+        const label = formatLabel(key);
+
+        // Handle JSON-stringified arrays (like ["dishwashing","desserts"])
+        const parsedValue = tryParseJson(value) || value;
+
+        addDetailItem(detailsGrid, label, formatValue(parsedValue));
+      }
     });
+
+    // Add this helper function
+    function tryParseJson(value) {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return null;
+      }
+    }
+    const priceContainer = document.createElement("div");
+    priceContainer.className = "price-section";
+
+    priceFields.forEach((field) => {
+      const item = document.createElement("div");
+      item.className = `detail-item${field.isTotal ? " total-price" : ""}`;
+
+      item.innerHTML = `
+    <span class="detail-label">${field.label}:</span>
+    <span class="detail-value">${field.value}</span>
+  `;
+
+      priceContainer.appendChild(item);
+    });
+
+    detailsGrid.appendChild(priceContainer);
+
+    // Make the total price item special (for styling)
+    const totalPriceItem = detailsGrid.querySelector(
+      '[data-label="Total Price"]',
+    );
+    if (totalPriceItem) {
+      totalPriceItem.classList.add("total");
+    }
+
+    // Store reference to the job item
+    const modal = document.getElementById("jobDetailsModal");
+    modal.jobItem = jobItem;
+    modal.jobId = jobId;
+
+    // Show modal
+    modal.style.display = "block";
+  } else {
+    console.error("No match found in local data for jobId:", jobId);
+  }
+  // else {
+  //   console.log("No match found in local data, fetching from server...");
+  //   // Fallback to fetch if the data isn't available locally
+  //   fetch(`${ROOT}/public/booking/getBooking/${jobId}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.status === "success") {
+  //         // Handle the detailed view with fetched data
+  //         // (similar implementation here with the dynamic approach)
+  //         // ...
+  //         modal.style.display = "block";
+  //       } else {
+  //         alert("Failed to load job details 2");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //       alert("Failed to load job details 3");
+  //     });
+  // }
+}
+
+// Helper function to format the label from camelCase or snake_case
+function formatLabel(key) {
+  // Convert camelCase to spaces
+  const spacedKey = key.replace(/([A-Z])/g, " $1");
+  // Convert snake_case or kebab-case to spaces
+  const formattedKey = spacedKey.replace(/[_-]/g, " ");
+  // Capitalize first letter of each word
+  return formattedKey
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+// Helper function to format the value appropriately
+function formatValue(value) {
+  if (typeof value === "number") return value;
+  if (!isNaN(value)) return Number(value); // Handle numeric strings
+  if (Array.isArray(value)) {
+    return value
+      .map((item) =>
+        typeof item === "string"
+          ? item.charAt(0).toUpperCase() + item.slice(1)
+          : item,
+      )
+      .join(", ");
+  } else if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  } else if (typeof value === "string") {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+  return value;
+}
+
+// Helper function to add a detail item to the grid
+function addDetailItem(container, label, value) {
+  const detailItem = document.createElement("div");
+  detailItem.className = "detail-item";
+  detailItem.setAttribute("data-label", label);
+
+  const labelSpan = document.createElement("span");
+  labelSpan.className = "detail-label";
+  labelSpan.textContent = label + ":";
+
+  const valueSpan = document.createElement("span");
+  valueSpan.className = "detail-value";
+  valueSpan.textContent = value;
+
+  detailItem.appendChild(labelSpan);
+  detailItem.appendChild(valueSpan);
+  container.appendChild(detailItem);
 }
 
 // Close modal

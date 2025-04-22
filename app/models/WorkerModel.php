@@ -139,33 +139,43 @@ class WorkerModel
         return $worker ? $worker->availability_status : null;
     }
 
-    public function getWorkerLocation($workerID)
-    {
-        $this->setTable('verified_workers');
-        $worker = $this->find($workerID, 'workerID');
-        return $worker ? $worker->address : null;
-    }
-
     public function getWorkerProfileInfo($workerID): array
     {
-        $this->setTable('verified_workers');
+        // Get base worker info
+        $this->setTable('worker');
         $worker = $this->find($workerID, 'workerID');
-        $data['full_name'] = $worker->full_name;
-        $data['profileImage'] = $worker->profileImage;
-        $this->setTable('worker_stats');
-        $workerStats = $this->find($workerID, 'workerID');
-        $data['rating'] = $workerStats->avg_rating;
-        $data['reviews'] = $workerStats->total_reviews;
-        $data['roles'] = $this->getWorkerRoles($workerID);
 
-        return $data;
+        // Get verification details
+        $this->setTable('verified_workers');
+        $verification = $this->find($workerID, 'workerID');
+
+        // Get worker stats
+        $this->setTable('worker_stats');
+        $stats = $this->find($workerID, 'workerID');
+
+        return [
+            'full_name' => $verification->full_name ?? '',
+            'profileImage' => $worker->profileImage ?? '',
+            'rating' => $stats->avg_rating ?? 0,
+            'reviews' => $stats->total_reviews ?? 0,
+            'roles' => $this->getWorkerRoles($workerID),
+            'workLocation' => $verification->workLocations ?? '',
+        ];
     }
 
     public function getWorkerRoles($workerID)
     {
         $this->setTable('worker_roles');
         $query = "SELECT r.name FROM worker_roles wr JOIN jobroles r ON wr.roleID = r.roleID WHERE wr.workerID = :workerID";
-        return $this->get_all($query, ['workerID' => $workerID]);
+        $roleObjects = $this->get_all($query, ['workerID' => $workerID]);
+
+        // Extract just the name values from each role object
+        $roleNames = [];
+        foreach ($roleObjects as $role) {
+            $roleNames[] = $role->name;
+        }
+
+        return $roleNames;
     }
 
     public function getNewBookingRequests($workerID)
@@ -199,5 +209,11 @@ class WorkerModel
             ];
         }
         return $result;
+    }
+
+    public function updateWorkLocation($workerID, $newLocation)
+    {
+        $this->setTable('verified_workers');
+        return $this->update($workerID, ['workLocations' => $newLocation], 'workerID');
     }
 }

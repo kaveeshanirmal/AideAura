@@ -619,6 +619,22 @@ body {
   background-color: var(--primary-light);
 }
 
+/* Price section styling */
+.price-section {
+  margin-top: 2rem;
+  border-top: 2px solid #eee;
+  padding-top: 1rem;
+}
+
+.total-price {
+  font-weight: 600;
+  color: #2ecc71;
+}
+
+.detail-item.total .detail-value {
+  font-size: 1.2em;
+}
+
 @media (max-width: 600px) {
   .job-details-grid {
     grid-template-columns: 1fr;

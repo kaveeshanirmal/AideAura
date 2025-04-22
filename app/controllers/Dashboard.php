@@ -14,7 +14,7 @@ class Dashboard extends Controller
         $workerID = $_SESSION['workerID'];
         $availability = $this->workerModel->getWorkerAvailability($workerID);
         $profileInfo = $this->workerModel->getWorkerProfileInfo($workerID);
-        $workingLocation = $this->workerModel->getWorkerLocation($workerID);
+
         $workerDetails = [
             'full_name' => $profileInfo['full_name'],
             'profileImage' => $profileInfo['profileImage'],
@@ -22,7 +22,7 @@ class Dashboard extends Controller
             'rating' => $profileInfo['rating'],
             'reviews' => $profileInfo['reviews'],
             'availability' => $availability,
-            'location' => $workingLocation,
+            'location' => $profileInfo['workLocation']
         ];
 
         // Get all bookings for this worker
@@ -71,7 +71,10 @@ class Dashboard extends Controller
     public function availability()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $availability = $_POST['availability'] ?? null;
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+
+            $availability = $data['availability'] ?? null;
             if ($availability !== null && isset($_SESSION['workerID'])) {
                 $this->workerModel->updateAvailability($_SESSION['workerID'], $availability);
                 echo json_encode(['status' => 'success']);
@@ -93,5 +96,22 @@ class Dashboard extends Controller
             echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
         }
         exit;
+    }
+
+    public function updateLocation()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $workerID = $_SESSION['workerID'];
+
+            if (isset($data['newLocation'])) {
+                $success = $this->workerModel->updateWorkLocation($workerID, $data['newLocation']);
+                echo json_encode($success ? ['status' => 'success'] : ['status' => 'error']);
+                exit;
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+                exit;
+            }
+        }
     }
 }

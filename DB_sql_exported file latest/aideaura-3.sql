@@ -157,7 +157,7 @@ INSERT INTO `customercomplaints` (`complaintID`, `customerID`, `issue_type`, `is
 
 DROP TABLE IF EXISTS `customercomplaints_updates`;
 CREATE TABLE `customercomplaints_updates` (
-  `updateID` int(11) NOT NULL,
+  `updateID` int(11) PRIMARY KEY NOT NULL,
   `complaintID` bigint(20) UNSIGNED NOT NULL,
   `status` enum('Pending','In Progress','Resolved') DEFAULT 'In Progress',
   `comments` text DEFAULT NULL,
@@ -182,7 +182,7 @@ INSERT INTO `customercomplaints_updates` (`updateID`, `complaintID`, `status`, `
 
 DROP TABLE IF EXISTS `jobroles`;
 CREATE TABLE `jobroles` (
-  `roleID` int(10) UNSIGNED NOT NULL,
+  `roleID` int(10) UNSIGNED PRIMARY KEY NOT NULL,
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `description` varchar(255) NOT NULL,
@@ -396,7 +396,7 @@ INSERT INTO `price_details` (`detailID`, `categoryID`, `detailName`, `price`, `d
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `userID` bigint(20) UNSIGNED NOT NULL,
+  `userID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
   `username` varchar(255) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
@@ -657,7 +657,7 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 
 DROP TABLE IF EXISTS `worker`;
 CREATE TABLE `worker` (
-  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
   `profileImage` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `address` varchar(255) NOT NULL,
@@ -732,7 +732,8 @@ DELIMITER ;
 DROP TABLE IF EXISTS `worker_roles`;
 CREATE TABLE `worker_roles` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
-  `roleID` int(10) UNSIGNED NOT NULL
+  `roleID` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`workerID`,`roleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -783,7 +784,7 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 
 DROP TABLE IF EXISTS `worker_stats`;
 CREATE TABLE `worker_stats` (
-  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
   `avg_rating` decimal(3,2) DEFAULT 0.00,
   `total_reviews` int(10) UNSIGNED DEFAULT 0,
   `last_activity` timestamp NOT NULL DEFAULT current_timestamp()
@@ -834,7 +835,7 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 
 DROP TABLE IF EXISTS `workingschedule`;
 CREATE TABLE `workingschedule` (
-  `scheduleID` bigint(20) UNSIGNED NOT NULL,
+  `scheduleID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `day_of_week` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
   `start_time` time NOT NULL,
@@ -969,50 +970,33 @@ INSERT INTO `workingschedule` (`scheduleID`, `workerID`, `day_of_week`, `start_t
 --
 
 --
--- Indexes for table `customercomplaints_updates`
---
-ALTER TABLE `customercomplaints_updates`
-  ADD PRIMARY KEY (`updateID`);
-
---
 -- Indexes for table `jobroles`
 --
 ALTER TABLE `jobroles`
-  ADD PRIMARY KEY (`roleID`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `worker`
 --
 ALTER TABLE `worker`
-  ADD PRIMARY KEY (`workerID`),
   ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `worker_roles`
 --
 ALTER TABLE `worker_roles`
-  ADD PRIMARY KEY (`workerID`,`roleID`),
   ADD KEY `roleID` (`roleID`);
-
---
--- Indexes for table `worker_stats`
---
-ALTER TABLE `worker_stats`
-  ADD PRIMARY KEY (`workerID`);
 
 --
 -- Indexes for table `workingschedule`
 --
 ALTER TABLE `workingschedule`
-  ADD PRIMARY KEY (`scheduleID`),
   ADD UNIQUE KEY `workerID` (`workerID`,`day_of_week`,`start_time`,`end_time`);
 
 --
