@@ -19,8 +19,8 @@ class App
         ],
 
         'hrManager' => [
-            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'findWorkerUserID', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'indWorkerUserID', 'workerMatching', 'workerInquiries'],
-            
+            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'getScheduleViewOfWorker','findWorkerUserID', 'workerCertificates', 'getAvailabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'workerMatching', 'workerInquiries'],
+
             'Complaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
