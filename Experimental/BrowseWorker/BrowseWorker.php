@@ -1,3 +1,8 @@
+<?php
+  define('ROOT',"http://localhost/aideaura");
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +26,7 @@
   <main class="card-container" id="cardContainer">
     <!-- Visible Worker Cards -->
     <div class="worker-card show">
-      <img src="../../public/assets/images/workerBrowsing/worker1.jpg" alt="Worker Image">
+      <img src="<?=ROOT?>/public/assets/images/workerBrowsing/worker1.jpg" alt="Worker Image">
       <div class="worker-info">
         <h2>Ms. Shamila Liyanarachchi</h2>
         <p class="rating">⭐⭐⭐⭐☆</p>
@@ -32,7 +37,7 @@
     </div>
 
     <div class="worker-card show">
-      <img src="../../public/assets/images/workerBrowsing/worker2.jpg" alt="Worker Image">
+      <img src="<?=ROOT?>/public/assets/images/workerBrowsing/workersecond.jpg" alt="Worker Image">
       <div class="worker-info">
         <h2>Ms. Hayeshika Fernando</h2>
         <p class="rating">⭐⭐⭐⭐⭐</p>
@@ -43,7 +48,7 @@
     </div>
 
     <div class="worker-card show">
-      <img src="../../public/assets/images/workerBrowsing/worker3.jpg" alt="Worker Image">
+      <img src="<?=ROOT?>/public/assets/images/workerBrowsing/worker3.jpg" alt="Worker Image">
       <div class="worker-info">
         <h2>Ms. Rebecca Ferguson</h2>
         <p class="rating">⭐⭐⭐⭐☆</p>
@@ -55,7 +60,7 @@
 
     <!-- Hidden Worker Cards (Shown on Load More) -->
     <div class="worker-card hidden">
-      <img src="../../public/assets/images/workerBrowsing/worker4.jpg" alt="Worker Image">
+      <img src="<?=ROOT?>/public/assets/images/workerBrowsing/worker4.jpg" alt="Worker Image">
       <div class="worker-info">
         <h2>Mr. Indika Thotawatta</h2>
         <p class="rating">⭐⭐⭐⭐⭐</p>
@@ -66,7 +71,7 @@
     </div>
 
     <div class="worker-card hidden">
-      <img src="../../public/assets/images/workerBrowsing/worker5.jpg" alt="Worker Image">
+      <img src="<?=ROOT?>/public/assets/images/workerBrowsing/worker5.jpg" alt="Worker Image">
       <div class="worker-info">
         <h2>Ms. Shashi Nishadi</h2>
         <p class="rating">⭐⭐⭐☆☆</p>
