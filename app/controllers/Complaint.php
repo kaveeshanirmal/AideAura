@@ -34,6 +34,16 @@ class Complaint extends Controller
         $complaints = $this->customerComplaintModel->getAllComplaints();
         $this->view('opm/opmWorkerInquiries', ['complaints' => $complaints]);
     }
+
+    /**
+     * Display the payment issues dashboard for finance manager
+     */
+    public function financeIndex()
+    {
+        // Get only payment-related complaints
+        $complaints = $this->customerComplaintModel->getComplaintsByType('Payment Issues');
+        $this->view('fm/paymentIssues', ['complaints' => $complaints]);
+    }
     
     /**
      * Get complaint details including customer information

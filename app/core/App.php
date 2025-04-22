@@ -33,7 +33,9 @@ class App
         ],
         
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'paymentIssues', 'reports'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports'],
+
+            'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'customer'=> [

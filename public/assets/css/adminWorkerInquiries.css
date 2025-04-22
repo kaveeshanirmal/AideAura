@@ -329,6 +329,24 @@ body {
   color: rgba(255, 255, 255, 0.9);
 }
 
+.financeManager-message {
+  justify-content: flex-end;
+}
+
+.financeManager-message .message-content {
+  background-color: #ffc107; /* Yellow/orange shade */
+  color: black;
+  border-bottom-right-radius: 0;
+}
+
+.financeManager-message .message-header {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.financeManager-message .status-update {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 
 .message-body p {
   margin: 0;

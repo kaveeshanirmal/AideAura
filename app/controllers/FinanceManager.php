@@ -15,10 +15,6 @@ class FinanceManager extends Controller
         $this->view('fm/paymentHistory');
     }
 
-    public function paymentIssues()
-    {
-        $this->view('fm/paymentIssues');
-    }
 
     // public function paymentRates()
     // {
@@ -103,5 +99,14 @@ class FinanceManager extends Controller
     public function reports()
     {
         $this->view('fm/reports');
+    }
+
+        //payment issues function ..name might confuse lolz
+    public function workerInquiries()
+    {
+        // We'll use the Complaint controller to handle this
+        require_once "../app/controllers/Complaint.php";
+        $complaintController = new Complaint();
+        $complaintController->financeIndex();
     }
 }
