@@ -6,15 +6,21 @@
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
-body {
+html, body {
   background-image: linear-gradient(to right, rgba(90, 58, 36, 0.8), rgba(139, 94, 60, 0.8)),url('../../public/assets/images/workerBrowsing/browseWorkerBackground.jpg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: #3e2f21;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+html {
+  overflow-y: hidden;
 }
 
 header {

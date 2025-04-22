@@ -8,7 +8,6 @@
 </head>
 <body>
   <header>
-    <h2>There are no matches for your request at the moment,</h2>
     <h1>Try our recommended alternatives!</h1>
     <nav>
       <!-- Add nav items here if needed -->
@@ -16,7 +15,7 @@
   </header>
 
   <section class="search-section">
-    <input type="text" id="searchInput" placeholder="Search by role">
+    <input type="text" id="searchInput" placeholder="Search by Name or Location">
   </section>
 
   <main class="card-container" id="cardContainer">
@@ -26,7 +25,7 @@
       <div class="worker-info">
         <h2>Ms. Shamila Liyanarachchi</h2>
         <p class="rating">⭐⭐⭐⭐☆</p>
-        <p><strong>Role:</strong> Nanny</p>
+        <p><strong>Role:</strong> Cleaner</p>
         <p><strong>Experience:</strong> 5 years</p>
         <p><strong>Location:</strong> Kalutara, Western</p>
       </div>
@@ -35,11 +34,11 @@
     <div class="worker-card show">
       <img src="../../public/assets/images/workerBrowsing/worker2.jpg" alt="Worker Image">
       <div class="worker-info">
-        <h2>Ms. Maria Lopez</h2>
+        <h2>Ms. Hayeshika Fernando</h2>
         <p class="rating">⭐⭐⭐⭐⭐</p>
-        <p><strong>Role:</strong> Housekeeper</p>
+        <p><strong>Role:</strong> Cleaner</p>
         <p><strong>Experience:</strong> 8 years</p>
-        <p><strong>Location:</strong> Matara, Southern</p>
+        <p><strong>Location:</strong> Gampaha, Western</p>
       </div>
     </div>
 
@@ -48,7 +47,7 @@
       <div class="worker-info">
         <h2>Ms. Rebecca Ferguson</h2>
         <p class="rating">⭐⭐⭐⭐☆</p>
-        <p><strong>Role:</strong> Elderly Caretaker</p>
+        <p><strong>Role:</strong> Cleaner</p>
         <p><strong>Experience:</strong> 6 years</p>
         <p><strong>Location:</strong> Gampaha, Western</p>
       </div>
@@ -60,7 +59,7 @@
       <div class="worker-info">
         <h2>Mr. Indika Thotawatta</h2>
         <p class="rating">⭐⭐⭐⭐⭐</p>
-        <p><strong>Role:</strong> Cook</p>
+        <p><strong>Role:</strong> Cleaner</p>
         <p><strong>Experience:</strong> 7 years</p>
         <p><strong>Location:</strong> Jaffna, Northern</p>
       </div>
@@ -71,7 +70,7 @@
       <div class="worker-info">
         <h2>Ms. Shashi Nishadi</h2>
         <p class="rating">⭐⭐⭐☆☆</p>
-        <p><strong>Role:</strong> Babysitter</p>
+        <p><strong>Role:</strong> Cleaner</p>
         <p><strong>Experience:</strong> 2 years</p>
         <p><strong>Location:</strong> Mount Lavinia, Western</p>
       </div>
@@ -121,8 +120,8 @@
       const allCards = document.querySelectorAll('.worker-card');
       allCards.forEach(card => {
         const name = card.querySelector('h2').textContent.toLowerCase();
-        const role = card.querySelector('p:nth-of-type(2)').textContent.toLowerCase();
-        if (name.includes(searchValue) || role.includes(searchValue)) {
+        const location = card.querySelector('p:nth-of-type(4)').textContent.toLowerCase();
+        if (name.includes(searchValue) || location.includes(searchValue)) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
