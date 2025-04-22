@@ -19,7 +19,7 @@ class App
         ],
 
         'hrManager' => [
-            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'findWorkerUserID', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'workerInquiries'],
+            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'findWorkerUserID', 'workerCertificates', 'availabilitySchedule', 'workerSchedules', 'verificationRequests', 'indWorkerUserID', 'workerMatching', 'workerInquiries'],
             
             'Complaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
