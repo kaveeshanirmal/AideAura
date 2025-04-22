@@ -282,6 +282,10 @@ body {
   justify-content: flex-end;
 }
 
+.opManager-message {
+  justify-content: flex-end;
+}
+
 .message-content {
   max-width: 70%;
   border-radius: 10px;
@@ -295,7 +299,7 @@ body {
 }
 
 .admin-message .message-content {
-  background-color: #007bff;
+  background-color: #216ab8;
   color: white;
   border-bottom-right-radius: 0;
 }
@@ -310,6 +314,21 @@ body {
 .admin-message .message-header {
   color: rgba(255, 255, 255, 0.8);
 }
+
+.opManager-message .message-content {
+  background-color: #20638d; /* Green color to distinguish from admin blue */
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.opManager-message .message-header {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.opManager-message .status-update {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 
 .message-body p {
   margin: 0;

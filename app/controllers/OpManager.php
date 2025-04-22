@@ -4,7 +4,7 @@ class OpManager extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('opm/complaintManagement');
+        $this->view('opm/opmWorkerInquiries');
     }
 
     public function specialRequests()
@@ -354,6 +354,15 @@ class OpManager extends Controller
             echo "Method not allowed.";
             return;
         }
+    }
+
+    public function workerInquiries()
+    {   
+        require_once "../app/controllers/Complaint.php";
+        // Load the complaints controller
+        $complaintsController = new Complaint();
+        // Call the operational manager's complaint index
+        $complaintsController->opIndex();
     }
     
 }

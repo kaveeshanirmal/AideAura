@@ -271,14 +271,18 @@ document.addEventListener('DOMContentLoaded', function() {
                                     // Determine role-based message styling
                                     // Use the new 'role' field instead of checking isAdmin
                                     const role = update.role || 'customer';  // Default to customer if no role provided
-                                    
+                                    //console.log("Message role:", role);//debugging
+
+                                    // Check if the user is an admin or operational manager
+                                    //const isStaff = role === 'admin' || role === 'opManager';//debugging
+    
                                     // Set appropriate class for different roles
                                     messageDiv.className = `message ${role}-message`;
   
                                     // Display the sender name based on role
                                     const senderName = role === 'admin' ? 'Admin' : 
-                                                       role === 'staff' ? 'Support Staff' : 
-                                                       detailsData.customerName;
+                                                        role === 'opManager' ? 'Operational Manager' : 
+                                                        detailsData.customerName;
   
                                     messageDiv.innerHTML = `
                                         <div class="message-content">
