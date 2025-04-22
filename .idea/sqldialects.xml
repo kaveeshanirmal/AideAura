@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/app/controllers/SearchForWorker.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/DB_sql_exported file latest/aideaura_hasitha_new.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/DB_sql_exported file latest/aideaura_kavee_dump.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/app/controllers/SearchForWorker.php" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/app/models/PricingModel.php" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/app/models/WorkerModel.php" dialect="GenericSQL" />
   </component>
 </project>

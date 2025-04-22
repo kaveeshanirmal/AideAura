@@ -1,0 +1,211 @@
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  background:
+    linear-gradient(to bottom, rgba(78, 52, 46, 0.85), rgba(111, 72, 40, 0.85)),
+    url("../images/orderSummaryBackground.jpg") no-repeat center center fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #4e342e;
+  /*overflow: hidden;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.summary-container {
+  position: relative; /* Needed for positioning pseudo-element */
+  max-width: 700px;
+  margin: 100px 5px;
+  background: #fff8f0;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+  /* animation */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
+  overflow: hidden; /* Clip inner pseudo-element */
+}
+
+/* Add background image inside container */
+.summary-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/orderSummaryContainerOverlay.jpg") no-repeat center
+    center;
+  background-size: cover;
+  opacity: 0.08; /* Adjust this for transparency level */
+  z-index: 0; /* Send it behind content */
+}
+
+/* Ensure actual content stays above the background image */
+.summary-container * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1 {
+  text-align: left;
+  color: #5d4037;
+  margin-bottom: 30px;
+  font-weight: 300;
+  font-size: 600;
+}
+
+.worker-card {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  animation: slideInLeft 1s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.worker-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 15px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.worker-card img:hover {
+  transform: scale(1.05);
+}
+
+.worker-details h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #3e2723;
+}
+
+.worker-details p {
+  margin: 5px 0;
+  color: #6d4c41;
+  transition: color 0.3s;
+}
+
+.booking-info {
+  animation: fadeInDetails 1s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInDetails {
+  to {
+    opacity: 1;
+  }
+}
+
+.booking-info p {
+  margin: 8px 0;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.status-confirmed {
+  background-color: #4bc911; /* green */
+}
+
+.status-confirmed:hover {
+  background-color: #015904;
+  cursor: pointer;
+}
+
+.status-pending {
+  background-color: #ff9800; /* orange */
+}
+
+.status-pending:hover {
+  background-color: #ef6c00;
+  cursor: pointer;
+}
+
+.status-denied {
+  background-color: #e53935; /* red */
+}
+
+.status-denied:hover {
+  background-color: #b71c1c;
+  cursor: pointer;
+}
+
+.total {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #a1887f;
+  text-align: right;
+  animation: fadeInTotal 1s ease-out 1s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInTotal {
+  to {
+    opacity: 1;
+  }
+}
+
+.total h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #4e342e;
+}
+
+.total p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3e2723;
+  transform-origin: right center;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.total p:hover {
+  transform-origin: right center;
+  transform: scale(1.35);
+  color: #6d4c41;
+  cursor: pointer;
+}
+
+.text {
+  font-size: medium;
+  font-weight: 100;
+  align-items: end;
+}

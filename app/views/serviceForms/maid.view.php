@@ -53,7 +53,7 @@
             <input type="radio" id="intensity-deep" name="intensity" value="deep">
             <label for="intensity-deep">Deep Cleaning</label>
         </div>
-        <div class="error-message" id="frequency-error"></div>
+        <div class="error-message" id="intensity-error"></div>
 
         <label>Add-ons</label>
         <div class="checkbox-group">
@@ -83,9 +83,6 @@
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php');?>
 
 <script>
-    const bookingInfo = <?php echo json_encode($_SESSION['booking_info']); ?>;
-    console.log(bookingInfo);
-    const ROOT = "<?php echo ROOT; ?>";
 
     const backButton = document.getElementById("back-btn");
     backButton.addEventListener("click", (event) => {
@@ -126,10 +123,10 @@
             isValid = false;
         }
 
-        // Validate frequency selection
-        const frequencySelected = document.querySelector('input[name="frequency"]:checked');
-        if (!frequencySelected) {
-            document.getElementById('frequency-error').textContent = 'Please select service cleaning intensity';
+        // Validate intensity selection
+        const intensitySelected = document.querySelector('input[name="intensity"]:checked');
+        if (!intensitySelected) {
+            document.getElementById('intensity-error').textContent = 'Please select service cleaning intensity';
             isValid = false;
         }
 
@@ -143,7 +140,7 @@
         form.addEventListener("change", function () {
             const formData = new FormData(form);
 
-            fetch(`${ROOT}/public/selectService/maidService`, {
+            fetch(`${ROOT}/public/selectService/maidPricing`, {
                 method: "POST",
                 body: formData,
                 headers: {

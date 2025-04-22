@@ -36,10 +36,24 @@ class WorkingScheduleModel
         }
     }
 
-    public function getScheduleByWorkerId($workerId)
+    public function getAllSchedules()
     {
-        $query = "SELECT * FROM workingschedule WHERE workerID = :workerId ORDER BY FIELD(days_of_week, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')";
-        return $this->get_all($query, ['workerId' => $workerId]);
+        return $this->all();
+    }
+
+     
+
+
+    // public function getScheduleByWorkerId($workerId)
+    // {
+    //     $query = "SELECT * FROM workingschedule WHERE workerID = :workerId ORDER BY FIELD(day_of_week, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')";
+    //     return $this->get_all($query, ['workerId' => $workerId]);
+    // }
+
+
+    public function getScheduleByWorkerId($workerID)
+    {
+        return $this->get($workerID, 'workerID');
     }
 
     public function deleteSchedule($scheduleId, $workerId)

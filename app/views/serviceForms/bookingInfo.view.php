@@ -10,7 +10,6 @@
     <script>
         const bookingInfo = <?php echo json_encode($_SESSION['booking_info']); ?>;
         console.log(bookingInfo);
-        const ROOT = "<?php echo ROOT; ?>";
     </script>
 </head>
 <body>

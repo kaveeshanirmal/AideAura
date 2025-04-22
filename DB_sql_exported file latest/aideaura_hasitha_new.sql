@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2025 at 11:27 PM
+-- Generation Time: Apr 18, 2025 at 04:40 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `bookings`
 --
 
+DROP TABLE IF EXISTS `bookings`;
 CREATE TABLE `bookings` (
   `bookingID` bigint(20) UNSIGNED NOT NULL,
   `customerID` bigint(20) UNSIGNED NOT NULL,
@@ -48,6 +49,7 @@ CREATE TABLE `bookings` (
 -- Table structure for table `booking_details`
 --
 
+DROP TABLE IF EXISTS `booking_details`;
 CREATE TABLE `booking_details` (
   `detailID` bigint(20) UNSIGNED NOT NULL,
   `bookingID` bigint(20) UNSIGNED NOT NULL,
@@ -61,6 +63,7 @@ CREATE TABLE `booking_details` (
 -- Table structure for table `booking_reviews`
 --
 
+DROP TABLE IF EXISTS `booking_reviews`;
 CREATE TABLE `booking_reviews` (
   `reviewID` bigint(20) UNSIGNED NOT NULL,
   `bookingID` bigint(20) UNSIGNED NOT NULL,
@@ -74,6 +77,7 @@ CREATE TABLE `booking_reviews` (
 --
 -- Triggers `booking_reviews`
 --
+DROP TRIGGER IF EXISTS `after_review_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_review_insert` AFTER INSERT ON `booking_reviews` FOR EACH ROW BEGIN
     -- Update average rating and total reviews
@@ -100,6 +104,7 @@ DELIMITER ;
 -- Table structure for table `customer`
 --
 
+DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `customerID` bigint(20) UNSIGNED NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
@@ -120,6 +125,7 @@ INSERT INTO `customer` (`customerID`, `userID`, `profileImage`, `address`) VALUE
 -- Table structure for table `customercomplaints`
 --
 
+DROP TABLE IF EXISTS `customercomplaints`;
 CREATE TABLE `customercomplaints` (
   `complaintID` bigint(20) UNSIGNED NOT NULL,
   `customerID` bigint(20) UNSIGNED NOT NULL,
@@ -138,6 +144,7 @@ CREATE TABLE `customercomplaints` (
 -- Table structure for table `customercomplaints_updates`
 --
 
+DROP TABLE IF EXISTS `customercomplaints_updates`;
 CREATE TABLE `customercomplaints_updates` (
   `updateID` bigint(20) UNSIGNED NOT NULL,
   `complaintID` bigint(20) UNSIGNED NOT NULL,
@@ -152,12 +159,13 @@ CREATE TABLE `customercomplaints_updates` (
 -- Table structure for table `jobroles`
 --
 
+DROP TABLE IF EXISTS `jobroles`;
 CREATE TABLE `jobroles` (
   `roleID` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `description` varchar(255) NOT NULL,
-  `isDelete` int(1) DEFAULT NULL
+  `isDelete` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -165,15 +173,15 @@ CREATE TABLE `jobroles` (
 --
 
 INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VALUES
-(1, 'Cook', 'assets/images/service_cook.png', 'Prepares and cooks meals according to dietary preferences', NULL),
-(2, 'Cook 24-hour Live in', 'assets/images/service_cook24.png', 'Provides round-the-clock meal preparation and kitchen care.', NULL),
-(3, 'Maid', 'assets/images/service_maid.png', 'Manages cleaning, laundry, and household upkeep', NULL),
-(4, 'Nanny', 'assets/images/service_nanny.png', 'Cares for children, including supervision, meals, and activities', NULL),
-(5, 'All rounder', 'assets/images/service_allrounder.png', 'Performs various household tasks and maintenance as needed', NULL),
-(6, 'test', 'public/assets/images/roles/20230816_125947.jpg', '                 kjsffjgjhsdflkgjhfdlkghdlksghlkfjglk          ', NULL),
-(8, 'test2', 'public/assets/images/roles/20230816_125947.jpg', '                            isfgkdjgdkjgkjfgkfng', NULL),
-(9, 'test3', 'public/assets/images/roles/', '                            agfsdgsdgfsggfg', NULL),
-(11, 'test4', 'public/assets/images/roles/', '                        gghgkjhgkjgkjhgkjg    ', NULL),
+(1, 'Cook', 'assets/images/service_cook.png', 'Prepares and cooks meals according to dietary preferences', 0),
+(2, 'Cook 24-hour Live in', 'assets/images/service_cook24.png', 'Provides round-the-clock meal preparation and kitchen care.', 0),
+(3, 'Maid', 'assets/images/service_maid.png', 'Manages cleaning, laundry, and household upkeep', 0),
+(4, 'Nanny', 'assets/images/service_nanny.png', 'Cares for children, including supervision, meals, and activities', 0),
+(5, 'All rounder', 'assets/images/service_allrounder.png', 'Performs various household tasks and maintenance as needed', 0),
+(6, 'test', 'public/assets/images/roles/20230816_125947.jpg', '                 kjsffjgjhsdflkgjhfdlkghdlksghlkfjglk          ', 0),
+(8, 'test2', 'public/assets/images/roles/20230816_125947.jpg', '                            isfgkdjgdkjgkjfgkfng', 0),
+(9, 'test3', 'public/assets/images/roles/', '                            agfsdgsdgfsggfg', 0),
+(11, 'test4', 'public/assets/images/roles/', '                        gghgkjhgkjgkjhgkjg    ', 0),
 (13, 'test5', 'public/assets/images/roles/', '                            hjbhhgkhgjhgjhgjhbjhjhb', 1),
 (15, 'test6', 'public/assets/images/roles/', '                            hjbhhgkhgjhgjhgjhbjhjhb', 1),
 (17, 'test7', 'public/assets/images/roles/678ba62c9d8d9_20230816_125951.jpg', 'vfgzdsgfdgdfgfdgf', 1),
@@ -181,7 +189,7 @@ INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VA
 (19, 'test10', 'public/assets/images/roles/678ba6d536779_20230816_125947.jpg', 'guiggggghgvhghg', 1),
 (20, 'test11', 'public/assets/images/roles/678ba7111b07f_20230816_125947.jpg', 'kjjkkjkjkjnkn', 1),
 (53, 'Cleaner1H', 'public/assets/images/roles/67a0c9eb6a121_20230816_125947.jpg', 'dfsfdsgfdgdfghhdhdhhh', 1),
-(54, 'cleaner2,5', 'public/assets/images/roles/67a0cb549a71e_20230816_125947.jpg', 'fhgdshfghdfhgdfhgkdfhghdfkghkg', NULL),
+(54, 'cleaner2,5', 'public/assets/images/roles/67a0cb549a71e_20230816_125947.jpg', 'fhgdshfghdfhgdfhgkdfhghdfkghkg', 0),
 (55, 'testcase 3', 'public/assets/images/roles/67a0cc487114e_20230816_125947.jpg', 'dhsafhjkdfkjasfkjhdaslkjfjkdaflkjdsaflkasdlkfjhlkjfhlkasdjdfhkajhfgdk', 1),
 (56, 'test001', 'public/assets/images/roles/67ae21d830cf1_20230816_125951.jpg', 'ujfjsfjdsjklksdjlksdjflkjsdkljsajkfdslkjfsljfdslakflk', 1),
 (57, 'test case 000', 'public/assets/images/roles/67ae2d36d0c3e_WhatsApp Image 2025-02-05 at 21.41.00_a7ba958f.jpg', 'dhuadfashfdsahfkjshakjfhaskhdkh', 1);
@@ -189,6 +197,7 @@ INSERT INTO `jobroles` (`roleID`, `name`, `image`, `description`, `isDelete`) VA
 --
 -- Triggers `jobroles`
 --
+DROP TRIGGER IF EXISTS `after_jobrole_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_jobrole_insert` AFTER INSERT ON `jobroles` FOR EACH ROW BEGIN
     INSERT INTO payment_rates (ServiceType, BasePrice, BaseHours) 
@@ -196,6 +205,7 @@ CREATE TRIGGER `after_jobrole_insert` AFTER INSERT ON `jobroles` FOR EACH ROW BE
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `update_payment_rates_isDelete`;
 DELIMITER $$
 CREATE TRIGGER `update_payment_rates_isDelete` AFTER UPDATE ON `jobroles` FOR EACH ROW BEGIN
     -- Check if the isDelete column is updated to 1
@@ -214,13 +224,14 @@ DELIMITER ;
 -- Table structure for table `payment_rates`
 --
 
+DROP TABLE IF EXISTS `payment_rates`;
 CREATE TABLE `payment_rates` (
   `ServiceID` int(11) NOT NULL,
   `ServiceType` varchar(50) NOT NULL,
   `BasePrice` decimal(11,2) DEFAULT NULL,
   `BaseHours` decimal(11,2) DEFAULT NULL,
   `CreatedDate` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `isDelete` int(1) DEFAULT NULL
+  `isDelete` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -239,9 +250,106 @@ INSERT INTO `payment_rates` (`ServiceID`, `ServiceType`, `BasePrice`, `BaseHours
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `price_categories`
+--
+
+DROP TABLE IF EXISTS `price_categories`;
+CREATE TABLE `price_categories` (
+  `categoryID` int(10) UNSIGNED NOT NULL,
+  `roleID` int(10) UNSIGNED NOT NULL,
+  `categoryName` varchar(50) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `displayName` varchar(100) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `price_categories`
+--
+
+INSERT INTO `price_categories` (`categoryID`, `roleID`, `categoryName`, `description`, `displayName`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'people_cost', 'Pricing based on number of people', 'Number of People', '2025-04-17 07:08:56', '2025-04-17 17:24:56'),
+(2, 1, 'addon_cost', 'Additional services pricing', 'Add-Ons', '2025-04-17 07:08:56', '2025-04-17 17:26:13'),
+(3, 1, 'diet', 'Additional non-veg meal preparation cost', 'Dietary Preference', '2025-04-17 15:05:10', '2025-04-17 17:26:27'),
+(4, 4, 'children-count', 'Number of children for nanny service', 'Number of Children', '2025-04-17 16:50:26', '2025-04-17 17:27:01'),
+(5, 4, 'children-ages', 'Age groups of children', 'Children\'s Age Groups', '2025-04-17 16:50:26', '2025-04-17 17:27:15'),
+(6, 4, 'service-duration', 'Duration of nanny service', 'Service Duration', '2025-04-17 16:50:26', '2025-04-17 17:27:28'),
+(7, 4, 'care-level', 'Level of care required', 'Level of Care', '2025-04-17 16:50:26', '2025-04-17 17:27:54'),
+(8, 4, 'addons', 'Additional nanny services', 'Add-Ons', '2025-04-17 16:50:26', '2025-04-17 17:28:12'),
+(9, 3, 'property-size', 'Size of property for maid service', 'Property Size', '2025-04-17 16:50:27', '2025-04-17 17:28:24'),
+(10, 3, 'services', 'Types of cleaning services', 'Cleaning Services', '2025-04-17 16:50:27', '2025-04-17 17:28:36'),
+(11, 3, 'intensity', 'Intensity of cleaning', 'Cleaning Intensity', '2025-04-17 16:50:27', '2025-04-17 17:28:51'),
+(12, 3, 'addons', 'Additional cleaning services', 'Add-Ons', '2025-04-17 16:50:27', '2025-04-17 17:29:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `price_details`
+--
+
+DROP TABLE IF EXISTS `price_details`;
+CREATE TABLE `price_details` (
+  `detailID` bigint(20) UNSIGNED NOT NULL,
+  `categoryID` int(10) UNSIGNED NOT NULL,
+  `detailName` varchar(50) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `price_details`
+--
+
+INSERT INTO `price_details` (`detailID`, `categoryID`, `detailName`, `price`, `description`, `createdAt`, `updatedAt`) VALUES
+(1, 1, '1-2', 500.00, 'For 1-2 people', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(2, 1, '3-5', 700.00, 'For 3-5 people', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(3, 1, '5-7', 850.00, 'For 5-7 people', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(4, 1, '8-10', 1000.00, 'For 8-10 people', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(5, 2, 'dishwashing', 500.00, 'Dishwashing service', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(6, 2, 'desserts', 200.00, 'Dessert preparation', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(7, 2, 'shopping', 500.00, 'Shopping for ingredients', '2025-04-17 07:08:56', '2025-04-17 07:08:56'),
+(8, 3, 'non-veg', 150.00, 'Additional non-veg meal preparation cost', '2025-04-17 07:08:56', '2025-04-17 15:06:19'),
+(9, 4, '1', 1000.00, 'For 1 child', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(10, 4, '2', 1500.00, 'For 2 children', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(11, 4, '3', 2000.00, 'For 3 children', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(12, 4, '4+', 2500.00, 'For 4 or more children', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(13, 5, 'infant', 500.00, 'For infants (0-1 year)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(14, 5, 'toddler', 400.00, 'For toddlers (1-3 years)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(15, 5, 'preschool', 300.00, 'For preschool children (3-5 years)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(16, 5, 'school', 250.00, 'For school age children (5+ years)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(17, 6, '4', 800.00, '4 hours of service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(18, 6, '8', 1500.00, '8 hours of service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(19, 6, '12', 2200.00, '12 hours of service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(20, 6, 'overnight', 3000.00, 'Overnight service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(21, 7, 'standard', 0.00, 'Standard childcare', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(22, 7, 'specialized', 1000.00, 'Specialized care for children with unique needs', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(23, 8, 'homework-help', 300.00, 'Help with homework', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(24, 8, 'cooking-meals', 500.00, 'Prepare meals for children', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(25, 8, 'transport', 600.00, 'Transportation services', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(26, 9, 'small', 800.00, 'Small property (1-2 rooms)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(27, 9, 'medium', 1200.00, 'Medium property (3-4 rooms)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(28, 9, 'large', 1800.00, 'Large property (5+ rooms)', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(29, 10, 'floor-cleaning', 300.00, 'Floor cleaning service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(30, 10, 'bathroom-cleaning', 400.00, 'Bathroom cleaning service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(31, 10, 'dusting', 200.00, 'Dusting service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(32, 11, 'light', 0.00, 'Light cleaning', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(33, 11, 'standard', 500.00, 'Standard cleaning', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(34, 11, 'deep', 1000.00, 'Deep cleaning', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(35, 12, 'window-cleaning', 400.00, 'Window cleaning service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(36, 12, 'laundry', 600.00, 'Laundry service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(37, 12, 'ironing', 500.00, 'Ironing service', '2025-04-17 16:50:27', '2025-04-17 16:50:27'),
+(38, 12, 'organizing', 300.00, 'Organizing service', '2025-04-17 16:50:27', '2025-04-17 16:50:27');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `userID` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -252,7 +360,7 @@ CREATE TABLE `users` (
   `phone` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isDelete` int(1) DEFAULT NULL
+  `isDelete` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -260,31 +368,31 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `password`, `phone`, `email`, `createdAt`, `isDelete`) VALUES
-(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', NULL),
-(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', NULL),
-(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', NULL),
-(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', NULL),
-(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794651, 'kasun@gmail.com', '2024-12-28 09:33:03', NULL),
-(27, 'opmanager', 'Waruna', 'Chathuranga', 'financeManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', NULL),
-(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 1),
-(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 1),
-(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', NULL),
-(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', NULL),
-(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', NULL),
-(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', NULL),
-(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', NULL),
-(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', NULL),
-(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', NULL),
-(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', NULL),
-(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', NULL),
-(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', NULL),
-(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, 'kamal.s@gmail.com', '2025-04-09 21:35:19', NULL),
-(43, 'suneetha', 'Suneetha', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', NULL),
-(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', NULL),
-(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', NULL),
-(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', NULL),
-(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', NULL),
-(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', NULL),
+(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', 0),
+(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', 0),
+(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', 0),
+(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', 0),
+(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794652, 'kasun@gmail.com', '2024-12-28 09:33:03', 0),
+(27, 'opmanager', 'Waruna', 'Chathuranga', 'financeManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', 0),
+(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 0),
+(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 0),
+(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', 0),
+(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', 0),
+(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', 0),
+(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', 0),
+(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', 0),
+(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', 0),
+(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', 0),
+(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', 0),
+(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', 0),
+(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', 0),
+(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, '', '2025-04-09 21:35:19', 0),
+(43, 'suneetha', '', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', 0),
+(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', 0),
+(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', 0),
+(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', 0),
+(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', 0),
+(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', 0),
 (49, 'chamari', 'Chamari', 'Jayawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 779012345, 'chamari.j@gmail.com', '2025-04-09 21:35:19', NULL),
 (50, 'ruwan', 'Ruwan', 'Rajapakse', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 770123456, 'ruwan.r@gmail.com', '2025-04-09 21:35:19', NULL),
 (51, 'nilmini', 'Nilmini', 'Herath', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 711234567, 'nilmini.h@gmail.com', '2025-04-09 21:35:19', NULL),
@@ -296,7 +404,9 @@ INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `pas
 (57, 'dilani', 'Dilani', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 717890123, 'dilani.p@gmail.com', '2025-04-09 21:35:19', NULL),
 (58, 'chaminda', 'Chaminda', 'Vithanage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 718901234, 'chaminda.v@gmail.com', '2025-04-09 21:35:19', NULL),
 (59, 'sandamali', 'Sandamali', 'Gamage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 719012345, 'sandamali.g@gmail.com', '2025-04-09 21:35:19', NULL),
-(60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 710123456, 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL);
+(60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 710123456, 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL),
+(61, 'maid1', 'Ruwan', 'Sarathchandra', 'worker', '$2y$10$AUuFUcoDvlvn7yfRlLB/kOjNIUrCpPjhPv.7wzmrPd95BF.kfztAq', 248794653, 'veen1234@gamil.com', '2025-04-11 03:53:08', NULL),
+(62, 'admin2', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$vhVgFH0qottLKQmDqmmypubv5GJddVOtN8cRkU7rVqE1w2v0F3Ke.', 585964582, 'pasan@gmai.com', '2025-04-11 14:01:13', 1);
 
 -- --------------------------------------------------------
 
@@ -304,6 +414,7 @@ INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `pas
 -- Table structure for table `verification_requests`
 --
 
+DROP TABLE IF EXISTS `verification_requests`;
 CREATE TABLE `verification_requests` (
   `requestID` bigint(20) UNSIGNED NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
@@ -343,7 +454,6 @@ INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `user
 (20, 21, 'Ruwan DHA', 'cook24', 'veen1234@gamil.com', '0789456123', 'female', '', 'homagama', '123456963', 'burger', '18-25', 'babysitting', 'entry', 'Ampara,Anuradhapura,Badulla', NULL, NULL, 'kbkbjkbgnb', 'BOC 1235', '2147483647', 'above_12', 'above_12', 'gbjhgjghjgj', 'gjhgjghjghjghj', 1, 'pending', '2025-04-07 14:29:32', '2025-04-08 07:39:52'),
 (24, 22, 'Chandunu Sadaruwan', 'nanny1', 'pasan@gmail.com', '0789456123', 'female', 'Tamil', 'homagama', '2147483647', '', '26-35', 'cleaning', 'entry', 'Puttalam', NULL, NULL, 'czxvdfgbhfghfh', 'gfhgfhfghfghfh', '2147483647', '7-9', '10-12', 'ghgfhgfhfghfhf', 'fghgfhgfhfghfgh', 1, 'pending', '2025-04-08 07:56:42', '2025-04-08 07:56:42'),
 (25, 23, 'Kusum Chamara', 'maidtest1', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', 'fghgfhgfhgh', 'ghghghhgsdffadwa', 1, 'pending', '2025-04-08 11:20:22', '2025-04-08 11:20:22'),
-(26, 13, 'Kaveesha Nirmal', 'kavee', 'kaveesha@gmail.com', '0774871617', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '26-35', 'babysitting', 'intermediate', 'Ratnapura', NULL, NULL, '', 'Com bank', '2211123455522234', '10-12', '7-9', 'No allergies', '', 1, 'pending', '2025-04-09 20:59:26', '2025-04-09 20:59:26'),
 (27, 24, 'Nimali Perera', 'nimali', 'nimali.p@gmail.com', '0771234567', 'female', 'Sinhala,English', 'Colombo', '198022202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Colombo,Galle,Kandy', NULL, NULL, 'Experienced cook specializing in Sri Lankan cuisine. Can prepare both traditional and modern dishes.', 'BOC 4567', '1234567890123456', 'above_12', '7-9', 'None', 'Available for special events and parties', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (28, 25, 'Kamal Silva', 'kamal', 'kamal.s@gmail.com', '0772345678', 'male', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', 'Shellfish', 'Can prepare diabetic-friendly meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (29, 26, 'Suneetha Fernando', 'suneetha', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', 'None', 'Best at preparing rice and curry meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
@@ -368,6 +478,7 @@ INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `user
 --
 -- Triggers `verification_requests`
 --
+DROP TRIGGER IF EXISTS `after_verification_update`;
 DELIMITER $$
 CREATE TRIGGER `after_verification_update` AFTER UPDATE ON `verification_requests` FOR EACH ROW BEGIN
   DECLARE workerImg VARCHAR(255);
@@ -438,6 +549,7 @@ DELIMITER ;
 -- Table structure for table `verified_workers`
 --
 
+DROP TABLE IF EXISTS `verified_workers`;
 CREATE TABLE `verified_workers` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `full_name` varchar(255) NOT NULL,
@@ -492,12 +604,26 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 (42, 'Sandamali Gamage', 'sandamali', '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20');
 
+--
+-- Triggers `verified_workers`
+--
+DROP TRIGGER IF EXISTS `after_verified_worker_insert`;
+DELIMITER $$
+CREATE TRIGGER `after_verified_worker_insert` AFTER INSERT ON `verified_workers` FOR EACH ROW BEGIN
+    UPDATE worker
+    SET isVerified = 1
+    WHERE workerID = NEW.workerID;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `worker`
 --
 
+DROP TABLE IF EXISTS `worker`;
 CREATE TABLE `worker` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
@@ -522,7 +648,7 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (21, 36, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
 (22, 39, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
 (23, 40, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline'),
-(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 1, 'online'),
+(24, 41, '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 0, 'online'),
 (25, 42, '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 1, 'online'),
 (26, 43, '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 1, 'online'),
 (27, 44, '/public/assets/images/avatar-image.png', '12, Beach Road, Colombo', 1, 'online'),
@@ -541,11 +667,13 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (40, 57, '/public/assets/images/avatar-image.png', '77, Hilltop Road, Hambantota', 1, 'offline'),
 (41, 58, '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 1, 'offline'),
 (42, 59, '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 1, 'offline'),
-(43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline');
+(43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline'),
+(44, 61, '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 0, 'offline');
 
 --
 -- Triggers `worker`
 --
+DROP TRIGGER IF EXISTS `after_worker_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_worker_insert` AFTER INSERT ON `worker` FOR EACH ROW BEGIN
     INSERT INTO worker_stats (
@@ -569,6 +697,7 @@ DELIMITER ;
 -- Table structure for table `worker_roles`
 --
 
+DROP TABLE IF EXISTS `worker_roles`;
 CREATE TABLE `worker_roles` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `roleID` int(10) UNSIGNED NOT NULL
@@ -610,7 +739,8 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 (40, 5),
 (41, 5),
 (42, 5),
-(43, 5);
+(43, 5),
+(44, 3);
 
 -- --------------------------------------------------------
 
@@ -618,6 +748,7 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 -- Table structure for table `worker_stats`
 --
 
+DROP TABLE IF EXISTS `worker_stats`;
 CREATE TABLE `worker_stats` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `avg_rating` decimal(3,2) DEFAULT 0.00,
@@ -630,7 +761,7 @@ CREATE TABLE `worker_stats` (
 --
 
 INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_activity`) VALUES
-(13, 0.00, 0, '2025-04-10 20:54:43'),
+(13, 0.00, 0, '2025-04-12 10:40:34'),
 (15, 0.00, 0, '2025-04-10 19:45:30'),
 (16, 0.00, 0, '2025-04-10 19:45:30'),
 (17, 0.00, 0, '2025-04-10 19:45:30'),
@@ -659,7 +790,8 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 (40, 0.00, 0, '2025-04-10 19:45:30'),
 (41, 0.00, 0, '2025-04-10 19:45:30'),
 (42, 0.00, 0, '2025-04-10 19:45:30'),
-(43, 0.00, 0, '2025-04-10 19:45:30');
+(43, 0.00, 0, '2025-04-10 19:45:30'),
+(44, 0.00, 0, '2025-04-11 07:11:22');
 
 -- --------------------------------------------------------
 
@@ -667,6 +799,7 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 -- Table structure for table `workingschedule`
 --
 
+DROP TABLE IF EXISTS `workingschedule`;
 CREATE TABLE `workingschedule` (
   `scheduleID` bigint(20) UNSIGNED NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
@@ -811,22 +944,6 @@ ALTER TABLE `bookings`
   ADD KEY `workerID` (`workerID`);
 
 --
--- Indexes for table `booking_details`
---
-ALTER TABLE `booking_details`
-  ADD PRIMARY KEY (`detailID`),
-  ADD KEY `bookingID` (`bookingID`);
-
---
--- Indexes for table `booking_reviews`
---
-ALTER TABLE `booking_reviews`
-  ADD PRIMARY KEY (`reviewID`),
-  ADD UNIQUE KEY `unique_booking_review` (`bookingID`),
-  ADD KEY `workerID` (`workerID`),
-  ADD KEY `customerID` (`customerID`);
-
---
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -841,13 +958,6 @@ ALTER TABLE `customercomplaints`
   ADD KEY `customerID` (`customerID`);
 
 --
--- Indexes for table `customercomplaints_updates`
---
-ALTER TABLE `customercomplaints_updates`
-  ADD PRIMARY KEY (`updateID`),
-  ADD KEY `complaintID` (`complaintID`);
-
---
 -- Indexes for table `jobroles`
 --
 ALTER TABLE `jobroles`
@@ -855,35 +965,11 @@ ALTER TABLE `jobroles`
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `payment_rates`
---
-ALTER TABLE `payment_rates`
-  ADD PRIMARY KEY (`ServiceID`),
-  ADD UNIQUE KEY `serviceType` (`ServiceType`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `username` (`username`);
-
---
--- Indexes for table `verification_requests`
---
-ALTER TABLE `verification_requests`
-  ADD PRIMARY KEY (`requestID`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `nic` (`nic`),
-  ADD KEY `workerID` (`workerID`);
-
---
--- Indexes for table `verified_workers`
---
-ALTER TABLE `verified_workers`
-  ADD PRIMARY KEY (`workerID`),
-  ADD UNIQUE KEY `nic` (`nic`);
 
 --
 -- Indexes for table `worker`
@@ -923,18 +1009,6 @@ ALTER TABLE `bookings`
   MODIFY `bookingID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `booking_details`
---
-ALTER TABLE `booking_details`
-  MODIFY `detailID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `booking_reviews`
---
-ALTER TABLE `booking_reviews`
-  MODIFY `reviewID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
@@ -947,40 +1021,22 @@ ALTER TABLE `customercomplaints`
   MODIFY `complaintID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `customercomplaints_updates`
---
-ALTER TABLE `customercomplaints_updates`
-  MODIFY `updateID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `jobroles`
 --
 ALTER TABLE `jobroles`
   MODIFY `roleID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT for table `payment_rates`
---
-ALTER TABLE `payment_rates`
-  MODIFY `ServiceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
-
---
--- AUTO_INCREMENT for table `verification_requests`
---
-ALTER TABLE `verification_requests`
-  MODIFY `requestID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `worker`
 --
 ALTER TABLE `worker`
-  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `workingschedule`
@@ -1000,20 +1056,6 @@ ALTER TABLE `bookings`
   ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`);
 
 --
--- Constraints for table `booking_details`
---
-ALTER TABLE `booking_details`
-  ADD CONSTRAINT `booking_details_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`);
-
---
--- Constraints for table `booking_reviews`
---
-ALTER TABLE `booking_reviews`
-  ADD CONSTRAINT `booking_reviews_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`),
-  ADD CONSTRAINT `booking_reviews_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`),
-  ADD CONSTRAINT `booking_reviews_ibfk_3` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`);
-
---
 -- Constraints for table `customer`
 --
 ALTER TABLE `customer`
@@ -1024,24 +1066,6 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `customercomplaints`
   ADD CONSTRAINT `customercomplaints_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`) ON DELETE CASCADE;
-
---
--- Constraints for table `customercomplaints_updates`
---
-ALTER TABLE `customercomplaints_updates`
-  ADD CONSTRAINT `customercomplaints_updates_ibfk_1` FOREIGN KEY (`complaintID`) REFERENCES `customercomplaints` (`complaintID`) ON DELETE CASCADE;
-
---
--- Constraints for table `verification_requests`
---
-ALTER TABLE `verification_requests`
-  ADD CONSTRAINT `verification_requests_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `verified_workers`
---
-ALTER TABLE `verified_workers`
-  ADD CONSTRAINT `verified_workers_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `worker`

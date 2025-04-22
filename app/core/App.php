@@ -30,20 +30,26 @@ class App
             'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
             
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+            'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'getScheduleViewOfWorker','findWorkerUserID', 'workerCertificates', 'getAvailabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'orkerMatching','workerInquiries'],
+        ],
+
+        'opManager' => [
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'generateScheduleView', 'getScheduleView' ,'workerMatching'],
         ],
         
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'paymentIssues', 'reports'],
+            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'paymentIssues', 'reports'],
         ],
 
         'customer'=> [
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
-            'SearchForWorker' => ['index', 'find', 'workerFound', 'processing'],
+            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['findWorkers'],
-            'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'cookingService', 'calculateTotal', 'bookingInfo', 'bookingSummary', 'submitBookingInfo'],
+            'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
+            'Booking' => ['index', 'bookWorker'],
         ],
 
         'worker' => [
@@ -65,6 +71,7 @@ class App
         'Login' => ['index', 'logout'],
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
+        'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],
         'Test' => ['index', 'testTime'],
     ];
     private function splitURL()

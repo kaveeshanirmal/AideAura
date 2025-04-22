@@ -2,7 +2,13 @@
 
 class SearchForWorker extends Controller
 {
-    use Database;
+    use Model;
+    private $workerModel;
+
+    public function __construct()
+    {
+        $this->workerModel = new WorkerModel();
+    }
     public function index($a = '', $b = '', $c = '')
     {
         $this->view('searchAlgorithm');
@@ -56,7 +62,8 @@ class SearchForWorker extends Controller
             vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
             ((wst.avg_rating / 5) * 60) + 
             (LOG(wst.total_reviews + 1) * 20) + 
-            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 20, 0)) AS score
+            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 20, 0)) AS score,
+            wst.avg_rating, wst.total_reviews
           FROM verified_workers vw
           JOIN worker w ON vw.workerID = w.workerID
           JOIN users u ON w.userID = u.userID
@@ -83,30 +90,43 @@ class SearchForWorker extends Controller
             'endTime'   => $startTime
         ]);
 
+        // For all found workers check whether they are already booked
+        foreach ($data as $key => $worker) {
+            $workerID = $worker->workerID;
+            $isBooked = $this->workerModel->isBooked($workerID, $date, $startTime);
+            if ($isBooked) {
+                unset($data[$key]); // Remove booked workers from the result
+            }
+        }
+        // reindex the array
+        $data = array_values($data);
         // Store results in session
         $_SESSION['workers'] = $data;
 
         // Redirect to workerFound view
-        header("Location: " . ROOT . "/public/SearchForWorker/workerFound");
+        header("Location: " . ROOT . "/public/SearchForWorker/searchResults");
         exit;
 
     }
 
-    public function workerFound()
+    public function searchResults()
     {
         // Retrieve workers from session or default to an empty array
         $workers = $_SESSION['workers'] ?? [];
 
-        // Clear session data after use
-        unset($_SESSION['workers']);
-
-        // Pass workers data to the view
-        $this->view('workerFound', ['workers' => $workers]);
+        // Pass the first worker to the view if set
+        $firstWorker = !empty($workers) ? $workers[0] : null;
+        $this->view('workerFound', ['worker' => $firstWorker]);
     }
 
     public function processing()
     {
         $this->view('EmployeeFindingScreen');
+    }
+
+    public function browseWorkers()
+    {
+        $this->view('BrowseWorker');
     }
 }
 

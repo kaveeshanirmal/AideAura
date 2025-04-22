@@ -31,16 +31,14 @@
             <div class="verification-card">
                 <div class="request-info">
                     <div class="request-main">
-                        <h3><?php echo htmlspecialchars($request->full_name); ?></h3>
-                        <button class="expand-btn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="request-details">
-                        <span class="date"><?php echo htmlspecialchars($request->created_at); ?></span>
-                        <span class="date"><?php echo htmlspecialchars($request->updated_at); ?></span>
+                    <h3><?php echo htmlspecialchars($request->full_name); ?></h3>
+            <!-- Apply the status class dynamically -->
+            <span class="status-badge <?php echo htmlspecialchars(strtolower($request->status)); ?>">
+                <?php echo htmlspecialchars($request->status); ?>
+            </span>  
+            </div>                  <div class="request-details">
+                        <span class="date">Created <?php echo htmlspecialchars($request->created_at); ?></span>
+                        <span class="date">Updated <?php echo htmlspecialchars($request->updated_at); ?></span>
                     </div>
                 </div>
                 <div class="action-buttons">

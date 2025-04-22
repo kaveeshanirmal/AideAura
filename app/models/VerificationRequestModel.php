@@ -23,10 +23,10 @@ class VerificationRequestModel
         return $this->insertAndGetId($data);
     }
 
-    public function getPendingRequests()
+    public function getPendingOrRejectedRequests()
     {
-        $query = "SELECT * FROM {$this->getTable()} WHERE status = :status";
-        return $this->get_all($query, ['status' => 'pending']);
+        $query = "SELECT * FROM {$this->getTable()} WHERE status IN (:pending, :rejected)" . " ORDER BY status";
+        return $this->get_all($query, ['pending' => 'pending', 'rejected' => 'rejected']);
     }
 
     public function findRequestByWorkerId($id)
