@@ -2,6 +2,11 @@
 class UserModel
 {
     use Model; // Use the Model trait
+    
+    public function __construct()
+    {
+        $this->setTable('users');
+    }
 
     // Register a new user
     public function register($data, $role)
@@ -74,7 +79,7 @@ class UserModel
         ];
         $this->insert($customerData);
     }
-    // If role is 'customer', add data to 'customer' table
+    // If role is 'hrManager', add data to 'hrManager' table
     else if ($role === 'hrManager') {
         $this->setTable('hrManager');
 

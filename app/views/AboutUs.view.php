@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="<?=ROOT?>/public/assets/css/AboutUs.css">
 </head>
 <body>
+
     <div class="about">
         <div class="logo"><img src="<?=ROOT?>/public/assets/images/Logo_Small.png" alt="AideAura Logo"></div>
         <div class="inner-section">

@@ -19,6 +19,7 @@ class Controller
         $data['notifications'] = $this->notifications;
 
         $filename = "../app/views/" . $name . ".view.php";
+        //echo "Looking for view at: " . $filename; // Debug line
         
         if (file_exists($filename)) {
             // Extract the data array into variables

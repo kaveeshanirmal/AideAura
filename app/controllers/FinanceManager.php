@@ -4,6 +4,9 @@ class FinanceManager extends Controller
 {
     public function index($a = '', $b = '', $c = '')
     {
+        //session_start();
+        //echo "SESSION ROLE: " . ($_SESSION['role'] ?? 'not set');
+        //exit;
         $this->view('fm/paymentHistory');
     }
 
