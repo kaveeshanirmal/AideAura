@@ -27,7 +27,7 @@ class App
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules'],
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'workerInquiries'],
             
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],

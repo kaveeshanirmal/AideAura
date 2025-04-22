@@ -32,7 +32,7 @@ class Complaint extends Controller
     public function opIndex()
     {
         $complaints = $this->customerComplaintModel->getAllComplaints();
-        $this->view('admin/adminWorkerInquiries', ['complaints' => $complaints]);
+        $this->view('opm/opmWorkerInquiries', ['complaints' => $complaints]);
     }
     
     /**
