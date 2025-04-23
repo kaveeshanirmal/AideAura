@@ -62,6 +62,7 @@ class App
             'Home'=> ['findJobs'],
             'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation'],
             'Booking' => ['getBooking', 'accept', 'reject', 'getBookingState'],
+            'WorkerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage', 'getConversation', 'submitReply'],
         ]
     ];
 

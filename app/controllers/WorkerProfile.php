@@ -135,6 +135,6 @@ class WorkerProfile extends Controller
         ];
         
 
-        $this->view('faq', ['faqs' => $faqs]);
+        $this->view('faqworker', ['faqs' => $faqs]);
     }
 }
