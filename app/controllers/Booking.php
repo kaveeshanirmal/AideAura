@@ -431,6 +431,8 @@ class Booking extends Controller
             'Your booking has been cancelled.',
             'Customer has cancelled the booking.'
         );
+        // Unset booking session data
+        unset($_SESSION['booking']);
 
         echo json_encode(['status' => 'success', 'message' => 'Booking cancelled successfully']);
     }

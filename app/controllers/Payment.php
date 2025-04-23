@@ -23,7 +23,7 @@ class Payment extends Controller
             return;
         }
 
-        if (!isset($_SESSION['booking_info']['total_cost'])) {
+        if (!isset($_SESSION['booking'])) {
             $response = ['status' => 'error', 'message' => 'Booking information missing.'];
             $this->jsonResponse($response, 400);
             return;
@@ -38,8 +38,8 @@ class Payment extends Controller
         }
 
         // Generate payment parameters
-        $orderId = uniqid();
-        $amount = number_format($_SESSION['booking_info']['total_cost'], 2, '.', '');
+        $orderId = $_SESSION['booking']['bookingID'];
+        $amount = number_format($_SESSION['booking']['totalCost'], 2, '.', '');
         $currency = "LKR";
 
         // Generate security hash
