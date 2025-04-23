@@ -123,7 +123,7 @@ $statusClass = 'status-' . strtolower($booking['status']);
         // Button event listeners
         document.getElementById('pay-now').addEventListener('click', function() {
             // Redirect to payment page
-            window.location.href = `${ROOT}/public/payment/process/${bookingID}`;
+            window.location.href = `${ROOT}/public/payment/authorize`;
         });
 
         document.getElementById('cancel-booking').addEventListener('click', function() {
