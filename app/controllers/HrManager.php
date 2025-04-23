@@ -263,6 +263,7 @@ class HrManager extends Controller
     }
 }
 
+// function to get all the schedules in the schedule talbe
     public function workerSchedules()
 {
     // Get all worker schedules
