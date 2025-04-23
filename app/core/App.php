@@ -32,10 +32,10 @@ class App
 
         'opManager' => [
             'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'workerInquiries'],
-            
+
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
-        
+
         'financeManager' => [
             'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
 
@@ -48,11 +48,11 @@ class App
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
-            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'orderSummary', 'noResponse', 'noWorkersFound'],
+            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'noWorkersFound'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
-            'Booking' => ['index', 'bookWorker', 'getBooking', 'getBookingState'],
+            'Booking' => ['index', 'bookWorker', 'getBooking', 'getBookingState', 'noResponse', 'orderSummary', 'acceptanceTimeout', 'workerRejected', 'orderTimeout', 'cancelBooking'],
         ],
 
         'worker' => [
@@ -79,11 +79,49 @@ class App
         'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],
         'Test' => ['index', 'testTime'],
     ];
+
+    private $bookingFlowRestrictions = [
+        'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo'],
+        'SearchForWorker' => ['index', 'find', 'searchResults', 'browseWorkers'],
+    ];
+
     private function splitURL()
     {
         $URL = $_GET['url'] ?? 'home';
         $URL = explode('/', trim($URL, '/'));
         return $URL;
+    }
+
+    // Check if user has an active booking that should prevent accessing certain pages
+    private function hasActiveBookingRestriction($controller, $method) {
+        // Only apply to customers
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
+            return false;
+        }
+
+        // Check if this controller/method is in the restricted list
+        $isRestrictedPage = false;
+        foreach ($this->bookingFlowRestrictions as $restrictedController => $restrictedMethods) {
+            if (strcasecmp($controller, $restrictedController) === 0 && in_array($method, $restrictedMethods)) {
+                $isRestrictedPage = true;
+                break;
+            }
+        }
+
+        if (!$isRestrictedPage) {
+            return false;
+        }
+
+        // Check if there's an active booking in session
+        if (isset($_SESSION['booking']) &&
+            isset($_SESSION['booking']['status']) &&
+            ($_SESSION['booking']['status'] === 'pending' || $_SESSION['booking']['status'] === 'accepted')) {
+
+            // User has active booking - should not access booking flow pages
+            return true;
+        }
+
+        return false;
     }
 
     // Authorization for certain roles to access each controller
@@ -92,30 +130,30 @@ class App
         if (!isset($_SESSION['role']) || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
             return false;
         }
-    
+
         $role = $_SESSION['role'];
-        
+
         // Check if the role exists in roleAccess
         if (!isset($this->roleAccess[$role])) {
             return false;
         }
-    
+
         // Find matching controllers (case-insensitive)
         $matchingControllers = array_filter(
-            array_keys($this->roleAccess[$role]), 
+            array_keys($this->roleAccess[$role]),
             function($key) use ($controller) {
                 return stripos($key, $controller) !== false;
             }
         );
-    
+
         // Check method access for matching controllers
         foreach ($matchingControllers as $matchController) {
-            if (isset($this->roleAccess[$role][$matchController]) && 
+            if (isset($this->roleAccess[$role][$matchController]) &&
                 in_array($method, $this->roleAccess[$role][$matchController])) {
                 return true;
             }
         }
-    
+
         return false;
     }
 
@@ -153,6 +191,15 @@ class App
 
         // Remove the controller and method from the $URL array
         $params = array_slice($URL, 2);
+
+        // Check if user is trying to access booking flow with active booking
+        if ($this->hasActiveBookingRestriction($this->controller, $this->method)) {
+            // Redirect to appropriate page based on booking status
+            if (isset($_SESSION['booking']['status']) && ($_SESSION['booking']['status'] === 'pending'|| $_SESSION['booking']['status'] === 'accepted')) {
+                header("Location: " . ROOT . "/public/searchForWorker/waitingForResponse");
+                exit();
+            }
+        }
 
         // Check if the controller and method are public or have access
         if ($this->isPublic($this->controller, $this->method) || $this->checkAccess($this->controller, $this->method)) {
