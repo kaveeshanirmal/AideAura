@@ -11,7 +11,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #4e342e;
-  /*overflow: hidden;*/
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -130,40 +130,52 @@ h1 {
   transition: all 0.3s ease;
 }
 
-.status {
+.status-badge {
   display: inline-block;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 4px; /* Square-ish corners */
   font-weight: bold;
+  color: #5d4037; /* Dark brown text */
+  background-color: #ffc107; /* Default yellow (will be overridden by status classes) */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+/* Status-specific colors (override the default yellow) */
+.status-badge.status-confirmed {
+  background-color: #4caf50; /* Green */
   color: white;
-  transition: background-color 0.3s ease;
 }
 
-.status-confirmed {
-  background-color: #4bc911; /* green */
+.status-badge.status-pending {
+  background-color: #ffc107; /* Amber/Yellow */
+  color: #5d4037; /* Dark brown text for contrast */
 }
 
-.status-confirmed:hover {
-  background-color: #015904;
-  cursor: pointer;
+.status-badge.status-denied {
+  background-color: #f44336; /* Red */
+  color: white;
 }
 
-.status-pending {
-  background-color: #ff9800; /* orange */
+/* Remove hover effects since it's non-interactive */
+/* Keep the animation if you want it */
+.status-badge {
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
-.status-pending:hover {
-  background-color: #ef6c00;
-  cursor: pointer;
-}
-
-.status-denied {
-  background-color: #e53935; /* red */
-}
-
-.status-denied:hover {
-  background-color: #b71c1c;
-  cursor: pointer;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .total {
@@ -208,4 +220,98 @@ h1 {
   font-size: medium;
   font-weight: 100;
   align-items: end;
+}
+
+/* Timer Container */
+.timer-container {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  background: rgba(255, 243, 224, 0.95)
+  padding: 8px 18px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(108, 78, 61, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #6c4e3d;
+  border: 1.5px solid #e0b88f;
+  z-index: 10;
+  letter-spacing: 0.5px;
+  transition:
+    box-shadow 0.3s,
+    background 0.3s;
+}
+
+.timer-icon {
+  font-size: 12px;
+}
+
+.timer-text {
+  font-weight: normal;
+}
+
+.timer-expiring {
+  color: #bf360c;
+}
+
+/* Action Buttons Styling */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  animation: fadeInButtons 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInButtons {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.btn-pay {
+  background-color: #5d4037;
+  color: #fff8f0;
+  flex: 2;
+  margin-right: 15px;
+}
+
+.btn-pay:hover {
+  background-color: #4e342e;
+}
+
+.btn-cancel {
+  background-color: transparent;
+  border: 1px solid #a1887f;
+  color: #5d4037;
+  flex: 1;
+}
+
+.btn-cancel:hover {
+  background-color: rgba(161, 136, 127, 0.05);
 }

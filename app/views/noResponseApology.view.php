@@ -84,7 +84,7 @@
 <div class="gradient-overlay"></div>
 <div class="message-box">
     <h1>Sorry for the inconvenience : (</h1>
-    <p>Booking request has been rejected by the worker.</p>
+    <p>No respond was given by the worker</p>
     <div class="countdown">Redirecting in <span id="timer">5</span> seconds...</div>
 </div>
 <script>

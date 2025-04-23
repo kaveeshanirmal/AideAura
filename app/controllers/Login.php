@@ -4,11 +4,13 @@ class Login extends Controller
 {
     private $userModel;
     private $workerStatsModel;
+    private $bookingModel;
     
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
         $this->workerStatsModel = new WorkerStats(); // Instantiate WorkerStats
+        $this->bookingModel = new BookingModel(); // Instantiate BookingModel
     }
     public function index($a = '', $b = '', $c = '')
     {
@@ -41,8 +43,39 @@ class Login extends Controller
 
                 // Redirect based on user role
                 // 'admin','hrManager','opManager','financeManager','customer','worker'
-               
+
                 if ($role === 'customer') {
+
+                    // If customer had a unconfirmed booking and it is createdAt < 10 minutes ago populate session with booking info
+                    if ($this->bookingModel->hasUnconfirmedBookings($_SESSION['customerID'])) {
+                        $unconfirmedBookings = $this->bookingModel->getUnconfirmedBookings($_SESSION['customerID']);
+                        if (!empty($unconfirmedBookings)) {
+                            $unconfirmedBooking = is_array($unconfirmedBookings) ? $unconfirmedBookings[0] : $unconfirmedBookings;
+
+                            $createdAt = new DateTime($unconfirmedBooking->createdAt);
+                            $currentDateTime = new DateTime();
+                            $interval = $currentDateTime->diff($createdAt);
+                            $minutes = $interval->i + ($interval->h * 60) + ($interval->d * 24 * 60);
+                            // Check if the booking is older than 10 minutes
+                            if ($minutes < 10) {
+                                $_SESSION['booking'] = [
+                                    'bookingID' => $unconfirmedBooking->bookingID,
+                                    'workerID' => $unconfirmedBooking->workerID,
+                                    'customerID' => $unconfirmedBooking->customerID,
+                                    'serviceType' => $unconfirmedBooking->serviceType,
+                                    'bookingDate' => $unconfirmedBooking->bookingDate,
+                                    'location' => $unconfirmedBooking->location,
+                                    'startTime' => $unconfirmedBooking->startTime,
+                                    'totalCost' => $unconfirmedBooking->totalCost,
+                                    'status' => $unconfirmedBooking->status,
+                                    'createdAt' => $unconfirmedBooking->createdAt,
+                                ];
+                            } else {
+                                // cancel the unconfirmed booking if older than 10 minutes
+                                $this->bookingModel->updateBookingStatus($unconfirmedBooking->bookingID, 'cancelled');
+                            }
+                        }
+                    }
                     header('Location: ' . ROOT . '/public/home');
                 } elseif ($role === 'worker') {
                     // Update last login time

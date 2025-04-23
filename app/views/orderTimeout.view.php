@@ -83,8 +83,8 @@
 <body>
 <div class="gradient-overlay"></div>
 <div class="message-box">
-    <h1>Sorry for the inconvenience : (</h1>
-    <p>Booking request has been rejected by the worker.</p>
+    <h1>Time allocated for this booking has expired :( </h1>
+    <p>Booking has been auto-cancelled. Please try again.</p>
     <div class="countdown">Redirecting in <span id="timer">5</span> seconds...</div>
 </div>
 <script>
@@ -100,7 +100,7 @@
     // Countdown and redirect script
     let countdown = 5; // seconds
     const timerElement = document.getElementById('timer');
-    const redirectURL = '<?=ROOT?>/public/searchForWorker/browseWorkers'; // Change this to the desired redirect URL
+    const redirectURL = '<?=ROOT?>/public/home'; // Change this to the desired redirect URL
 
     const countdownInterval = setInterval(() => {
         countdown--;

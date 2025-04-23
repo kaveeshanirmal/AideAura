@@ -41,7 +41,13 @@
                 <?php if(isset($_SESSION['userID']) && $_SESSION['role'] == 'worker'): ?>
                     <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findJobs'">Look for jobs</button>
                 <?php elseif(isset($_SESSION['userID']) && $_SESSION['role'] == 'customer'): ?>
-                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findWorkers'">Find a Worker</button>
+                    <?php if (isset($_SESSION['booking']) && $_SESSION['booking']['status'] == 'pending'): ?>
+                        <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/searchForWorker/waitingForResponse'">Continue Booking</button>
+                    <?php elseif (isset($_SESSION['booking']) && $_SESSION['booking']['status'] == 'accepted'): ?>
+                        <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/booking/orderSummary'">Complete your Booking</button>
+                    <?php else: ?>
+                        <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findWorkers'">Find a Worker</button>
+                    <?php endif; ?>
                 <?php else: ?>
                     <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/login'">Get Started</button>
                 <?php endif; ?>

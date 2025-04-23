@@ -118,7 +118,7 @@ class WorkerModel
     public function isBooked($workerID, $date, $startTime)
     {
         $this->setTable('bookings');
-        $query = "SELECT * FROM bookings WHERE workerID = :workerID AND bookingDate = :bookingDate AND (startTime <= :startTime) AND (status = 'confirmed')";
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID AND bookingDate = :bookingDate AND (startTime <= :startTime) AND (status = 'confirmed' OR status = 'accepted')";
         return $this->get_all($query, [
             'workerID' => $workerID,
             'bookingDate' => $date,
