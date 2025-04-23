@@ -31,7 +31,10 @@ class customerHelpDesk extends Controller
 
     public function paymentHelp()
     {
-        $this->view('customerPaymentHelp');
+        // Get payment-related complaints for the logged-in customer
+        $paymentComplaints = $this->customerComplaintModel->getComplaintsByIssueType($_SESSION['customerID'], 'Payment Issues');
+        
+        $this->view('customerPaymentHelp', ['complaints' => $paymentComplaints]);
     }
 
     public function submitComplaint()

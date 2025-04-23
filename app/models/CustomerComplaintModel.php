@@ -88,5 +88,24 @@ class CustomerComplaintModel
         return $this->filter($filters);
     }
 
+    /**
+     * Get complaints by user ID and issue type
+     * @param int $userId User ID
+     * @param string $issueType The issue type to filter by
+     * @return array Complaints for the user with the specified issue type
+     */
+    public function getComplaintsByIssueType($userId, $issueType)
+    {
+        $this->setTable('customercomplaints');
+        
+        $query = "SELECT * FROM customercomplaints WHERE customerID = :customerID AND issue_type = :issue_type";
+        $params = [
+            'customerID' => $userId,
+            'issue_type' => $issueType
+        ];
+        
+        return $this->get_all($query, $params);
+    }
+
 
 }

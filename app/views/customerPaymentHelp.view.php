@@ -1,79 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Help Desk</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/customerHelpDesk.css">
-</head>
-<body>
-    <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Payment Help Desk | AideAura</title>
+        <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/customerHelpDesk.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+        <style>
+        body {
+            background-image: url('<?=ROOT?>/public/assets/images/booking_bg.jpg');
+        }
+    </style>
     
-    <div class="helpdesk-container">
-        <h1>Payment Help Desk</h1>
+    </head>
+    <body>
+        <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
 
-        <!-- Contact Section -->
-        <section class="contact-section">
-            <h2>Contact Payment Support</h2>
-            <div class="contact-methods">
-                <div class="contact-item">
-                    <img src="<?=ROOT?>/public/assets/images/phone-icon.png" alt="Phone Icon">
-                    <p>Payment Hotline: +94 987 654 321</p>
+        <div class="helpdesk-container">
+            <h1>Payment Help Desk</h1>
+
+            <!-- Contact Section -->
+            <section class="contact-section">
+                <h2><i class="fas fa-headset"></i> Contact Us</h2>
+                <div class="contact-methods">
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt fa-lg"></i>
+                        <p>Support Hotline: +94 123 456 789</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope fa-lg"></i>
+                        <p>Email: customersupport@AideAura.com</p>
+                    </div>
                 </div>
-                <div class="contact-item">
-                    <img src="<?=ROOT?>/public/assets/images/email-icon.png" alt="Email Icon">
-                    <p>Email: paymentsupport@AideAura.com</p>
+            </section>
+
+            <!-- Submit Issue Form -->
+            <section class="submit-issue">
+                <h2><i class="fas fa-file-alt"></i> Submit an Issue</h2>
+                <form class="issue-form" action="<?=ROOT?>/public/customerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="issue-type">Issue Type</label>
+                        <select id="issue-type" name="issue" required>
+                            <option value="">Select an Issue Type</option>
+                            
+                            <optgroup label="Payment Issues">
+                                <option value="failed-payment">Failed Payment</option>
+                                <option value="overcharged">Overcharged</option>
+                                <option value="refund-request">Refund Request</option>
+                                <option value="payment-verification">Payment Verification</option>
+                                <option value="technical-issue">Technical Issue</option>
+                                <option value="other">Other</option>
+                            </optgroup>
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="issue-description">Description</label>
+                        <textarea
+                            id="issue-description"
+                            name="description"
+                            placeholder="Describe your issue here in detail..."
+                            required
+                        ></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Issue
+                    </button>
+                </form>
+            </section>
+
+            <!-- Your complaints section -->
+            <section class="complaint-status">
+                <h2><i class="fas fa-clipboard-list"></i> Your Complaints</h2>
+                
+                <!-- Status Filter Buttons -->
+                <div class="status-filter">
+                    <button data-filter="all" class="active">All</button>
+                    <button data-filter="Pending">Pending</button>
+                    <button data-filter="In Progress">In Progress</button>
+                    <button data-filter="Resolved">Resolved</button>
+                </div>
+                
+                <div class="complaint-cards-container">
+                    <?php if (!empty($complaints)): ?>
+                        <?php foreach ($complaints as $complaint): ?>
+                            <div class="complaint-card" data-status="<?= htmlspecialchars($complaint->status) ?>">
+                                <h3>Complaint #<?= htmlspecialchars($complaint->complaintID) ?></h3>
+                                <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
+                                <p><strong>Submitted:</strong> <?= date('F j, Y', strtotime($complaint->submitted_at)) ?></p>
+                                
+                                <?php if ($complaint->status === 'Resolved'): ?>
+                                    <button class="view-solution-btn" 
+                                            data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                            onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                        <i class="fas fa-eye"></i> View Solution
+                                    </button>
+                                    <div class="solution" 
+                                        id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                        style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                                        <!-- Solution will be loaded here via JavaScript -->
+                                    </div>
+                                <?php elseif ($complaint->status === 'In Progress'): ?>
+                                    <p class="pending-message">
+                                        <i class="fas fa-hourglass-half"></i> Your complaint is being reviewed by our team.
+                                    </p>
+                                <?php else: ?>
+                                    <p class="pending-message">
+                                        <i class="fas fa-clock"></i> Your complaint has been received and will be processed soon.
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="no-complaints">
+                            <i class="fas fa-inbox fa-3x"></i>
+                            <p>You haven't submitted any complaints yet.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </section>
+        </div>
+
+        <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
+
+        <!-- Overlay Message for Submission Results -->
+        <?php if (isset($_SESSION['complaint_message'])): ?>
+            <div id="overlay-message" class="overlay hidden">
+                <div class="overlay-content">
+                    <i class="fas fa-check-circle fa-3x" style="color: var(--success-color); margin-bottom: 15px;"></i>
+                    <p id="overlay-text">
+                        <?= isset($_SESSION['complaint_message']) ? htmlspecialchars($_SESSION['complaint_message']) : ''; ?>
+                    </p>
+                    <button id="overlay-close-btn">Okay</button>
                 </div>
             </div>
-        </section>
+        <?php endif; ?>
 
-        <!-- Report Payment Issue -->
-        <section class="report-payment-issue">
-            <h2>Report a Payment Issue</h2>
-            <form action="<?=ROOT?>/report-payment-issue" method="POST">
-                <div class="form-group">
-                    <label for="payment-method">Payment Method</label>
-                    <select id="payment-method" name="payment_method" required>
-                        <option value="credit_card">Credit Card</option>
-                        <option value="paypal">PayPal</option>
-                        <option value="bank_transfer">Bank Transfer</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="transaction-id">Transaction ID</label>
-                    <input type="text" id="transaction-id" name="transaction_id" placeholder="Enter your transaction ID" required>
-                </div>
-                <div class="form-group">
-                    <label for="issue-description">Issue Description</label>
-                    <textarea id="issue-description" name="description" placeholder="Describe your payment issue here..." required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Submit Issue</button>
-            </form>
-        </section>
-
-        <!-- Payment FAQs -->
-        <section class="payment-faqs">
-            <h2>Payment FAQs</h2>
-            <div class="kb-articles">
-                <div class="kb-article">
-                    <h3>How to track a payment?</h3>
-                    <p>Learn how to check the status of your payment...</p>
-                    <a href="#">Read More</a>
-                </div>
-                <div class="kb-article">
-                    <h3>What to do if a payment fails?</h3>
-                    <p>Find solutions for failed transactions...</p>
-                    <a href="#">Read More</a>
-                </div>
-                <div class="kb-article">
-                    <h3>Refund process and timelines</h3>
-                    <p>Understand how refunds are processed and the timelines...</p>
-                    <a href="#">Read More</a>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
-</body>
+        <!-- JavaScript -->
+        <script>
+            // Pass PHP root URL to JavaScript
+            const ROOT_URL = "<?=ROOT?>";
+        </script>
+        <script src="<?=ROOT?>/public/assets/js/customerHelpDesk.js"></script>
+    </body>
 </html>
