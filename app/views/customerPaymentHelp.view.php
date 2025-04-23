@@ -12,7 +12,7 @@
             background-image: url('<?=ROOT?>/public/assets/images/booking_bg.jpg');
         }
     </style>
-    
+
     </head>
     <body>
         <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
@@ -49,8 +49,6 @@
                                 <option value="overcharged">Overcharged</option>
                                 <option value="refund-request">Refund Request</option>
                                 <option value="payment-verification">Payment Verification</option>
-                                <option value="technical-issue">Technical Issue</option>
-                                <option value="other">Other</option>
                             </optgroup>
                             
                         </select>
@@ -90,25 +88,56 @@
                                 <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
                                 <p><strong>Submitted:</strong> <?= date('F j, Y', strtotime($complaint->submitted_at)) ?></p>
                                 
-                                <?php if ($complaint->status === 'Resolved'): ?>
+                                <?php if ($complaint->status === 'Pending'): ?>
+                                    <p class="pending-message">
+                                        <i class="fas fa-clock"></i> Your complaint has been received and will be processed soon.
+                                    </p>
                                     <button class="view-solution-btn" 
                                             data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
                                             onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
-                                        <i class="fas fa-eye"></i> View Solution
+                                        <i class="fas fa-eye"></i> View Updates
                                     </button>
                                     <div class="solution" 
                                         id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
                                         style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
-                                        <!-- Solution will be loaded here via JavaScript -->
+                                        <!-- Conversation will be loaded here via JavaScript -->
                                     </div>
                                 <?php elseif ($complaint->status === 'In Progress'): ?>
                                     <p class="pending-message">
                                         <i class="fas fa-hourglass-half"></i> Your complaint is being reviewed by our team.
                                     </p>
-                                <?php else: ?>
-                                    <p class="pending-message">
-                                        <i class="fas fa-clock"></i> Your complaint has been received and will be processed soon.
+                                    
+                                    <button class="view-solution-btn" 
+                                            data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                            data-status="In Progress"
+                                            onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                        <i class="fas fa-eye"></i> View Updates
+                                    </button>
+                                    <div class="solution" 
+                                        id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                        style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                                        <!-- Conversation will be loaded here via JavaScript -->
+                                        <div class="reply-container" style="display: none; margin-top: 15px;">
+                                            <button class="reply-btn"
+                                                    onclick="openReplyModal('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                                <i class="fas fa-reply"></i> Reply to this complaint
+                                            </button>
+                                        </div>
+                                    </div>
+                                <?php else: /* Resolved */ ?>
+                                    <p class="resolved-message">
+                                        <i class="fas fa-check-circle"></i> This complaint has been resolved.
                                     </p>
+                                    <button class="view-solution-btn" 
+                                            data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                            onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                        <i class="fas fa-eye"></i> View Updates
+                                    </button>
+                                    <div class="solution" 
+                                        id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                        style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                                        <!-- Conversation will be loaded here via JavaScript -->
+                                    </div>
                                 <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
@@ -136,6 +165,27 @@
                 </div>
             </div>
         <?php endif; ?>
+
+        <!-- Reply Modal -->
+        <div id="reply-modal" class="modal hidden">
+            <div class="modal-content">
+                <span id="reply-modal-close" class="close-btn">&times;</span>
+                <h3>Add Your Feedback</h3>
+                <form id="reply-form" action="<?=ROOT?>/public/customerHelpDesk/submitReply" method="POST">
+                    <input type="hidden" id="reply-complaint-id" name="complaint_id" value="">
+                    <div class="form-group">
+                        <label for="reply-message">Your Message</label>
+                        <textarea id="reply-message" name="comments" placeholder="Type your feedback here..." required></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" onclick="closeReplyModal()" class="cancel-btn">Cancel</button>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Send Feedback
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- JavaScript -->
         <script>
