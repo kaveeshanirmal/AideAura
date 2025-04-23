@@ -109,4 +109,12 @@ class FinanceManager extends Controller
         $complaintController = new Complaint();
         $complaintController->financeIndex();
     }
+
+    public function workerComplaints()
+    {
+        require_once "../app/controllers/WorkerComplaint.php";
+        $workerComplaintController = new WorkerComplaint();
+        $workerComplaintController->financeIndex();
+    }
+
 }

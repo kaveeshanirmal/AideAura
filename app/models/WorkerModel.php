@@ -2,15 +2,15 @@
 class WorkerModel 
 {
     use Model;
-
     private $certificateData = [];
     private $bookingModel;
 
     public function __construct()
     {
+        $this->setTable('worker');
         $this->bookingModel = new BookingModel();
     }
-    
+
     public function getAllWorkers(){
         $this->setTable('worker');
         return $this->all();

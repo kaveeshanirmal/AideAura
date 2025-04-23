@@ -263,6 +263,7 @@ class HrManager extends Controller
     }
 }
 
+// function to get all the schedules in the schedule talbe
     public function workerSchedules()
 {
     // Get all worker schedules
@@ -690,8 +691,18 @@ class HrManager extends Controller
             return;
         }
     }
-    public function workerInquiries()
+    //public function workerInquiries()
+    //{
+    //    $this->view('hr/workerInquiries');
+    //}
+
+    /**
+     * Display worker complaints for HR manager
+     */
+    public function workerComplaints()
     {
-        $this->view('hr/workerInquiries');
+        require_once "../app/controllers/WorkerComplaint.php";
+        $workerComplaintController = new WorkerComplaint();
+        $workerComplaintController->hrIndex();
     }
 }
