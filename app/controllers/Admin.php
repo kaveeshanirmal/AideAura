@@ -825,5 +825,15 @@ public function updateVerificationStatus() {
         $this->view('admin/adminWorkerInquiries1');
     }
 
+/**
+ * Display worker complaints for Admin
+ */
+public function workerComplaints()
+{
+    require_once "../app/controllers/WorkerComplaint.php";
+    $workerComplaintController = new WorkerComplaint();
+    $workerComplaintController->adminIndex();
+}
+
    
 }

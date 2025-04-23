@@ -17,7 +17,7 @@
             <li><a href="<?=ROOT?>/public/admin/paymentRates"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Payment Rates </a></li>
             <li><a href="<?=ROOT?>/public/admin/paymentHistory"><img src="<?=ROOT?>/public/assets/images/order history.png" alt=""> Payment History </a></li>
             <li><a href="<?=ROOT?>/public/admin/workerInquiries"><img src="<?=ROOT?>/public/assets/images/Inquiry.png" alt=""> Customer Inquiries </a></li>
-            <li><a href="<?=ROOT?>/public/admin/paymentIssues"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
+            <li><a href="<?=ROOT?>/public/admin/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
         </ul>
     </div>
     <a href="<?=ROOT?>/public/login" class="logout">
