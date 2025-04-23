@@ -3,6 +3,11 @@ class WorkerModel
 {
     use Model;
 
+    public function __construct()
+    {
+        $this->setTable('worker');
+    }
+
     private $certificateData = [];
     
     public function getAllWorkers(){

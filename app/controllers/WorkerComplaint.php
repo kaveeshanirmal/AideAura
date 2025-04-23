@@ -70,7 +70,7 @@ class WorkerComplaint extends Controller
         
         if ($worker) {
             $user = $userModel->find($worker->userID, 'userID');
-            $workerName = $user ? $user->fullName : 'Worker #' . $workerId;
+            $workerName = $user ? $user->firstName . ' ' . $user->lastName : 'Worker #' . $workerId;
         } else {
             $workerName = 'Worker #' . $workerId;
         }

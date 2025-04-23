@@ -23,15 +23,9 @@
                     <div class="filters-container">
                         <label for="issueFilter">Filter by Issue Type:</label>
                         <select id="issueFilter">
-                            <option value="all">All</option>
-                            <option value="General Issues">General Issues</option>
-                            <option value="Service Issues">Service Issues</option>
-                            <option value="Booking Issues">Booking Issues</option>
+                            
                             <option value="Payment Issues">Payment Issues</option>
-                            <option value="Technical Issues">Technical Issues</option>
-                            <option value="Account Issues">Account Issues</option>
-                            <option value="Complaint/Feedback">Complaint/Feedback</option>
-                            <option value="Help Requests">Help Requests</option>
+                            
                         </select>
                         <label for="prioritySort">Sort by Priority:</label>
                         <select id="prioritySort">

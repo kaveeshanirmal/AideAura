@@ -18,12 +18,16 @@ class App
             // 'AdminRoles1' => ['index', 'edit'],
 
             'Complaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'workerComplaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'hrManager' => [
             'HrManager' => ['index', 'assignDynamicRoles', 'workerDetails', 'updateVerificationStatus', 'getScheduleView', 'getScheduleViewOfWorker','findWorkerUserID', 'workerCertificates', 'getAvailabilitySchedule', 'workerSchedules', 'generateScheduleView', 'verificationRequests', 'workerMatching', 'workerComplaints'],
 
-            'Complaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+            //'Complaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'workerComplaint' => ['hrIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'opManager' => [
@@ -36,6 +40,8 @@ class App
             'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
 
             'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'workerComplaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'customer'=> [

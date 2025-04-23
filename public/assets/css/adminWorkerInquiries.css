@@ -347,6 +347,24 @@ body {
   color: rgba(0, 0, 0, 0.8);
 }
 
+.hrManager-message {
+  justify-content: flex-end;
+}
+
+.hrManager-message .message-content {
+  background-color: #4a86e8; /* Blue shade */
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.hrManager-message .message-header {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hrManager-message .status-update {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 
 .message-body p {
   margin: 0;
