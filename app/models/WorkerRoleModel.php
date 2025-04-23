@@ -27,6 +27,11 @@ class WorkerRoleModel {
        return true;
     }
 
+    public function getRoleByRoleID($roleID){
+        $this->setTable('jobroles');
+        return $this->find($roleID,'roleID');
+    }
+
     public function updateRole($id,$data)
     {
         $this->setTable('jobroles');
