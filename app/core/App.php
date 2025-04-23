@@ -40,11 +40,11 @@ class App
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
-            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers'],
+            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'orderSummary', 'noResponse', 'noWorkersFound'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
-            'Booking' => ['index', 'bookWorker', 'getBooking'],
+            'Booking' => ['index', 'bookWorker', 'getBooking', 'getBookingState'],
         ],
 
         'worker' => [
@@ -53,7 +53,7 @@ class App
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
             'Home'=> ['findJobs'],
             'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation'],
-            'Booking' => ['getBooking', 'accept', 'reject'],
+            'Booking' => ['getBooking', 'accept', 'reject', 'getBookingState'],
         ]
     ];
 

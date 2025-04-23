@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 22, 2025 at 09:00 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Apr 23, 2025 at 02:10 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,11 +37,20 @@ CREATE TABLE `bookings` (
   `startTime` time NOT NULL,
   `endTime` time NOT NULL,
   `location` varchar(255) NOT NULL,
-  `status` enum('pending','confirmed','completed','cancelled') DEFAULT 'pending',
+  `status` enum('pending','accepted','confirmed','completed','cancelled') DEFAULT 'pending',
   `totalCost` decimal(10,2) NOT NULL,
   `specialRequirements` text DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`bookingID`, `customerID`, `workerID`, `serviceType`, `bookingDate`, `startTime`, `endTime`, `location`, `status`, `totalCost`, `specialRequirements`, `createdAt`) VALUES
+(1, 3, 24, 'Cook', '2025-04-28', '13:53:00', '00:00:00', 'Rattanapitiya, Pirivena Junction, Colombo District, Western Province, 00290, Sri Lanka', 'pending', 1850.00, NULL, '2025-04-22 13:24:05'),
+(4, 3, 45, 'Cook', '2025-05-01', '05:57:00', '00:00:00', 'Borupana, Boralesgamuwa, Colombo District, Western Province, 00290, Sri Lanka', 'cancelled', 2100.00, NULL, '2025-04-22 22:19:30'),
+(6, 3, 45, 'Cook', '2025-04-30', '07:36:00', '00:00:00', 'Kuduwamulla, Moratuwa, Colombo District, Western Province, 10400, Sri Lanka', 'accepted', 1750.00, NULL, '2025-04-23 00:02:12');
 
 -- --------------------------------------------------------
 
@@ -56,6 +65,48 @@ CREATE TABLE `booking_details` (
   `detailType` varchar(50) NOT NULL,
   `detailValue` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking_details`
+--
+
+INSERT INTO `booking_details` (`detailID`, `bookingID`, `detailType`, `detailValue`) VALUES
+(1, 1, 'num_people', '1-2'),
+(2, 1, 'num_meals', '[\"breakfast\",\"dinner\"]'),
+(3, 1, 'diet', 'nonveg'),
+(4, 1, 'addons', '[\"desserts\",\"shopping\"]'),
+(5, 1, 'base_price', '1150'),
+(6, 1, 'addon_price', '700'),
+(7, 1, 'customer_name', 'hasitha dananjaya'),
+(8, 1, 'contact_phone', '0784871617'),
+(9, 1, 'contact_email', 'kaveesha@gmail.com'),
+(28, 4, 'num_people', '3-5'),
+(29, 4, 'num_meals', '[\"breakfast\",\"lunch\"]'),
+(30, 4, 'diet', 'veg'),
+(31, 4, 'addons', '[\"dishwashing\",\"desserts\"]'),
+(32, 4, 'base_price', '1400'),
+(33, 4, 'addon_price', '700'),
+(34, 4, 'customer_name', 'hasitha dananjaya'),
+(35, 4, 'contact_phone', '0783441231'),
+(36, 4, 'contact_email', 'kaveesha@gmail.com'),
+(37, 5, 'num_people', '5-7'),
+(38, 5, 'num_meals', '[\"breakfast\",\"lunch\"]'),
+(39, 5, 'diet', 'veg'),
+(40, 5, 'addons', '[\"desserts\"]'),
+(41, 5, 'base_price', '1700'),
+(42, 5, 'addon_price', '200'),
+(43, 5, 'customer_name', 'hasitha dananjaya'),
+(44, 5, 'contact_phone', '0783441231'),
+(45, 5, 'contact_email', 'kaveesha@gmail.com'),
+(46, 6, 'num_people', '3-5'),
+(47, 6, 'num_meals', '[\"breakfast\",\"lunch\"]'),
+(48, 6, 'diet', 'nonveg'),
+(49, 6, 'addons', '[\"desserts\"]'),
+(50, 6, 'base_price', '1550'),
+(51, 6, 'addon_price', '200'),
+(52, 6, 'customer_name', 'hasitha dananjaya'),
+(53, 6, 'contact_phone', '0783441231'),
+(54, 6, 'contact_email', 'kaveesha@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -157,7 +208,7 @@ INSERT INTO `customercomplaints` (`complaintID`, `customerID`, `issue_type`, `is
 
 DROP TABLE IF EXISTS `customercomplaints_updates`;
 CREATE TABLE `customercomplaints_updates` (
-  `updateID` int(11) PRIMARY KEY NOT NULL,
+  `updateID` int(11) NOT NULL,
   `complaintID` bigint(20) UNSIGNED NOT NULL,
   `status` enum('Pending','In Progress','Resolved') DEFAULT 'In Progress',
   `comments` text DEFAULT NULL,
@@ -182,7 +233,7 @@ INSERT INTO `customercomplaints_updates` (`updateID`, `complaintID`, `status`, `
 
 DROP TABLE IF EXISTS `jobroles`;
 CREATE TABLE `jobroles` (
-  `roleID` int(10) UNSIGNED PRIMARY KEY NOT NULL,
+  `roleID` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `description` varchar(255) NOT NULL,
@@ -261,7 +312,38 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`notificationID`, `userID`, `type`, `title`, `message`, `is_read`, `created_at`) VALUES
-(2, 24, 'worker', 'Welcome to AideAura', 'Hello there, welcome to the dream platform of domestic workers', 0, '2025-04-18 14:47:03');
+(2, 24, 'worker', 'Welcome to AideAura', 'Hello there, welcome to the dream platform of domestic workers', 1, '2025-04-18 14:47:03'),
+(3, 41, '', 'You have a new booking request.', 'Navigate to your dashboard to accept or reject the request.', 0, '2025-04-22 13:24:05'),
+(4, 24, '', 'Booking requested.', 'We\'re waiting for the worker to accept your request.', 1, '2025-04-22 13:24:05'),
+(5, 64, '', 'You have a new booking request.', 'Navigate to your dashboard to accept or reject the request.', 1, '2025-04-22 17:05:51'),
+(6, 24, '', 'Booking requested.', 'We\'re waiting for the worker to accept your request.', 1, '2025-04-22 17:05:51'),
+(8, 64, '', 'You have a new booking request.', 'Navigate to your dashboard to accept or reject the request.', 1, '2025-04-22 19:28:14'),
+(9, 24, '', 'Booking requested.', 'We\'re waiting for the worker to accept your request.', 1, '2025-04-22 19:28:14'),
+(10, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 21:50:19'),
+(11, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 21:50:25'),
+(12, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 21:59:11'),
+(13, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 21:59:14'),
+(14, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 21:59:18'),
+(15, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 21:59:20'),
+(16, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 22:02:19'),
+(17, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 22:02:23'),
+(18, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 22:02:27'),
+(19, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 22:10:16'),
+(20, 24, '', 'Your booking has been accepted.', 'Proceed with payment to confirm the booking.', 1, '2025-04-22 22:10:16'),
+(21, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 22:11:16'),
+(22, 24, '', 'Your booking has been accepted.', 'Proceed with payment to confirm the booking.', 1, '2025-04-22 22:11:16'),
+(23, 64, '', 'You have a new booking request.', 'Navigate to your dashboard to accept or reject the request.', 1, '2025-04-22 22:19:30'),
+(24, 24, '', 'Booking requested.', 'We\'re waiting for the worker to accept your request.', 1, '2025-04-22 22:19:30'),
+(25, 64, '', 'You have rejected a booking.', 'Navigate to your dashboard to view the details.', 1, '2025-04-22 22:24:16'),
+(26, 24, '', 'Your booking has been rejected.', 'Please choose another worker or service.', 1, '2025-04-22 22:24:16'),
+(27, 64, '', 'You have a new booking request.', 'Navigate to your dashboard to accept or reject the request.', 0, '2025-04-22 23:56:02'),
+(28, 24, '', 'Booking requested.', 'We\'re waiting for the worker to accept your request.', 0, '2025-04-22 23:56:02'),
+(29, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 0, '2025-04-22 23:56:41'),
+(30, 24, '', 'Your booking has been accepted.', 'Proceed with payment to confirm the booking.', 0, '2025-04-22 23:56:41'),
+(31, 64, '', 'You have a new booking request.', 'Navigate to your dashboard to accept or reject the request.', 0, '2025-04-23 00:02:12'),
+(32, 24, '', 'Booking requested.', 'We\'re waiting for the worker to accept your request.', 0, '2025-04-23 00:02:12'),
+(33, 64, '', 'You have accepted a booking.', 'Navigate to your dashboard to view the details.', 0, '2025-04-23 00:02:24'),
+(34, 24, '', 'Your booking has been accepted.', 'Proceed with payment to confirm the booking.', 0, '2025-04-23 00:02:24');
 
 -- --------------------------------------------------------
 
@@ -396,13 +478,13 @@ INSERT INTO `price_details` (`detailID`, `categoryID`, `detailName`, `price`, `d
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `userID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
+  `userID` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(255) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `role` enum('admin','hrManager','opManager','financeManager','customer','worker') NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` int(11) NOT NULL,
+  `phone` varchar(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `isDelete` int(1) DEFAULT NULL
@@ -413,45 +495,46 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `password`, `phone`, `email`, `createdAt`, `isDelete`) VALUES
-(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', 779230256, 'kaveesha@gmail.com', '2024-11-16 12:19:52', NULL),
-(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', 771234562, 'admin@aideaura.com', '2024-11-19 23:42:09', NULL),
-(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 78, 'kaveesha@gmail.com', '2024-11-27 08:11:30', NULL),
-(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', 248794658, 'hasitha@gamil.com', '2024-12-28 09:32:24', NULL),
-(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', 248794651, 'kasun@gmail.com', '2024-12-28 09:33:03', NULL),
-(27, 'opmanager', 'Waruna', 'Chathuranga', 'opManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', 248794653, 'kamal@gmail.com', '2024-12-28 09:33:50', NULL),
-(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', 789456123, 'veen1234@gamil.com', '2024-12-28 09:35:11', 1),
-(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', 248794653, 'veen1234@gamil.com', '2025-02-03 11:36:42', 1),
-(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', 248794653, 'pasan@gmai.com', '2025-02-17 16:20:01', NULL),
-(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', 248794653, 'kamal@gmail.com', '2025-02-17 16:22:15', NULL),
-(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', 248794653, 'kamal@gmail.com', '2025-02-20 13:27:52', NULL),
-(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', 248794653, 'kasun@gmail.com', '2025-02-20 13:28:55', NULL),
-(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', 248794653, 'kamal@gmail.com', '2025-02-20 13:29:49', NULL),
-(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', 789456123, 'hasitha@gamil.com', '2025-04-07 11:27:15', NULL),
-(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', 789456123, 'veen1234@gamil.com', '2025-04-07 14:27:46', NULL),
-(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', 789456123, 'pasan@gmail.com', '2025-04-08 07:32:49', NULL),
-(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', 789456123, 'sumeda@gmail.com', '2025-04-08 11:17:30', NULL),
-(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 771234567, 'nimali.p@gmail.com', '2025-04-09 21:35:19', NULL),
-(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 772345678, 'kamal.s@gmail.com', '2025-04-09 21:35:19', NULL),
-(43, 'suneetha', 'Suneetha', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 773456789, 'suneetha.f@gmail.com', '2025-04-09 21:35:19', NULL),
-(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 774567890, 'ranjit.d@gmail.com', '2025-04-09 21:35:19', NULL),
-(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 775678901, 'priyanka.r@gmail.com', '2025-04-09 21:35:19', NULL),
-(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 776789012, 'saman.b@gmail.com', '2025-04-09 21:35:19', NULL),
-(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 777890123, 'kumari.w@gmail.com', '2025-04-09 21:35:19', NULL),
-(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 778901234, 'dinesh.g@gmail.com', '2025-04-09 21:35:19', NULL),
-(49, 'chamari', 'Chamari', 'Jayawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 779012345, 'chamari.j@gmail.com', '2025-04-09 21:35:19', NULL),
-(50, 'ruwan', 'Ruwan', 'Rajapakse', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 770123456, 'ruwan.r@gmail.com', '2025-04-09 21:35:19', NULL),
-(51, 'nilmini', 'Nilmini', 'Herath', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 711234567, 'nilmini.h@gmail.com', '2025-04-09 21:35:19', NULL),
-(52, 'sunil', 'Sunil', 'Peiris', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 712345678, 'sunil.p@gmail.com', '2025-04-09 21:35:19', NULL),
-(53, 'anuradha', 'Anuradha', 'Weerasinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 713456789, 'anuradha.w@gmail.com', '2025-04-09 21:35:19', NULL),
-(54, 'lasantha', 'Lasantha', 'Alwis', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 714567890, 'lasantha.a@gmail.com', '2025-04-09 21:35:19', NULL),
-(55, 'manori', 'Manori', 'Dissanayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 715678901, 'manori.d@gmail.com', '2025-04-09 21:35:19', NULL),
-(56, 'jagath', 'Jagath', 'Karunaratne', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 716789012, 'jagath.k@gmail.com', '2025-04-09 21:35:19', NULL),
-(57, 'dilani', 'Dilani', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 717890123, 'dilani.p@gmail.com', '2025-04-09 21:35:19', NULL),
-(58, 'chaminda', 'Chaminda', 'Vithanage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 718901234, 'chaminda.v@gmail.com', '2025-04-09 21:35:19', NULL),
-(59, 'sandamali', 'Sandamali', 'Gamage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 719012345, 'sandamali.g@gmail.com', '2025-04-09 21:35:19', NULL),
-(60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', 710123456, 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL),
-(61, 'workertest', 'dew', 'rew', 'worker', '$2y$10$nHWKNB7yjpV42i4Sjp7TaO7CYeOVywXckl1QYwD0yXS644THikMZ6', 771234567, 'mew@gmail.com', '2025-04-17 07:23:34', NULL),
-(62, 'customer', 'messy', 'lessy', 'customer', '$2y$10$XI5uskAFoWDaa9kG2.h8cOCZ1due8bgRP1Yryf2QcgGQz3QvuSA1C', 771234566, 'fry@gmail.com', '2025-04-17 07:33:14', NULL);
+(16, 'kavee', 'Kavee', 'Nirmal', 'worker', '$2y$10$jZFjSgr4CZ6w4n5C4Wn/HOJJpcsB7q.dHiqkTIAWvU1td7m84V5fG', '779230256', 'kaveesha@gmail.com', '2024-11-16 12:19:52', NULL),
+(20, 'admin', 'Kamala', 'Gunaratnet', 'admin', '$2y$10$tTsTz97ibBL/WAsXWvuKN.II41Z1FmIvyZV78II1.xqo8rcjzQsJK', '771234562', 'admin@aideaura.com', '2024-11-19 23:42:09', NULL),
+(24, 'hasitha', 'hasitha', 'dananjaya', 'customer', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '0783441231', 'kaveesha@gmail.com', '2024-11-27 08:11:30', NULL),
+(25, 'finance', 'Hasitha', 'DN', 'financeManager', '$2y$10$MlbY8W3gvJ67M8jYU6QNze9s8SGK76vt32yzODTyOPMewPB3gaxpC', '248794658', 'hasitha@gamil.com', '2024-12-28 09:32:24', NULL),
+(26, 'hrmanager', 'Pasindu', 'Sadaruwan', 'hrManager', '$2y$10$l5coHb38RCH0QHIG1wDYwOBA3NwKud36/LrXvQ1vKV.8fqpea2mF6', '248794651', 'kasun@gmail.com', '2024-12-28 09:33:03', NULL),
+(27, 'opmanager', 'Waruna', 'Chathuranga', 'opManager', '$2y$10$qh.mR.ZUZMbWHUNVHPSCZe9Ho29DsO45Y/7ZqPmZE1HtZxp6wVE8e', '248794653', 'kamal@gmail.com', '2024-12-28 09:33:50', NULL),
+(28, 'test', 'Ruwan', 'Sadaruwan', 'admin', '$2y$10$r93SpHH/9KL4rSu5AaoQ..YuTCySumkJ//0FQRZ5u9l.n/iuXAKni', '789456123', 'veen1234@gamil.com', '2024-12-28 09:35:11', 1),
+(29, 'testPasindu', 'Pasindu', 'DHA', 'hrManager', '$2y$10$kB4RgT/XgQpHqDAZL0d3J.pBjR46hwsYe9VrhF0GJ0I38s2DlWPPm', '248794653', 'veen1234@gamil.com', '2025-02-03 11:36:42', 1),
+(30, 'test1', 'Kusum', 'Chathuranga', 'worker', '$2y$10$iwhY2D/6lW.i1gOIgQaZN.Kbae8XGJ.YEu1RadUI2QBDSy3s/zJCK', '248794653', 'pasan@gmai.com', '2025-02-17 16:20:01', NULL),
+(31, 'test2', 'Waruna', 'Chamara', 'worker', '$2y$10$Y/uOVONTCQSusabbH7KiyeakBdaqB4yPxEtgjURFT4Q9OoH8GUHrG', '248794653', 'kamal@gmail.com', '2025-02-17 16:22:15', NULL),
+(32, 'AllROund', 'iujdgdfsjgfjdgj', 'sfgdgadsgfagagafgag', 'worker', '$2y$10$kizxu7n/24eUB/PDwp9yse420S0XPYX2Va2DHOkdYpMXrwa4wEL36', '248794653', 'kamal@gmail.com', '2025-02-20 13:27:52', NULL),
+(33, 'maid123', 'gfdhgfdd', 'dfghdgfdhhg', 'worker', '$2y$10$qn304.MqVXIpkyVSXMve6evIkTKayO3GP.ImXoYyFH531RpIfHuKW', '248794653', 'kasun@gmail.com', '2025-02-20 13:28:55', NULL),
+(34, 'nani', 'Pasindu', 'Chamara', 'worker', '$2y$10$v4Jj2XxvN2g7xv.2ZlhWheV2AHy7VYVQ/xpY8vtCa8uXVDZzCIxP6', '248794653', 'kamal@gmail.com', '2025-02-20 13:29:49', NULL),
+(35, 'nanny1234', 'Kusum', 'Sadakan', 'worker', '$2y$10$OW9L9ZR4oPrzYu3qw1T/ruCv5OPtFhve8bYZiqo/I/i/ecfDfAtM6', '789456123', 'hasitha@gamil.com', '2025-04-07 11:27:15', NULL),
+(36, 'cook24', 'Ruwan', 'DHA', 'worker', '$2y$10$PVNYHs6jn/ZivtVwgHdDAOToUfRadRAO0R0jV1oVsqPxIlV7HE.x2', '789456123', 'veen1234@gamil.com', '2025-04-07 14:27:46', NULL),
+(39, 'nanny1', 'Chandunu', 'Sadaruwan', 'worker', '$2y$10$yy437jDMe3r8pwLklFb3Y.rRDbRnGABi/nSFjAzR.v3F3LqdwnFTO', '789456123', 'pasan@gmail.com', '2025-04-08 07:32:49', NULL),
+(40, 'maidtest1', 'Kusum', 'Chamara', 'worker', '$2y$10$JiaYQYcsEWJVCawFcp2kCOW8zncI.ep6c6I5IZqvNnFxcFv4d2AtG', '789456123', 'sumeda@gmail.com', '2025-04-08 11:17:30', NULL),
+(41, 'nimali', 'Nimali', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '771234567', 'nimali.p@gmail.com', '2025-04-09 21:35:19', NULL),
+(42, 'kamal', 'Kamal', 'Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '772345678', 'kamal.s@gmail.com', '2025-04-09 21:35:19', NULL),
+(43, 'suneetha', 'Suneetha', 'Fernando', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '773456789', 'suneetha.f@gmail.com', '2025-04-09 21:35:19', NULL),
+(44, 'ranjit', 'Ranjit', 'De Silva', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '774567890', 'ranjit.d@gmail.com', '2025-04-09 21:35:19', NULL),
+(45, 'priyanka', 'Priyanka', 'Ratnayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '775678901', 'priyanka.r@gmail.com', '2025-04-09 21:35:19', NULL),
+(46, 'saman', 'Saman', 'Bandara', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '776789012', 'saman.b@gmail.com', '2025-04-09 21:35:19', NULL),
+(47, 'kumari', 'Kumari', 'Wijesinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '777890123', 'kumari.w@gmail.com', '2025-04-09 21:35:19', NULL),
+(48, 'dinesh', 'Dinesh', 'Gunawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '778901234', 'dinesh.g@gmail.com', '2025-04-09 21:35:19', NULL),
+(49, 'chamari', 'Chamari', 'Jayawardena', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '779012345', 'chamari.j@gmail.com', '2025-04-09 21:35:19', NULL),
+(50, 'ruwan', 'Ruwan', 'Rajapakse', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '770123456', 'ruwan.r@gmail.com', '2025-04-09 21:35:19', NULL),
+(51, 'nilmini', 'Nilmini', 'Herath', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '711234567', 'nilmini.h@gmail.com', '2025-04-09 21:35:19', NULL),
+(52, 'sunil', 'Sunil', 'Peiris', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '712345678', 'sunil.p@gmail.com', '2025-04-09 21:35:19', NULL),
+(53, 'anuradha', 'Anuradha', 'Weerasinghe', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '713456789', 'anuradha.w@gmail.com', '2025-04-09 21:35:19', NULL),
+(54, 'lasantha', 'Lasantha', 'Alwis', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '714567890', 'lasantha.a@gmail.com', '2025-04-09 21:35:19', NULL),
+(55, 'manori', 'Manori', 'Dissanayake', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '715678901', 'manori.d@gmail.com', '2025-04-09 21:35:19', NULL),
+(56, 'jagath', 'Jagath', 'Karunaratne', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '716789012', 'jagath.k@gmail.com', '2025-04-09 21:35:19', NULL),
+(57, 'dilani', 'Dilani', 'Perera', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '717890123', 'dilani.p@gmail.com', '2025-04-09 21:35:19', NULL),
+(58, 'chaminda', 'Chaminda', 'Vithanage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '718901234', 'chaminda.v@gmail.com', '2025-04-09 21:35:19', NULL),
+(59, 'sandamali', 'Sandamali', 'Gamage', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '719012345', 'sandamali.g@gmail.com', '2025-04-09 21:35:19', NULL),
+(60, 'prasanna', 'Prasanna', 'Jayasuriya', 'worker', '$2y$10$BUvaId1ikQEasDptqMg0Sewmr0m8vQoGf1qlsIyOHfolv3R6fXM/W', '710123456', 'prasanna.j@gmail.com', '2025-04-09 21:35:19', NULL),
+(61, 'workertest', 'dew', 'rew', 'worker', '$2y$10$nHWKNB7yjpV42i4Sjp7TaO7CYeOVywXckl1QYwD0yXS644THikMZ6', '771234567', 'mew@gmail.com', '2025-04-17 07:23:34', NULL),
+(62, 'customer', 'messy', 'lessy', 'customer', '$2y$10$XI5uskAFoWDaa9kG2.h8cOCZ1due8bgRP1Yryf2QcgGQz3QvuSA1C', '771234566', 'fry@gmail.com', '2025-04-17 07:33:14', NULL),
+(64, 'testworker1', 'Anura', 'Wicramasinghe', 'worker', '$2y$10$Ewpxeh3V512wAuj.IZCAueGLQHf2zD.ZaXVP/Htu0Vsp7kBVZwjg.', '0786581230', 'anura.123@gmail.com', '2025-04-22 16:07:15', NULL);
 
 -- --------------------------------------------------------
 
@@ -498,7 +581,7 @@ CREATE TABLE `verification_requests` (
 INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `username`, `email`, `phone_number`, `gender`, `spokenLanguages`, `hometown`, `nic`, `nationality`, `age_range`, `service_type`, `experience_level`, `workLocations`, `certificates_path`, `medical_path`, `description`, `bankNameCode`, `accountNumber`, `working_weekdays`, `working_weekends`, `allergies`, `special_notes`, `isEditable`, `status`, `created_at`, `updated_at`) VALUES
 (20, 21, 'Ruwan DHA', 'cook24', 'veen1234@gamil.com', '0789456123', 'female', '', 'homagama', '123456963', 'burger', '18-25', 'babysitting', 'entry', 'Ampara,Anuradhapura,Badulla', NULL, NULL, 'kbkbjkbgnb', 'BOC 1235', '2147483647', 'above_12', 'above_12', 'gbjhgjghjgj', 'gjhgjghjghjghj', 1, 'pending', '2025-04-07 14:29:32', '2025-04-08 07:39:52'),
 (24, 22, 'Chandunu Sadaruwan', 'nanny1', 'pasan@gmail.com', '0789456123', 'female', 'Tamil', 'homagama', '2147483647', '', '26-35', 'cleaning', 'entry', 'Puttalam', NULL, NULL, 'czxvdfgbhfghfh', 'gfhgfhfghfghfh', '2147483647', '7-9', '10-12', 'ghgfhgfhfghfhf', 'fghgfhgfhfghfgh', 1, 'pending', '2025-04-08 07:56:42', '2025-04-08 07:56:42'),
-(25, 23, 'Kusum Chamara', 'maidtest1', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', 'fghgfhgfhgh', 'ghghghhgsdffadwa', 1, 'pending', '2025-04-08 11:20:22', '2025-04-08 11:20:22'),
+(25, 23, 'Kusum Chamara', 'maidtest1', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', 'fghgfhgfhgh', 'ghghghhgsdffadwa', 1, 'approved', '2025-04-08 11:20:22', '2025-04-22 12:06:57'),
 (27, 24, 'Nimali Perera', 'nimali', 'nimali.p@gmail.com', '0771234567', 'female', 'Sinhala,English', 'Colombo', '198022202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Colombo,Galle,Kandy', NULL, NULL, 'Experienced cook specializing in Sri Lankan cuisine. Can prepare both traditional and modern dishes.', 'BOC 4567', '1234567890123456', 'above_12', '7-9', 'None', 'Available for special events and parties', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (28, 25, 'Kamal Silva', 'kamal', 'kamal.s@gmail.com', '0772345678', 'male', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', 'Shellfish', 'Can prepare diabetic-friendly meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (29, 26, 'Suneetha Fernando', 'suneetha', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', 'None', 'Best at preparing rice and curry meals', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
@@ -518,7 +601,9 @@ INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `user
 (43, 40, 'Dilani Perera', 'dilani', 'dilani.p@gmail.com', '0717890123', 'female', 'Sinhala,English', 'Hambantota', '199622202975', 'sinhalese', '18-25', 'housekeeping', 'entry', 'Hambantota,Matara,Galle', NULL, NULL, 'Young and energetic all-rounder willing to learn various household tasks.', 'DFCC 6789', '7890123456789012', '7-9', '4-6', 'None', 'Quick learner and adaptable', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (44, 41, 'Chaminda Vithanage', 'chaminda', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', 'None', 'Can supervise other household staff', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (45, 42, 'Sandamali Gamage', 'sandamali', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', 'None', 'Can prepare traditional Eastern dishes', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(46, 43, 'Prasanna Jayasuriya', 'prasanna', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', 'None', 'Can advise on suitable plants for your area', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20');
+(46, 43, 'Prasanna Jayasuriya', 'prasanna', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', 'None', 'Can advise on suitable plants for your area', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(0, 13, 'Kaveesha Nirmal', 'kavee', 'kaveesha@gmail.com', '0773286029', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '18-25', 'cooking', 'intermediate', 'Anuradhapura', NULL, NULL, 'Hello I\'m under the water', 'boc\r\n229112', '2211123455522234', '7-9', '7-9', 'I don\'t have allergies', 'Nothing to say', 1, 'approved', '2025-04-22 12:12:40', '2025-04-22 12:14:32'),
+(0, 45, 'Anura wicramasinghe', 'testworker1', 'anura.123@gmail.com', '0786581230', 'male', 'Sinhala', 'Colombo', '198616382678', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Vavuniya', NULL, NULL, 'Hi, I would really like to get verified.', 'BOC\r\n1233', '2002286546179334', '7-9', '7-9', 'I don\'t have allergies', 'Please consider my verification request', 1, 'approved', '2025-04-22 16:30:23', '2025-04-22 16:37:48');
 
 --
 -- Triggers `verification_requests`
@@ -647,7 +732,10 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 (40, 'Dilani Perera', 'dilani', '/public/assets/images/avatar-image.png', '77, Hilltop Road, Hambantota', 'dilani.p@gmail.com', '0717890123', 'female', 'Sinhala,English', 'Hambantota', '199622202975', 'sinhalese', '18-25', 'housekeeping', 'entry', 'Hambantota,Matara,Galle', NULL, NULL, 'Young and energetic all-rounder willing to learn various household tasks.', 'DFCC 6789', '7890123456789012', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (41, 'Chaminda Vithanage', 'chaminda', '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (42, 'Sandamali Gamage', 'sandamali', '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20');
+(43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
+(23, 'Kusum Chamara', 'maidtest1', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', '2025-04-08 11:20:22', '2025-04-22 12:06:57'),
+(13, 'Kaveesha Nirmal', 'kavee', '/public/assets/images/avatar-image.png', '679/1, Ambillawatta Road, Boralesgamuwa, Colombo, Sri Lanka', 'kaveesha@gmail.com', '0773286029', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '18-25', 'cooking', 'intermediate', 'Colombo Boralesgamuwa', NULL, NULL, 'Hello I\'m under the water', 'boc\r\n229112', '2211123455522234', '7-9', '7-9', '2025-04-22 12:12:40', '2025-04-22 12:14:32'),
+(45, 'Anura wicramasinghe', 'testworker1', 'public/assets/images/profiles/eb7cf7e51fd3871742e67c0d1cd8fbda.png', 'No 35, Araliya Road, Depanama, Pannipitiya, Colombo, Sri Lanka', 'anura.123@gmail.com', '0786581230', 'male', 'Sinhala', 'Colombo', '198616382678', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Pannipitiya Colombo', NULL, NULL, 'Hi, I would really like to get verified.', 'BOC\r\n1233', '2002286546179334', '7-9', '7-9', '2025-04-22 16:30:23', '2025-04-22 16:37:48');
 
 -- --------------------------------------------------------
 
@@ -657,7 +745,7 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 
 DROP TABLE IF EXISTS `worker`;
 CREATE TABLE `worker` (
-  `workerID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
+  `workerID` bigint(20) UNSIGNED NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
   `profileImage` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `address` varchar(255) NOT NULL,
@@ -700,7 +788,8 @@ INSERT INTO `worker` (`workerID`, `userID`, `profileImage`, `address`, `isVerifi
 (41, 58, '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 1, 'offline'),
 (42, 59, '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 1, 'offline'),
 (43, 60, '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 1, 'offline'),
-(44, 61, '/public/assets/images/avatar-image.png', 'mew', 0, 'offline');
+(44, 61, '/public/assets/images/avatar-image.png', 'mew', 0, 'offline'),
+(45, 64, 'public/assets/images/profiles/eb7cf7e51fd3871742e67c0d1cd8fbda.png', 'No 35, Araliya Road, Depanama, Pannipitiya, Colombo, Sri Lanka', 1, 'online');
 
 --
 -- Triggers `worker`
@@ -732,8 +821,7 @@ DELIMITER ;
 DROP TABLE IF EXISTS `worker_roles`;
 CREATE TABLE `worker_roles` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
-  `roleID` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`workerID`,`roleID`)
+  `roleID` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -774,7 +862,10 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 (42, 5),
 (43, 5),
 (44, 1),
-(44, 2);
+(44, 2),
+(45, 1),
+(45, 3),
+(45, 4);
 
 -- --------------------------------------------------------
 
@@ -784,7 +875,7 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 
 DROP TABLE IF EXISTS `worker_stats`;
 CREATE TABLE `worker_stats` (
-  `workerID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
+  `workerID` bigint(20) UNSIGNED NOT NULL,
   `avg_rating` decimal(3,2) DEFAULT 0.00,
   `total_reviews` int(10) UNSIGNED DEFAULT 0,
   `last_activity` timestamp NOT NULL DEFAULT current_timestamp()
@@ -795,7 +886,7 @@ CREATE TABLE `worker_stats` (
 --
 
 INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_activity`) VALUES
-(13, 0.00, 0, '2025-04-10 20:54:43'),
+(13, 0.00, 0, '2025-04-22 13:25:51'),
 (15, 0.00, 0, '2025-04-10 19:45:30'),
 (16, 0.00, 0, '2025-04-10 19:45:30'),
 (17, 0.00, 0, '2025-04-10 19:45:30'),
@@ -825,7 +916,8 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 (41, 0.00, 0, '2025-04-10 19:45:30'),
 (42, 0.00, 0, '2025-04-10 19:45:30'),
 (43, 0.00, 0, '2025-04-10 19:45:30'),
-(44, 0.00, 0, '2025-04-22 06:59:01');
+(44, 0.00, 0, '2025-04-22 06:59:01'),
+(45, 4.49, 23, '2025-04-22 16:47:17');
 
 -- --------------------------------------------------------
 
@@ -835,7 +927,7 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 
 DROP TABLE IF EXISTS `workingschedule`;
 CREATE TABLE `workingschedule` (
-  `scheduleID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
+  `scheduleID` bigint(20) UNSIGNED NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `day_of_week` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
   `start_time` time NOT NULL,
@@ -963,45 +1055,99 @@ INSERT INTO `workingschedule` (`scheduleID`, `workerID`, `day_of_week`, `start_t
 (114, 43, 'Tuesday', '07:00:00', '15:00:00'),
 (115, 43, 'Wednesday', '07:00:00', '15:00:00'),
 (116, 43, 'Thursday', '07:00:00', '15:00:00'),
-(117, 43, 'Friday', '07:00:00', '15:00:00');
+(117, 43, 'Friday', '07:00:00', '15:00:00'),
+(118, 45, 'Monday', '03:00:00', '17:00:00'),
+(119, 45, 'Tuesday', '03:00:00', '17:00:00'),
+(120, 45, 'Wednesday', '03:00:00', '17:00:00'),
+(121, 45, 'Thursday', '03:00:00', '17:00:00'),
+(122, 45, 'Friday', '03:00:00', '17:00:00'),
+(123, 45, 'Saturday', '03:00:00', '17:00:00'),
+(124, 45, 'Sunday', '03:00:00', '17:00:00');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`bookingID`);
+
+--
+-- Indexes for table `booking_details`
+--
+ALTER TABLE `booking_details`
+  ADD PRIMARY KEY (`detailID`);
+
+--
+-- Indexes for table `customercomplaints_updates`
+--
+ALTER TABLE `customercomplaints_updates`
+  ADD PRIMARY KEY (`updateID`);
+
+--
 -- Indexes for table `jobroles`
 --
 ALTER TABLE `jobroles`
+  ADD PRIMARY KEY (`roleID`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`notificationID`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
+  ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `worker`
 --
 ALTER TABLE `worker`
+  ADD PRIMARY KEY (`workerID`),
   ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `worker_roles`
 --
 ALTER TABLE `worker_roles`
+  ADD PRIMARY KEY (`workerID`,`roleID`),
   ADD KEY `roleID` (`roleID`);
+
+--
+-- Indexes for table `worker_stats`
+--
+ALTER TABLE `worker_stats`
+  ADD PRIMARY KEY (`workerID`);
 
 --
 -- Indexes for table `workingschedule`
 --
 ALTER TABLE `workingschedule`
+  ADD PRIMARY KEY (`scheduleID`),
   ADD UNIQUE KEY `workerID` (`workerID`,`day_of_week`,`start_time`,`end_time`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `bookingID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `booking_details`
+--
+ALTER TABLE `booking_details`
+  MODIFY `detailID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `customercomplaints_updates`
@@ -1016,22 +1162,28 @@ ALTER TABLE `jobroles`
   MODIFY `roleID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `notificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `worker`
 --
 ALTER TABLE `worker`
-  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `workingschedule`
 --
 ALTER TABLE `workingschedule`
-  MODIFY `scheduleID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `scheduleID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- Constraints for dumped tables

@@ -61,9 +61,7 @@
             .then(response => response.json())
             .then(data => {
             if (data.status === 'success') {
-                console.log(data);
-                alert("Worker booked successfully!");
-                //window.location.href = "<?php //echo ROOT; ?>///public/home";
+                window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/waitingForResponse";
             } else {
                 alert("Error: " + data.message);
             }

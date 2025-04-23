@@ -70,4 +70,11 @@ class BookingModel
         $customer = $this->find($bookingID, 'bookingID');
         return $customer ? $customer->customerID : null;
     }
+
+    public function getStatusByBookingId($bookingID)
+    {
+        $this->setTable('bookings');
+        $status = $this->find($bookingID, 'bookingID');
+        return $status ? $status->status : null;
+    }
 }
