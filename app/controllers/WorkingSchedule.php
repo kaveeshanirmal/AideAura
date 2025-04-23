@@ -100,7 +100,7 @@ class WorkingSchedule extends Controller
 
                 $scheduleData = [
                     'workerId' => $workerId,
-                    'days_of_week' => $schedule['days_of_week'],
+                    'days_of_week' => ucfirst(strtolower($schedule['days_of_week'])), // Capitalize first letter
                     'startTime' => $schedule['startTime'],
                     'endTime' => $schedule['endTime']
                 ];
@@ -109,14 +109,20 @@ class WorkingSchedule extends Controller
 
                 // Add or update schedule
                 if (!empty($schedule['scheduleID'])) {
+                    // Update an existing schedule
                     if (!$this->scheduleModel->updateSchedule($schedule['scheduleID'], $scheduleData)) {
                         $success = false;
                         $messages[] = "Failed to update schedule for {$schedule['days_of_week']}";
+                    } else {
+                        $messages[] = "Updated schedule for {$schedule['days_of_week']}";
                     }
                 } else {
+                    // Add a new schedule
                     if (!$this->scheduleModel->addSchedule($scheduleData)) {
                         $success = false;
                         $messages[] = "Failed to add schedule for {$schedule['days_of_week']}";
+                    } else {
+                        $messages[] = "Added schedule for {$schedule['days_of_week']}";
                     }
                 }
             }
@@ -146,37 +152,47 @@ class WorkingSchedule extends Controller
 
     public function deleteSchedule()
     {
+        header('Content-Type: application/json');
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['error' => 'Invalid request method']);
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
             return;
         }
 
-        $data = json_decode(file_get_contents('php://input'), true);
-        $workerId = $_SESSION['workerID'];
-        
-        if ($this->scheduleModel->deleteSchedule($data['scheduleId'], $workerId)) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['error' => 'Failed to delete schedule']);
-        }
-    }
-
-    public function testDatabase()
-    {
         try {
-            $this->scheduleModel->setTable('workingschedule');
-            $query = "SHOW TABLES";
-            $result = $this->scheduleModel->get_all($query);
+            $rawData = file_get_contents('php://input');
+            error_log("Delete raw data: " . $rawData);
             
-            echo "<pre>";
-            print_r($result);
-            echo "</pre>";
+            if (empty($rawData)) {
+                throw new Exception('No data received');
+            }
+
+            $data = json_decode($rawData, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON: ' . json_last_error_msg());
+            }
+
+            if (!isset($data['scheduleId'])) {
+                throw new Exception('Schedule ID not provided');
+            }
+
+            $workerId = $_SESSION['workerID'];
+            if (!$workerId) {
+                throw new Exception('Worker ID not found in session');
+            }
             
-            echo "Database connection successful!";
-            error_log("Database test result: " . print_r($result, true));
+            error_log("Attempting to delete schedule ID: " . $data['scheduleId'] . " for worker ID: " . $workerId);
+            
+            if ($this->scheduleModel->deleteSchedule($data['scheduleId'], $workerId)) {
+                echo json_encode(['success' => true, 'message' => 'Schedule deleted successfully']);
+            } else {
+                throw new Exception('Failed to delete schedule');
+            }
         } catch (Exception $e) {
-            echo "Database error: " . $e->getMessage();
-            error_log("Database test error: " . $e->getMessage());
+            error_log("Error in deleteSchedule: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
 }

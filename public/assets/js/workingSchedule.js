@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     newRow.innerHTML = `
             <td>
-                <select class="day-select" name="days_of_week" required>
+                <select class="day-select" name="day_of_week" required>
                     <option value="">Select Day</option>
                     ${remainingDays
                       .map(
@@ -307,7 +307,14 @@ function saveSchedules() {
       workerId: workerID,
     }),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then(data => {
+          throw new Error(data.message || `HTTP error! Status: ${response.status}`);
+        });
+      }
+      return response.json();
+    })
     .then((data) => {
       console.log("Server response:", data);
 
@@ -430,7 +437,12 @@ function debugScheduleData(schedules) {
 
 function loadSchedules() {
   fetch(`${ROOT}/public/WorkingSchedule/getSchedule`)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((schedules) => {
       const tableBody = document.querySelector(".schedule-table tbody");
       tableBody.innerHTML = "";
@@ -456,9 +468,6 @@ function loadSchedules() {
                     <td>${schedule.startTime}</td>
                     <td>${schedule.endTime}</td>
                     <td class="action-column">
-                        <div class="add-slot-btn">
-                            <i class="fas fa-plus" title="Add Time Slot"></i>
-                        </div>
                         <i class="fas fa-edit update-btn" title="Edit Schedule"></i>
                         <i class="fas fa-trash-alt delete-btn" title="Delete Schedule"></i>
                     </td>
@@ -468,7 +477,7 @@ function loadSchedules() {
     })
     .catch((error) => {
       console.error("Error loading schedules:", error);
-      showAlert("Error loading schedules", "error");
+      showAlert("Error loading schedules: " + error.message, "error");
     });
 }
 
@@ -500,10 +509,11 @@ function cancelEdit() {
   loadSchedules();
 }
 
-// Add event listener for cancel button
-document
-  .querySelector(".cancel-changes-btn")
-  .addEventListener("click", cancelEdit);
+// Add event listener for cancel button if it exists
+const cancelButton = document.querySelector(".cancel-changes-btn");
+if (cancelButton) {
+  cancelButton.addEventListener("click", cancelEdit);
+}
 
 function handleDelete(event) {
   const row = event.target.closest("tr");
@@ -523,12 +533,12 @@ function handleDelete(event) {
           row.remove();
           showAlert("Schedule deleted successfully!", "success");
         } else {
-          showAlert("Error deleting schedule");
+          showAlert("Error deleting schedule: " + (data.error || "Unknown error"));
         }
       })
       .catch((error) => {
         console.error("Error:", error);
-        showAlert("Error deleting schedule");
+        showAlert("Error deleting schedule: " + error.message);
       });
   }
 }
@@ -559,12 +569,6 @@ function addTimeSlot(clickedRow) {
   clickedRow.parentNode.insertBefore(newRow, clickedRow.nextSibling);
 }
 
-function convertTimeToMinutes(timeStr) {
-  timeStr = timeStr.replace(/:\d{2}$/, "");
-  const [hours, minutes] = timeStr.split(":").map((num) => parseInt(num, 10));
-  return hours * 60 + minutes;
-}
-
 function formatTimeForDisplay(timeStr) {
   const [hours, minutes] = timeStr.split(":");
   const hour = parseInt(hours, 10);
@@ -592,12 +596,29 @@ function makeRowEditable(row) {
   // Only proceed if row isn't already being edited
   if (!row.classList.contains("editing")) {
     // Get the cells
+    const dayCell = row.querySelector("td:first-child");
     const startTimeCell = row.querySelector("td:nth-child(2)");
     const endTimeCell = row.querySelector("td:nth-child(3)");
 
     // Store original values
+    row.dataset.originalDay = dayCell.textContent.trim();
     row.dataset.originalStart = startTimeCell.textContent.trim();
     row.dataset.originalEnd = endTimeCell.textContent.trim();
+
+    // Create day select with the current day selected
+    const currentDay = dayCell.textContent.trim().toLowerCase();
+    const daySelectHTML = `
+      <select class="day-select" name="day_of_week" required>
+        <option value="monday" ${currentDay === 'monday' ? 'selected' : ''}>Monday</option>
+        <option value="tuesday" ${currentDay === 'tuesday' ? 'selected' : ''}>Tuesday</option>
+        <option value="wednesday" ${currentDay === 'wednesday' ? 'selected' : ''}>Wednesday</option>
+        <option value="thursday" ${currentDay === 'thursday' ? 'selected' : ''}>Thursday</option>
+        <option value="friday" ${currentDay === 'friday' ? 'selected' : ''}>Friday</option>
+        <option value="saturday" ${currentDay === 'saturday' ? 'selected' : ''}>Saturday</option>
+        <option value="sunday" ${currentDay === 'sunday' ? 'selected' : ''}>Sunday</option>
+      </select>
+    `;
+    dayCell.innerHTML = daySelectHTML;
 
     // Get current values and convert to 24-hour format
     const startTime = convertTo24Hour(startTimeCell.textContent.trim());
@@ -617,10 +638,12 @@ function makeRowEditable(row) {
 
 function resetRowToNormal(row) {
   if (row.classList.contains("editing")) {
+    const dayCell = row.querySelector("td:first-child");
     const startTimeCell = row.querySelector("td:nth-child(2)");
     const endTimeCell = row.querySelector("td:nth-child(3)");
 
     // Restore original values
+    dayCell.textContent = row.dataset.originalDay;
     startTimeCell.textContent = row.dataset.originalStart;
     endTimeCell.textContent = row.dataset.originalEnd;
 
@@ -787,19 +810,21 @@ function checkForOverlaps(changedRow) {
 // Add event listeners for immediate validation
 document.addEventListener("DOMContentLoaded", function () {
   const scheduleTable = document.querySelector(".schedule-table");
+  
+  if (scheduleTable) {
+    scheduleTable.addEventListener("input", function (e) {
+      if (e.target.classList.contains("time-input")) {
+        const row = e.target.closest("tr");
+        checkForOverlaps(row);
+      }
+    });
 
-  scheduleTable.addEventListener("input", function (e) {
-    if (e.target.classList.contains("time-input")) {
-      const row = e.target.closest("tr");
-      checkForOverlaps(row);
-    }
-  });
-
-  // Also check on change event for browsers that don't trigger input events for time inputs
-  scheduleTable.addEventListener("change", function (e) {
-    if (e.target.classList.contains("time-input")) {
-      const row = e.target.closest("tr");
-      checkForOverlaps(row);
-    }
-  });
+    // Also check on change event for browsers that don't trigger input events for time inputs
+    scheduleTable.addEventListener("change", function (e) {
+      if (e.target.classList.contains("time-input")) {
+        const row = e.target.closest("tr");
+        checkForOverlaps(row);
+      }
+    });
+  }
 });
