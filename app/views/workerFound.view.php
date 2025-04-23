@@ -38,7 +38,7 @@
             </p>
         </div>
         <div class="buttons">
-            <button class="accept-btn">Accept</button>
+            <button class="accept-btn">Book Now</button>
             <button class="reject-btn">Browse Other Options</button>
         </div>
     <?php else: ?>
