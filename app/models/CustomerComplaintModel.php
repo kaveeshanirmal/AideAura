@@ -106,6 +106,7 @@ class CustomerComplaintModel
         
         return $this->get_all($query, $params);
     }
+    
 
 
 }

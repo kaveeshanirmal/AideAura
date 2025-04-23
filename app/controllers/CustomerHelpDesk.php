@@ -202,4 +202,116 @@ class customerHelpDesk extends Controller
         }
         exit();
     }
+/**
+ * Get conversation history for a complaint
+ * @param string $complaintId - The ID of the complaint
+ */
+public function getConversation($complaintId = null)
+{
+    // Set content type to JSON
+    header('Content-Type: application/json');
+    
+    // Validate complaint ID
+    if (!$complaintId) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid complaint ID']);
+        exit;
+    }
+    
+    // Verify the complaint belongs to the logged-in user
+    $complaint = $this->customerComplaintModel->getComplaintById($complaintId);
+    
+    if (!$complaint || $complaint->customerID != $_SESSION['customerID']) {
+        http_response_code(403); // Forbidden
+        echo json_encode(['error' => 'You do not have permission to view this conversation']);
+        exit;
+    }
+    
+    // Get all updates for this complaint using a custom query
+    $this->customerComplaintModel->setTable('customercomplaints_updates');
+    $query = "SELECT * FROM customercomplaints_updates 
+              WHERE complaintID = :complaintID
+              ORDER BY updated_at ASC";
+              
+    $params = [
+        'complaintID' => $complaintId
+    ];
+    
+    $updates = $this->customerComplaintModel->get_all($query, $params);
+    
+    // Format timestamps for display
+    foreach ($updates as &$update) {
+        $update->timestamp = date('F j, Y \a\t g:i a', strtotime($update->updated_at));
+    }
+    
+    // Return as JSON
+    echo json_encode([
+        'success' => true,
+        'updates' => $updates
+    ]);
+    exit;
+}
+
+/**
+ * Submit a customer reply to a complaint
+ */
+public function submitReply()
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+        exit();
+    }
+    
+    // Sanitize and get input
+    $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+    
+    $complaintId = $_POST['complaint_id'] ?? '';
+    $comments = $_POST['comments'] ?? '';
+    
+    // Validate required fields
+    if (empty($complaintId) || empty($comments)) {
+        $_SESSION['complaint_message'] = 'Please provide a message for your reply.';
+        header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+        exit();
+    }
+    
+    // Verify the complaint belongs to the logged-in user
+    $complaint = $this->customerComplaintModel->getComplaintById($complaintId);
+    
+    if (!$complaint || $complaint->customerID != $_SESSION['customerID']) {
+        $_SESSION['complaint_message'] = 'Complaint not found or unauthorized access.';
+        header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+        exit();
+    }
+    
+    // Create update data
+    $updateData = [
+        'complaintID' => $complaintId,
+        'status' => 'In Progress', // Set to In Progress when customer replies
+        'comments' => $comments,
+        'userID' => $_SESSION['customerID'],
+        'role' => 'Customer', // Set role as Customer
+        'updated_at' => date('Y-m-d H:i:s')
+    ];
+    
+    // Add the update using existing method
+    $result = $this->customerComplaintModel->submitComplaintUpdates($updateData);
+    
+    if ($result) {
+        // Update the main complaint status if needed
+        if ($complaint->status === 'Pending') {
+            $this->customerComplaintModel->updateComplaint($complaintId, ['status' => 'In Progress']);
+        }
+        
+        $_SESSION['complaint_message'] = 'Your reply has been submitted successfully.';
+    } else {
+        $_SESSION['complaint_message'] = 'Failed to submit your reply. Please try again.';
+    }
+    
+    header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+    exit();
+}
+
+
+
 }

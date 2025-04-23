@@ -274,22 +274,243 @@
   color: var(--primary-color);
 }
 
+.complaint-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.reply-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: #fff6ee;
+  color: #7f5539;
+  border: 1px solid #c9b8aa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  gap: 5px;
+}
+
+.reply-btn:hover {
+  background-color: #e0cdbe;
+  border-color: #7f5539;
+}
+
+.reply-btn.clicked {
+  transform: scale(0.95);
+}
+
+.reply-btn i {
+  margin-right: 8px;
+}
+
+/* Conversation Styles */
+.conversation-history {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 8px;
+  position: relative;
+  max-width: 85%;
+}
+
+.admin-message {
+  background-color: #f0f0f0;
+  align-self: flex-start;
+  border-left: 3px solid #2196F3;
+}
+
+.user-message {
+  background-color: #e3f2fd;
+  align-self: flex-end;
+  border-right: 3px solid #4CAF50;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 0.85rem;
+}
+
+.sender {
+  font-weight: bold;
+}
+
+.timestamp {
+  color: #777;
+}
+
+.message-content {
+  word-break: break-word;
+}
+
+.last-reply {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  border-left: 3px solid #2196F3;
+}
+
+/* Update Styles */
+.update {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.customer-update {
+  background-color: #d9f2ff;
+  border-right: 4px solid #1a89c4;
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+.staff-update {
+  background-color: #fff6ee;
+  border-left: 4px solid #7f5539;
+  margin-left: 5px;
+  margin-right: 20px;
+}
+
+.system-update {
+  background-color: #f5f5f5;
+  border-left: 4px solid #d9d9d9;
+}
+
+.update-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.85em;
+  color: #666;
+}
+
+.update-role {
+  font-weight: bold;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #777;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.modal h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  padding: 8px 15px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.error-label {
+  color: #ff4d4f;
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+textarea.error {
+  border-color: #d32f2f;
+}
+
 /* Solution buttons and containers */
 .view-solution-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: var(--border-radius);
+  background-color: #fff6ee;
+  color: #7f5539;
+  border: 1px solid #c9b8aa;
+  padding: 8px 15px;
+  border-radius: 4px;
   cursor: pointer;
   margin-top: 15px;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .view-solution-btn:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
+  background-color: #e0cdbe;
+  border-color: #7f5539;
+}
+
+.view-solution-btn.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.view-solution-btn.clicked {
+  transform: scale(0.95);
 }
 
 .solution {
@@ -414,4 +635,14 @@
 
 .complaint-card {
   animation: fadeIn 0.4s ease-out;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spinner {
+  animation: spin 1s linear infinite;
 }

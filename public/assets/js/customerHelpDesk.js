@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeOverlayHandler();
     setupFormValidation();
     setupAnimations();
+    initializeReplyModal();
 });
 
 /**
@@ -85,10 +86,6 @@ function initializeStatusFilter() {
     if (allFilter) allFilter.classList.add('active');
 }
 
-/**
- * Handle the solution display for resolved complaints
- * @param {string} complaintId - The ID of the complaint
- */
 function toggleSolution(complaintId) {
     const solutionElement = document.getElementById(`solution-${complaintId}`);
     const buttonElement = document.querySelector(`button[data-complaint-id="${complaintId}"]`);
@@ -98,12 +95,12 @@ function toggleSolution(complaintId) {
     if (solutionElement.style.display === "none") {
         // Change button text and add loading state
         if (buttonElement) {
-            buttonElement.textContent = "Loading...";
+            buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
             buttonElement.classList.add('loading');
         }
         
-        // Fetch solution from server
-        fetch(`${ROOT_URL}/public/customerHelpDesk/getSolution/${encodeURIComponent(complaintId)}`)
+        // Fetch conversation history from server
+        fetch(`${ROOT_URL}/public/customerHelpDesk/getConversation/${encodeURIComponent(complaintId)}`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -111,8 +108,41 @@ function toggleSolution(complaintId) {
             return response.json();
         })
         .then((data) => {
-            if (data && data.solution) {
-                solutionElement.innerHTML = `<p>${data.solution}</p>`;
+            if (data && data.updates && data.updates.length > 0) {
+                // Format conversation history - only show date/time and message content
+                let conversationHTML = '<div class="conversation-history">';
+                data.updates.forEach(update => {
+                    // Determine the CSS class based on role but don't display the role
+                    const updateClass = update.role === 'Customer' ? 'customer-update' : 
+                                      (update.role === 'Staff' || update.role === 'admin' ? 'staff-update' : 'system-update');
+                    
+                    conversationHTML += `
+                        <div class="update ${updateClass}">
+                            <div class="update-header">
+                                <span class="timestamp">${update.timestamp}</span>
+                            </div>
+                            <div class="update-content">${update.comments}</div>
+                        </div>
+                    `;
+                });
+                conversationHTML += '</div>';
+                
+                solutionElement.innerHTML = conversationHTML;
+                
+                // Check if this is an In Progress complaint
+                const status = buttonElement.getAttribute('data-status');
+                if (status === 'In Progress') {
+                    // Add the reply button container
+                    const replyContainer = document.createElement('div');
+                    replyContainer.className = 'reply-container';
+                    replyContainer.style.marginTop = '15px';
+                    replyContainer.innerHTML = `
+                        <button class="reply-btn" onclick="openReplyModal('${complaintId}')">
+                            <i class="fas fa-reply"></i> Reply to this complaint
+                        </button>
+                    `;
+                    solutionElement.appendChild(replyContainer);
+                }
                 
                 // Animate solution appearance
                 solutionElement.style.display = "block";
@@ -125,26 +155,42 @@ function toggleSolution(complaintId) {
                 }, 10);
                 
                 if (buttonElement) {
-                    buttonElement.textContent = "Hide Solution";
+                    buttonElement.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Updates';
                     buttonElement.classList.remove('loading');
                 }
             } else {
-                solutionElement.innerHTML = "<p>No solution details available yet.</p>";
+                solutionElement.innerHTML = "<p>No updates available for this complaint.</p>";
+                
+                // Check if this is an In Progress complaint
+                const status = buttonElement.getAttribute('data-status');
+                if (status === 'In Progress') {
+                    // Add the reply button container even if there are no updates
+                    const replyContainer = document.createElement('div');
+                    replyContainer.className = 'reply-container';
+                    replyContainer.style.marginTop = '15px';
+                    replyContainer.innerHTML = `
+                        <button class="reply-btn" onclick="openReplyModal('${complaintId}')">
+                            <i class="fas fa-reply"></i> Reply to this complaint
+                        </button>
+                    `;
+                    solutionElement.appendChild(replyContainer);
+                }
+                
                 solutionElement.style.display = "block";
                 
                 if (buttonElement) {
-                    buttonElement.textContent = "Hide Solution";
+                    buttonElement.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Updates';
                     buttonElement.classList.remove('loading');
                 }
             }
         })
         .catch(error => {
-            console.error('Error fetching solution:', error);
-            solutionElement.innerHTML = "<p>Error loading solution. Please try again.</p>";
+            console.error('Error fetching updates:', error);
+            solutionElement.innerHTML = "<p>Error loading updates. Please try again.</p>";
             solutionElement.style.display = "block";
             
             if (buttonElement) {
-                buttonElement.textContent = "View Solution";
+                buttonElement.innerHTML = '<i class="fas fa-eye"></i> View Updates';
                 buttonElement.classList.remove('loading');
             }
         });
@@ -158,9 +204,80 @@ function toggleSolution(complaintId) {
         }, 300);
         
         if (buttonElement) {
-            buttonElement.textContent = "View Solution";
+            buttonElement.innerHTML = '<i class="fas fa-eye"></i> View Updates';
         }
     }
+}
+
+/**
+ * Open the reply modal for a complaint
+ * @param {string} complaintId - The ID of the complaint
+ */
+function openReplyModal(complaintId) {
+    const modal = document.getElementById('reply-modal');
+    const complaintIdInput = document.getElementById('reply-complaint-id');
+    
+    if (modal && complaintIdInput) {
+        complaintIdInput.value = complaintId;
+        modal.classList.remove('hidden');
+        document.getElementById('reply-message').focus();
+    }
+}
+
+/**
+ * Close the reply modal
+ */
+function closeReplyModal() {
+    const modal = document.getElementById('reply-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.getElementById('reply-message').value = '';
+        
+        // Remove any error messages
+        const errorLabel = document.getElementById('reply-error');
+        if (errorLabel) {
+            errorLabel.remove();
+        }
+    }
+}
+
+/**
+ * Initialize the reply modal
+ */
+function initializeReplyModal() {
+    const modal = document.getElementById('reply-modal');
+    const closeBtn = document.getElementById('reply-modal-close');
+    const form = document.getElementById('reply-form');
+    
+    if (!modal || !closeBtn || !form) return;
+    
+    closeBtn.addEventListener('click', closeReplyModal);
+    
+    // Close modal when clicking outside the content
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeReplyModal();
+        }
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(event) {
+        const replyMessage = document.getElementById('reply-message');
+        
+        if (!replyMessage || replyMessage.value.trim().length < 1) {
+            event.preventDefault();
+            replyMessage.classList.add('error');
+            
+            const errorLabel = document.getElementById('reply-error') || document.createElement('div');
+            errorLabel.id = 'reply-error';
+            errorLabel.className = 'error-label';
+            errorLabel.textContent = 'Please enter a reply message';
+            
+            if (!document.getElementById('reply-error')) {
+                replyMessage.parentElement.appendChild(errorLabel);
+            }
+        }
+    });
 }
 
 /**
@@ -173,7 +290,7 @@ function initializeOverlayHandler() {
     if (!overlay || !closeBtn) return;
 
     // Show the overlay if a session message exists
-    if (overlay.textContent.trim() !== "") {
+    if (overlay.classList.contains("hidden") && overlay.querySelector("#overlay-text").textContent.trim() !== "") {
         overlay.classList.remove("hidden");
     }
 
@@ -287,7 +404,7 @@ function setupAnimations() {
         
         if (status) {
             const statusBadge = document.createElement('div');
-            statusBadge.className = `status-badge ${status}`;
+            statusBadge.className = `status-badge ${status.toLowerCase().replace(' ', '-')}`;
             statusBadge.textContent = status;
             card.appendChild(statusBadge);
         }
