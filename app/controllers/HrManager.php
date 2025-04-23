@@ -690,8 +690,18 @@ class HrManager extends Controller
             return;
         }
     }
-    public function workerInquiries()
+    //public function workerInquiries()
+    //{
+    //    $this->view('hr/workerInquiries');
+    //}
+
+    /**
+     * Display worker complaints for HR manager
+     */
+    public function workerComplaints()
     {
-        $this->view('hr/workerInquiries');
+        require_once "../app/controllers/WorkerComplaint.php";
+        $workerComplaintController = new WorkerComplaint();
+        $workerComplaintController->hrIndex();
     }
 }
