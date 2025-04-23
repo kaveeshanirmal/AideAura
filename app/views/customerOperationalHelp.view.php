@@ -6,6 +6,13 @@
         <title>Operational Help Desk | AideAura</title>
         <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/customerHelpDesk.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+        <style>
+        body {
+            background-image: url('<?=ROOT?>/public/assets/images/booking_bg.jpg');
+        }
+    </style>
+    
     </head>
     <body>
         <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
