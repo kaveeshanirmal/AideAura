@@ -90,6 +90,13 @@ class SearchForWorker extends Controller
             'endTime'   => $startTime
         ]);
 
+        // Check if any workers were found
+        if (empty($data)) {
+            // No workers found, redirect to noMatchApology view
+            header("Location: " . ROOT . "/public/SearchForWorker/noWorkersFound");
+            exit;
+        }
+
         // For all found workers check whether they are already booked
         foreach ($data as $key => $worker) {
             $workerID = $worker->workerID;
@@ -127,6 +134,43 @@ class SearchForWorker extends Controller
     public function browseWorkers()
     {
         $this->view('BrowseWorker');
+    }
+
+    public function waitingForResponse()
+    {
+        $this->view('countdownScreen');
+    }
+
+    public function orderSummary()
+    {
+//        $worker = [
+//            'name' => 'Sameera',
+//            'category' => 'Gardener',
+//            'rating' => 4.8,
+//            'image' => ROOT . '/public/assets/images/orderSummaryprofile.jpeg',
+//        ];
+//        $booking = [
+//            'date' => '2025-04-20',
+//            'time' => '10:00 AM - 4:00 PM',
+//            'duration' => '6 hours',
+//            'location' => 'Horowpathana, Galenpidunuwawa, Apt 203',
+//            'payment_method' => 'Debit Card',
+//            'status' => 'Confirmed',
+//            'total' => 3250.00,
+//        ];
+
+
+        $this->view('orderSummary');
+    }
+
+    public function noResponse()
+    {
+        $this->view('workerRejectionApology');
+    }
+
+    public function noWorkersFound()
+    {
+        $this->view('noMatchApology');
     }
 }
 

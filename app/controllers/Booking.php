@@ -81,6 +81,8 @@ class Booking extends Controller
             $details
         );
 
+        $_SESSION['bookingID'] = $bookingID;
+
         // create notifications for both customer and worker
         $this->notificationModel->create(
             $this->userModel->getUserID($workerID, 'worker'),
@@ -170,5 +172,83 @@ class Booking extends Controller
         );
 
         echo json_encode(['status' => 'success', 'message' => 'Booking accepted successfully']);
+    }
+
+    public function reject()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method. POST required.']);
+            exit;
+        }
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $bookingID = $data['bookingID'] ?? null;
+
+        if (!$bookingID) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Booking ID is required']);
+            exit;
+        }
+
+        $workerID = $_SESSION['workerID'];
+
+        $updateSuccess = $this->bookingModel->updateBookingStatus($bookingID, 'cancelled');
+        if (!$updateSuccess) {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to update booking status']);
+            exit;
+        }
+
+        // create notifications for both customer and worker
+        $this->notificationModel->create(
+            $this->userModel->getUserID($workerID, 'worker'),
+            'Booking Rejected',
+            'You have rejected a booking.',
+            'Navigate to your dashboard to view the details.'
+        );
+
+        $customerID = $this->bookingModel->getCustomerIdByBookingId($bookingID);
+        $this->notificationModel->create(
+            $this->userModel->getUserID($customerID, 'customer'),
+            'Booking Rejected',
+            'Your booking has been rejected.',
+            'Please choose another worker or service.'
+        );
+
+        echo json_encode(['status' => 'success', 'message' => 'Booking rejected successfully']);
+    }
+
+    public function getBookingState()
+    {
+        header('Content-Type: application/json');
+
+        if (!isset($_SESSION['userID'])) {
+            http_response_code(401);
+            echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+            exit;
+        }
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $bookingID = $data['bookingID'] ?? null;
+
+        if (!$bookingID) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Booking ID is required']);
+            exit;
+        }
+
+        $bookingState = $this->bookingModel->getStatusByBookingId($bookingID);
+
+        if ($bookingState) {
+            echo json_encode(['status' => 'success', 'state' => $bookingState]);
+        } else {
+            http_response_code(404);
+            echo json_encode(['status' => 'error', 'message' => 'Booking not found']);
+        }
     }
 }

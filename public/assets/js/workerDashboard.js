@@ -290,13 +290,13 @@ function denyJob(button, bookingId) {
   acceptButton.disabled = true;
 
   // Send denial to server
-  fetch("<?= ROOT ?>/bookings/deny", {
+  fetch(`${ROOT}/public/booking/reject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      bookingId: bookingId,
+      bookingID: bookingId,
     }),
   })
     .then((response) => response.json())

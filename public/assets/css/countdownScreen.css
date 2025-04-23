@@ -1,0 +1,315 @@
+@import url("https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background:
+    linear-gradient(to bottom, rgba(62, 39, 35, 0.9), rgba(121, 85, 72, 0.8)),
+    url("../images/Loading_Screen_Background.png") no-repeat center center/cover;
+  color: #ffe0b2;
+  overflow: hidden;
+}
+
+.bottom-countdown {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  z-index: 999;
+}
+
+.progress-ring-small {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.time-text-small {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff3e0;
+  text-align: center;
+}
+
+.center-wrapper {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  z-index: 2;
+  text-align: center;
+}
+
+.flower-spinner {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  border-radius: 50%;
+  z-index: 1;
+  animation: pulseSpin 6s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+/* Dots around the spinner */
+.flower-spinner .dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #ffcc80;
+  border-radius: 50%;
+  animation: dotPulse 2s infinite ease-in-out;
+}
+
+.flower-spinner .dot:nth-child(1) {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 0s;
+}
+.flower-spinner .dot:nth-child(2) {
+  top: 20%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0.2s;
+}
+.flower-spinner .dot:nth-child(3) {
+  top: 50%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0.4s;
+}
+.flower-spinner .dot:nth-child(4) {
+  top: 80%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0.6s;
+}
+.flower-spinner .dot:nth-child(5) {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 0.8s;
+}
+.flower-spinner .dot:nth-child(6) {
+  top: 80%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1s;
+}
+.flower-spinner .dot:nth-child(7) {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  animation-delay: 1.2s;
+}
+.flower-spinner .dot:nth-child(8) {
+  top: 20%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1.4s;
+}
+
+.center-logo {
+  width: 80px;
+  height: 80px;
+  background-image: url("../images/Logo_Large.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: glowingEffect 2s infinite alternate;
+  z-index: 3;
+  filter: drop-shadow(
+    0 0 15px rgba(255, 255, 255, 0.8)
+  ); /* Glow effect on transparent parts */
+}
+
+.bg,
+.progress {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.progress {
+  stroke: #e2dacd;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.bg {
+  stroke: #5d4037;
+}
+
+.time-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff3e0;
+  animation: pulse 1s infinite;
+}
+
+.cta-button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  background-color: #6d4c41;
+  color: #fff3e0;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: auto;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out;
+  animation: fadeInUp 1s ease-in-out;
+}
+
+.cta-button:hover {
+  transform: scale(1.2); /* Enlarges the button by 10% */
+}
+
+/* Heading Styling */
+.main-heading {
+  position: absolute;
+  font-size: 30px;
+  font-weight: 200;
+  color: #ffe0b2;
+  top: 120px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 1s ease-in-out;
+}
+
+/* Status Text */
+.status-text {
+  position: absolute;
+  font-size: 20px;
+  color: #e0c4a8;
+  bottom: 180px;
+  animation: fadeInUp 1s ease-in-out;
+}
+
+/* Styled Button Below Small Text */
+
+.cta-button:hover {
+  background-color: #5d4037;
+}
+
+.action-container {
+  display: flex;
+  justify-content: space-between; /* Ensures the cancel button stays left and countdown text moves right */
+  align-items: center;
+  width: 100%; /* Full width ensures spacing works */
+  padding: 25px;
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+  align-self: center;
+  background-color: #c23a3a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(194, 58, 58, 0.5);
+}
+
+.cancel-btn:hover {
+  background-color: #a52f2f;
+}
+
+.countdown {
+  font-size: 20px;
+  color: #ffe0b2;
+  font-weight: 300;
+  margin-left: auto;
+  text-align: right;
+}
+
+@keyframes pulseSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) rotate(90deg);
+  }
+  50% {
+    transform: scale(0.95) rotate(180deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.7) translate(-50%, -50%);
+    opacity: 0.7;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glowingEffect {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1));
+  }
+  100% {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
