@@ -16,12 +16,8 @@ html, body {
   background-repeat: no-repeat;
   color: #3e2f21;
   min-height: 100vh;
-  overflow: hidden;
 }
 
-html {
-  overflow-y: hidden;
-}
 
 header {
   background: linear-gradient(to right, #5a3a24, #8b5e3c);
