@@ -3,13 +3,18 @@
 class Payment extends Controller
 {
     private $userModel;
+    private $bookingModel;
+    private $paymentModel;
     private $merchantId;
     private $merchantSecret;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
-        // $this->paymentModel = new PaymentModel(); // Instantiate if needed
+        $this->bookingModel = new BookingModel();
+        $this->paymentModel = new PaymentModel();
+        $this->notificationModel = new NotificationModel();
         $this->merchantId = $_ENV["PAYHERE_MERCHANT_ID"];
         $this->merchantSecret = $_ENV["PAYHERE_MERCHANT_SECRET"];
     }
@@ -100,68 +105,251 @@ class Payment extends Controller
 
     public function success()
     {
-        $response = ['status' => 'success', 'message' => 'Payment Successful!', 'order_id' => $_GET['order_id'] ?? null];
-        header('Content-Type: application/json');
-        echo json_encode($response);
+        // Get payment details from PayHere response
+        $orderId = $_GET['order_id'] ?? null;
+        $paymentId = $_GET['payment_id'] ?? null;
+
+        if (!$orderId) {
+            header('Location: ' . ROOT . '/public/home');
+            exit();
+        }
+
+        // Find booking by order ID (which is bookingID)
+        $booking = $this->bookingModel->getBasicBookingData($orderId);
+        if (!$booking) {
+            $_SESSION['message'] = 'Booking not found';
+            header('Location: ' . ROOT . '/public/home');
+            exit();
+        }
+
+        // Get worker details
+        $worker = $this->userModel->findWorkerByID($booking->workerID);
+
+        // Check if payment already recorded
+        $existingPayment = $this->paymentModel->findPaymentsByBookingID($orderId);
+
+        if (empty($existingPayment)) {
+            // Generate a temporary transaction ID if none provided from PayHere
+            $paymentId = $paymentId ?? 'TEMP_' . uniqid();
+
+            // Create payment record
+            $paymentData = [
+                'bookingID' => $orderId,
+                'transactionID' => $paymentId,
+                'amount' => $booking->totalCost,
+                'currency' => 'LKR',
+                'paymentMethod' => 'PayHere',
+                'paymentStatus' => 'pending', // Set as pending until notify confirms it
+                'merchantReference' => $this->merchantId,
+                'responseData' => json_encode($_GET) // Convert array to JSON string
+            ];
+
+            $paymentID = $this->paymentModel->createPayment($paymentData);
+
+            // Log the transaction
+            $logData = [
+                'paymentID' => $paymentID,
+                'statusBefore' => 'pending',
+                'statusAfter' => 'pending', // Keep as pending until notify webhook confirms
+                'amount' => $booking->totalCost,
+                'notes' => 'Payment redirect received via PayHere',
+                'ipAddress' => $_SERVER['REMOTE_ADDR'],
+                'userAgent' => $_SERVER['HTTP_USER_AGENT']
+            ];
+
+            $this->paymentModel->logPaymentTransaction($logData);
+        }
+
+        // Get payment info for the view
+        $paymentInfo = [
+            'transactionID' => $paymentId ?? 'Processing',
+            'paymentMethod' => 'PayHere',
+            'paymentDate' => date('Y-m-d H:i:s')
+        ];
+
+        // Update the booking status to 'confirmed'
+        $this->bookingModel->updateBookingStatus($orderId, 'confirmed');
+        // Notify both user and worker about the booking confirmation
+        $this->notificationModel->create(
+            $_SESSION['userID'],
+            'Booking Confirmation',
+            'Booking Confirmed',
+            'Your booking has been confirmed. Enjoy your service!'
+        );
+        $this->notificationModel->create(
+            $worker->userID,
+            'Booking Confirmation',
+            'Booking Confirmed',
+            'Customer has confirmed the booking. Navigate to your dashboard for more details.'
+        );
+
+        // Send email to worker with booking details
+        MailHelper::sendBookingConfirmation(
+            $worker->email,
+            $booking,
+            'worker'
+        );
+        // Send email to customer with booking details
+        MailHelper::sendBookingConfirmation(
+            $this->userModel->findUserByUsername($_SESSION['username'])->email,
+            $booking,
+            'customer'
+        );
+
+        // Unset the booking session to prevent reprocessing
+        unset($_SESSION['booking']);
+
+        // Load the success view
+        $this->view('paymentSuccess',
+            [
+                'booking' => $booking,
+                'worker' => $worker,
+                'paymentInfo' => $paymentInfo
+            ]
+        );
     }
 
     public function cancel()
     {
         $response = ['status' => 'cancelled', 'message' => 'Payment Cancelled.'];
-        header('Content-Type: application/json');
-        echo json_encode($response);
+        //save the error message to the session
+        $_SESSION['message'] = 'Payment Cancelled. Please try again.';
+        $_SESSION['message_type'] = 'error';
+
+        // Redirect to orderSummary page
+        header('Location: ' . ROOT . '/public/booking/orderSummary');
+    }
+
+    public function clearSessionMessage()
+    {
+        // If method is called via fetch
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Clear the session message
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+            $this->jsonResponse(['status' => 'success', 'message' => 'Session message cleared']);
+            return;
+        }
     }
 
     public function notify()
     {
-        header('Content-Type: application/json');
-        $response = [];
-
-        $merchantSecret = $this->merchantSecret;
-
+        // Get POST data
         $orderId = $_POST['order_id'] ?? null;
-        $paymentStatus = $_POST['status'] ?? null;
-        $amount = $_POST['amount'] ?? null;
-        $currency = $_POST['currency'] ?? null;
+        $paymentStatus = $_POST['status_code'] ?? null;
+        $amount = $_POST['payhere_amount'] ?? null;
+        $currency = $_POST['payhere_currency'] ?? null;
         $paymentId = $_POST['payment_id'] ?? null;
         $merchantId = $_POST['merchant_id'] ?? null;
-        $hashReceived = $_POST['hash'] ?? null;
+        $hashReceived = $_POST['md5sig'] ?? null;
 
-        if ($orderId && $paymentStatus !== null && $amount && $currency && $merchantId && $hashReceived) {
-            $hashCalculated = strtoupper(md5($merchantId . $orderId . number_format($amount, 2, '.', '') . $currency . $paymentStatus . strtoupper(md5($merchantSecret))));
+        // Verify hash
+        $hashCalculated = strtoupper(md5(
+            $merchantId .
+            $orderId .
+            number_format($amount, 2, '.', '') .
+            $currency .
+            $paymentStatus .
+            strtoupper(md5($this->merchantSecret))
+        ));
 
-            if ($hashCalculated == $hashReceived) {
-                if ($paymentStatus == 2) {
-                    // Payment successful
-                    // Update your database
-                    $response = ['status' => 'success', 'message' => 'Payment successful.', 'order_id' => $orderId, 'payment_id' => $paymentId];
-                    http_response_code(200);
-                } else if ($paymentStatus == 0) {
-                    // Payment cancelled
-                    // Update your database
-                    $response = ['status' => 'cancelled', 'message' => 'Payment cancelled.', 'order_id' => $orderId];
-                    http_response_code(200);
-                } else if ($paymentStatus == -1) {
-                    // Payment pending
-                    // Update your database
-                    $response = ['status' => 'pending', 'message' => 'Payment pending.', 'order_id' => $orderId, 'payment_id' => $paymentId];
-                    http_response_code(200);
-                } else {
-                    // Other payment statuses
-                    $response = ['status' => 'other', 'message' => 'Payment status: ' . $paymentStatus, 'order_id' => $orderId];
-                    http_response_code(200);
+        if ($hashCalculated == $hashReceived) {
+            // Valid notification, process the payment
+            $booking = $this->bookingModel->getBasicBookingData($orderId);
+
+            if (!$booking) {
+                $this->jsonResponse(['status' => 'error', 'message' => 'Booking not found'], 404);
+                return;
+            }
+
+            // Check if payment already recorded
+            $existingPayments = $this->paymentModel->findPaymentsByBookingID($orderId);
+
+            if (empty($existingPayments)) {
+                // Map PayHere status to our status
+                $status = 'pending';
+                switch ($paymentStatus) {
+                    case 2: $status = 'completed'; break;
+                    case 0: $status = 'cancelled'; break;
+                    case -1: $status = 'pending'; break;
+                    default: $status = 'failed'; break;
                 }
+
+                // Create payment record
+                $paymentData = [
+                    'bookingID' => $orderId,
+                    'transactionID' => $paymentId,
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'paymentMethod' => 'PayHere',
+                    'paymentStatus' => $status,
+                    'merchantReference' => $merchantId,
+                    'responseData' => json_encode($_POST)
+                ];
+
+                $paymentID = $this->paymentModel->createPayment($paymentData);
+
+                // Log the transaction
+                $logData = [
+                    'paymentID' => $paymentID,
+                    'statusBefore' => 'new',
+                    'statusAfter' => $status,
+                    'amount' => $amount,
+                    'notes' => 'Payment notification via PayHere webhook',
+                    'ipAddress' => $_SERVER['REMOTE_ADDR'],
+                    'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? 'PayHere Webhook'
+                ];
+
+                $this->paymentModel->logPaymentTransaction($logData);
+
+                // Update booking status if payment complete
+                if ($status == 'completed') {
+                    $this->bookingModel->updateBookingStatus($orderId, 'confirmed');
+                }
+
+                $this->jsonResponse(['status' => 'success', 'message' => 'Payment processed']);
             } else {
-                // Hash mismatch - potential fraud
-                $response = ['status' => 'error', 'message' => 'Hash mismatch!', 'received_hash' => $hashReceived, 'calculated_hash' => $hashCalculated, 'post_data' => $_POST];
-                http_response_code(400);
+                // Payment already exists, update status if needed
+                $payment = $existingPayments[0];
+
+                // Map PayHere status to our status
+                $status = 'pending';
+                switch ($paymentStatus) {
+                    case 2: $status = 'completed'; break;
+                    case 0: $status = 'cancelled'; break;
+                    case -1: $status = 'pending'; break;
+                    default: $status = 'failed'; break;
+                }
+
+                if ($payment->paymentStatus != $status) {
+                    // Status changed, update payment
+                    $this->paymentModel->updatePaymentStatus($payment->paymentID, $status, $_POST);
+
+                    // Log the transaction
+                    $logData = [
+                        'paymentID' => $payment->paymentID,
+                        'statusBefore' => $payment->paymentStatus,
+                        'statusAfter' => $status,
+                        'amount' => $amount,
+                        'notes' => 'Payment status updated via PayHere webhook',
+                        'ipAddress' => $_SERVER['REMOTE_ADDR'],
+                        'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? 'PayHere Webhook'
+                    ];
+
+                    $this->paymentModel->logPaymentTransaction($logData);
+
+                    // Update booking status if payment complete
+                    if ($status == 'completed') {
+                        $this->bookingModel->updateBookingStatus($orderId, 'confirmed');
+                    }
+                }
+
+                $this->jsonResponse(['status' => 'success', 'message' => 'Payment updated']);
             }
         } else {
-            // Missing POST data
-            $response = ['status' => 'error', 'message' => 'Missing required POST data.', 'post_data' => $_POST];
-            http_response_code(400);
+            // Invalid hash, potential security issue
+            $this->jsonResponse(['status' => 'error', 'message' => 'Hash verification failed'], 400);
         }
-
-        echo json_encode($response);
     }
+
 }

@@ -13,6 +13,8 @@ $booking = [
     'createdAt' => $_SESSION['booking']['createdAt'],
 ];
 $statusClass = 'status-' . strtolower($booking['status']);
+$displayMessage = isset($_SESSION['message']) && !empty($_SESSION['message']);
+$messageType = $_SESSION['message_type'] ?? 'error';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +28,16 @@ $statusClass = 'status-' . strtolower($booking['status']);
 
 <div class="summary-container">
     <h1>Order Summary</h1>
-
+    <?php if ($displayMessage): ?>
+        <!-- Session Message Display -->
+        <div class="message-box <?= $messageType ?>">
+            <h2>Payment Failed</h2>
+            <p><?= htmlspecialchars($_SESSION['message']) ?></p>
+            <button class="okay-button" onclick="clearSessionMessage()">
+                Okay
+            </button>
+        </div>
+    <?php endif; ?>
     <div class="worker-card">
         <img src="<?=ROOT?>/<?=htmlspecialchars($worker['profileImage'])?>" alt="Worker Image">
         <div class="worker-details">
@@ -61,13 +72,41 @@ $statusClass = 'status-' . strtolower($booking['status']);
     </div>
 </div>
 
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Notification</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="errorMessage"></p>
+        </div>
+        <div class="modal-footer">
+            <button id="okButton" class="btn">OK</button>
+        </div>
+    </div>
+</div>
+
 <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 
 <script>
+    <?php if ($displayMessage): ?>
+    function clearSessionMessage() {
+        fetch('<?=ROOT?>/public/booking/clearSessionMessage', {
+            method: 'POST'
+        }).then(() => {
+            // Just remove the message box instead of reloading the whole page
+            document.querySelector('.message-box').style.display = 'none';
+        }).catch(error => {
+            console.error('Error clearing session message:', error);
+        });
+    }
+    <?php endif; ?>
+
     const workerData = <?= json_encode($worker) ?>; // Worker data from PHP
     const bookingID = "<?= $_SESSION['booking']['bookingID'] ?>"; // Get booking ID from session
     const createdAt = "<?= $_SESSION['booking']['createdAt'] ?>"; // Get booking creation timestamp
-    const totalCountdownSeconds = 3000; // 5 minutes in seconds for payment
+    const totalCountdownSeconds = 300; // 5 minutes in seconds for payment
     let countdown; // Will be calculated based on createdAt
     let countdownTimer;
 
