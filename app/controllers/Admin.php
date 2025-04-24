@@ -751,7 +751,7 @@ public function updateVerificationStatus() {
     //     $this->view('admin/adminPayrate',['rates'=>$filteredRates]);
     // }
 
-    public function paymentRates()
+    public function priceData()
     {
 
         $pricingModel = new PricingModel();
@@ -767,58 +767,53 @@ public function updateVerificationStatus() {
         // }
         
         
-        $this->view('admin/adminPayrate', ['priceData' => $priceData]);
+        $this->view('admin/adminPriceDetails', ['priceData' => $priceData]);
 
     }
 
-    public function updatePaymentRates() {
+    public function updatePriceDetails()
+    {
         try {
-            // Ensure proper content type header is set first
-            header('Content-Type: application/json');
-            
-            // Read raw POST data
-            $rawData = file_get_contents('php://input');
-            if (!$rawData) {
-                throw new Exception('No data received');
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (!isset($data['detailID'])) {
+                throw new Exception('DetailID is required');
             }
-            
-            // Decode JSON data
-            $data = json_decode($rawData, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Invalid JSON data: ' . json_last_error_msg());
-            }
-            
-            // Validate required fields
-            if (!$data || !isset($data['ServiceID'])) {
-                throw new Exception('Invalid data. ServiceID is required.');
-            }
-            
-            // Extract and validate data
-            $ServiceID = $data['ServiceID'];
-            $updateData = [
-                'BasePrice' => isset($data['BasePrice']) ? (float) $data['BasePrice'] : null,
-                'BaseHours' => isset($data['BaseHours']) ? (float) $data['BaseHours'] : null
+            // if (!isset($data['categoryID'])) {
+            //     throw new Exception('categoryID is required');
+            // }
+
+            $detailID = $data['detailID'];
+            unset($data['detailID']); // Remove userID from update data
+            // $categoryID = $data['categoryID'];
+            // unset($data['categoryID']); // Remove userID from update data
+
+            $priceData =[
+                'detailName' => $data['detailName'] ?? NULL,
+                'price' => $data['price'] ?? NULL,
+                'description' => $data['description'] ?? NULL,
             ];
-            
-            // Validate numeric values
-            if ($updateData['BasePrice'] === null || $updateData['BaseHours'] === null) {
-                throw new Exception('BasePrice and BaseHours are required and must be numeric.');
-            }
-            
-            // Update payment rate
-            $paymentRateModel = new PaymentRateModel();
-            $success = $paymentRateModel->updatePayrate($ServiceID, $updateData);
-            
-            if (!$success) {
-                throw new Exception('Failed to update payment rate.');
-            }
-            
+
+            // $categoryData = [
+            //     'categoryName' => $data['categoryName'] ?? NULL,
+            //     'description' => $data['categoryDescription'] ?? NULL,
+            //     'displayName' => $data['categoryDisplayName'] ?? NULL,
+            // ];
+
+            $pricingModel = new PricingModel();
+            $success = $pricingModel->updatePriceDetails($detailID, $priceData);
+            // $success1 = $pricingModel->updatePriceDetails($detailID, $priceData);
+            // $success2 = $pricingModel->updateCategoryDetails($categoryID, $categoryData);
+
+            // $success = $success1 && $success2; // Combine both success statuses
+
+            header('Content-Type: application/json');
             echo json_encode([
-                'success' => true,
-                'message' => 'Payment rates updated successfully'
+                'success' => $success,
+                'message' => $success ? 'Price details updated successfully' : 'Failed to update price details'
             ]);
-            
         } catch (Exception $e) {
+            header('Content-Type: application/json');
             http_response_code(500);
             echo json_encode([
                 'success' => false,
@@ -826,6 +821,121 @@ public function updateVerificationStatus() {
             ]);
         }
     }
+
+    // public function updatePaymentRates() {
+    //     try {
+    //         // Ensure proper content type header is set first
+    //         header('Content-Type: application/json');
+            
+    //         // Read raw POST data
+    //         $rawData = file_get_contents('php://input');
+    //         if (!$rawData) {
+    //             throw new Exception('No data received');
+    //         }
+            
+    //         // Decode JSON data
+    //         $data = json_decode($rawData, true);
+    //         if (json_last_error() !== JSON_ERROR_NONE) {
+    //             throw new Exception('Invalid JSON data: ' . json_last_error_msg());
+    //         }
+            
+    //         // Validate required fields
+    //         if (!$data || !isset($data['ServiceID'])) {
+    //             throw new Exception('Invalid data. ServiceID is required.');
+    //         }
+            
+    //         // Extract and validate data
+    //         $ServiceID = $data['ServiceID'];
+    //         $updateData = [
+    //             'BasePrice' => isset($data['BasePrice']) ? (float) $data['BasePrice'] : null,
+    //             'BaseHours' => isset($data['BaseHours']) ? (float) $data['BaseHours'] : null
+    //         ];
+            
+    //         // Validate numeric values
+    //         if ($updateData['BasePrice'] === null || $updateData['BaseHours'] === null) {
+    //             throw new Exception('BasePrice and BaseHours are required and must be numeric.');
+    //         }
+            
+    //         // Update payment rate
+    //         $paymentRateModel = new PaymentRateModel();
+    //         $success = $paymentRateModel->updatePayrate($ServiceID, $updateData);
+            
+    //         if (!$success) {
+    //             throw new Exception('Failed to update payment rate.');
+    //         }
+            
+    //         echo json_encode([
+    //             'success' => true,
+    //             'message' => 'Payment rates updated successfully'
+    //         ]);
+            
+    //     } catch (Exception $e) {
+    //         http_response_code(500);
+    //         echo json_encode([
+    //             'success' => false,
+    //             'message' => $e->getMessage()
+    //         ]);
+    //     }
+    // }
+
+
+    // create new price record in price_details table 
+      // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //     header('Content-Type: application/json'); // Ensure JSON response
+        //     $_POST = filter_input_array(INPUT_POST);
+    
+        //     $data = [
+        //         'firstName' => trim($_POST['firstName']),
+        //         'lastName' => trim($_POST['lastName']),
+        //         'username' => trim($_POST['username']),
+        //         'phone' => trim($_POST['phone']),
+        //         'email' => trim($_POST['email']),
+        //         'password' => trim($_POST['password']),
+        //         'role' => trim($_POST['role']),
+        //     ];
+
+        //     $result = $this->UserModel->registerEmployee($data);
+
+        //     if ($result) {
+        //         echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
+        //     } else {
+        //         echo json_encode(['status' => 'error', 'message' => 'Failed to add user. Please try again.']);
+        //     }
+        // } else {
+        //     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+        // }
+        // exit;
+    // }
+
+    // create new price category record in price_category table
+    // public function storePriceCategoryDetails()
+    // {
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //     header('Content-Type: application/json'); // Ensure JSON response
+        //     $_POST = filter_input_array(INPUT_POST);
+    
+        //     $data = [
+        //         'firstName' => trim($_POST['firstName']),
+        //         'lastName' => trim($_POST['lastName']),
+        //         'username' => trim($_POST['username']),
+        //         'phone' => trim($_POST['phone']),
+        //         'email' => trim($_POST['email']),
+        //         'password' => trim($_POST['password']),
+        //         'role' => trim($_POST['role']),
+        //     ];
+
+        //     $result = $this->userModel->registerEmployee($data);
+
+        //     if ($result) {
+        //         echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
+        //     } else {
+        //         echo json_encode(['status' => 'error', 'message' => 'Failed to add user. Please try again.']);
+        //     }
+        // } else {
+        //     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+        // }
+        // exit;
+    // }
 
     public function paymentHistory()
     {
