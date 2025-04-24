@@ -28,6 +28,8 @@ class AdminEmployees extends Controller {
 private function getFilteredEmployees() {
     $userModel = new UserModel();
     $allEmployees = $userModel->getAllEmployees();
+
+    error_log("Employees in controller: " . json_encode($allEmployees));
     
     // Define the allowed roles for filtering
     $allowedRoles = ['hrManager', 'opManager', 'financeManager', 'admin'];
@@ -38,6 +40,7 @@ private function getFilteredEmployees() {
     });
     
     if (!$filteredEmployees) {
+        error_log("No employees with specified roles retrieved or query failed");
         return []; // Ensuring the variable is always an array
     }
     

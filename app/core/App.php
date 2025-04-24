@@ -13,7 +13,7 @@ class App
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
-            'AdminEmployees' => ['index', 'update', 'delete' , 'search'],
+            'AdminEmployees' => ['index', 'update', 'delete' , 'search' , 'all'],
 
             // 'AdminRoles1' => ['index', 'edit'],
 
@@ -31,7 +31,7 @@ class App
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'workerInquiries'],
+            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'getScheduleView', 'workerMatching', 'workerInquiries'],
 
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
