@@ -1,8 +1,5 @@
 <?php
 
-require_once '../app/core/Helpers.php';
-
-
 class Controller
 {
     protected $notifications = [];
