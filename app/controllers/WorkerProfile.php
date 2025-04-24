@@ -109,7 +109,7 @@ class WorkerProfile extends Controller
         $this->view('workingSchedule');
     }
 
-    public function faq()
+    public function faqworker()
     {
         $faqs = [
             [

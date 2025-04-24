@@ -56,7 +56,7 @@ class App
         ],
 
         'worker' => [
-            'WorkerProfile' => ['index', 'personalInfo', 'update', 'workingSchedule', 'faq'],
+            'WorkerProfile' => ['index', 'personalInfo', 'update', 'workingSchedule', 'faqworker'],
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
             'Home'=> ['findJobs'],
