@@ -10,9 +10,10 @@ class Admin extends Controller
     {
         $this->customerComplaintModel = new CustomerComplaintModel();
     }
+
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('admin/adminReports');
+        $this->view('admin/worker');
     }
 
     public function employees($a = '', $b = '', $c = '')
@@ -834,6 +835,35 @@ public function workerComplaints()
     $workerComplaintController = new WorkerComplaint();
     $workerComplaintController->adminIndex();
 }
+
+public function bookingReports()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->roleIndex();
+    }
+
+    // API endpoints for booking reports
+    public function worker_stats()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->worker_stats();
+    }
+
+    public function service_stats()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->service_stats();
+    }
+
+    public function revenue_trend()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->revenue_trend();
+    }
 
    
 }

@@ -4,6 +4,12 @@ class BookingModel
 {
     use Model;
 
+    public function __construct()
+    {
+        $this->setTable('bookings');
+    }
+    
+
     public function createBooking($workerID, $customerID, $serviceType, $bookingDate, $serviceLocation, $arrivalTime, $totalCost, $details)
     {
         $data = [
@@ -77,4 +83,235 @@ class BookingModel
         $status = $this->find($bookingID, 'bookingID');
         return $status ? $status->status : null;
     }
+
+    //REPORTS
+    /**
+     * Get booking statistics for a specific worker
+     * 
+     * @param string|null $workerID Worker ID to filter by
+     * @param string|null $startDate Start date for filtering (YYYY-MM-DD)
+     * @param string|null $endDate End date for filtering (YYYY-MM-DD)
+     * @return array Statistics including status distribution, day of week, and summary
+     */
+    public function getWorkerBookingStats($workerID = null, $startDate = null, $endDate = null)
+    {
+        // Initialize results array
+        $results = [
+            'status_distribution' => [],
+            'day_of_week' => [],
+            'summary' => null
+        ];
+
+        try {
+            // Validate inputs
+            if (empty($workerID)) {
+                return $results;
+            }
+
+            // Base conditions
+            $conditions = ["workerID = :workerID"];
+            $params = [':workerID' => $workerID];
+
+            // Add date range if provided
+            if ($startDate && $endDate) {
+                $conditions[] = "date_booked BETWEEN :startDate AND :endDate";
+                $params[':startDate'] = $startDate;
+                $params[':endDate'] = $endDate;
+            }
+
+            $whereClause = !empty($conditions) ? "WHERE " . implode(" AND ", $conditions) : "";
+
+            // Get booking status distribution
+            $statusQuery = "SELECT 
+                status, 
+                COUNT(*) as count 
+                FROM bookings 
+                $whereClause 
+                GROUP BY status";
+
+            // Replace the query, bindParams, resultSet methods
+            $this->setTable('bookings');
+            $results['status_distribution'] = $this->get_all($statusQuery, $params);
+
+            // Get day of week distribution
+            $dayOfWeekQuery = "SELECT 
+                DAYOFWEEK(date_booked) as day_num, 
+                COUNT(*) as count 
+                FROM bookings 
+                $whereClause 
+                GROUP BY DAYOFWEEK(date_booked)";
+
+            // Using get_all instead of query/bindParams/resultSet
+            $results['day_of_week'] = $this->get_all($dayOfWeekQuery, $params);
+
+            // Get summary statistics
+            $summaryQuery = "SELECT 
+                COUNT(*) as total_bookings,
+                SUM(estimated_cost) as total_cost,
+                AVG(estimated_cost) as avg_cost
+                FROM bookings 
+                $whereClause";
+
+            // Using get_row instead of query/bindParams/single
+            $results['summary'] = $this->get_row($summaryQuery, $params);
+
+            return $results;
+        } catch (Exception $e) {
+            error_log('Error in getWorkerBookingStats: ' . $e->getMessage());
+            return $results;
+        }
+    }
+
+    /**
+     * Get statistics for service categories
+     * 
+     * @param string|null $serviceType Service type to filter by (optional)
+     * @param string|null $startDate Start date for filtering (YYYY-MM-DD)
+     * @param string|null $endDate End date for filtering (YYYY-MM-DD)
+     * @return array Statistics including category revenue and summary
+     */
+    public function getServiceCategoryStats($serviceType = null, $startDate = null, $endDate = null)
+    {
+        // Initialize results array
+        $results = [
+            'category_revenue' => [],
+            'summary' => null
+        ];
+
+        try {
+            // Base conditions
+            $conditions = [];
+            $params = [];
+
+            // Add service type filter if provided
+            if (!empty($serviceType) && $serviceType !== 'all') {
+                $conditions[] = "serviceType = :serviceType";
+                $params[':serviceType'] = $serviceType;
+            }
+
+            // Add date range if provided
+            if ($startDate && $endDate) {
+                $conditions[] = "date_booked BETWEEN :startDate AND :endDate";
+                $params[':startDate'] = $startDate;
+                $params[':endDate'] = $endDate;
+            }
+
+            $whereClause = !empty($conditions) ? "WHERE " . implode(" AND ", $conditions) : "";
+
+            // Get category revenue
+            $categoryQuery = "SELECT 
+                serviceType, 
+                COUNT(*) as booking_count,
+                SUM(estimated_cost) as total_cost
+                FROM bookings 
+                $whereClause 
+                GROUP BY serviceType";
+
+            // Using get_all instead of query/bindParams/resultSet
+            $this->setTable('bookings');
+            $results['category_revenue'] = $this->get_all($categoryQuery, $params);
+
+            // Get summary statistics
+            $summaryQuery = "SELECT 
+                COUNT(*) as total_bookings,
+                SUM(estimated_cost) as total_cost
+                FROM bookings 
+                $whereClause";
+
+            // Using get_row instead of query/bindParams/single
+            $results['summary'] = $this->get_row($summaryQuery, $params);
+
+            return $results;
+        } catch (Exception $e) {
+            error_log('Error in getServiceCategoryStats: ' . $e->getMessage());
+            return $results;
+        }
+    }
+
+    /**
+     * Get revenue trend data over time
+     * 
+     * @param string $period Period type (daily, weekly, monthly)
+     * @param string|null $startDate Start date for filtering (YYYY-MM-DD)
+     * @param string|null $endDate End date for filtering (YYYY-MM-DD)
+     * @return array Trend data and summary statistics
+     */
+    public function getRevenueTrend($period = 'weekly', $startDate = null, $endDate = null)
+    {
+        // Initialize results array
+        $results = [
+            'trend_data' => [],
+            'summary' => null
+        ];
+
+        try {
+            // Validate inputs
+            if (!in_array($period, ['daily', 'weekly', 'monthly'])) {
+                $period = 'weekly';
+            }
+
+            // Base conditions
+            $conditions = [];
+            $params = [];
+
+            // Add date range if provided
+            if ($startDate && $endDate) {
+                $conditions[] = "date_booked BETWEEN :startDate AND :endDate";
+                $params[':startDate'] = $startDate;
+                $params[':endDate'] = $endDate;
+            }
+
+            $whereClause = !empty($conditions) ? "WHERE " . implode(" AND ", $conditions) : "";
+
+            // Group by expression based on period
+            $groupBy = '';
+            $datePart = '';
+            switch ($period) {
+                case 'daily':
+                    $groupBy = "DATE(date_booked)";
+                    $datePart = "DATE_FORMAT(date_booked, '%Y-%m-%d')";
+                    break;
+                case 'weekly':
+                    $groupBy = "YEARWEEK(date_booked, 1)";
+                    $datePart = "CONCAT('Week ', WEEK(date_booked, 1), ', ', YEAR(date_booked))";
+                    break;
+                case 'monthly':
+                    $groupBy = "DATE_FORMAT(date_booked, '%Y-%m')";
+                    $datePart = "DATE_FORMAT(date_booked, '%b %Y')";
+                    break;
+            }
+
+            // Get trend data
+            $trendQuery = "SELECT 
+                $datePart as period_label,
+                $groupBy as period_value,
+                COUNT(*) as booking_count,
+                SUM(estimated_cost) as total_cost
+                FROM bookings 
+                $whereClause 
+                GROUP BY $groupBy
+                ORDER BY period_value";
+
+            // Using get_all instead of query/bindParams/resultSet
+            $this->setTable('bookings');
+            $results['trend_data'] = $this->get_all($trendQuery, $params);
+
+            // Get summary statistics
+            $summaryQuery = "SELECT 
+                COUNT(*) as total_bookings,
+                SUM(estimated_cost) as total_cost,
+                AVG(estimated_cost) as avg_cost
+                FROM bookings 
+                $whereClause";
+
+            // Using get_row instead of query/bindParams/single
+            $results['summary'] = $this->get_row($summaryQuery, $params);
+
+            return $results;
+        } catch (Exception $e) {
+            error_log('Error in getRevenueTrend: ' . $e->getMessage());
+            return $results;
+        }
+    }
+
 }
