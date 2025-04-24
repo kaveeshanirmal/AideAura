@@ -1,5 +1,8 @@
 <?php
 
+require_once '../app/core/Helpers.php';
+
+
 class Controller
 {
     public function view($name, $data = [])

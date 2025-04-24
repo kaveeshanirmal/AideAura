@@ -142,7 +142,24 @@
 
         .pagination button:not(:disabled):hover {
             opacity: 0.9;
+        } 
+
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
         }
+
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
+
     </style>
 </head>
 <body>
@@ -154,10 +171,14 @@
                 <thead>
                     <tr>
                         <th>Booking ID</th>
-                        <th>Date</th>
+                        <th>Worker Name</th>
+                        <th>Service Type</th>
+                        <th>Booking Date</th>
+                        <th>Start Time</th>
                         <th>Status</th>
-                        <th>Worker Type</th>
-                        <th>Worker</th>
+                        <th>Total Cost (LKR)</th>
+                        <th>Created At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -165,22 +186,32 @@
                         <?php foreach ($bookings as $booking): ?>
                             <tr>
                                 <td>#<?= htmlspecialchars($booking['bookingID']) ?></td>
-                                <td><?= date('M j, Y, H:i', strtotime($booking['bookingDate'] . ' ' . $booking['startTime'])) ?></td>
+                                <td><?= htmlspecialchars($booking['workerName']) ?></td>
+                                <td><?= htmlspecialchars($booking['serviceType']) ?></td>
+                                <td><?= date('M j, Y', strtotime($booking['bookingDate'])) ?></td>
+                                <td><?= date('H:i', strtotime($booking['startTime'])) ?></td>
                                 <td>
                                     <span class="status <?= strtolower($booking['status']) ?>">
                                         <?= htmlspecialchars(ucfirst($booking['status'])) ?>
                                     </span>
                                 </td>
-                                <td><?= htmlspecialchars($booking['serviceType']) ?></td>
-                                <td>
-                                    <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar">
-                                    <!-- You can enhance this by showing worker name/image if available -->
-                                </td>
+                                <td><?= number_format($booking['totalCost'], 2) ?></td>
+                                <td><?= date('M j, Y H:i', strtotime($booking['createdAt'])) ?></td>
+                                <!-- <td>
+                                    <?php if (strtolower($booking['status']) !== 'cancelled'): ?>
+                                        <form method="POST" action="<?= ROOT ?>/bookingHistoryCustomer/cancel">
+                                            <input type="hidden" name="bookingID" value="<?= $booking['bookingID'] ?>">
+                                            <button type="submit" class="cancel-btn">Cancel</button>
+                                        </form>
+                                    <?php else: ?>
+                                        <span style="color: #888;">N/A</span>
+                                    <?php endif; ?>
+                                </td> -->
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" style="text-align:center; padding:20px;">No bookings found.</td>
+                            <td colspan="9" style="text-align:center; padding:20px;">No bookings found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
