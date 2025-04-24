@@ -117,7 +117,7 @@ public function getAllPriceDetails() {
     if ($priceData) {
         foreach ($priceData as $priceD) {
             // Get category details
-            $categoryDetails = $this->getPriceCategoryDetailsFromCategoryID($priceD->CategoryID);
+            $categoryDetails = $this->getPriceCategoryDetailsFromCategoryID($priceD->categoryID);
 
             if ($categoryDetails) {
                 // Assign category data with safe fallback
@@ -161,4 +161,28 @@ public function getAllPriceDetails() {
             return false;
         }
     }
+
+    // function to update price details
+    public function updatePriceDetails($detailID,$data)
+    {
+    $this->setTable('price_details');
+    $result = $this->update($detailID, $data, 'detailID');
+
+    if (!$result) {
+        return false;
+    }
+    return true; // Update failed
+}
+
+//     public function updateCategoryDetails($categoryID,$data)
+//     {
+//     $this->setTable('price_categories');
+//     $result = $this->update($categoryID, $data, 'categoryID');
+
+//     if (!$result) {
+//         return false;
+//     }
+//     return true; // Update failed
+// }
+
 }
