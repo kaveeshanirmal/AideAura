@@ -49,7 +49,7 @@ class App
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage', 'getConversation', 'submitReply'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
             'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'noWorkersFound'],
-            'Payment' => ['authorize', 'success', 'cancel', 'notify'],
+            'Payment' => ['authorize', 'success', 'cancel', 'notify', 'jsonResponse', 'clearSessionMessage'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
             'Booking' => ['index', 'bookWorker', 'getBooking', 'getBookingState', 'noResponse', 'orderSummary', 'acceptanceTimeout', 'workerRejected', 'orderTimeout', 'cancelBooking'],
@@ -78,7 +78,7 @@ class App
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
         'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],
-        'Test' => ['index', 'testTime'],
+        'Test' => ['index', 'testTime', 'mailHelper'],
     ];
 
     private $bookingFlowRestrictions = [
