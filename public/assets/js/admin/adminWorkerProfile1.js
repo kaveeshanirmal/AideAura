@@ -39,7 +39,7 @@ function updateStatus(status) {
     const userID = document.getElementById('userID').value;
     console.log(requestID, userID, status);
     
-    fetch(`${ROOT}/public/admin/updateVerificationStatus`, {
+    fetch(`${ROOT}/public/Admin/updateVerificationStatus`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -60,7 +60,7 @@ function updateStatus(status) {
             setTimeout(() => {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = `${ROOT}/public/admin/workerDetails`;
+                form.action = `${ROOT}/public/Admin/workerDetails`;
                 
                 const input = document.createElement('input');
                 input.type = 'hidden';

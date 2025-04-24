@@ -327,7 +327,7 @@ private function generateScheduleView($schedules, $view, $currentDate)
         
         // Organize schedules by day of the week
         foreach ($schedules as $schedule) {
-            $dayOfWeek = $schedule->day_of_week;
+            $dayOfWeek = isset($schedule->day_of_week) ? $schedule->day_of_week : null;
             if (isset($schedulesByDay[$dayOfWeek])) {
                 $schedulesByDay[$dayOfWeek][] = $schedule;
             }

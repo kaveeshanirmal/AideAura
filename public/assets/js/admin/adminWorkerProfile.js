@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 workerCard.addEventListener('click', function () {
                     const form = document.createElement('form');
-                    form.action = `${ROOT_PATH}/public/admin/workerDetails`;
+                    form.action = `${ROOT_PATH}/public/Admin/workerDetails`;
                     form.method = "POST";
 
                     const input = document.createElement('input');

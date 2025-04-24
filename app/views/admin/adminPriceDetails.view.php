@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - payment rates</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPayrate.css">
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPriceDetails.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="<?=ROOT?>/public/assets/js/admin/adminPayrate.js"></script>
 </head>
