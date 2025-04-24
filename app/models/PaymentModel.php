@@ -76,4 +76,28 @@ class PaymentModel
         return null;
     }
 
+    public function getEarningsByMonth($workerID, $monthYear)
+    {
+        // Get completed bookingIDs for the worker
+        $this->setTable('bookings');
+        $completedBookings = $this->get_all("SELECT bookingID FROM bookings WHERE workerID = :workerID AND status = 'confirmed' AND DATE_FORMAT(createdAt, '%Y-%m') = :monthYear", [
+            'workerID' => $workerID,
+            'monthYear' => $monthYear,
+        ]);
+        error_log("Completed bookings for worker $workerID in month $monthYear: " . json_encode($completedBookings));
+        $bookingIDs = array_column($completedBookings, 'bookingID');
+        error_log("Completed booking IDs for worker $workerID in month $monthYear: " . json_encode($bookingIDs));
+        if (empty($bookingIDs)) {
+            return 0; // No completed bookings for this month
+        }
+        // Get payment details for the completed bookings
+        $this->setTable('payments');
+        $payments = $this->get_all(
+            "SELECT SUM(amount) AS totalEarnings FROM payments WHERE bookingID IN (" . implode(',', array_fill(0, count($bookingIDs), '?')) . ")",
+            $bookingIDs
+        );
+        error_log("Earnings for worker $workerID in month $monthYear: " . json_encode($payments));
+        return $payments ? $payments[0]->totalEarnings : 0;
+    }
+
 }
