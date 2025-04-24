@@ -1,8 +1,12 @@
 <?php
-
 class UserModel
 {
     use Model; // Use the Model trait
+    
+    public function __construct()
+    {
+        $this->setTable('users');
+    }
 
     // Register a new user
     public function register($data, $role)
@@ -75,7 +79,7 @@ class UserModel
         ];
         $this->insert($customerData);
     }
-    // If role is 'customer', add data to 'customer' table
+    // If role is 'hrManager', add data to 'hrManager' table
     else if ($role === 'hrManager') {
         $this->setTable('hrManager');
 
@@ -119,6 +123,7 @@ public function registerEmployee($data)
     // Find a user by username (for login)
     public function findUserByUsername($username)
     {
+
         $this->setTable('users'); // Set the table to 'users'
 
         $query = "SELECT * FROM " . $this->getTable() . " WHERE username = :username LIMIT 1";
@@ -140,6 +145,10 @@ public function registerEmployee($data)
             // Merge the role-specific data with the user data
             if ($roleData) {
                 $user = (object) array_merge((array) $user, (array) $roleData);
+            }else {
+                // Handle other roles like admin, financeManager, HR, operationalManager
+                // No need for extra queries for these roles; just return the user
+                $roleData = null;
             }
 
             return $user;
@@ -231,47 +240,13 @@ public function registerEmployee($data)
         return true; // Update failed
     }
 
-
+ 
     public function searchEmployees($filters = []) {
-        $conditions = [];
-        $params = [];
-    
-        // Add filter for role if provided
-        if (!empty($filters['role'])) {
-            $conditions[] = "role = :role"; // Use '=' for exact match
-            $params['role'] = trim($filters['role']);
-        }
-    
-        // Add filter for userID if provided
-        if (!empty($filters['userID'])) {
-            $conditions[] = "userID = :userID"; // Use '=' for exact match
-            $params['userID'] = trim($filters['userID']);
-        }
-    
-        // Base query
-        $sql = "SELECT * FROM users";
-    
-        // Add WHERE clause only if conditions exist
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
-        } else {
-            // If no filters, return an empty result set (optional)
-            return [];
-        }
-    
-        // Add ordering
-        $sql .= " ORDER BY userID DESC";
-    
-        try {
-            // Execute query
-            return $this->get_all($sql, $params);
-        } catch (Exception $e) {
-            error_log("Error searching employees: " . $e->getMessage());
-            return [];
-        }
+        $this->setTable('users');
+        
+        // Make sure we're only getting non-deleted employees
+        return $this->filter($filters, "isDelete = 0"); 
     }
-    
-    
 
     // Updated delete method with validatio+n
     public function deleteEmployee($userID) {
@@ -288,17 +263,43 @@ public function registerEmployee($data)
 
 
     // Updated delete method with validation for soft delete
-public function softDeleteEmployee($userID) {
-    $this->setTable('users');
-    
-    // Check if employee exists before deletion
-    $employee = $this->find($userID, 'userID');
-    if (!$employee) {
-        return false;
-    }
-    
-    // Perform soft delete instead of permanent deletion
-    return $this->softDelete($userID, 'userID', 'isDelete'); 
-}
+    public function softDeleteEmployee($userID) {
+        $this->setTable('users');
 
+        // Check if employee exists before deletion
+        $employee = $this->find($userID, 'userID');
+        if (!$employee) {
+            return false;
+        }
+
+        // Perform soft delete instead of permanent deletion
+        return $this->softDelete($userID, 'userID', 'isDelete');
+    }
+
+    // Update worker's availability status
+    public function updateAvailability($workerID, $status)
+    {
+        $this->setTable('worker');
+        $data = [
+            'availability_status' => $status
+        ];
+        $this->update($workerID, $data, 'workerID');
+    }
+
+    public function getUserID($id, $role)
+    {
+        if($role === 'worker') {
+            $this->setTable('worker');
+            $worker = $this->find($id, 'workerID');
+            if ($worker) {
+                return $worker->userID; // Return the userID associated with the workerID
+            }
+        } elseif ($role === 'customer') {
+            $this->setTable('customer');
+            $customer = $this->find($id, 'customerID');
+            if ($customer) {
+                return $customer->userID; // Return the userID associated with the customerID
+            }
+        }
+    }
 }

@@ -21,5 +21,17 @@
         <button class="cancel_button">Cancel</button>
         </div>
     </div>
+<script>
+    // ajax call to the worker found screen after an delay
+    setTimeout(function() {
+        // Redirect to the worker found screen
+        window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/find";
+    }, 5000); // 5 seconds delay
+    // Cancel button functionality
+    document.querySelector('.cancel_button').addEventListener('click', function() {
+        // Redirect to the home page or any other page
+        window.history.back();
+    });
+</script>
 </body>
 </html>

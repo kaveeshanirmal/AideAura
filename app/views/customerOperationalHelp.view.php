@@ -3,11 +3,16 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Operational Help Desk</title>
-        <link
-            rel="stylesheet"
-            href="<?=ROOT?>/public/assets/css/customerHelpDesk.css"
-        />
+        <title>Operational Help Desk | AideAura</title>
+        <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/customerHelpDesk.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+        <style>
+        body {
+            background-image: url('<?=ROOT?>/public/assets/images/booking_bg.jpg');
+        }
+    </style>
+
     </head>
     <body>
         <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
@@ -17,20 +22,14 @@
 
             <!-- Contact Section -->
             <section class="contact-section">
-                <h2>Contact Us</h2>
+                <h2><i class="fas fa-headset"></i> Contact Us</h2>
                 <div class="contact-methods">
                     <div class="contact-item">
-                        <img
-                            src="<?=ROOT?>/public/assets/images/phone-icon.png"
-                            alt="Phone Icon"
-                        />
+                        <i class="fas fa-phone-alt fa-lg"></i>
                         <p>Support Hotline: +94 123 456 789</p>
                     </div>
                     <div class="contact-item">
-                        <img
-                            src="<?=ROOT?>/public/assets/images/email-icon.png"
-                            alt="Email Icon"
-                        />
+                        <i class="fas fa-envelope fa-lg"></i>
                         <p>Email: customersupport@AideAura.com</p>
                     </div>
                 </div>
@@ -38,103 +37,53 @@
 
             <!-- Submit Issue Form -->
             <section class="submit-issue">
-                <h2>Submit an Issue</h2>
+                <h2><i class="fas fa-file-alt"></i> Submit an Issue</h2>
                 <form class="issue-form" action="<?=ROOT?>/public/customerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="issue-type">Issue Type</label>
                         <select id="issue-type" name="issue" required>
                             <option value="">Select an Issue Type</option>
                             <optgroup label="General Issues">
-                                <option value="general-inquiry">
-                                    General Inquiry
-                                </option>
-                                <option value="feedback">
-                                    Feedback/Suggestions
-                                </option>
+                                <option value="general-inquiry">General Inquiry</option>
+                                <option value="feedback">Feedback/Suggestions</option>
                             </optgroup>
                             <optgroup label="Service Issues">
-                                <option value="worker-unavailability">
-                                    Worker Unavailability
-                                </option>
-                                <option value="worker-misconduct">
-                                    Worker Misconduct
-                                </option>
-                                <option value="worker-scheduling">
-                                    Worker Scheduling Issues
-                                </option>
+                                <option value="worker-unavailability">Worker Unavailability</option>
+                                <option value="worker-misconduct">Worker Misconduct</option>
+                                <option value="worker-scheduling">Worker Scheduling Issues</option>
                             </optgroup>
                             <optgroup label="Booking Issues">
-                                <option value="unable-to-book">
-                                    Unable to Book
-                                </option>
-                                <option value="incorrect-details">
-                                    Incorrect Booking Details
-                                </option>
-                                <option value="cancellation">
-                                    Booking Cancellations/Rescheduling
-                                </option>
+                                <option value="unable-to-book">Unable to Book</option>
+                                <option value="incorrect-details">Incorrect Booking Details</option>
+                                <option value="cancellation">Booking Cancellations/Rescheduling</option>
                             </optgroup>
                             <optgroup label="Payment Issues">
-                                <option value="failed-payment">
-                                    Failed Payment
-                                </option>
+                                <option value="failed-payment">Failed Payment</option>
                                 <option value="overcharged">Overcharged</option>
-                                <option value="refund-request">
-                                    Refund Request
-                                </option>
-                                <option value="payment-verification">
-                                    Payment Verification
-                                </option>
+                                <option value="refund-request">Refund Request</option>
+                                <option value="payment-verification">Payment Verification</option>
                             </optgroup>
                             <optgroup label="Technical Issues">
-                                <option value="website-loading">
-                                    Website Not Loading
-                                </option>
-                                <option value="bug-report">
-                                    App/Website Bug
-                                </option>
-                                <option value="login-issues">
-                                    Account Login Issues
-                                </option>
-                                <option value="profile-update">
-                                    Profile Update Issues
-                                </option>
+                                <option value="website-loading">Website Not Loading</option>
+                                <option value="bug-report">App/Website Bug</option>
+                                <option value="login-issues">Account Login Issues</option>
+                                <option value="profile-update">Profile Update Issues</option>
                             </optgroup>
                             <optgroup label="Account Issues">
-                                <option value="forgot-password">
-                                    Forgot Password
-                                </option>
-                                <option value="deactivation">
-                                    Account Deactivation
-                                </option>
-                                <option value="unauthorized-access">
-                                    Unauthorized Access
-                                </option>
-                                <option value="role-permission">
-                                    Role/Permission Issues
-                                </option>
+                                <option value="forgot-password">Forgot Password</option>
+                                <option value="deactivation">Account Deactivation</option>
+                                <option value="unauthorized-access">Unauthorized Access</option>
+                                <option value="role-permission">Role/Permission Issues</option>
                             </optgroup>
                             <optgroup label="Complaint/Feedback">
-                                <option value="service-complaint">
-                                    Customer Service Complaint
-                                </option>
-                                <option value="worker-complaint">
-                                    Worker Complaint
-                                </option>
-                                <option value="general-feedback">
-                                    General Feedback
-                                </option>
+                                <option value="service-complaint">Customer Service Complaint</option>
+                                <option value="worker-complaint">Worker Complaint</option>
+                                <option value="general-feedback">General Feedback</option>
                             </optgroup>
                             <optgroup label="Help Requests">
-                                <option value="service-guidance">
-                                    Service Guidance
-                                </option>
-                                <option value="operational-help">
-                                    Operational Help
-                                </option>
-                                <option value="policy-clarification">
-                                    Policy Clarification
-                                </option>
+                                <option value="service-guidance">Service Guidance</option>
+                                <option value="operational-help">Operational Help</option>
+                                <option value="policy-clarification">Policy Clarification</option>
                             </optgroup>
                         </select>
                     </div>
@@ -143,146 +92,106 @@
                         <textarea
                             id="issue-description"
                             name="description"
-                            placeholder="Describe your issue here..."
+                            placeholder="Describe your issue here in detail..."
                             required
                         ></textarea>
                     </div>
                     <button type="submit" class="submit-btn">
-                        Submit Issue
+                        <i class="fas fa-paper-plane"></i> Submit Issue
                     </button>
                 </form>
             </section>
 
             <!-- Your complaints section -->
             <section class="complaint-status">
-            <h2>Your Complaints</h2>
-            <div class="complaint-cards-container">
-                <?php if (!empty($complaints)): ?>
-                    <?php foreach ($complaints as $complaint): ?>
-                        <div class="complaint-card <?= htmlspecialchars($complaint->status) ?>" 
-                            data-status="<?= htmlspecialchars($complaint->status) ?>">
-                            <h3>Complaint ID: <?= htmlspecialchars($complaint->complaintID) ?></h3>
-                            <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
-                            <?php if ($complaint->status === 'Resolved'): ?>
-                                <button class="view-solution-btn" 
-                                        data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
-                                        onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
-                                    View Solution
-                                </button>
-                                <div class="solution" 
-                                    id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
-                                    style="display: none;">
-                                    <p id="solution-tag"></p>
-                                </div>
-                            <?php else: ?>
-                                <p class="pending-message">Your complaint is being processed.</p>
-                            <?php endif; ?>
+                <h2><i class="fas fa-clipboard-list"></i> Your Complaints</h2>
+                
+                <!-- Status Filter Buttons -->
+                <div class="status-filter">
+                    <button data-filter="all" class="active">All</button>
+                    <button data-filter="Pending">Pending</button>
+                    <button data-filter="In Progress">In Progress</button>
+                    <button data-filter="Resolved">Resolved</button>
+                </div>
+                
+                <div class="complaint-cards-container">
+                    <?php if (!empty($complaints)): ?>
+                        <?php foreach ($complaints as $complaint): ?>
+                            <div class="complaint-card" data-status="<?= htmlspecialchars($complaint->status) ?>">
+                                <h3>Complaint #<?= htmlspecialchars($complaint->complaintID) ?></h3>
+                                <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
+                                <p><strong>Submitted:</strong> <?= date('F j, Y', strtotime($complaint->submitted_at)) ?></p>
+                                
+                                <?php if ($complaint->status === 'Pending'): ?>
+                                    <p class="pending-message">
+                                        <i class="fas fa-clock"></i> Your complaint has been received and will be processed soon.
+                                    </p>
+                                    <button class="view-solution-btn" 
+                                            data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                            onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                        <i class="fas fa-eye"></i> View Updates
+                                    </button>
+                                    <div class="solution" 
+                                        id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                        style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                                        <!-- Conversation will be loaded here via JavaScript -->
+                                    </div>
+                                <?php elseif ($complaint->status === 'In Progress'): ?>
+                                    <p class="pending-message">
+                                        <i class="fas fa-hourglass-half"></i> Your complaint is being reviewed by our team.
+                                    </p>
+                                    
+                                    <button class="view-solution-btn" 
+                                            data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                            data-status="In Progress"
+                                            onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                        <i class="fas fa-eye"></i> View Updates
+                                    </button>
+                                    <div class="solution" 
+                                        id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                        style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                                        <!-- Conversation will be loaded here via JavaScript -->
+                                        <div class="reply-container" style="display: none; margin-top: 15px;">
+                                            <button class="reply-btn"
+                                                    onclick="openReplyModal('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                                <i class="fas fa-reply"></i> Reply to this complaint
+                                            </button>
+                                        </div>
+                                    </div>
+                                <?php else: /* Resolved */ ?>
+                                    <p class="resolved-message">
+                                        <i class="fas fa-check-circle"></i> This complaint has been resolved.
+                                    </p>
+                                    <button class="view-solution-btn" 
+                                            data-complaint-id="<?= htmlspecialchars($complaint->complaintID) ?>"
+                                            onclick="toggleSolution('<?= htmlspecialchars($complaint->complaintID) ?>')">
+                                        <i class="fas fa-eye"></i> View Updates
+                                    </button>
+                                    <div class="solution" 
+                                        id="solution-<?= htmlspecialchars($complaint->complaintID) ?>" 
+                                        style="display: none; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0;">
+                                        <!-- Conversation will be loaded here via JavaScript -->
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="no-complaints">
+                            <i class="fas fa-inbox fa-3x"></i>
+                            <p>You haven't submitted any complaints yet.</p>
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No complaints found.</p>
-                    <?php echo isset($complaints)?>
-                <?php endif; ?>
-            </div>
-            </section>
-            <!-- Knowledge Base Section -->
-            <section class="knowledge-base">
-                <h2>Knowledge Base</h2>
-                <div class="kb-articles">
-                    <div class="kb-article">
-                        <h3>How to book a worker?</h3>
-                        <p>
-                            Learn the step-by-step process for booking a
-                            worker...
-                        </p>
-                        <a href="#">Read More</a>
-                    </div>
-                    <div class="kb-article">
-                        <h3>Payment issues and resolutions</h3>
-                        <p>
-                            Find answers to common payment-related problems...
-                        </p>
-                        <a href="#">Read More</a>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </section>
         </div>
 
         <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const issueTypeSelect = document.getElementById("issue-type");
-                const form = document.querySelector(".issue-form");
-
-                // Create a hidden input field to hold the optgroup label
-                const optgroupLabelInput = document.createElement("input");
-                optgroupLabelInput.type = "hidden";
-                optgroupLabelInput.name = "issue-type";
-                form.appendChild(optgroupLabelInput);
-
-                // Listen for changes in the select dropdown
-                issueTypeSelect.addEventListener("change", function () {
-                    const selectedOption = issueTypeSelect.options[issueTypeSelect.selectedIndex];
-                    const optgroup = selectedOption.parentElement;
-
-                    // Set the value of the hidden input to the optgroup label
-                    if (optgroup.tagName === "OPTGROUP") {
-                        optgroupLabelInput.value = optgroup.label;
-                        console.log("Optgroup: ", optgroup.label);
-                    } else {
-                        optgroupLabelInput.value = ""; // Clear if no optgroup
-                        console.log("No Optgroup");
-                    }
-                });
-            });
-
-            function toggleSolution(complaintId) {
-                const solutionElement = document.getElementById(`solution-${complaintId}`);
-                
-                if (solutionElement.style.display === "none") {
-                    fetch(`<?=ROOT?>/public/customerHelpDesk/getSolution/${encodeURIComponent(complaintId)}`)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        solutionElement.textContent = data.solution;
-                        solutionElement.style.display = "block";
-                    })
-                    .catch(error => {
-                        console.error('Error fetching solution:', error);
-                    });
-                } else {
-                    solutionElement.style.display = "none";
-                }
-            }
-
-            document.addEventListener("DOMContentLoaded", function () {
-                const overlay = document.getElementById("overlay-message");
-                const closeBtn = document.getElementById("overlay-close-btn");
-
-                // Show the overlay if a session message exists
-                if (overlay && overlay.textContent.trim() !== "") {
-                    overlay.classList.remove("hidden");
-                }
-
-                // Close the overlay and clear the session message when the "Okay" button is clicked
-                closeBtn.addEventListener("click", function () {
-                    overlay.classList.add("hidden");
-
-                    // Clear the session message on the server side
-                    fetch("<?= ROOT ?>/public/customerHelpDesk/clearSessionMessage")
-                        .then(response => {
-                            if (!response.ok) {
-                                console.error("Failed to clear session message.");
-                            }
-                        })
-                        .catch(error => console.error("Error clearing session message:", error));
-                });
-            });
-
-        </script>
+        <!-- Overlay Message for Submission Results -->
         <?php if (isset($_SESSION['complaint_message'])): ?>
             <div id="overlay-message" class="overlay hidden">
                 <div class="overlay-content">
+                    <i class="fas fa-check-circle fa-3x" style="color: var(--success-color); margin-bottom: 15px;"></i>
                     <p id="overlay-text">
                         <?= isset($_SESSION['complaint_message']) ? htmlspecialchars($_SESSION['complaint_message']) : ''; ?>
                     </p>
@@ -291,5 +200,32 @@
             </div>
         <?php endif; ?>
 
+        <!-- Reply Modal -->
+        <div id="reply-modal" class="modal hidden">
+            <div class="modal-content">
+                <span id="reply-modal-close" class="close-btn">&times;</span>
+                <h3>Add Your Feedback</h3>
+                <form id="reply-form" action="<?=ROOT?>/public/customerHelpDesk/submitReply" method="POST">
+                    <input type="hidden" id="reply-complaint-id" name="complaint_id" value="">
+                    <div class="form-group">
+                        <label for="reply-message">Your Message</label>
+                        <textarea id="reply-message" name="comments" placeholder="Type your feedback here..." required></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" onclick="closeReplyModal()" class="cancel-btn">Cancel</button>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Send Feedback
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- JavaScript -->
+        <script>
+            // Pass PHP root URL to JavaScript
+            const ROOT_URL = "<?=ROOT?>";
+        </script>
+        <script src="<?=ROOT?>/public/assets/js/customerHelpDesk.js"></script>
     </body>
 </html>

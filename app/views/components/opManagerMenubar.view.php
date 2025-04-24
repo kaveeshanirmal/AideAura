@@ -10,9 +10,9 @@
     </div>
     <div class="menubar-content">
         <ul class="menu-items">
-            <li><a href="<?=ROOT?>/public/opManager/workerSchedules"><img src="assets/images/worker-schedule.png" alt=""> Worker Schedules</a></li>
+            <li><a href="<?=ROOT?>/public/opManager/workerSchedules"><img src="<?=ROOT?>/public/assets/images/worker-schedule.png" alt=""> Worker Schedules</a></li>
             <li><a href="<?=ROOT?>/public/opManager/specialRequests"><img src="<?=ROOT?>/public/assets/images/verification-request.png" alt=""> Special Requests</a></li>
-            <li><a href="<?=ROOT?>/public/opManager/complaintManagement"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Complaints </a></li>
+            <li><a href="<?=ROOT?>/public/opManager/workerInquiries"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Complaints </a></li>
         </ul>
     </div>
     <a href="<?=ROOT?>/public/login/logout" class="logout">

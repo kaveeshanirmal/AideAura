@@ -3,7 +3,7 @@
 Trait Model
 {
     use Database;
-
+    protected $table; // This line fixes the issue for PHP 8.2+
     // Set the table name dynamically
     public function setTable($table)
     {
@@ -89,6 +89,27 @@ Trait Model
     {
     $query = "UPDATE {$this->table} SET {$isDelete} = 1 WHERE {$id_column} = :id";
     return $this->query($query, ['id' => $id]);
+    }
+
+    public function filter(array $filters = [], $additionalConditions = "isDelete = 0") {
+        $sql = "SELECT * FROM {$this->table} WHERE $additionalConditions";
+        $params = [];
+        
+        foreach ($filters as $key => $value) {
+            if (!empty($value)) {
+                if ($key === 'userID') {
+                    // For userID, we want to search for partial matches
+                    $sql .= " AND {$key} LIKE :{$key}";
+                    $params[":{$key}"] = "%{$value}%";
+                } else {
+                    // For role, we can keep exact matching
+                    $sql .= " AND {$key} = :{$key}";
+                    $params[":{$key}"] = $value;
+                }
+            }
+        }
+        
+        return $this->get_all($sql, $params);
     }
 
 }

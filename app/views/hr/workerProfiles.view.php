@@ -5,48 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Worker Profils</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/hrWorkerProfileManagement.css">
+    <script>
+        const WORKERS_DATA = <?= isset($workers) ? json_encode($workers, JSON_HEX_TAG) : '[]'; ?>;
+        const ROOT_PATH = "<?= htmlspecialchars(ROOT) ?>";
+    </script>
+    <script src="<?= htmlspecialchars(ROOT) ?>/public/assets/js/hr/workerProfile.js" defer></script>
 </head>
 <body>
-    <div class="dashboard-container">
+<div class="dashboard-container">
         <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
         <main class="main-content">
             <div class="search-container">
-                    <label for="workerField">Select the Worker Field:</label>
-                    <select id="worker-field" class="search-input">
-                        <option value="cook">Cooks</option>
-                        <option value="cook">cook 24-hour</option>
-                        <option value="nannies">Nannies</option>
-                        <option value="all-rounder">All Rounders</option>
-                        <option value="cleaners">Maid</option>
-                    </select>
-                </div>
+                <label for="worker-field">Select the Worker Field:</label>
+                <select id="worker-field" class="search-input">
+                    <option value="All">All</option>
+                    <option value="Cook">Cook</option>
+                    <option value="Cook 24-hour Live in">Cook 24-hour Live in</option>
+                    <option value="Nanny">Nanny</option>
+                    <option value="All rounder">All rounder</option>
+                    <option value="Maid">Maid</option>
+                </select>
+            </div>
 
-            <div class="workers-list">
-                <?php
-                $workers = [
-                    ['name' => 'MR. Kamal Rupasinghe', 'role' => 'Cleaner'],
-                    ['name' => 'MR. Saman Athapaththu', 'role' => 'Cook'],
-                    ['name' => 'MRS. Nadeeshani Gamage', 'role' => 'Nanny'],
-                    ['name' => 'MR. Chathura Amarathunga', 'role' => 'All Rounder'],
-                    ['name' => 'MR. Kamal Rupasinghe', 'role' => 'Cleaner'],
-                    ['name' => 'MR. Saman Athapaththu', 'role' => 'Cook'],
-                    ['name' => 'MRS. Nadeeshani Gamage', 'role' => 'Nanny'],
-                    ['name' => 'MR. Chathura Amarathunga', 'role' => 'All Rounder']
-                ];
-
-                foreach ($workers as $worker) {
-                    echo '<div class="worker-card"> <a href="' . ROOT . '/public/HrManager/workerInfo">';
-                    echo '<div class="worker-info">';
-                    echo '<div class="worker-avatar">';
-                    echo '<img src="' . ROOT . '/public/assets/images/user_icon.png" alt="Worker Avatar">';                    echo '</div>';
-                    echo '<div class="worker-details">';
-                    echo '<h3>' . htmlspecialchars($worker['name']) . '</h3>';
-                    echo '<p>' . htmlspecialchars($worker['role']) . '</p>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</a>  </div>';
-                }
-                ?>
+            <div class="workers-list" id="workers-list">
+                <!-- Workers will be rendered dynamically -->
             </div>
         </main>
     </div>

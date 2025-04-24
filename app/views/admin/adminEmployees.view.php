@@ -23,6 +23,7 @@
                     <div class="input-group">
                         <label for="employeeRole">Role:</label>
                         <select id="employeeRole" class="role-select">
+                        <option value="" selected disabled>-- Select Role --</option>
                             <option value="hrManager">hrManager</option>
                             <option value="financeManager">financeManager</option>
                             <option value="opManager">opManager</option>
@@ -58,6 +59,14 @@
                         </tr>
                     </thead>
                     <tbody id="employeeTableBody">
+                    <?php if (empty($employees)): ?>
+        <tr>
+            <td colspan="10" style="text-align: center; font-style: italic;">
+                No employee found.
+            </td>
+        </tr>
+    <?php else: ?>
+                        
                         <?php foreach ($employees as $employee): ?>
                         <tr data-id="<?= htmlspecialchars($employee->userID) ?>" data-username="<?= htmlspecialchars($employee->username) ?>" data-firstname="<?= htmlspecialchars($employee->firstName) ?>" data-lastname="<?= htmlspecialchars($employee->lastName) ?>" data-role="<?= htmlspecialchars($employee->role) ?>" data-phone="<?= htmlspecialchars($employee->phone) ?>" data-email="<?= htmlspecialchars($employee->email) ?>" data-createdAt="<?= htmlspecialchars($employee->createdAt) ?>">
                             <td><?= htmlspecialchars($employee->userID) ?></td>
@@ -80,6 +89,7 @@
                             </td>
                         </tr>
                         <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -128,6 +138,8 @@
     </div>
 
     <script>
+
+     console.log(<?= json_encode($employees) ?>);
         // Notification Functionality
         const notification = document.getElementById('notification');
         const showNotification = (message, type) => {
@@ -136,33 +148,41 @@
             setTimeout(() => notification.className = 'notification hidden', 2000);
         };
 
-        // Show Update Modal
-        function showUpdateModal(button) {
-            const row = button.closest('tr');
-            const userID = row.getAttribute('data-id');
-            const username = row.getAttribute('data-username');
-            const firstName = row.getAttribute('data-firstname');
-            const lastName = row.getAttribute('data-lastname');
-            const role = row.getAttribute('data-role');
-            const phone = row.getAttribute('data-phone');
-            const email = row.getAttribute('data-email');
-
-            document.getElementById('updateEmployeeId').value = userID;
-            document.getElementById('updateUserName').value = username;
-            document.getElementById('updatefirstName').value = firstName;
-            document.getElementById('updatelastName').value = lastName;
-            document.getElementById('updateRole').value = role;
-            document.getElementById('updatePhone').value = phone;
-            document.getElementById('updateEmail').value = email;
-
-            document.getElementById('updateModal').style.display = 'block';
-        }
+       // Show Update Modal
+function showUpdateModal(button) {
+    const row = button.closest('tr');
+    
+    // Get all data attributes from the row
+    const userID = row.getAttribute('data-id');
+    const username = row.getAttribute('data-username');
+    const firstName = row.getAttribute('data-firstname');
+    const lastName = row.getAttribute('data-lastname');
+    const role = row.getAttribute('data-role');
+    const phone = row.getAttribute('data-phone');
+    const email = row.getAttribute('data-email');
+    
+    // Log the values to console for debugging
+    console.log("Modal data:", { userID, username, firstName, lastName, role, phone, email });
+    
+    // Set the values in the form fields
+    document.getElementById('updateEmployeeId').value = userID;
+    document.getElementById('updateUserName').value = username;
+    document.getElementById('updatefirstName').value = firstName;
+    document.getElementById('updatelastName').value = lastName;
+    document.getElementById('updateRole').value = role;
+    document.getElementById('updatePhone').value = phone;
+    document.getElementById('updateEmail').value = email;
+    
+    // Show the modal
+    document.getElementById('updateModal').style.display = 'block';
+}
 
         function closeUpdateModal() {
             document.getElementById('updateModal').style.display = 'none';
         }
 
         function updateEmployee() {
+            try {
             const userID = document.getElementById('updateEmployeeId').value;
             const data = {
                 userID,
@@ -184,15 +204,18 @@
                 if (result.success) {
                     closeUpdateModal();
                     showNotification('Employee updated successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Update failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch{
+            (error => showNotification('An unexpected error occurred', 'error'));
+        }
         }
 
         function deleteEmployee(userID) {
+            try {
             if (!confirm('Are you sure you want to delete this employee?')) return;
 
             fetch('<?=ROOT?>/public/adminEmployees/delete', {
@@ -204,82 +227,124 @@
             .then(result => {
                 if (result.success) {
                     showNotification('Employee deleted successfully', 'success');
-                    location.reload();
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Delete failed', 'error');
                 }
             })
-            .catch(error => showNotification('An unexpected error occurred', 'error'));
+        } catch {
+         (error => showNotification('An unexpected error occurred', 'error'));
         }
-
-        function searchEmployees() {
-    const role = document.getElementById('employeeRole').value;
-    const userID = document.getElementById('employeeId').value;
-
-    // Validate input before sending
-    if (!role && !userID) {
-        showNotification("Please provide a role or user ID", 'error');
-        return;
     }
 
-    console.log("Sending:", { role, userID });
+    // Global array to store all employees
+    let allEmployees = [];
 
-    fetch('<?=ROOT?>/public/adminEmployees/search', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-            role: role || null, 
-            userID: userID || null 
-        })
-    })
-    .then(response => {
-        // Log the raw response for debugging
-        console.log('Raw response:', response);
-
-        // Check content type before parsing
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            return response.text().then(text => {
-                console.error('Non-JSON response:', text);
-                throw new Error('Expected JSON, received: ' + text);
-            });
-        }
-
-        if (!response.ok) {
-            return response.json().catch(() => {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            });
-        }
-        return response.json();
-    })
-    .then(result => {
-        console.log("Received:", result);
-        if (result.success) {
-            const tableBody = document.getElementById('employeeTableBody');
-            tableBody.innerHTML = result.employees.map(employee => `
-                <tr>
-                    <td>${employee.userID}</td>
-                    <td>${employee.username}</td>
-                    <td>${employee.firstName}</td>
-                    <td>${employee.lastName}</td>
-                    <td>${employee.role}</td>
-                    <td>${employee.phone}</td>
-                    <td>${employee.email}</td>
-                    <td>${employee.createdAt}</td>
-                </tr>
-            `).join('');
-        } else {
-            showNotification(result.message || "Search failed", 'error');
-        }
-    })
-    .catch(error => {
-        console.error("Fetch error:", error);
-        showNotification(error.message || "An unexpected error occurred", 'error');
-    });
+    // Function to load all employees initially
+    function loadEmployees() {
+        try {
+        fetch('<?=ROOT?>/public/adminEmployees/all')
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    allEmployees = result.employees;
+                    renderTable(allEmployees);
+                } else {
+                    showNotification('Failed to load employees', 'error');
+                }
+            })
+        } catch {
+            (error => showNotification('An unexpected error occurred', 'error'));
+    }
 }
 
+function renderTable(employees) {
+    const tableBody = document.getElementById('employeeTableBody');
+   
+    if (employees.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="10" style="text-align: center; color: #888;">
+                    No employees found matching your search.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+   
+    tableBody.innerHTML = employees.map(employee => `
+        <tr 
+            data-id="${employee.userID}" 
+            data-username="${employee.username}" 
+            data-firstname="${employee.firstName}" 
+            data-lastname="${employee.lastName}" 
+            data-role="${employee.role}" 
+            data-phone="${employee.phone}" 
+            data-email="${employee.email}"
+            data-createdAt="${employee.createdAt}"
+        >
+            <td>${employee.userID}</td>
+            <td>${employee.username}</td>
+            <td>${employee.firstName}</td>
+            <td>${employee.lastName}</td>
+            <td>${employee.role}</td>
+            <td>${employee.phone}</td>
+            <td>${employee.email}</td>
+            <td>${employee.createdAt}</td>
+            <td>
+                <button class="update-btn" onclick="showUpdateModal(this)">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </td>
+            <td>
+                <button class="delete-btn" onclick="deleteEmployee('${employee.userID}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+    function searchEmployees() {
+    const role = document.getElementById('employeeRole').value;
+    const userID = document.getElementById('employeeId').value.trim();
+    
+    // Create request body
+    const filters = {
+        role: role,
+        userID: userID
+    };
+    
+    // Send request to search endpoint
+    fetch('<?=ROOT?>/public/adminEmployees/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(filters)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            renderTable(result.employees);
+        } else {
+            renderTable([]); // Show "no employees found" row
+            showNotification(result.message || 'Search failed', 'error');
+        }
+    })
+    .catch(error => showNotification('An unexpected error occurred', 'error'));
+    renderTable([]); // Show "no employees found" row on error
+}
+
+// Function to reset the search filters and reload all employees
+// Simplified function to reset the search filters
+function resetEmployees() {
+    // Simply reload the page to show all employees again
+    location.reload();
+}
+
+
+    // Load employees on page load
+    window.onload = () => {
+    loadEmployees();
+};
     </script>
 </body>
 </html>

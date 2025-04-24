@@ -3,198 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accountant - payment Issues</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantPaymentIssues.css">
+    <title>FM - Complaints Management</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminWorkerInquiries.css">
+    <script src="<?=ROOT?>/public/assets/js/adminWorkerInquiries.js" defer></script>
+    <script>
+        const ROOT = '<?=ROOT?>';
+    </script>
 </head>
 <body>
+<?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
     <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
-    <div class="container">
-        <div class="main-content">
-            <!-- Navbar Component -->
-            <div class="dashboard-container">                
-                <!-- Tabs Section -->
-                <div class="tabs-container">
-                    <button class="tab-button active" data-tab="unreplied">Unreplied</button>
-                    <button class="tab-button" data-tab="replied">Replied</button>
+    <!-- <button id="testButton" style="padding: 10px; margin: 10px; background: red; color: white;">
+    Test Direct API Call
+</button> -->
+        <div class="container">
+            <div class="main-content">
+                <!-- Complaints List Sidebar -->
+                <div class="complaints-sidebar">
+                    <div class="sidebar-header">
+                        <h2>Customer Complaints</h2>
+                    </div>
+                    <div class="filters-container">
+                        <label for="issueFilter">Filter by Issue Type:</label>
+                        <select id="issueFilter">
+                            
+                            <option value="Payment Issues">Payment Issues</option>
+                            
+                        </select>
+                        <label for="prioritySort">Sort by Priority:</label>
+                        <select id="prioritySort">
+                            <option value="none">None</option>
+                            <option value="high-to-low">High to Low</option>
+                            <option value="low-to-high">Low to High</option>
+                        </select>
+                        <label for="statusFilter">Filter by Status:</label>
+                        <select id="statusFilter">
+                            <option value="all">All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                    </div>
+                    <div class="complaints-list" id="complaints-list">
+                        <?php if (!empty($complaints)) : ?>
+                            <?php foreach ($complaints as $complaint) : ?>
+                                <div class="complaint-item" data-complaint-id="<?= htmlspecialchars($complaint->complaintID, ENT_QUOTES, 'UTF-8') ?>" data-customer-id="<?= htmlspecialchars($complaint->customerID, ENT_QUOTES, 'UTF-8') ?>">
+                                    <div class="complaint-header">
+                                        <span class="customer-id">Customer #<?= htmlspecialchars($complaint->customerID, ENT_QUOTES, 'UTF-8') ?></span>
+                                        <span class="complaint-date"><?= htmlspecialchars(date('M d, Y', strtotime($complaint->submitted_at)), ENT_QUOTES, 'UTF-8') ?></span>
+                                    </div>
+                                    <div class="complaint-issue">
+                                        <?= htmlspecialchars($complaint->issue, ENT_QUOTES, 'UTF-8') ?>
+                                        <span class="priority-badge priority-<?= strtolower(htmlspecialchars($complaint->priority, ENT_QUOTES, 'UTF-8')) ?>">
+                                            <?= htmlspecialchars($complaint->priority, ENT_QUOTES, 'UTF-8') ?>
+                                        </span>
+                                    </div>
+                                    <div class="complaint-preview">
+                                        <?= htmlspecialchars(substr($complaint->description, 0, 60) . (strlen($complaint->description) > 60 ? '...' : ''), ENT_QUOTES, 'UTF-8') ?>
+                                    </div>
+                                    <span class="status-badge status-<?= strtolower(str_replace(' ', '-', $complaint->status)) ?>">
+                                        <?= htmlspecialchars($complaint->status, ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="empty-state">
+                                <p>No complaints found.</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
-                <!-- Inquiries List -->
-                <div class="inquiries-container">
-                    <div class="inquiry-card">
-                        <div class="inquiry-header">
-                            <div class="user-info">
-                                <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile" class="profile-image">
-                                <div class="user-details">
-                                    <h3 class="sender" >MR. Kamal Rupasinghe</h3>
-                                    <div class="timestamp">
-                                        <span>24 September 2024</span>
-                                        <span class="time">20:34 pm</span>
+                <!-- Chat Interface -->
+                <div class="chat-container">
+                    <div id="no-chat-selected" class="no-chat-selected">
+                        <i class="far fa-comments"></i>
+                        <h3>Select a complaint to start chatting</h3>
+                        <p>Choose a complaint from the list to view details and respond</p>
+                    </div>
+                    
+                    <div id="chat-interface" style="display: none; height: 100%; flex-direction: column;">
+                        <div class="chat-header">
+                            <div class="customer-info">
+                            <img id="customer-avatar" src="<?= ROOT ?>/public/assets/images/avatar-image.png" alt="Customer Avatar" class="customer-avatar">
+                                <div class="customer-details">
+                                    <h3 id="customer-name">Customer Name</h3>
+                                    <p id="customer-id">Customer ID: </p>
+                                    <div class="issue-details">
+                                        <span class="issue-type" id="issue-type">Issue Type: </span>
+                                        <span id="issue-priority" class="priority-badge">Priority</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="inquiry-content">
-                            <h4> Payment Method : </h4>
-                            <p class="message"> Paypal </p>
-                            <h4>Transaction ID : </h4>
-                            <p class="message"> 12589 </p>
-                            <h4>Issue : </h4>
-                            <p class="message">I was face some threatened from my current employee. I think my life is in a danger. Please can you get immidiate actions for this situation.</p>
-                            
-                            <a href="#" class="reply-link">reply</a>
-                        </div>
-                    </div>
-
-                <!-- Inquiries List -->
-                <div class="inquiries-container">
-                    <div class="inquiry-card">
-                        <div class="inquiry-header">
-                            <div class="user-info">
-                                <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Profile" class="profile-image">
-                                <div class="user-details">
-                                    <h3 class="sender">MR. Kamal Rupasinghe</h3>
-                                    <div class="timestamp">
-                                        <span>24 September 2024</span>
-                                        <span class="time">20:34 pm</span>
-                                    </div>
-                                </div>
+                            <div class="action-buttons">
+                                <button id="resolveButton" class="resolve-button">Mark as Resolved</button>
+                                <button id="deleteButton" class="delete-button">Delete</button>
                             </div>
                         </div>
-                        <div class="inquiry-content">
-                            <h4> Payment Method : </h4>
-                            <p class="message"> Paypal </p>
-                            <h4>Transaction ID : </h4>
-                            <p class="message"> 12589 </p>
-                            <h4>Issue : </h4>
-                            <p class="message">I was face some threatened from my current employee. I think my life is in a danger. Please can you get immidiate actions for this situation.</p>
-                            
-                            <a href="#" class="reply-link">reply</a>
+                        
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Messages will be loaded here dynamically -->
+                        </div>
+                        
+                        <div class="chat-input">
+                            <form id="chat-form" class="chat-form">
+                                <textarea id="message-input" placeholder="Type your reply here..." required></textarea>
+                                <button type="submit">Send</button>
+                            </form>
                         </div>
                     </div>
-
-                    <!-- Repeat similar inquiry-card structure for other messages -->
-                    <!-- You can dynamically generate these cards from your database -->
                 </div>
             </div>
         </div>
-   
+    </div>
 
-
-    <!-- Reply Modal -->
-    <div id="replyModal" class="reply-modal">
-        <div class="reply-modal-content">
-            <div class="reply-modal-header">
-                <h3>Reply to Inquiry</h3>
-                <button class="close-reply-modal">&times;</button>
+    <!-- Resolve Confirmation Modal -->
+    <div id="resolveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Resolution</h3>
             </div>
-            <div class="original-inquiry">
-                <h4>Name of the Customer</h4>
-                <p class="original-message"></p>
+            <p>Are you sure you want to mark this complaint as resolved?</p>
+            <div class="modal-actions">
+                <button id="cancelResolve" class="cancel-button">Cancel</button>
+                <button id="confirmResolve" class="confirm-button">Confirm</button>
             </div>
-            <form id="replyForm" class="reply-form">
-                <input type="hidden" id="inquiryId" name="inquiryId">
-                <div class="form-group">
-                    <label for="replyMessage">Your Response:</label>
-                    <textarea id="replyMessage" name="replyMessage" rows="6" placeholder="Write your response here..." required></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel close-reply-modal">Cancel</button>
-                    <button type="submit" class="btn-send">Send Reply</button>
-                </div>
-            </form>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Deletion</h3>
+            </div>
+            <p>Are you sure you want to delete this complaint? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button id="cancelDelete" class="cancel-button">Cancel</button>
+                <button id="confirmDelete" class="confirm-button">Delete</button>
+            </div>
+        </div>
     </div>
-
-    <script>
-        // Reply Modal Functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const replyModal = document.getElementById('replyModal');
-            const replyLinks = document.querySelectorAll('.reply-link');
-            const closeModalButtons = document.querySelectorAll('.close-reply-modal');
-            const originalMessage = document.querySelector('.original-message');
-            const inquiryIdInput = document.getElementById('inquiryId');
-            const replyForm = document.getElementById('replyForm');
-
-            // Open Reply Modal
-            replyLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const inquiryCard = link.closest('.inquiry-card');
-                    const messageElement = inquiryCard.querySelector('.sender');
-                    const inquiryId = link.getAttribute('data-inquiry-id');
-
-                    // Populate original message
-                    originalMessage.textContent = messageElement.textContent;
-                    inquiryIdInput.value = inquiryId;
-
-                    // Show modal
-                    replyModal.style.display = 'block';
-                });
-            });
-
-            // Close Modal
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    replyModal.style.display = 'none';
-                    replyForm.reset();
-                });
-            });
-
-            // Handle Form Submission
-            replyForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const formData = new FormData(replyForm);
-                
-                // Here you would typically send the form data to your server
-                fetch('<?=ROOT?>/public/adminWorkerInquiries/reply', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        alert('Reply sent successfully');
-                        replyModal.style.display = 'none';
-                        replyForm.reset();
-                        // Optionally update the UI to mark inquiry as replied
-                    } else {
-                        alert('Failed to send reply');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred');
-                });
-            });
-
-            // Close modal if clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === replyModal) {
-                    replyModal.style.display = 'none';
-                    replyForm.reset();
-                }
-            });
-        });
-    </script>
-
-    <script>
-        // Tab switching functionality
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                document.querySelectorAll('.tab-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                // Add active class to clicked button
-                button.classList.add('active');
-                
-                // Handle tab content switching here
-                const tabName = button.getAttribute('data-tab');
-                // Add your logic to show/hide appropriate inquiries
-            });
-        });
-    </script>
 </body>
 </html>

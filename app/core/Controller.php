@@ -5,9 +5,24 @@ require_once '../app/core/Helpers.php';
 
 class Controller
 {
+    protected $notifications = [];
+
+    public function __construct()
+    {
+        // Initialize notifications using notificationModel
+        if (isset($_SESSION['userID'])) {
+            $this->notifications = $this->loadModel('NotificationModel')->getUnread($_SESSION['userID']);
+        } else {
+            $this->notifications = [];
+        }
+    }
     public function view($name, $data = [])
     {
+        // Inject notifications into the data array
+        $data['notifications'] = $this->notifications;
+
         $filename = "../app/views/" . $name . ".view.php";
+        //echo "Looking for view at: " . $filename; // Debug line
         
         if (file_exists($filename)) {
             // Extract the data array into variables

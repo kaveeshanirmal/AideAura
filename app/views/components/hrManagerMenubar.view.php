@@ -13,7 +13,7 @@
             <li><a href="<?=ROOT?>/public/HrManager"><img src="<?=ROOT?>/public/assets/images/worker-profile.png" alt=""> Worker Profiles </a></li>
             <li><a href="<?=ROOT?>/public/HrManager/workerSchedules"><img src="<?=ROOT?>/public/assets/images/worker-schedule.png" alt=""> Worker Schedules</a></li>
             <li><a href="<?=ROOT?>/public/HrManager/verificationRequests"><img src="<?=ROOT?>/public/assets/images/verification-request.png" alt="">Verification Requests</a></li>
-            <li><a href="<?=ROOT?>/public/HrManager/workerInquiries"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
+            <li><a href="<?=ROOT?>/public/HrManager/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
         </ul>
     </div>
     <a href="<?=ROOT?>/public/login/logout" class="logout">

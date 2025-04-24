@@ -59,11 +59,12 @@
     margin-right: 25%;
     border-radius: 8px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .worker-card:hover {
     transform: translateX(3px);
-    background-color: #3FFF00;
+    background-color: #4CAF50;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -88,6 +89,12 @@
     height: 30px;
 }
 
+.worker-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensures text aligns to the left */
+}
+
 .worker-details h3 {
     margin: 0;
     font-size: 15px;
@@ -95,14 +102,29 @@
 }
 
 .worker-details p {
-    margin: 4px 0 0;
+    margin: 4px 0 0 0; /* Adjust spacing */
     font-size: 14px;
     color: #666;
+    text-align: left; /* Ensures left alignment */
 }
+
 
 .worker-card a {
     text-decoration: none;
     color: inherit;
+}
+
+.worker-link {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.worker-link:hover {
+    transform: translateX(3px);
+    background-color: #4CAF50;
+   // box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* Responsive Design */

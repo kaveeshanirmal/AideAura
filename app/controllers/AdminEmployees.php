@@ -2,27 +2,56 @@
 class AdminEmployees extends Controller {
 // Controller.php (Assuming this is the controller)
 
-public function index() {
-    $userModel = new UserModel();
-    $allEmployees = $userModel->getAllEmployees(); // Fetch all employees from the database
-    error_log("Employees in controller: " . json_encode($allEmployees));
+// public function index() {
+//     $userModel = new UserModel();
+//     $allEmployees = $userModel->getAllEmployees(); // Fetch all employees from the database
+//     error_log("Employees in controller: " . json_encode($allEmployees));
 
+//     // Define the allowed roles for filtering
+//     $allowedRoles = ['hrManager', 'opManager', 'financeManager', 'admin'];
+
+//     // Filter employees based on allowed roles
+//     $filteredEmployees = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
+//         return in_array($employee->role, $allowedRoles) && ($employee->isDelete === NULL); // Access object property using '->'
+//     });
+
+//     if (!$filteredEmployees) {
+//         error_log("No employees with specified roles retrieved or query failed");
+//         $filteredEmployees = []; // Ensuring the variable is always an array
+//     }
+
+//     $this->view('admin/adminEmployees', ['employees' => $filteredEmployees]);
+// }
+
+
+// Private helper function to get filtered employees (DRY principle)
+private function getFilteredEmployees() {
+    $userModel = new UserModel();
+    $allEmployees = $userModel->getAllEmployees();
+
+    error_log("Employees in controller: " . json_encode($allEmployees));
+    
     // Define the allowed roles for filtering
     $allowedRoles = ['hrManager', 'opManager', 'financeManager', 'admin'];
-
+    
     // Filter employees based on allowed roles
     $filteredEmployees = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-        return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
+        return in_array($employee->role, $allowedRoles) && ($employee->isDelete === 0);
     });
-
+    
     if (!$filteredEmployees) {
         error_log("No employees with specified roles retrieved or query failed");
-        $filteredEmployees = []; // Ensuring the variable is always an array
+        return []; // Ensuring the variable is always an array
     }
-
-    $this->view('admin/adminEmployees', ['employees' => $filteredEmployees]);
+    
+    return array_values($filteredEmployees); // Reset array keys
 }
 
+public function index() {
+    $filteredEmployees = $this->getFilteredEmployees();
+    error_log("Employees in controller: " . json_encode($filteredEmployees));
+    $this->view('admin/adminEmployees', ['employees' => $filteredEmployees]);
+}
 
 
     public function update() {
@@ -149,6 +178,25 @@ public function index() {
         }
 // I was add some comments to the code
         exit; // Ensure no further output
+    }
+
+    public function all() {
+        try {
+            $filteredEmployees = $this->getFilteredEmployees();
+            
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'employees' => $filteredEmployees
+            ]);
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
     
 

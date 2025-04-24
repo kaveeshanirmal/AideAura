@@ -15,42 +15,37 @@
 <div class="content-wrapper">      
     <div class="verification-list">
         <?php
-        // Replace with your actual database query
-        $verificationRequests = [
-            [
-                'name' => 'MR. Kamal Rupasinghe',
-                'date' => '24 September 2024',
-                'time' => '20.34 pm',
-                'status' => 'pending'
-            ],
-            // Add more requests as needed
-        ];
+        // // Replace with your actual database query
+        // $verificationRequests = [
+        //     [
+        //         'name' => 'MR. Kamal Rupasinghe',
+        //         'date' => '24 September 2024',
+        //         'time' => '20.34 pm',
+        //         'status' => 'pending'
+        //     ],
+        //     // Add more requests as needed
+        // ];
 
         foreach ($verificationRequests as $request) {
             ?>
             <div class="verification-card">
                 <div class="request-info">
                     <div class="request-main">
-                        <h3><?php echo htmlspecialchars($request['name']); ?></h3>
-                        <button class="expand-btn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="request-details">
-                        <span class="date"><?php echo htmlspecialchars($request['date']); ?></span>
-                        <span class="time"><?php echo htmlspecialchars($request['time']); ?></span>
+                    <h3><?php echo htmlspecialchars($request->full_name); ?></h3>
+            <!-- Apply the status class dynamically -->
+            <span class="status-badge <?php echo htmlspecialchars(strtolower($request->status)); ?>">
+                <?php echo htmlspecialchars($request->status); ?>
+            </span>  
+            </div>                  <div class="request-details">
+                        <span class="date">Created <?php echo htmlspecialchars($request->created_at); ?></span>
+                        <span class="date">Updated <?php echo htmlspecialchars($request->updated_at); ?></span>
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="approve-btn">Approve</button>
-                    <button class="reject-btn">Reject</button>
-                    <button class="message-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
-                        </svg>
-                    </button>
+                    <form action="findWorkerUserID" method="POST" style="display:inline;">
+                        <input type="hidden" name="workerDataID" value="<?php echo htmlspecialchars($request->workerID); ?>">
+                        <button type="submit" class="details-btn approve-btn">Details</button>
+                    </form>
                 </div>
             </div>
             <?php
@@ -85,37 +80,6 @@
 </html>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Expand/Collapse functionality
-    const expandButtons = document.querySelectorAll('.expand-btn');
-    expandButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            this.classList.toggle('expanded');
-            const card = this.closest('.verification-card');
-            card.classList.toggle('expanded');
-        });
-    });
-
-    // Approve button functionality
-    const approveButtons = document.querySelectorAll('.approve-btn');
-    approveButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            if (confirm('Are you sure you want to approve this request?')) {
-                // Add your approve logic here
-                console.log('Request approved');
-            }
-        });
-    });
-
-    // Reject button functionality
-    const rejectButtons = document.querySelectorAll('.reject-btn');
-    rejectButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            if (confirm('Are you sure you want to reject this request?')) {
-                // Add your reject logic here
-                console.log('Request rejected');
-            }
-        });
-    });
-});
+const verificationRequests = <?php echo json_encode($verificationRequests); ?>;
+console.log(verificationRequests);
 </script>

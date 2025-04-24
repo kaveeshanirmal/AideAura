@@ -22,7 +22,9 @@
 </head>
 
 <body>
+<
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
+
     <div>
         <!-- Section 1 -->
         <div id="body-1">
@@ -37,9 +39,17 @@
                 </div>
                 <!-- conditionally include hero buttons based on user role -->
                 <?php if(isset($_SESSION['userID']) && $_SESSION['role'] == 'worker'): ?>
-                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/workerRedirect'">Look for jobs</button>
+                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findJobs'">Look for jobs</button>
+                <?php elseif(isset($_SESSION['userID']) && $_SESSION['role'] == 'customer'): ?>
+                    <?php if (isset($_SESSION['booking']) && $_SESSION['booking']['status'] == 'pending'): ?>
+                        <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/searchForWorker/waitingForResponse'">Continue Booking</button>
+                    <?php elseif (isset($_SESSION['booking']) && $_SESSION['booking']['status'] == 'accepted'): ?>
+                        <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/booking/orderSummary'">Complete your Booking</button>
+                    <?php else: ?>
+                        <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/findWorkers'">Find a Worker</button>
+                    <?php endif; ?>
                 <?php else: ?>
-                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/home/customerRedirect'">Find a Worker</button>
+                    <button class="glow-button-1" onclick="window.location.href='<?=ROOT?>/public/login'">Get Started</button>
                 <?php endif; ?>
                 <div class="background-1"></div>
             </section>

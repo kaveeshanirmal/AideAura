@@ -15,9 +15,6 @@
     
     <script src="<?=ROOT?>/public/assets/js/modal.js" defer></script>
     <script src="<?=ROOT?>/public/assets/js/workhours.js" defer></script>
-    <script>
-        const ROOT = "<?php echo ROOT; ?>";
-    </script>
 </head>
 <body>
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
