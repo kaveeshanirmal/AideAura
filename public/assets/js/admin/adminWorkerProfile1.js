@@ -15,7 +15,7 @@ function viewAvailabilitySchedule(userID) {
     // Alternative approach: Submit a form to use POST method
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = `${ROOT}/public/Admin/getAvailabilitySchedule`;
+    form.action = `${ROOT}/public/admin/getAvailabilitySchedule`;
     
     const userIDInput = document.createElement('input');
     userIDInput.type = 'hidden';
@@ -60,7 +60,7 @@ function updateStatus(status) {
             setTimeout(() => {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = `${ROOT}/public/Admin/workerDetails`;
+                form.action = `${ROOT}/public/admin/workerDetails`;
                 
                 const input = document.createElement('input');
                 input.type = 'hidden';
