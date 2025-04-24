@@ -109,7 +109,7 @@ class WorkerProfile extends Controller
         $this->view('workingSchedule');
     }
 
-    public function faq()
+    public function faqworker()
     {
         $faqs = [
             [
@@ -135,6 +135,6 @@ class WorkerProfile extends Controller
         ];
         
 
-        $this->view('faq', ['faqs' => $faqs]);
+        $this->view('faqworker', ['faqs' => $faqs]);
     }
 }

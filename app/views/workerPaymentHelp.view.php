@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Operational Help Desk | AideAura</title>
+        <title>Payment Help Desk | AideAura</title>
         <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/customerHelpDesk.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -18,7 +18,7 @@
         <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
 
         <div class="helpdesk-container">
-            <h1>Operational Help Desk</h1>
+            <h1>Payment Help Desk</h1>
 
             <!-- Contact Section -->
             <section class="contact-section">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope fa-lg"></i>
-                        <p>Email: customersupport@AideAura.com</p>
+                        <p>Email: workersupport@AideAura.com</p>
                     </div>
                 </div>
             </section>
@@ -38,53 +38,19 @@
             <!-- Submit Issue Form -->
             <section class="submit-issue">
                 <h2><i class="fas fa-file-alt"></i> Submit an Issue</h2>
-                <form class="issue-form" action="<?=ROOT?>/public/customerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
+                <form class="issue-form" action="<?=ROOT?>/public/workerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="issue-type">Issue Type</label>
                         <select id="issue-type" name="issue" required>
                             <option value="">Select an Issue Type</option>
-                            <optgroup label="General Issues">
-                                <option value="general-inquiry">General Inquiry</option>
-                                <option value="feedback">Feedback/Suggestions</option>
-                            </optgroup>
-                            <optgroup label="Service Issues">
-                                <option value="worker-unavailability">Worker Unavailability</option>
-                                <option value="worker-misconduct">Worker Misconduct</option>
-                                <option value="worker-scheduling">Worker Scheduling Issues</option>
-                            </optgroup>
-                            <optgroup label="Booking Issues">
-                                <option value="unable-to-book">Unable to Book</option>
-                                <option value="incorrect-details">Incorrect Booking Details</option>
-                                <option value="cancellation">Booking Cancellations/Rescheduling</option>
-                            </optgroup>
+                            
                             <optgroup label="Payment Issues">
                                 <option value="failed-payment">Failed Payment</option>
-                                <option value="overcharged">Overcharged</option>
-                                <option value="refund-request">Refund Request</option>
+                                <option value="underpaid">Underpaid</option>
+                                <option value="payment-request">Payment Request</option>
                                 <option value="payment-verification">Payment Verification</option>
                             </optgroup>
-                            <optgroup label="Technical Issues">
-                                <option value="website-loading">Website Not Loading</option>
-                                <option value="bug-report">App/Website Bug</option>
-                                <option value="login-issues">Account Login Issues</option>
-                                <option value="profile-update">Profile Update Issues</option>
-                            </optgroup>
-                            <optgroup label="Account Issues">
-                                <option value="forgot-password">Forgot Password</option>
-                                <option value="deactivation">Account Deactivation</option>
-                                <option value="unauthorized-access">Unauthorized Access</option>
-                                <option value="role-permission">Role/Permission Issues</option>
-                            </optgroup>
-                            <optgroup label="Complaint/Feedback">
-                                <option value="service-complaint">Customer Service Complaint</option>
-                                <option value="worker-complaint">Worker Complaint</option>
-                                <option value="general-feedback">General Feedback</option>
-                            </optgroup>
-                            <optgroup label="Help Requests">
-                                <option value="service-guidance">Service Guidance</option>
-                                <option value="operational-help">Operational Help</option>
-                                <option value="policy-clarification">Policy Clarification</option>
-                            </optgroup>
+                            
                         </select>
                     </div>
                     <div class="form-group">
@@ -205,7 +171,7 @@
             <div class="modal-content">
                 <span id="reply-modal-close" class="close-btn">&times;</span>
                 <h3>Add Your Feedback</h3>
-                <form id="reply-form" action="<?=ROOT?>/public/customerHelpDesk/submitReply" method="POST">
+                <form id="reply-form" action="<?=ROOT?>/public/workerHelpDesk/submitReply" method="POST">
                     <input type="hidden" id="reply-complaint-id" name="complaint_id" value="">
                     <div class="form-group">
                         <label for="reply-message">Your Message</label>
@@ -226,6 +192,6 @@
             // Pass PHP root URL to JavaScript
             const ROOT_URL = "<?=ROOT?>";
         </script>
-        <script src="<?=ROOT?>/public/assets/js/customerHelpDesk.js"></script>
+        <script src="<?=ROOT?>/public/assets/js/workerHelpDesk.js"></script>
     </body>
 </html>
