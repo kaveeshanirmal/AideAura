@@ -44,58 +44,78 @@ class workerHelpDesk extends Controller
     }
 
     public function submitComplaint()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Sanitize input data
-            $_POST = filter_input_array(INPUT_POST, [
-                'issue_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-                'issue' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-                'description' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-                'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
-                'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
-            ]);
-
-            // Extract values with fallbacks
-            $issueType = isset($_POST['issue_type']) ? $_POST['issue_type'] : '';
-            $issue = isset($_POST['issue']) ? $_POST['issue'] : '';
-            $description = isset($_POST['description']) ? $_POST['description'] : '';
-
-            // Validate required fields
-            if (empty($issue) || empty($description)) {
-                $_SESSION['complaint_message'] = 'Please fill in all required fields';
-                header('Location: ' . ROOT . '/workerHelpDesk/operationalHelp');
-                exit();
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Sanitize input data
+        $_POST = filter_input_array(INPUT_POST, [
+            'issue_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'issue' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'description' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
+            'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'help_desk_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS  // Add this line
+        ]);
+        
+        // Extract values with fallbacks
+        $issueType = isset($_POST['issue_type']) ? $_POST['issue_type'] : '';
+        $issue = isset($_POST['issue']) ? $_POST['issue'] : '';
+        $description = isset($_POST['description']) ? $_POST['description'] : '';
+        $helpDeskType = isset($_POST['help_desk_type']) ? $_POST['help_desk_type'] : '';
+        
+        // Determine which help desk to redirect to based on the form submission
+        $redirectUrl = ROOT . '/public/workerHelpDesk/operationalHelp'; // Default to operational
+        
+        if ($helpDeskType === 'payment') {
+            $redirectUrl = ROOT . '/public/workerHelpDesk/paymentHelp';
+        } else if ($helpDeskType === 'operational') {
+            $redirectUrl = ROOT . '/public/workerHelpDesk/operationalHelp';
+        }
+        
+        // You can also check HTTP referer as a fallback
+        if (empty($helpDeskType) && isset($_SERVER['HTTP_REFERER'])) {
+            if (strpos($_SERVER['HTTP_REFERER'], 'paymentHelp') !== false) {
+                $redirectUrl = ROOT . '/public/workerHelpDesk/paymentHelp';
+            } else if (strpos($_SERVER['HTTP_REFERER'], 'operationalHelp') !== false) {
+                $redirectUrl = ROOT . '/public/workerHelpDesk/operationalHelp';
             }
-
-            $data = [
-                'workerID' => $_SESSION['workerID'],
-                'issue_type' => $issueType,
-                'issue' => $issue,
-                'description' => $description,
-                'status' => 'Pending',
-                'priority' => $this->getComplaintPriority($issue),
-                'submitted_at' => date('Y-m-d H:i:s') // Ensure current timestamp
-            ];
-
-            $result = $this->workerComplaintModel->addComplaint($data);
-
-            if ($result) {
-                // Get the complaint ID from the result
-                $complaintID = $result;
-                $_SESSION['complaint_message'] = "Your complaint (#$complaintID) has been submitted successfully. We'll get back to you as soon as possible.";
-            } else {
-                $_SESSION['complaint_message'] = 'Failed to submit your complaint. Please try again or contact support directly.';
-            }
-
-            // Redirect to the operational help page
-            header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
-            exit();
-        } else {
-            // If not a POST request, redirect to the form
-            header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
+        }
+        
+        // Validate required fields
+        if (empty($issue) || empty($description)) {
+            $_SESSION['complaint_message'] = 'Please fill in all required fields';
+            header('Location: ' . $redirectUrl);
             exit();
         }
+        
+        $data = [
+            'workerID' => $_SESSION['workerID'],
+            'issue_type' => $issueType,
+            'issue' => $issue,
+            'description' => $description,
+            'status' => 'Pending',
+            'priority' => $this->getComplaintPriority($issue),
+            'submitted_at' => date('Y-m-d H:i:s') // Ensure current timestamp
+        ];
+        
+        $result = $this->workerComplaintModel->addComplaint($data);
+        
+        if ($result) {
+            // Get the complaint ID from the result
+            $complaintID = $result;
+            $_SESSION['complaint_message'] = "Your complaint (#$complaintID) has been submitted successfully. We'll get back to you as soon as possible.";
+        } else {
+            $_SESSION['complaint_message'] = 'Failed to submit your complaint. Please try again or contact support directly.';
+        }
+        
+        // Redirect to the appropriate help page
+        header('Location: ' . $redirectUrl);
+        exit();
+    } else {
+        // If not a POST request, redirect to the operational form by default
+        header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
+        exit();
     }
+}
 
     /**
      * Determine the priority of a complaint based on the issue type
