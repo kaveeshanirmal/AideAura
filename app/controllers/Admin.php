@@ -937,9 +937,13 @@ public function updateVerificationStatus() {
         // exit;
     // }
 
-    public function paymentHistory()
+    public function paymentDetails()
+
     {
-        $this->view('admin/adminPaymentHistory');
+
+        $paymentModel = new PaymentModel();
+        $paymentDetails = $paymentModel->getAllPaymentsWithBookingDetails(); // Fetch all payment details from the database
+        $this->view('admin/adminPaymentDetails',['paymentDetails'=>$paymentDetails]);
     }
 
     

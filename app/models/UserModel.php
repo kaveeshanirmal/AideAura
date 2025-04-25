@@ -302,4 +302,14 @@ public function registerEmployee($data)
             }
         }
     }
+
+    public function getNameByUserID($userID)
+    {
+        $this->setTable('users');
+        $user = $this->find($userID, 'userID');
+        if ($user) {
+            return $user->firstName . ' ' . $user->lastName; // Return the full name
+        }
+        return null; // Return null if user not found
+    }
 }
