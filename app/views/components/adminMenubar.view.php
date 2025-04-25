@@ -14,7 +14,7 @@
             <li><a href="<?=ROOT?>/public/admin/workers"><img src="<?=ROOT?>/public/assets/images/worker-profile.png" alt=""> Worker Profiles </a></li>
             <li><a href="<?=ROOT?>/public/adminEmployees"><img src="<?=ROOT?>/public/assets/images/Admin.png" alt=""> Employees </a></li>
             <li><a href="<?=ROOT?>/public/admin/workerRoles"><img src="<?=ROOT?>/public/assets/images/Roles.png" alt=""> Roles </a></li>
-            <li><a href="<?=ROOT?>/public/admin/paymentRates"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Payment Rates </a></li>
+            <li><a href="<?=ROOT?>/public/admin/priceData"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Price Details </a></li>
             <li><a href="<?=ROOT?>/public/admin/paymentHistory"><img src="<?=ROOT?>/public/assets/images/order history.png" alt=""> Payment History </a></li>
             <li><a href="<?=ROOT?>/public/admin/workerInquiries"><img src="<?=ROOT?>/public/assets/images/Inquiry.png" alt=""> Customer Inquiries </a></li>
             <li><a href="<?=ROOT?>/public/admin/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>

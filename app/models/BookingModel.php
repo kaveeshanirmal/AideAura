@@ -77,6 +77,13 @@ class BookingModel
         return $customer ? $customer->customerID : null;
     }
 
+    public function getWorkerIdByBookingId($bookingID)
+    {
+        $this->setTable('bookings');
+        $worker = $this->find($bookingID, 'bookingID');
+        return $worker ? $worker->workerID : null;
+    }
+
     public function getStatusByBookingId($bookingID)
     {
         $this->setTable('bookings');
@@ -314,4 +321,31 @@ class BookingModel
         }
     }
 
+    public function hasUnconfirmedBookings($customerID) {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings 
+              WHERE customerID = :customerID 
+                AND (status = 'pending' OR status = 'accepted')";
+        $result = $this->get_all($query, ['customerID' => $customerID]);
+        return ($result !== false) && !empty($result);
+    }
+
+    public function getUnconfirmedBookings($customerID)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings WHERE customerID = :customerID AND status = 'pending' OR status = 'accepted'";
+        return $this->get_all($query, ['customerID' => $customerID]);
+    }
+
+    public function getBasicBookingData($bookingID)
+    {
+        $this->setTable('bookings');
+        return $this->find($bookingID, 'bookingID');
+    }
+
+    public function deleteUnconfirmedBooking($bookingID)
+    {
+        $this->setTable('bookings');
+        return $this->delete($bookingID, 'bookingID');
+    }
 }

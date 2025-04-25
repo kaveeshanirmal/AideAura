@@ -11,6 +11,7 @@ require 'Controller.php';
 require 'App.php';
 require 'loadenv.php';
 require 'HelperFunctions.php';
+require 'MailHelper.php';
 
 loadEnv(dirname(__DIR__, 2) . '/.env');
 

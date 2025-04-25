@@ -138,6 +138,8 @@
     </div>
 
     <script>
+
+     console.log(<?= json_encode($employees) ?>);
         // Notification Functionality
         const notification = document.getElementById('notification');
         const showNotification = (message, type) => {
@@ -146,27 +148,34 @@
             setTimeout(() => notification.className = 'notification hidden', 2000);
         };
 
-        // Show Update Modal
-        function showUpdateModal(button) {
-            const row = button.closest('tr');
-            const userID = row.getAttribute('data-id');
-            const username = row.getAttribute('data-username');
-            const firstName = row.getAttribute('data-firstname');
-            const lastName = row.getAttribute('data-lastname');
-            const role = row.getAttribute('data-role');
-            const phone = row.getAttribute('data-phone');
-            const email = row.getAttribute('data-email');
-
-            document.getElementById('updateEmployeeId').value = userID;
-            document.getElementById('updateUserName').value = username;
-            document.getElementById('updatefirstName').value = firstName;
-            document.getElementById('updatelastName').value = lastName;
-            document.getElementById('updateRole').value = role;
-            document.getElementById('updatePhone').value = phone;
-            document.getElementById('updateEmail').value = email;
-
-            document.getElementById('updateModal').style.display = 'block';
-        }
+       // Show Update Modal
+function showUpdateModal(button) {
+    const row = button.closest('tr');
+    
+    // Get all data attributes from the row
+    const userID = row.getAttribute('data-id');
+    const username = row.getAttribute('data-username');
+    const firstName = row.getAttribute('data-firstname');
+    const lastName = row.getAttribute('data-lastname');
+    const role = row.getAttribute('data-role');
+    const phone = row.getAttribute('data-phone');
+    const email = row.getAttribute('data-email');
+    
+    // Log the values to console for debugging
+    console.log("Modal data:", { userID, username, firstName, lastName, role, phone, email });
+    
+    // Set the values in the form fields
+    document.getElementById('updateEmployeeId').value = userID;
+    document.getElementById('updateUserName').value = username;
+    document.getElementById('updatefirstName').value = firstName;
+    document.getElementById('updatelastName').value = lastName;
+    document.getElementById('updateRole').value = role;
+    document.getElementById('updatePhone').value = phone;
+    document.getElementById('updateEmail').value = email;
+    
+    // Show the modal
+    document.getElementById('updateModal').style.display = 'block';
+}
 
         function closeUpdateModal() {
             document.getElementById('updateModal').style.display = 'none';
@@ -249,10 +258,9 @@
     }
 }
 
-    // Function to render the employee table
-    function renderTable(employees) {
-        const tableBody = document.getElementById('employeeTableBody');
-       
+function renderTable(employees) {
+    const tableBody = document.getElementById('employeeTableBody');
+   
     if (employees.length === 0) {
         tableBody.innerHTML = `
             <tr>
@@ -263,31 +271,39 @@
         `;
         return;
     }
-       
-        tableBody.innerHTML = employees.map(employee => `
-            <tr>
-                <td>${employee.userID}</td>
-                <td>${employee.username}</td>
-                <td>${employee.firstName}</td>
-                <td>${employee.lastName}</td>
-                <td>${employee.role}</td>
-                <td>${employee.phone}</td>
-                <td>${employee.email}</td>
-                <td>${employee.createdAt}</td>
-                <td>
-                    <button class="update-btn" onclick="showUpdateModal(this)">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                </td>
-                <td>
-                    <button class="delete-btn" onclick="deleteEmployee('${employee.userID}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
+   
+    tableBody.innerHTML = employees.map(employee => `
+        <tr 
+            data-id="${employee.userID}" 
+            data-username="${employee.username}" 
+            data-firstname="${employee.firstName}" 
+            data-lastname="${employee.lastName}" 
+            data-role="${employee.role}" 
+            data-phone="${employee.phone}" 
+            data-email="${employee.email}"
+            data-createdAt="${employee.createdAt}"
+        >
+            <td>${employee.userID}</td>
+            <td>${employee.username}</td>
+            <td>${employee.firstName}</td>
+            <td>${employee.lastName}</td>
+            <td>${employee.role}</td>
+            <td>${employee.phone}</td>
+            <td>${employee.email}</td>
+            <td>${employee.createdAt}</td>
+            <td>
+                <button class="update-btn" onclick="showUpdateModal(this)">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </td>
+            <td>
+                <button class="delete-btn" onclick="deleteEmployee('${employee.userID}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
     function searchEmployees() {
     const role = document.getElementById('employeeRole').value;
     const userID = document.getElementById('employeeId').value.trim();

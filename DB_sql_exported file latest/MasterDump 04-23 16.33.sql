@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2025 at 02:10 AM
+-- Generation Time: Apr 23, 2025 at 12:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -27,9 +27,11 @@ SET time_zone = "+00:00";
 -- Table structure for table `bookings`
 --
 
+SET FOREIGN_KEY_CHECKS=0;
+
 DROP TABLE IF EXISTS `bookings`;
 CREATE TABLE `bookings` (
-  `bookingID` bigint(20) UNSIGNED NOT NULL,
+  `bookingID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `customerID` bigint(20) UNSIGNED NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `serviceType` varchar(50) NOT NULL,
@@ -60,7 +62,7 @@ INSERT INTO `bookings` (`bookingID`, `customerID`, `workerID`, `serviceType`, `b
 
 DROP TABLE IF EXISTS `booking_details`;
 CREATE TABLE `booking_details` (
-  `detailID` bigint(20) UNSIGNED NOT NULL,
+  `detailID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `bookingID` bigint(20) UNSIGNED NOT NULL,
   `detailType` varchar(50) NOT NULL,
   `detailValue` varchar(255) NOT NULL
@@ -116,7 +118,7 @@ INSERT INTO `booking_details` (`detailID`, `bookingID`, `detailType`, `detailVal
 
 DROP TABLE IF EXISTS `booking_reviews`;
 CREATE TABLE `booking_reviews` (
-  `reviewID` bigint(20) UNSIGNED NOT NULL,
+  `reviewID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `bookingID` bigint(20) UNSIGNED NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `customerID` bigint(20) UNSIGNED NOT NULL,
@@ -157,7 +159,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
-  `customerID` bigint(20) UNSIGNED NOT NULL,
+  `customerID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
   `profileImage` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `address` varchar(255) NOT NULL
@@ -179,7 +181,7 @@ INSERT INTO `customer` (`customerID`, `userID`, `profileImage`, `address`) VALUE
 
 DROP TABLE IF EXISTS `customercomplaints`;
 CREATE TABLE `customercomplaints` (
-  `complaintID` bigint(20) UNSIGNED NOT NULL,
+  `complaintID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `customerID` bigint(20) UNSIGNED NOT NULL,
   `issue_type` enum('General Issues','Service Issues','Booking Issues','Payment Issues','Technical Issues','Account Issues','Complaint/Feedback','Help Requests') NOT NULL,
   `issue` varchar(255) NOT NULL,
@@ -208,12 +210,12 @@ INSERT INTO `customercomplaints` (`complaintID`, `customerID`, `issue_type`, `is
 
 DROP TABLE IF EXISTS `customercomplaints_updates`;
 CREATE TABLE `customercomplaints_updates` (
-  `updateID` int(11) NOT NULL,
+  `updateID` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `complaintID` bigint(20) UNSIGNED NOT NULL,
   `status` enum('Pending','In Progress','Resolved') DEFAULT 'In Progress',
   `comments` text DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `userID` int(11) DEFAULT NULL,
+  `userID` bigint(20) UNSIGNED NOT NULL,
   `role` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -233,7 +235,7 @@ INSERT INTO `customercomplaints_updates` (`updateID`, `complaintID`, `status`, `
 
 DROP TABLE IF EXISTS `jobroles`;
 CREATE TABLE `jobroles` (
-  `roleID` int(10) UNSIGNED NOT NULL,
+  `roleID` int(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `description` varchar(255) NOT NULL,
@@ -298,7 +300,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
-  `notificationID` int(11) NOT NULL,
+  `notificationID` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
   `type` enum('worker','customer') NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -353,7 +355,7 @@ INSERT INTO `notifications` (`notificationID`, `userID`, `type`, `title`, `messa
 
 DROP TABLE IF EXISTS `payment_rates`;
 CREATE TABLE `payment_rates` (
-  `ServiceID` int(11) NOT NULL,
+  `ServiceID` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `ServiceType` varchar(50) NOT NULL,
   `BasePrice` decimal(11,2) DEFAULT NULL,
   `BaseHours` decimal(11,2) DEFAULT NULL,
@@ -382,7 +384,7 @@ INSERT INTO `payment_rates` (`ServiceID`, `ServiceType`, `BasePrice`, `BaseHours
 
 DROP TABLE IF EXISTS `price_categories`;
 CREATE TABLE `price_categories` (
-  `categoryID` int(10) UNSIGNED NOT NULL,
+  `categoryID` int(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `roleID` int(10) UNSIGNED NOT NULL,
   `categoryName` varchar(50) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -417,7 +419,7 @@ INSERT INTO `price_categories` (`categoryID`, `roleID`, `categoryName`, `descrip
 
 DROP TABLE IF EXISTS `price_details`;
 CREATE TABLE `price_details` (
-  `detailID` bigint(20) UNSIGNED NOT NULL,
+  `detailID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `categoryID` int(10) UNSIGNED NOT NULL,
   `detailName` varchar(50) NOT NULL,
   `price` decimal(10,2) NOT NULL,
@@ -478,7 +480,7 @@ INSERT INTO `price_details` (`detailID`, `categoryID`, `detailName`, `price`, `d
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `userID` bigint(20) UNSIGNED NOT NULL,
+  `userID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `username` varchar(255) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
@@ -544,7 +546,7 @@ INSERT INTO `users` (`userID`, `username`, `firstName`, `lastName`, `role`, `pas
 
 DROP TABLE IF EXISTS `verification_requests`;
 CREATE TABLE `verification_requests` (
-  `requestID` bigint(20) UNSIGNED NOT NULL,
+  `requestID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `full_name` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -602,8 +604,8 @@ INSERT INTO `verification_requests` (`requestID`, `workerID`, `full_name`, `user
 (44, 41, 'Chaminda Vithanage', 'chaminda', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', 'None', 'Can supervise other household staff', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (45, 42, 'Sandamali Gamage', 'sandamali', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', 'None', 'Can prepare traditional Eastern dishes', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (46, 43, 'Prasanna Jayasuriya', 'prasanna', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', 'None', 'Can advise on suitable plants for your area', 0, 'approved', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(0, 13, 'Kaveesha Nirmal', 'kavee', 'kaveesha@gmail.com', '0773286029', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '18-25', 'cooking', 'intermediate', 'Anuradhapura', NULL, NULL, 'Hello I\'m under the water', 'boc\r\n229112', '2211123455522234', '7-9', '7-9', 'I don\'t have allergies', 'Nothing to say', 1, 'approved', '2025-04-22 12:12:40', '2025-04-22 12:14:32'),
-(0, 45, 'Anura wicramasinghe', 'testworker1', 'anura.123@gmail.com', '0786581230', 'male', 'Sinhala', 'Colombo', '198616382678', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Vavuniya', NULL, NULL, 'Hi, I would really like to get verified.', 'BOC\r\n1233', '2002286546179334', '7-9', '7-9', 'I don\'t have allergies', 'Please consider my verification request', 1, 'approved', '2025-04-22 16:30:23', '2025-04-22 16:37:48');
+(47, 13, 'Kaveesha Nirmal', 'kavee', 'kaveesha@gmail.com', '0773286029', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '18-25', 'cooking', 'intermediate', 'Anuradhapura', NULL, NULL, 'Hello I\'m under the water', 'boc\r\n229112', '2211123455522234', '7-9', '7-9', 'I don\'t have allergies', 'Nothing to say', 1, 'approved', '2025-04-22 12:12:40', '2025-04-22 12:14:32'),
+(48, 45, 'Anura wicramasinghe', 'testworker1', 'anura.123@gmail.com', '0786581230', 'male', 'Sinhala', 'Colombo', '198616382678', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Vavuniya', NULL, NULL, 'Hi, I would really like to get verified.', 'BOC\r\n1233', '2002286546179334', '7-9', '7-9', 'I don\'t have allergies', 'Please consider my verification request', 1, 'approved', '2025-04-22 16:30:23', '2025-04-22 16:37:48');
 
 --
 -- Triggers `verification_requests`
@@ -681,7 +683,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `verified_workers`;
 CREATE TABLE `verified_workers` (
-  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
   `full_name` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `profileImage` varchar(255) DEFAULT '/public/assets/images/avatar-image.png',
@@ -713,6 +715,8 @@ CREATE TABLE `verified_workers` (
 --
 
 INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileImage`, `address`, `email`, `phone_number`, `gender`, `spokenLanguages`, `hometown`, `nic`, `nationality`, `age_range`, `service_type`, `experience_level`, `workLocations`, `certificates_path`, `medical_path`, `description`, `bankNameCode`, `accountNumber`, `working_weekdays`, `working_weekends`, `created_at`, `verified_at`) VALUES
+(13, 'Kaveesha Nirmal', 'kavee', '/public/assets/images/avatar-image.png', '679/1, Ambillawatta Road, Boralesgamuwa, Colombo, Sri Lanka', 'kaveesha@gmail.com', '0773286029', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '18-25', 'cooking', 'intermediate', 'Colombo Boralesgamuwa', NULL, NULL, 'Hello I\'m under the water', 'boc\r\n229112', '2211123455522234', '7-9', '7-9', '2025-04-22 12:12:40', '2025-04-22 12:14:32'),
+(23, 'Kusum Chamara', 'maidtest1', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', '2025-04-08 11:20:22', '2025-04-22 12:06:57'),
 (24, 'Nimali Perera', 'nimali', '/public/assets/images/avatar-image.png', '123/1, Galle Road, Colombo 03', 'nimali.p@gmail.com', '0771234567', 'female', 'Sinhala,English', 'Colombo', '198022202975', 'sinhalese', '36-50', 'cooking', 'expert', 'Colombo,Galle,Kandy', NULL, NULL, 'Experienced cook specializing in Sri Lankan cuisine. Can prepare both traditional and modern dishes.', 'BOC 4567', '1234567890123456', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (25, 'Kamal Silva', 'kamal', '/public/assets/images/avatar-image.png', '45, Main Street, Colombo', 'kamal.s@gmail.com', '0772345678', 'female', 'Sinhala,English,Tamil', 'Kandy', '198122202975', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Kandy,Colombo,Nuwara Eliya', NULL, NULL, 'Specializes in both Sri Lankan and Western cuisine. Good with dietary restrictions.', 'Commercial 7890', '2345678901234567', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (26, 'Suneetha Fernando', 'suneetha', '/public/assets/images/avatar-image.png', '78, Temple Road, Colombo', 'suneetha.f@gmail.com', '0773456789', 'female', 'Sinhala,English', 'Anuradhapura', '198222202975', 'sinhalese', 'above_50', 'cooking', 'expert', 'Anuradhapura,Polonnaruwa,Dambulla', NULL, NULL, 'Traditional Sri Lankan cook with 30 years experience. Expert in village-style cooking.', 'NSB 1234', '3456789012345678', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
@@ -733,8 +737,6 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 (41, 'Chaminda Vithanage', 'chaminda', '/public/assets/images/avatar-image.png', '88, Lakeview Drive, Puttalam', 'chaminda.v@gmail.com', '0718901234', 'male', 'Sinhala,Tamil', 'Puttalam', '199722202975', 'sinhalese', '36-50', 'housekeeping', 'expert', 'Puttalam,Chilaw,Kurunegala', NULL, NULL, 'Experienced in managing entire households. Can cook, clean, and do minor repairs.', 'Seylan 0123', '8901234567890123', 'above_12', '7-9', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (42, 'Sandamali Gamage', 'sandamali', '/public/assets/images/avatar-image.png', '99, Riverside, Batticaloa', 'sandamali.g@gmail.com', '0719012345', 'female', 'Sinhala,English', 'Batticaloa', '199822202975', 'sinhalese', '26-35', 'housekeeping', 'intermediate', 'Batticaloa,Ampara,Trincomalee', NULL, NULL, 'Skilled in both Eastern and Western cooking styles. Also good at household organization.', 'NDB 4567', '9012345678901234', '10-12', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
 (43, 'Prasanna Jayasuriya', 'prasanna', '/public/assets/images/avatar-image.png', '100, Mountain Peak, Vavuniya', 'prasanna.j@gmail.com', '0710123456', 'male', 'Sinhala,English,Tamil', 'Vavuniya', '199922202975', 'sinhalese', '26-35', 'gardening', 'intermediate', 'Vavuniya,Anuradhapura,Polonnaruwa', NULL, NULL, 'Specializes in maintaining both ornamental and productive gardens. Knowledgeable about local plants.', 'HDFC 7890', '0123456789012345', '7-9', '4-6', '2025-04-09 21:35:20', '2025-04-09 21:35:20'),
-(23, 'Kusum Chamara', 'maidtest1', '/public/assets/images/avatar-image.png', 'jjdfgkjdsfkdfkjgdkjh', 'sumeda@gmail.com', '0789456123', 'male', 'Tamil', 'homagama', '456789123753', 'sinhalese', '26-35', 'babysitting', 'entry', 'Ampara,Galle,Polonnaruwa', NULL, NULL, 'mnvjhbjvfhjyjhgj', 'fghgfhgfhghghgfhf', '9874654736988521', '10-12', '4-6', '2025-04-08 11:20:22', '2025-04-22 12:06:57'),
-(13, 'Kaveesha Nirmal', 'kavee', '/public/assets/images/avatar-image.png', '679/1, Ambillawatta Road, Boralesgamuwa, Colombo, Sri Lanka', 'kaveesha@gmail.com', '0773286029', 'male', 'Sinhala,English', 'Colombo', '200222202975', 'sinhalese', '18-25', 'cooking', 'intermediate', 'Colombo Boralesgamuwa', NULL, NULL, 'Hello I\'m under the water', 'boc\r\n229112', '2211123455522234', '7-9', '7-9', '2025-04-22 12:12:40', '2025-04-22 12:14:32'),
 (45, 'Anura wicramasinghe', 'testworker1', 'public/assets/images/profiles/eb7cf7e51fd3871742e67c0d1cd8fbda.png', 'No 35, Araliya Road, Depanama, Pannipitiya, Colombo, Sri Lanka', 'anura.123@gmail.com', '0786581230', 'male', 'Sinhala', 'Colombo', '198616382678', 'sinhalese', '26-35', 'cooking', 'intermediate', 'Pannipitiya Colombo', NULL, NULL, 'Hi, I would really like to get verified.', 'BOC\r\n1233', '2002286546179334', '7-9', '7-9', '2025-04-22 16:30:23', '2025-04-22 16:37:48');
 
 -- --------------------------------------------------------
@@ -745,7 +747,7 @@ INSERT INTO `verified_workers` (`workerID`, `full_name`, `username`, `profileIma
 
 DROP TABLE IF EXISTS `worker`;
 CREATE TABLE `worker` (
-  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `userID` bigint(20) UNSIGNED NOT NULL,
   `profileImage` varchar(255) NOT NULL DEFAULT '/public/assets/images/avatar-image.png',
   `address` varchar(255) NOT NULL,
@@ -815,13 +817,72 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `workercomplaints`
+--
+
+DROP TABLE IF EXISTS `workercomplaints`;
+CREATE TABLE `workercomplaints` (
+  `complaintID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `issue_type` enum('General Issues','Service Issues','Booking Issues','Payment Issues','Technical Issues','Account Issues','Complaint/Feedback','Help Requests') NOT NULL,
+  `issue` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `status` enum('Pending','In Progress','Resolved') DEFAULT 'Pending',
+  `priority` enum('Low','Medium','High','Critical') DEFAULT 'Medium',
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `workercomplaints`
+--
+
+INSERT INTO `workercomplaints` (`complaintID`, `workerID`, `issue_type`, `issue`, `description`, `status`, `priority`, `submitted_at`, `updated_at`) VALUES
+(2, 17, 'Service Issues', 'Unclear job description', 'The tasks assigned were not clearly defined, causing confusion.', 'In Progress', 'Medium', '2025-04-23 04:46:31', '2025-04-23 04:46:31'),
+(3, 21, 'Technical Issues', 'App login error', 'I’m unable to log in to the app despite correct credentials.', 'Pending', 'Critical', '2025-04-23 04:46:31', '2025-04-23 04:46:31'),
+(4, 29, 'Account Issues', 'Profile not updated', 'My updated profile picture and address are not showing up.', 'Pending', 'Low', '2025-04-23 04:46:31', '2025-04-23 04:46:31'),
+(5, 35, 'General Issues', 'Long waiting time for assignment', 'I’ve been online for hours with no job assigned.', 'In Progress', 'Medium', '2025-04-23 04:46:31', '2025-04-23 04:46:31'),
+(6, 26, 'Payment Issues', 'Incorrect payment amount', 'The amount credited was less than the agreed rate for the completed jobs.', 'Pending', 'High', '2025-04-23 04:46:46', '2025-04-23 04:46:46'),
+(7, 38, 'Payment Issues', 'Missing bonus payout', 'I completed all the bonus tasks but didn’t receive the promised incentive.', 'In Progress', 'Critical', '2025-04-23 04:46:46', '2025-04-23 04:46:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `workercomplaints_updates`
+--
+
+DROP TABLE IF EXISTS `workercomplaints_updates`;
+CREATE TABLE `workercomplaints_updates` (
+  `updateID` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `complaintID` bigint(20) UNSIGNED NOT NULL,
+  `status` enum('Pending','In Progress','Resolved') DEFAULT 'Pending',
+  `comments` text DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `userID` bigint(20) UNSIGNED NOT NULL,
+  `role` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `workercomplaints_updates`
+--
+
+INSERT INTO `workercomplaints_updates` (`updateID`, `complaintID`, `status`, `comments`, `updated_at`, `userID`, `role`) VALUES
+(1, 1, 'In Progress', 'will look into that sir', '2025-04-23 05:40:37', 25, 'financeManager'),
+(2, 1, 'Resolved', 'This complaint has been marked as resolved.', '2025-04-23 05:40:55', 25, 'financeManager'),
+(3, 2, 'In Progress', 'will get back to u soon', '2025-04-23 05:41:52', 26, 'hrManager'),
+(4, 2, 'In Progress', 'hi', '2025-04-23 05:43:20', 26, 'hrManager');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `worker_roles`
 --
 
 DROP TABLE IF EXISTS `worker_roles`;
 CREATE TABLE `worker_roles` (
   `workerID` bigint(20) UNSIGNED NOT NULL,
-  `roleID` int(10) UNSIGNED NOT NULL
+  `roleID` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`workerID`,`roleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -875,7 +936,7 @@ INSERT INTO `worker_roles` (`workerID`, `roleID`) VALUES
 
 DROP TABLE IF EXISTS `worker_stats`;
 CREATE TABLE `worker_stats` (
-  `workerID` bigint(20) UNSIGNED NOT NULL,
+  `workerID` bigint(20) UNSIGNED PRIMARY KEY NOT NULL,
   `avg_rating` decimal(3,2) DEFAULT 0.00,
   `total_reviews` int(10) UNSIGNED DEFAULT 0,
   `last_activity` timestamp NOT NULL DEFAULT current_timestamp()
@@ -927,7 +988,7 @@ INSERT INTO `worker_stats` (`workerID`, `avg_rating`, `total_reviews`, `last_act
 
 DROP TABLE IF EXISTS `workingschedule`;
 CREATE TABLE `workingschedule` (
-  `scheduleID` bigint(20) UNSIGNED NOT NULL,
+  `scheduleID` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `workerID` bigint(20) UNSIGNED NOT NULL,
   `day_of_week` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
   `start_time` time NOT NULL,
@@ -1069,68 +1130,33 @@ INSERT INTO `workingschedule` (`scheduleID`, `workerID`, `day_of_week`, `start_t
 --
 
 --
--- Indexes for table `bookings`
---
-ALTER TABLE `bookings`
-  ADD PRIMARY KEY (`bookingID`);
-
---
--- Indexes for table `booking_details`
---
-ALTER TABLE `booking_details`
-  ADD PRIMARY KEY (`detailID`);
-
---
--- Indexes for table `customercomplaints_updates`
---
-ALTER TABLE `customercomplaints_updates`
-  ADD PRIMARY KEY (`updateID`);
-
---
 -- Indexes for table `jobroles`
 --
 ALTER TABLE `jobroles`
-  ADD PRIMARY KEY (`roleID`),
   ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `notifications`
---
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`notificationID`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`userID`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `worker`
 --
 ALTER TABLE `worker`
-  ADD PRIMARY KEY (`workerID`),
   ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `worker_roles`
 --
 ALTER TABLE `worker_roles`
-  ADD PRIMARY KEY (`workerID`,`roleID`),
   ADD KEY `roleID` (`roleID`);
-
---
--- Indexes for table `worker_stats`
---
-ALTER TABLE `worker_stats`
-  ADD PRIMARY KEY (`workerID`);
 
 --
 -- Indexes for table `workingschedule`
 --
 ALTER TABLE `workingschedule`
-  ADD PRIMARY KEY (`scheduleID`),
   ADD UNIQUE KEY `workerID` (`workerID`,`day_of_week`,`start_time`,`end_time`);
 
 --
@@ -1141,59 +1167,190 @@ ALTER TABLE `workingschedule`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `bookingID` bigint(20) UNSIGNED, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `booking_details`
 --
 ALTER TABLE `booking_details`
-  MODIFY `detailID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `detailID` bigint(20) UNSIGNED, AUTO_INCREMENT=55;
+
+--
+-- AUTO_INCREMENT for table `booking_reviews`
+--
+ALTER TABLE `booking_reviews`
+  MODIFY `reviewID` bigint(20) UNSIGNED;
+
+--
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `customerID` bigint(20) UNSIGNED, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `customercomplaints`
+--
+ALTER TABLE `customercomplaints`
+  MODIFY `complaintID` bigint(20) UNSIGNED, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customercomplaints_updates`
 --
 ALTER TABLE `customercomplaints_updates`
-  MODIFY `updateID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `updateID` int(11), AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `jobroles`
 --
 ALTER TABLE `jobroles`
-  MODIFY `roleID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `roleID` int(10) UNSIGNED, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `notificationID` int(11), AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `payment_rates`
+--
+ALTER TABLE `payment_rates`
+  MODIFY `ServiceID` int(11), AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `price_categories`
+--
+ALTER TABLE `price_categories`
+  MODIFY `categoryID` int(10) UNSIGNED, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `price_details`
+--
+ALTER TABLE `price_details`
+  MODIFY `detailID` bigint(20) UNSIGNED, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `userID` bigint(20) UNSIGNED, AUTO_INCREMENT=65;
+
+--
+-- AUTO_INCREMENT for table `verification_requests`
+--
+ALTER TABLE `verification_requests`
+  MODIFY `requestID` bigint(20) UNSIGNED, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `worker`
 --
 ALTER TABLE `worker`
-  MODIFY `workerID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `workerID` bigint(20) UNSIGNED, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `workercomplaints`
+--
+ALTER TABLE `workercomplaints`
+  MODIFY `complaintID` bigint(20) UNSIGNED, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `workercomplaints_updates`
+--
+ALTER TABLE `workercomplaints_updates`
+  MODIFY `updateID` int(11), AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `workingschedule`
 --
 ALTER TABLE `workingschedule`
-  MODIFY `scheduleID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `scheduleID` bigint(20) UNSIGNED, AUTO_INCREMENT=125;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `booking_details`
+--
+ALTER TABLE `booking_details`
+  ADD CONSTRAINT `booking_details_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `booking_reviews`
+--
+ALTER TABLE `booking_reviews`
+  ADD CONSTRAINT `booking_reviews_ibfk_1` FOREIGN KEY (`bookingID`) REFERENCES `bookings` (`bookingID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `booking_reviews_ibfk_2` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `booking_reviews_ibfk_3` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `customercomplaints`
+--
+ALTER TABLE `customercomplaints`
+  ADD CONSTRAINT `customercomplaints_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`customerID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `customercomplaints_updates`
+--
+ALTER TABLE `customercomplaints_updates`
+  ADD CONSTRAINT `customercomplaints_updates_ibfk_1` FOREIGN KEY (`complaintID`) REFERENCES `customercomplaints` (`complaintID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `customercomplaints_updates_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `price_categories`
+--
+ALTER TABLE `price_categories`
+  ADD CONSTRAINT `price_categories_ibfk_1` FOREIGN KEY (`roleID`) REFERENCES `jobroles` (`roleID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `price_details`
+--
+ALTER TABLE `price_details`
+  ADD CONSTRAINT `price_details_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `price_categories` (`categoryID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `verification_requests`
+--
+ALTER TABLE `verification_requests`
+  ADD CONSTRAINT `verification_requests_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `worker`
 --
 ALTER TABLE `worker`
   ADD CONSTRAINT `worker_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `workercomplaints`
+--
+ALTER TABLE `workercomplaints`
+  ADD CONSTRAINT `workercomplaints_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `workercomplaints_updates`
+--
+ALTER TABLE `workercomplaints_updates`
+  ADD CONSTRAINT `workercomplaints_updates_ibfk_1` FOREIGN KEY (`complaintID`) REFERENCES `workercomplaints` (`complaintID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `workercomplaints_updates_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
 
 --
 -- Constraints for table `worker_roles`
@@ -1214,6 +1371,8 @@ ALTER TABLE `worker_stats`
 ALTER TABLE `workingschedule`
   ADD CONSTRAINT `workingschedule_ibfk_1` FOREIGN KEY (`workerID`) REFERENCES `worker` (`workerID`) ON DELETE CASCADE;
 COMMIT;
+
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

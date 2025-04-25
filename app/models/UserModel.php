@@ -92,32 +92,32 @@ class UserModel
     }
     return $userID; // Return the userID of the newly created user
 }
-public function registerEmployee($data)
-{
-     // Set the table to 'users' for inserting the base user data
-    $this->setTable('users');
+    public function registerEmployee($data)
+    {
+         // Set the table to 'users' for inserting the base user data
+        $this->setTable('users');
 
-    // User data to be entered into the 'users' table
-    $userData = [
-        'firstName' => $data['firstName'],
-        'lastName' => $data['lastName'],
-        'username' => $data['username'],
-        'phone' => $data['phone'],
-        'email' => $data['email'],
-        'password' => password_hash($data['password'], PASSWORD_BCRYPT),
-        'role' => $data['role'],
-    ];
+        // User data to be entered into the 'users' table
+        $userData = [
+            'firstName' => $data['firstName'],
+            'lastName' => $data['lastName'],
+            'username' => $data['username'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+            'role' => $data['role'],
+        ];
 
-    // Insert the base user data and get the newly created userID
-    $userID = $this->insert($userData);
+        // Insert the base user data and get the newly created userID
+        $userID = $this->insert($userData);
 
-    // Check if user was created successfully
-    if (!$userID) {
-        return false; // User creation failed
+        // Check if user was created successfully
+        if (!$userID) {
+            return false; // User creation failed
+        }
+
+        return true; // Return true on success
     }
-
-    return true; // Return true on success
-}
 
 
     // Find a user by username (for login)
@@ -301,5 +301,23 @@ public function registerEmployee($data)
                 return $customer->userID; // Return the userID associated with the customerID
             }
         }
+    }
+
+    public function findWorkerByID($workerID)
+    {
+        $this->setTable('worker');
+        $workerData = $this->find($workerID, 'workerID');
+        if ($workerData) {
+            $this->setTable('users');
+            $userData = $this->find($workerData->userID, 'userID');
+            //workerStats
+            $this->setTable('worker_stats');
+            $workerStats = $this->find($workerID, 'workerID');
+            if ($userData && $workerStats) {
+                // Merge user data and worker stats
+                return (object) array_merge((array) $userData, (array) $workerData, (array) $workerStats);
+            }
+        }
+        return false; // No worker found
     }
 }

@@ -38,15 +38,23 @@
 
         <div class="dashboard-grid">
             <!-- Income Card -->
-            <div class="card">
+            <div class="card income-card">
                 <div class="card-header">
-                    <h3 class="card-title">Total Income</h3>
+                    <h3 class="card-title">Monthly Income</h3>
+                    <span class="card-period">Current Month</span>
                 </div>
-                <div class="stat-value">
-                    Rs. 0.00
-                    <span>+0%</span>
+                <div class="card-body">
+                    <div class="income-value">
+                        <span class="currency">Rs.</span>
+                        <span class="amount"><?php echo number_format($incomeData['currentMonth'], 2); ?></span>
+                    </div>
+                    <div class="income-comparison">
+            <span class="change-indicator <?php echo $incomeData['percentChange'] >= 0 ? 'positive' : 'negative'; ?>">
+                <?php echo ($incomeData['percentChange'] >= 0 ? '+' : '') . $incomeData['percentChange']; ?>%
+            </span>
+                        <span class="comparison-text">vs last month</span>
+                    </div>
                 </div>
-                <p class="text-secondary">Compared to last month</p>
             </div>
 
             <!-- Availability Card -->
@@ -265,10 +273,5 @@
         </div>
     </div>
 </div>
-
-<!--<script>-->
-<!--    // AJAX polling for new job requests-->
-<!--    -->
-<!--</script>-->
 </body>
 </html>
