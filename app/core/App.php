@@ -10,6 +10,9 @@ class App
     private $roleAccess = [
         'admin' => [
             'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData','storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentDetails', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 
+            'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint', 'bookingReports', 'worker_stats', 'service_stats', 'revenue_trend'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData','storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
@@ -20,6 +23,8 @@ class App
             'Complaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
             'workerComplaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'BookingReports' => ['roleIndex', 'worker_stats', 'service_stats', 'revenue_trend'],
         ],
 
         'hrManager' => [
@@ -42,6 +47,8 @@ class App
             'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
             'workerComplaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'BookingReports' => ['roleIndex', 'worker_stats', 'service_stats', 'revenue_trend'],
         ],
 
         'customer'=> [
@@ -49,7 +56,7 @@ class App
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage', 'getConversation', 'submitReply'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'paymentHistory', 'faq'],
             'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'noWorkersFound'],
-            'Payment' => ['authorize', 'success', 'cancel', 'notify'],
+            'Payment' => ['authorize', 'success', 'cancel', 'notify', 'jsonResponse', 'clearSessionMessage'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
             'Booking' => ['index', 'bookWorker', 'getBooking', 'getBookingState', 'noResponse', 'orderSummary', 'acceptanceTimeout', 'workerRejected', 'orderTimeout', 'cancelBooking'],
@@ -78,7 +85,7 @@ class App
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
         'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],
-        'Test' => ['index', 'testTime'],
+        'Test' => ['index', 'testTime', 'mailHelper'],
     ];
 
     private $bookingFlowRestrictions = [
