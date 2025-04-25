@@ -936,6 +936,13 @@ public function updateVerificationStatus() {
         // exit;
     // }
 
+    public function bookingDetails()
+    {
+        $bookingModel = new BookingModel();
+        $bookingDetails = $bookingModel->getBookingAllDetails();
+        $this->view('admin/adminBookingDetails', ['bookingDetails'=>  $bookingDetails]);
+    }
+
     public function paymentDetails()
 
     {

@@ -343,6 +343,25 @@ class BookingModel
         return $this->find($bookingID, 'bookingID');
     }
 
+    public function getBookingAllDetails()
+    {
+    $this->setTable('bookings');
+    $sql = "SELECT 
+        b.*, -- All columns from bookings table
+        bd.*, -- All columns from booking_details table
+        CONCAT(cu.firstName, ' ', cu.lastName) AS customerName,
+        CONCAT(wu.firstName, ' ', wu.lastName) AS workerName
+    FROM bookings b
+    JOIN booking_details bd ON b.bookingID = bd.bookingID
+    JOIN customer c ON b.customerID = c.customerID
+    JOIN users cu ON c.userID = cu.userID
+    JOIN worker w ON b.workerID = w.workerID
+    JOIN users wu ON w.userID = wu.userID;
+    ";
+
+        return $this->get_all($sql,[]);
+            } 
+
     public function deleteUnconfirmedBooking($bookingID)
     {
         $this->setTable('bookings');
