@@ -10,9 +10,10 @@ class Admin extends Controller
     {
         $this->customerComplaintModel = new CustomerComplaintModel();
     }
+
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('admin/adminReports');
+        $this->view('admin/adminPaymentHistory');
     }
 
     public function employees($a = '', $b = '', $c = '')
@@ -327,7 +328,7 @@ private function generateScheduleView($schedules, $view, $currentDate)
         
         // Organize schedules by day of the week
         foreach ($schedules as $schedule) {
-            $dayOfWeek = $schedule->day_of_week;
+            $dayOfWeek = isset($schedule->day_of_week) ? $schedule->day_of_week : null;
             if (isset($schedulesByDay[$dayOfWeek])) {
                 $schedulesByDay[$dayOfWeek][] = $schedule;
             }
@@ -937,9 +938,13 @@ public function updateVerificationStatus() {
         // exit;
     // }
 
-    public function paymentHistory()
+    public function paymentDetails()
+
     {
-        $this->view('admin/adminPaymentHistory');
+
+        $paymentModel = new PaymentModel();
+        $paymentDetails = $paymentModel->getAllPaymentsWithBookingDetails(); // Fetch all payment details from the database
+        $this->view('admin/adminPaymentDetails',['paymentDetails'=>$paymentDetails]);
     }
 
     
@@ -964,6 +969,35 @@ public function workerComplaints()
     $workerComplaintController = new WorkerComplaint();
     $workerComplaintController->adminIndex();
 }
+
+public function bookingReports()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->roleIndex();
+    }
+
+    // API endpoints for booking reports
+    public function worker_stats()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->worker_stats();
+    }
+
+    public function service_stats()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->service_stats();
+    }
+
+    public function revenue_trend()
+    {
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->revenue_trend();
+    }
 
    
 }

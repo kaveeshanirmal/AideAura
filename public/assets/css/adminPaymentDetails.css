@@ -50,6 +50,7 @@ a {
   border-radius: 8px;
   overflow-x: auto;
   padding: 16px;
+  margin: 5% auto;
 }
 
 .role-table {

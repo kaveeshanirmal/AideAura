@@ -52,22 +52,28 @@ class WorkingScheduleModel
     {
         return $this->all();
     }
+
     
     public function getScheduleByWorkerId($workerID)
     {
-        try {
-            $query = "SELECT scheduleID, workerID, day_of_week as days_of_week, 
-                      start_time as startTime, end_time as endTime 
-                      FROM workingschedule 
-                      WHERE workerID = :workerID 
-                      ORDER BY FIELD(day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')";
-                     
-            return $this->get_all($query, [':workerID' => $workerID]);
-        } catch (Exception $e) {
-            error_log("Error getting worker schedules: " . $e->getMessage());
-            return [];
-        }
+        return $this->get($workerID, 'workerID');
     }
+    
+    // public function getScheduleByWorkerId($workerID)
+    // {
+    //     try {
+    //         $query = "SELECT scheduleID, workerID, day_of_week as days_of_week, 
+    //                   start_time as startTime, end_time as endTime 
+    //                   FROM workingschedule 
+    //                   WHERE workerID = :workerID 
+    //                   ORDER BY FIELD(day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')";
+                     
+    //         return $this->get_all($query, [':workerID' => $workerID]);
+    //     } catch (Exception $e) {
+    //         error_log("Error getting worker schedules: " . $e->getMessage());
+    //         return [];
+    //     }
+    // }
     
     public function deleteSchedule($scheduleId, $workerId)
     {

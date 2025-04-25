@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - payment rates</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminPriceDetails.css">
+    <title>fm payment rates</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/accountantPriceDetails.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- <script src="<?=ROOT?>/public/assets/js/admin/adminPayrate.js"></script> -->
+
+    
 </head>
 <body>
         <!-- Notification container -->
@@ -171,7 +173,7 @@ console.log("Price data:", priceData);
 
             console.log("Data sent:", data); // Debugging line
 
-            fetch('<?=ROOT?>/public/Admin/updatePriceDetails', {
+            fetch('<?=ROOT?>/public/FinanceManager/updatePriceDetails', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),

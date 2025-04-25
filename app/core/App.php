@@ -9,6 +9,9 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData','storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentDetails', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 
+            'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint', 'bookingReports', 'worker_stats', 'service_stats', 'revenue_trend'],
             'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData','storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
@@ -20,6 +23,8 @@ class App
             'Complaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
             'workerComplaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'BookingReports' => ['roleIndex', 'worker_stats', 'service_stats', 'revenue_trend'],
         ],
 
         'hrManager' => [
@@ -37,11 +42,13 @@ class App
         ],
 
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentHistory', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
+            'FinanceManager' => ['index', 'paymentHistory','priceData','updatePriceDetails', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
 
             'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
             'workerComplaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
+
+            'BookingReports' => ['roleIndex', 'worker_stats', 'service_stats', 'revenue_trend'],
         ],
 
         'customer'=> [

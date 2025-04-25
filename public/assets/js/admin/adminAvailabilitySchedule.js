@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('offset', offset);
         formData.append('userID', userID);
         
-        fetch(`${ROOT_URL}/Admin/getScheduleView`, {
+        fetch(`${ROOT_URL}/admin/getScheduleView`, {
             method: 'POST',
             body: formData
         })
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = `${ROOT_URL}/Admin/workerDetails`;
+        form.action = `${ROOT_URL}/admin/workerDetails`;
         
         // Add workerData input (userID)
         const workerInput = document.createElement('input');

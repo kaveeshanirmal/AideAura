@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQs and Reach Us</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/faq.css">
+    <style>
+        body {
+            background-image: url('<?=ROOT?>/public/assets/images/booking_bg.jpg');
+        }
+    </style>
 </head>
 <body>
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
