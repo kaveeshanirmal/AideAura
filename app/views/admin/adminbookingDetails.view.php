@@ -17,51 +17,80 @@
 
       <div class="table-container">
         <table class="role-table">
-          <thead>
-            <tr>
-              <th>Payment ID</th>
-              <th>Booking ID</th>
-              <th>Customer</th>
-              <th>Worker</th>
-              <th>Amount (LKR)</th>
-              <th>Method</th>
-              <th>Status</th>
-              <th>Payment Date</th>
-              <th>Transaction ID</th>
-              <th>Reference</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tbody id="employeeTableBody">
-                    <?php if (empty($paymentDetails)): ?>
-        <tr>
-            <td colspan="10" style="text-align: center; font-style: italic;">
-                No Payment Details found.
-            </td>
-        </tr>
-    <?php else: ?>
-            <?php foreach ($paymentDetails as $payment): ?>
-              <tr>
-                <td><?= htmlspecialchars($payment->paymentID) ?></td>
-                <td><?= htmlspecialchars($payment->bookingID) ?></td>
-                <td><?= htmlspecialchars($payment->customerName) ?></td>
-                <td><?= htmlspecialchars($payment->workerName) ?></td>
-                <td><?= htmlspecialchars($payment->amount) ?></td>
-                <td><?= htmlspecialchars($payment->paymentMethod) ?></td>
-                <td><?= htmlspecialchars($payment->paymentStatus) ?></td>
-                <td><?= htmlspecialchars($payment->paymentDate) ?></td>
-                <td><?= htmlspecialchars($payment->transactionID) ?></td>
-                <td><?= htmlspecialchars($payment->merchantReference) ?></td>
-              </tr>
-            <?php endforeach; ?>
-            <?php endif; ?>
-          </tbody>
+        <thead>
+  <tr>
+    <th>Booking ID</th>
+    <th>Booking Date</th>
+    <th>Customer</th>
+    <th>Worker</th>
+    <th>Total Cost</th>
+    <th>Service Type</th>
+    <th>Status</th>
+    <th>Time</th>
+    <th>Location</th>
+    <th>Num People</th>
+    <th>Num Meals</th>
+    <th>Diet</th>
+    <th>Addons</th>
+    <th>Base Price</th>
+    <th>Addon Price</th>
+  </tr>
+</thead>
+
+<tbody id="employeeTableBody">
+  <?php if (empty($bookingDetails)): ?>
+    <tr>
+      <td colspan="18" style="text-align: center; font-style: italic;">
+        No Booking Details found.
+      </td>
+    </tr>
+  <?php else: ?>
+    <?php
+      $groupedBookings = [];
+      foreach ($bookingDetails as $detail) {
+        $bookingID = $detail->bookingID;
+        if (!isset($groupedBookings[$bookingID])) {
+          $groupedBookings[$bookingID] = [
+            'info' => $detail,
+            'details' => []
+          ];
+        }
+        $groupedBookings[$bookingID]['details'][$detail->detailType] = $detail->detailValue;
+      }
+    ?>
+
+    <?php foreach ($groupedBookings as $booking): ?>
+      <?php
+        $info = $booking['info'];
+        $details = $booking['details'];
+      ?>
+      <tr>
+        <td><?= htmlspecialchars($info->bookingID) ?></td>
+        <td><?= htmlspecialchars($info->bookingDate) ?></td>
+        <td><?= htmlspecialchars($info->customerName) ?></td>
+        <td><?= htmlspecialchars($info->workerName) ?></td>
+        <td><?= htmlspecialchars($info->totalCost) ?></td>
+        <td><?= htmlspecialchars($info->serviceType) ?></td>
+        <td><?= htmlspecialchars($info->status) ?></td>
+        <td><?= htmlspecialchars($info->startTime . ' - ' . $info->endTime) ?></td>
+        <td><?= htmlspecialchars($info->location) ?></td>
+        <td><?= htmlspecialchars($details['num_people'] ?? '-') ?></td>
+        <td><?= htmlspecialchars(is_array(json_decode($details['num_meals'] ?? '', true)) ? implode(', ', json_decode($details['num_meals'], true)) : ($details['num_meals'] ?? '-')) ?></td>
+        <td><?= htmlspecialchars($details['diet'] ?? '-') ?></td>
+        <td><?= htmlspecialchars(is_array(json_decode($details['addons'] ?? '', true)) ? implode(', ', json_decode($details['addons'], true)) : ($details['addons'] ?? '-')) ?></td>
+        <td><?= htmlspecialchars($details['base_price'] ?? '-') ?></td>
+        <td><?= htmlspecialchars($details['addon_price'] ?? '-') ?></td>
+      </tr>
+    <?php endforeach; ?>
+  <?php endif; ?>
+</tbody>
+
         </table>
       </div>
     </div>
   </div>
 
-     <!-- <script>
+     <script>
         // Notification Functionality
         const notification = document.getElementById('notification');
         const showNotification = (message, type) => {
@@ -69,6 +98,9 @@
             notification.className = `notification ${type} show`;
             setTimeout(() => notification.className = 'notification hidden', 2000);
         };
-  </script> -->
+
+        const bookings = <?= json_encode($bookingDetails) ?>;
+        console.log(bookings);
+  </script>
 </body>
 </html>
