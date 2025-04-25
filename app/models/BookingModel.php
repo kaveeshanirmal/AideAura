@@ -91,6 +91,34 @@ class BookingModel
         return $status ? $status->status : null;
     }
 
+    public function hasUnconfirmedBookings($customerID) {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings 
+              WHERE customerID = :customerID 
+                AND (status = 'pending' OR status = 'accepted')";
+        $result = $this->get_all($query, ['customerID' => $customerID]);
+        return ($result !== false) && !empty($result);
+    }
+
+    public function getUnconfirmedBookings($customerID)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings WHERE customerID = :customerID AND status = 'pending' OR status = 'accepted'";
+        return $this->get_all($query, ['customerID' => $customerID]);
+    }
+
+    public function getBasicBookingData($bookingID)
+    {
+        $this->setTable('bookings');
+        return $this->find($bookingID, 'bookingID');
+    }
+
+    public function deleteUnconfirmedBooking($bookingID)
+    {
+        $this->setTable('bookings');
+        return $this->delete($bookingID, 'bookingID');
+    }
+
     //REPORTS
     /**
      * Get booking statistics for a specific worker
@@ -321,31 +349,5 @@ class BookingModel
         }
     }
 
-    public function hasUnconfirmedBookings($customerID) {
-        $this->setTable('bookings');
-        $query = "SELECT * FROM bookings 
-              WHERE customerID = :customerID 
-                AND (status = 'pending' OR status = 'accepted')";
-        $result = $this->get_all($query, ['customerID' => $customerID]);
-        return ($result !== false) && !empty($result);
-    }
-
-    public function getUnconfirmedBookings($customerID)
-    {
-        $this->setTable('bookings');
-        $query = "SELECT * FROM bookings WHERE customerID = :customerID AND status = 'pending' OR status = 'accepted'";
-        return $this->get_all($query, ['customerID' => $customerID]);
-    }
-
-    public function getBasicBookingData($bookingID)
-    {
-        $this->setTable('bookings');
-        return $this->find($bookingID, 'bookingID');
-    }
-
-    public function deleteUnconfirmedBooking($bookingID)
-    {
-        $this->setTable('bookings');
-        return $this->delete($bookingID, 'bookingID');
-    }
+    
 }
