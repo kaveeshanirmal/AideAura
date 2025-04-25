@@ -7,14 +7,17 @@ class FinanceManager extends Controller
         //session_start();
         //echo "SESSION ROLE: " . ($_SESSION['role'] ?? 'not set');
         //exit;
-        $this->view('fm/paymentHistory');
+        $this->paymentDetails();
     }
 
-    public function paymentHistory()
+    public function paymentDetails()
+
     {
-        $this->view('fm/paymentHistory');
-    }
 
+        $paymentModel = new PaymentModel();
+        $paymentDetails = $paymentModel->getAllPaymentsWithBookingDetails(); // Fetch all payment details from the database
+        $this->view('fm/paymentDetails',['paymentDetails'=>$paymentDetails]);
+    }
 
     // public function paymentRates()
     // {
