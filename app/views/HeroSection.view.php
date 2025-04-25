@@ -163,5 +163,21 @@
         </div>
     </div>
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
+    <?php
+// review modal for customers to rate workers
+if (isset($_SESSION['customerID']) && isset($_SESSION['loggedIn'])) {
+    // Include the review modal
+    include_once ROOT_PATH . '/app/views/review_modal.view.php';
+    
+    // Add JavaScript 
+    echo '<script>
+            // Pass PHP root URL to JavaScript
+            const ROOT_URL = "<?=ROOT?>";
+        </script>';
+    echo '<script src="' . ROOT . '/public/assets/js/review_modal.js"></script>';
+}
+?>
 </body>
 </html>
+
+
