@@ -373,11 +373,11 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.customer-update {
-  background-color: #d9f2ff;
-  border-right: 4px solid #1a89c4;
-  margin-left: 20px;
-  margin-right: 5px;
+.customer-update .worker-update {
+  background-color: #d9f2ff !important;
+  border-right: 4px solid #1a89c4 !important;
+  margin-left: 20px !important;
+  margin-right: 5px !important;
 }
 
 .staff-update {
@@ -388,8 +388,8 @@
 }
 
 .system-update {
-  background-color: #f5f5f5;
-  border-left: 4px solid #d9d9d9;
+  background-color: #fff6ee;
+  border-left: 4px solid #7f5539;
 }
 
 .update-header {
@@ -397,7 +397,7 @@
   justify-content: space-between;
   margin-bottom: 8px;
   font-size: 0.85em;
-  color: #666;
+  color: #706f6f;
 }
 
 .update-role {

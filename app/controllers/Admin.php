@@ -13,7 +13,7 @@ class Admin extends Controller
 
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('admin/worker');
+        $this->view('admin/adminPaymentHistory');
     }
 
     public function employees($a = '', $b = '', $c = '')

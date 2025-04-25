@@ -112,9 +112,16 @@ function toggleSolution(complaintId) {
                 // Format conversation history - only show date/time and message content
                 let conversationHTML = '<div class="conversation-history">';
                 data.updates.forEach(update => {
-                    // Determine the CSS class based on role but don't display the role
-                    const updateClass = update.role === 'Customer' ? 'customer-update' : 
-                                      (update.role === 'Staff' || update.role === 'admin' ? 'staff-update' : 'system-update');
+                    // Define an array of admin/staff roles
+                    const staffRoles = ['admin', 'hrManager', 'financeManager', 'opManager']; 
+
+                    // Check if the current role is in the staff roles array
+                    const isStaffRole = staffRoles.includes(update.role);
+
+                    // Determine the CSS class based on role 
+                    const updateClass = update.role === 'customer' ? 'customer-update' : 
+                                      (update.role === 'system' ? 'system-update' : 
+                                        (isStaffRole ? 'staff-update' : 'system-update'));
                     
                     conversationHTML += `
                         <div class="update ${updateClass}">

@@ -106,7 +106,13 @@ class CustomerComplaintModel
         
         return $this->get_all($query, $params);
     }
-    
+    // Add this method to your CustomerComplaintModel class
+public function getUserIdByCustomerId($customerID)
+{
+    $this->setTable('customer'); // Assuming 'customers' is your customer table name
+    $customer = $this->find($customerID, 'customerID');
+    return $customer ? $customer->userID : null;
+}
 
 
 }

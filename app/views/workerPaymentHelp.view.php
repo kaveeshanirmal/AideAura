@@ -39,6 +39,10 @@
             <section class="submit-issue">
                 <h2><i class="fas fa-file-alt"></i> Submit an Issue</h2>
                 <form class="issue-form" action="<?=ROOT?>/public/workerHelpDesk/submitComplaint" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="help_desk_type" value="payment">
+
+
+
                     <div class="form-group">
                         <label for="issue-type">Issue Type</label>
                         <select id="issue-type" name="issue" required>
@@ -86,6 +90,7 @@
                             <div class="complaint-card" data-status="<?= htmlspecialchars($complaint->status) ?>">
                                 <h3>Complaint #<?= htmlspecialchars($complaint->complaintID) ?></h3>
                                 <p><strong>Issue:</strong> <?= htmlspecialchars($complaint->issue) ?></p>
+                                <p><strong>Description:</strong> <?= htmlspecialchars($complaint->description) ?></p>
                                 <p><strong>Submitted:</strong> <?= date('F j, Y', strtotime($complaint->submitted_at)) ?></p>
                                 
                                 <?php if ($complaint->status === 'Pending'): ?>
