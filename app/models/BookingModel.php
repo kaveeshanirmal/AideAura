@@ -360,9 +360,10 @@ class BookingModel
             $bookingDate = new DateTime($booking->bookingDate);
             $interval = $currentDate->diff($bookingDate);
 
-            if ($interval->days <= 2 && $interval->invert == 0) {
+            // Check if booking date is within the past 2 days
+            if ($interval->days <= 2 && $interval->invert == 1) {
                 // Update booking status to 'confirmed'
-                $this->updateBookingStatus($bookingID, 'confirmed');
+                $this->updateBookingStatus($bookingID, 'completed');
                 return true;
             }
         }
@@ -392,10 +393,11 @@ class BookingModel
     public function hasUncompletedBookings($workerID)
     {
         $this->setTable('bookings');
-        // Check for confirmed bookings where booking date is not older than 2 days
+        // Check for confirmed bookings that happened in the past 2 days
         $query = "SELECT * FROM bookings WHERE workerID = :workerID 
-                     AND bookingDate > NOW() - INTERVAL 2 DAY
-                     AND status = 'confirmed'";
+                 AND bookingDate > (NOW() - INTERVAL 2 DAY)
+                 AND bookingDate < NOW()
+                 AND status = 'confirmed'";
         $result = $this->get_all($query, ['workerID' => $workerID]);
         return ($result !== false) && !empty($result);
     }
@@ -403,10 +405,11 @@ class BookingModel
     public function getUncompletedBookings($workerID)
     {
         $this->setTable('bookings');
-        // Get all confirmed bookings where booking date is not older than 2 days
+        // Get confirmed bookings that happened in the past 2 days
         $query = "SELECT * FROM bookings WHERE workerID = :workerID 
-                     AND bookingDate > NOW() - INTERVAL 2 DAY
-                     AND status = 'confirmed'";
+                 AND bookingDate > (NOW() - INTERVAL 2 DAY)
+                 AND bookingDate < NOW()
+                 AND status = 'confirmed'";
         return $this->get_all($query, ['workerID' => $workerID]);
     }
 }

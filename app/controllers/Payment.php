@@ -103,6 +103,9 @@ class Payment extends Controller
         exit();
     }
 
+    /**
+     * @throws \Random\RandomException
+     */
     public function success()
     {
         // Get payment details from PayHere response
@@ -169,6 +172,12 @@ class Payment extends Controller
 
         // Update the booking status to 'confirmed'
         $this->bookingModel->updateBookingStatus($orderId, 'confirmed');
+
+        // create booking confirmation OTP with 4 digits
+        $code = str_pad(random_int(0, 999999), 4, '0', STR_PAD_LEFT);
+        $this->bookingModel->setTable('bookings');
+        $this->bookingModel->update($booking->bookingID, ['verificationCode' => $code], 'bookingID');
+
         // Notify both user and worker about the booking confirmation
         $this->notificationModel->create(
             $_SESSION['userID'],

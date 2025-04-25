@@ -453,8 +453,6 @@ class Booking extends Controller
 
     public function completeBooking()
     {
-        // Respont to fetch requests
-        header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo json_encode(['status' => 'error', 'message' => 'Invalid request method. POST required.']);
@@ -492,5 +490,8 @@ class Booking extends Controller
         // send email to the worker
 //        $workerID = $_SESSION['workerID'];
 //        $workerEmail = $this->userModel->findWorkerByID($workerID)->email;
+        // send success to fetch
+        echo json_encode(['status' => 'success', 'message' => 'Booking completed successfully']);
+        exit;
     }
 }
