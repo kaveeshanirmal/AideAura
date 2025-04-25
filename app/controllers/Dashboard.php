@@ -144,4 +144,17 @@ class Dashboard extends Controller
             'percentChange' => round($percentChange, 2)
         ];
     }
+
+    public function getLatestBookings()
+    {
+        // Accept fetch requests
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $workerID = $_SESSION['workerID'];
+            $latestBookings = $this->workerModel->getLatestBookings($workerID);
+            echo json_encode(['status' => 'success', 'data' => $latestBookings]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+        }
+        exit;
+    }
 }

@@ -112,4 +112,65 @@ class BookingModel
         $this->setTable('bookings');
         return $this->delete($bookingID, 'bookingID');
     }
+
+    public function verifyAndCompleteBooking($bookingID, $verificationCode)
+    {
+        $this->setTable('bookings');
+        $booking = $this->find($bookingID, 'bookingID');
+
+        // if verificationCode is valid and bookingDate is 2 days within past
+        if ($booking && $booking->verificationCode === $verificationCode) {
+            $currentDate = new DateTime();
+            $bookingDate = new DateTime($booking->bookingDate);
+            $interval = $currentDate->diff($bookingDate);
+
+            if ($interval->days <= 2 && $interval->invert == 0) {
+                // Update booking status to 'confirmed'
+                $this->updateBookingStatus($bookingID, 'confirmed');
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasExpiredBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Check for bookings those which bookingDate is past 2 days
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                         AND bookingDate < NOW() - INTERVAL 2 DAY
+                         AND status = 'expired'";
+        $result = $this->get_all($query, ['workerID' => $workerID]);
+        return ($result !== false) && !empty($result);
+    }
+    public function getExpiredBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Get all expired bookings
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                         AND bookingDate < NOW() - INTERVAL 2 DAY
+                         AND status = 'expired'";
+        return $this->get_all($query, ['workerID' => $workerID]);
+    }
+
+    public function hasUncompletedBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Check for confirmed bookings where booking date is not older than 2 days
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                     AND bookingDate > NOW() - INTERVAL 2 DAY
+                     AND status = 'confirmed'";
+        $result = $this->get_all($query, ['workerID' => $workerID]);
+        return ($result !== false) && !empty($result);
+    }
+
+    public function getUncompletedBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Get all confirmed bookings where booking date is not older than 2 days
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                     AND bookingDate > NOW() - INTERVAL 2 DAY
+                     AND status = 'confirmed'";
+        return $this->get_all($query, ['workerID' => $workerID]);
+    }
 }
