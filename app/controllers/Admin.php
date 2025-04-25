@@ -328,7 +328,7 @@ private function generateScheduleView($schedules, $view, $currentDate)
         
         // Organize schedules by day of the week
         foreach ($schedules as $schedule) {
-            $dayOfWeek = $schedule->day_of_week;
+            $dayOfWeek = isset($schedule->day_of_week) ? $schedule->day_of_week : null;
             if (isset($schedulesByDay[$dayOfWeek])) {
                 $schedulesByDay[$dayOfWeek][] = $schedule;
             }
@@ -938,9 +938,13 @@ public function updateVerificationStatus() {
         // exit;
     // }
 
-    public function paymentHistory()
+    public function paymentDetails()
+
     {
-        $this->view('admin/adminPaymentHistory');
+
+        $paymentModel = new PaymentModel();
+        $paymentDetails = $paymentModel->getAllPaymentsWithBookingDetails(); // Fetch all payment details from the database
+        $this->view('admin/adminPaymentDetails',['paymentDetails'=>$paymentDetails]);
     }
 
     
