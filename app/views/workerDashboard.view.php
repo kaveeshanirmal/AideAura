@@ -147,17 +147,17 @@
                 <?php
                 // Function to render booking items
                 function renderBookingItem($booking, $status) {
-                    $bookingData = $booking->value->booking;
-                    $bookingDetails = $booking->value->details;
-                    $date = new DateTime($bookingData->date);
+                    $bookingData = $booking['value']['booking'];
+                    $bookingDetails = $booking['value']['details'];
+                    $date = new DateTime($bookingData->bookingDate);
                     ?>
-                    <div class="booking-item <?= $status ?>">
+                    <div class="booking-item <?= $status ?>" data-booking-id="<?= $bookingData->bookingID ?>">
                         <div class="booking-date">
                             <div class="booking-date-day"><?= $date->format('d') ?></div>
                             <div class="booking-date-month"><?= $date->format('M') ?></div>
                         </div>
                         <div class="booking-info">
-                            <h4 class="booking-title"><?= htmlspecialchars($bookingData->service_type) ?></h4>
+                            <h4 class="booking-title"><?= htmlspecialchars($bookingData->serviceType) ?></h4>
                             <div class="booking-details">
                                 <div class="booking-time">
                                     <i class='bx bx-time'></i>
@@ -169,17 +169,39 @@
                                 </div>
                                 <div class="booking-client">
                                     <i class='bx bx-user'></i>
-                                    <span><?= htmlspecialchars($bookingDetails->customer_name) ?></span>
+                                    <?php
+                                    $customer_name = '';
+                                    foreach ($bookingDetails as $detail) {
+                                        if (isset($detail->detailType) && $detail->detailType === 'customer_name') {
+                                            $customer_name = $detail->detailValue;
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                    <span><?= htmlspecialchars($customer_name) ?></span>
+                                </div>
+                                <div class="booking-phone">
+                                    <i class='bx bx-phone'></i>
+                                    <?php
+                                    $customer_phone = '';
+                                    foreach ($bookingDetails as $detail) {
+                                        if (isset($detail->detailType) && $detail->detailType === 'contact_phone') {
+                                            $customer_phone = $detail->detailValue;
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                    <span><?= htmlspecialchars($customer_phone) ?></span>
                                 </div>
                             </div>
                         </div>
                         <?php if ($status === 'upcoming'): ?>
                             <div class="booking-actions">
+                                <button class="btn-view" onclick="viewBookingDetails(this.closest('.booking-item'), <?= $bookingData->bookingID ?>)">
+                                    <i class='bx bx-show'></i> View Details
+                                </button>
                                 <button class="btn-complete" onclick="completeBooking(this, <?= $bookingData->bookingID ?>)">
                                     <i class='bx bx-check-circle'></i> Complete
-                                </button>
-                                <button class="btn-cancel" onclick="cancelBooking(this, <?= $bookingData->bookingID ?>)">
-                                    <i class='bx bx-x-circle'></i> Cancel
                                 </button>
                             </div>
                         <?php else: ?>
@@ -270,6 +292,32 @@
             <button class="btn-deny" id="modalDenyBtn">
                 <i class='bx bx-x'></i> Decline
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- Verification Modal -->
+<div id="verificationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeVerificationModal()">&times;</span>
+        <h3>Job Completion Verification</h3>
+        <div class="verification-form">
+            <p>Please enter the Job-completion code provided by the customer:</p>
+            <div class="form-group">
+                <input type="text" id="verificationCode" class="form-control" placeholder="Enter the 4 digit code">
+                <small class="error-message" id="verificationError" style="color: var(--danger-color); display: none;"></small>
+                <p id="smallText" class="text-secondary" style="margin-top: 10px;">
+                    If you have not received a Job-completion code, please obtain it from the customer.
+                </p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="verifyCompletion()">
+                    <i class='bx bx-check'></i> Verify & Complete
+                </button>
+                <button class="btn btn-secondary" onclick="closeVerificationModal()">
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
 </div>

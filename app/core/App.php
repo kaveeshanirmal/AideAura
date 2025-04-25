@@ -67,8 +67,8 @@ class App
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
             'Home'=> ['findJobs'],
-            'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation'],
-            'Booking' => ['getBooking', 'accept', 'reject', 'getBookingState'],
+            'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation', 'getLatestBookings'],
+            'Booking' => ['getBooking', 'accept', 'reject', 'getBookingState', 'completeBooking'],
             'WorkerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage', 'getConversation', 'submitReply'],
         ]
     ];
@@ -81,7 +81,7 @@ class App
         'ResetPassword' => ['index'],
         'ResetPasswordEnd' => ['index'],
         'Signup' => ['index'],
-        'Login' => ['index', 'logout'],
+        'Login' => ['index', 'logout', 'restoreBookingSession', 'checkForExpiredBookings', 'checkForUncompletedBookings'],
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
         'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],
