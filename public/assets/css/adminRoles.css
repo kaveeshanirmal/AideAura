@@ -67,7 +67,7 @@ a {
 }
 
 .role-table th {
-  background-color: #f8f9fa;
+  background-color: #FFF5F9;
   font-weight: 550;
 }
 
@@ -76,8 +76,13 @@ a {
   font-size: 14px;
 }
 
+.role-table tbody tr {
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
 .role-table tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: rgb(229, 234, 238);
 }
 
 /* Button Styles */
@@ -95,12 +100,24 @@ a {
 }
 
 .delete-btn i {
-  color: #FF0000;
+  color: #666;
 }
 
-.update-btn:hover,
-.delete-btn:hover {
-  background-color: #f0f0f0;
+.update-btn:hover {
+  background-color: none;
+}
+
+.update-btn:hover i {
+  color: #FF8C00; /* Orange */
+  transform: scale(1.1);
+  transition: color 0.3s ease;
+}
+
+.delete-btn:hover i {
+  color: #FF0000;
+  background-color: none;
+  transform: scale(1.1);
+  transition: color transform 0.3s ease;
 }
 
 /* Modal Styles */

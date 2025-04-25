@@ -248,6 +248,7 @@ a {
     border-radius: 8px;
     overflow-x: auto;
     padding: 16px;
+    margin: 5% auto;
 }
 
 .employee-table {
@@ -265,7 +266,7 @@ a {
 }
 
 .employee-table th {
-    background-color: #f8f9fa;
+    background-color: #FFF5F9;
     font-weight: 550;
 }
 
@@ -274,8 +275,13 @@ a {
     font-size: 14px;
 }
 
+.employee-table tbody tr {
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
 .employee-table tbody tr:hover {
-    background-color: #f8f9fa;
+    background-color: rgb(229, 234, 238);
 }
 
 .status-active {
@@ -293,17 +299,24 @@ a {
 }
 
 .update-btn i {
-    color: #666;
+    color: #666; /* Orange */
 }
 
 .delete-btn i {
     color: #FF0000;
 }
 
-.update-btn:hover,
-.delete-btn:hover {
-    background-color: #f0f0f0;
+.update-btn:hover {
+    background-color: none;
 }
+
+.update-btn:hover i {
+    color: #FF8C00; /* Orange */
+    transition: color 0.3s ease;
+}
+/* .delete-btn:hover {
+    background-color: none;
+} */
 
 /* Form Controls */
 select {
