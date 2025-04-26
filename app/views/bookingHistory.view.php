@@ -34,7 +34,7 @@
             background-color: white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            overflow: hidden;
+            /* overflow: hidden; */
         }
 
         .booking-container > p {
@@ -59,25 +59,29 @@
         .booking-table th {
             padding: 12px 15px;
             text-align: left;
-            font-weight: bold;
+            font-weight: 200;
             text-transform: uppercase;
             font-size: 14px;
             letter-spacing: 0.5px;
+            overflow: visible !important;
         }
 
         .booking-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+            overflow-x: visible;
         }
 
         .booking-table tbody tr:nth-child(even) {
             background-color: #f8f4f0;
+            overflow: visible;
         }
 
         .booking-table tbody tr:hover {
             background-color: #f0e6d8;
             transition: background-color 0.3s ease;
+            overflow: visible;
         }
 
         .worker-avatar {
@@ -142,7 +146,75 @@
 
         .pagination button:not(:disabled):hover {
             opacity: 0.9;
+        } 
+
+        .hidden-pin {
+            position: relative;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 4px;
         }
+
+        .hidden-pin .actual-pin {
+            display: none;
+            color: #000;
+        }
+        
+
+        .hidden-pin::after {
+            content: "Give this code to your worker upon job completion :)";
+            position: absolute;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            top: -38px;
+            left: 65px;
+            background-color:rgba(89, 39, 9, 0.86);
+            color: #fff;
+            padding: 6px 10px;
+            font-size: 14px;
+            font-weight: 200;
+            border-radius: 5px;
+            display: none;
+            text-align: left;
+            width: 150px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            z-index: 1000;
+            transition: 0.5s ease;   
+        }
+
+        
+
+        .hidden-pin:hover .dots {
+            display: none;
+            cursor: pointer;
+        }
+
+        .hidden-pin:hover .actual-pin {
+            display: inline;
+        }
+
+        .hidden-pin:hover::after {
+            display: block;
+        }
+
+        .cancel-btn {
+            margin-top: 5px;
+            background-color: #dc3545; /* Bootstrap red */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background-color:rgb(159, 18, 32); /* Darker red on hover */
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.8), 0 0 5px rgba(220, 53, 69, 0.8), 0 0 5px rgba(220, 53, 69, 0.8);
+        }
+
+
     </style>
 </head>
 <body>
@@ -154,62 +226,71 @@
                 <thead>
                     <tr>
                         <th>Booking ID</th>
-                        <th>Date</th>
+                        <th>Worker Image</th>
+                        <th>Worker Name</th>
+                        <th>Service Type</th>
+                        <th>Booking date</th>
+                        <th>Start Time</th>
                         <th>Status</th>
-                        <th>Worker Type</th>
-                        <th>Worker</th>
+                        <th>Total</th>
+                        <th>Created At</th>
+                        <th>Completion Code</th>
+                        <th>Action</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#15267</td>
-                        <td>Mar 1, 2023, 13:37</td>
-                        <td><span class="status ongoing">Ongoing</span></td>
-                        <td>Cook</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
-                    <tr>
-                        <td>#153587</td>
-                        <td>Jan 26, 2023, 15:00</td>
-                        <td><span class="status completed">Completed</span></td>
-                        <td>Nanny</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
-                    <tr>
-                        <td>#12436</td>
-                        <td>Feb 12, 2023, 08:54</td>
-                        <td><span class="status cancelled">Cancelled</span></td>
-                        <td>Cook</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
-                    <tr>
-                        <td>#16879</td>
-                        <td>Feb 12, 2033, 17:00</td>
-                        <td><span class="status cancelled">Cancelled</span></td>
-                        <td>Cleaner</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
-                    <tr>
-                        <td>#16378</td>
-                        <td>Feb 28, 2033, 14:22</td>
-                        <td><span class="status completed">Completed</span></td>
-                        <td>Cook</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
-                    <tr>
-                        <td>#16609</td>
-                        <td>March 13, 2033, 06:25</td>
-                        <td><span class="status completed">Completed</span></td>
-                        <td>All Rounder</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
-                    <tr>
-                        <td>#16907</td>
-                        <td>March 18, 2033, 11:49</td>
-                        <td><span class="status cancelled">Cancelled</span></td>
-                        <td>Cook</td>
-                        <td><img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker" class="worker-avatar"></td>
-                    </tr>
+                    <?php if (!empty($bookings)): ?>
+                        <?php foreach ($bookings as $booking): ?>
+                            <tr>
+                                <td>#<?= htmlspecialchars($booking->bookingID) ?></td>
+                                <td><img src="<?= ROOT ?><?= htmlspecialchars($booking->workerImage) ?>" alt="Worker" class="worker-avatar"></td>
+                                <td><?= htmlspecialchars($booking->workerName) ?></td>
+                                <td><?= htmlspecialchars($booking->serviceType) ?></td>
+                                <td><?= date("M j, Y", strtotime($booking->bookingDate)) ?></td>
+                                <td><?= date("H:i", strtotime($booking->startTime)) ?></td>
+                                <td>
+                                    <?php
+                                        $statusClass = strtolower($booking->status);
+                                        $validStatuses = ['ongoing', 'completed', 'cancelled'];
+                                        $statusClass = in_array($statusClass, $validStatuses) ? $statusClass : 'ongoing';
+                                    ?>
+                                    <span class="status <?= $statusClass ?>"><?= ucfirst($booking->status) ?></span>
+                                </td>
+                                <td><?= htmlspecialchars($booking->totalCost) ?></td>
+                                <td><?= htmlspecialchars($booking->createdAt) ?></td>
+                                <td>
+                                <?php if ($booking->verificationCode): ?>
+                                    <span class="hidden-pin" data-pin="<?= htmlspecialchars($booking->verificationCode) ?>">
+                                        <span class="dots">••••</span>
+                                        <span class="actual-pin"><?= htmlspecialchars($booking->verificationCode) ?></span>
+                                    </span>
+                                <?php else: ?>
+                                    <span>N/A</span>
+                                <?php endif; ?>
+                                </td>
+                                <td>
+                                <?php if (in_array(strtolower($booking->status), ['pending', 'accepted', 'confirmed'])): ?>
+                                    <div id="cancel-section-<?= $booking->bookingID ?>">
+                                        <form method="POST" action="<?= ROOT ?>/public/customerProfile/cancellingBooking" onsubmit="handleCancel(event, <?= $booking->bookingID ?>)">
+                                            <input type="hidden" name="bookingID" value="<?= $booking->bookingID ?>">
+                                            <button type="submit" class="cancel-btn">Cancel</button>
+                                        </form>
+                                    </div>
+                                <?php elseif (in_array(strtolower($booking->status), ['completed'])): ?>
+                                    <span>Fulfilled</span>
+                                <?php else: ?>
+                                    <span>Inactive</span>
+                                <?php endif; ?>
+
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" style="text-align: center;">No bookings found.</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
             <div class="pagination">
@@ -222,4 +303,28 @@
     </div>
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
 </body>
+<script>
+    function handleCancel(event, bookingID) {
+        event.preventDefault(); // stop form from submitting the traditional way
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        }).then(response => {
+            if (response.ok) {
+                // Update the UI
+                document.getElementById(`cancel-section-${bookingID}`).innerHTML = '<span>Inactive</span>';
+            } else {
+                alert('Failed to cancel booking.');
+            }
+        }).catch(err => {
+            console.error(err);
+            alert('Something went wrong.');
+        });
+    }
+</script>
+
 </html>

@@ -63,7 +63,40 @@ class BookingModel
         }
         return null;
     }
+    //Maneth's
 
+    public function getBookingDetailsByCustomer($customerID)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT b.*,vw.profileImage AS workerImage, vw.full_name AS workerName
+            FROM bookings b
+            JOIN verified_workers vw ON b.workerID = vw.workerID
+            WHERE b.customerID = :customerID
+            ORDER BY b.bookingDate DESC";
+
+        return $this->get_all($query, ['customerID' => $customerID]);
+    }
+
+    public function cancelBooking($bookingID)
+    {
+        $this->setTable('bookings');
+        $cancelledBooking = $this->find($bookingID, 'bookingID');
+
+        if (!$cancelledBooking) return false;
+
+        $this->update($bookingID, ['status' => 'cancelled'], 'bookingID');
+
+        $this->setTable('cancelled_bookings');
+        $data = (array) $cancelledBooking;
+        $data['cancelledAt'] = date('Y-m-d H:i:s');
+        $this->insertAndGetId($data);
+
+        // Soft-delete from bookings (or you can just delete if no "is_deleted" flag is used)
+        // $this->setTable('bookings');
+        // return $this->delete($bookingID, 'bookingID');
+    }
+
+    
     public function getCustomerIdByBookingId($bookingID)
     {
         $this->setTable('bookings');

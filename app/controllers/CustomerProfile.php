@@ -3,11 +3,14 @@
 class CustomerProfile extends Controller
 {
     private $userModel;
+    private $bookingModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
+        $this->bookingModel = new BookingModel();
     }
+
     public function index()
     {
         $this->view('profile');
@@ -106,9 +109,34 @@ class CustomerProfile extends Controller
 
     public function bookingHistory()
     {
-        // Load the view and pass the booking history data to it
-        $this->view('bookingHistory');
+        $bookingListing = $this->bookingModel->getBookingDetailsByCustomer($_SESSION['customerID']);
+        $this->view('bookingHistory',['bookings' => $bookingListing]); 
     }
+
+    public function cancellingBooking()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bookingID'])) {
+            $bookingID = $_POST['bookingID'];
+
+               // Perform the cancellation logic
+                $success = $this->bookingModel->cancelBooking($bookingID);
+
+                if ($success) {
+                    $_SESSION['message'] = "Booking canceled successfully.";
+                    $_SESSION['message_type'] = "success";
+                } else {
+                    $_SESSION['message'] = "Failed to cancel booking.";
+                    $_SESSION['message_type'] = "error";
+                }
+                
+        }
+
+
+        header("Location: " . ROOT . "/public/customerProfile/bookingHistory");
+       exit();
+    }
+
 
     public function paymentHistory()
     {
