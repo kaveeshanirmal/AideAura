@@ -379,9 +379,9 @@ a {
   
   .role-table {
     width: 100%; /* Make table take full width of container on smaller screens */
-    margin-left: 0; /* Remove left margin on smaller screens */
-  }
-} */
+    /* margin-left: 0; /* Remove left margin on smaller screens */
+  /* }
+} */ 
 
 /* Form Controls */
 input:focus,
