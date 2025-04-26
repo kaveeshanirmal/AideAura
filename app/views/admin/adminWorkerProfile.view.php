@@ -5,29 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Worker Profiles</title>
     <link rel="stylesheet" href="<?= htmlspecialchars(ROOT) ?>/public/assets/css/adminWorkerProfile.css">
-    <style>
-        /* Pagination styles */
-        .pagination {
-            margin-top: 15px;
-            text-align: center;
-        }
-        .pagination button {
-            margin: 0 5px;
-            padding: 5px 12px;
-            border: 1px solid #ccc;
-            background: #f1f1f1;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .pagination button.active {
-            background-color: #7f5539;
-            color: white;
-        }
-        .pagination button:hover {
-            background-color: #7f5539;
-            color: white;
-        }
-    </style>
     <script>
         const WORKERS_DATA = <?= isset($workers) ? json_encode($workers, JSON_HEX_TAG) : '[]'; ?>;
         const ROOT_PATH = "<?= htmlspecialchars(ROOT) ?>";
