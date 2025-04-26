@@ -362,6 +362,47 @@ class BookingModel
         return $this->get_all($sql,[]);
             } 
 
+            public function searchBookingDetails($filters) 
+            {
+                $this->setTable('bookings');
+                
+                $where = [];
+                $params = [];
+            
+                if (!empty($filters['bookingID'])) {
+                    $where[] = "b.bookingID = :bookingID";
+                    $params['bookingID'] = $filters['bookingID'];
+                }
+            
+                if (!empty($filters['customerID'])) {
+                    $where[] = "b.customerID = :customerID";
+                    $params['customerID'] = $filters['customerID'];
+                }
+            
+                if (!empty($filters['workerID'])) {
+                    $where[] = "b.workerID = :workerID";
+                    $params['workerID'] = $filters['workerID'];
+                }
+            
+                $whereClause = implode(' OR ', $where);
+            
+                $sql = "SELECT 
+                    b.*, 
+                    bd.*, 
+                    CONCAT(cu.firstName, ' ', cu.lastName) AS customerName,
+                    CONCAT(wu.firstName, ' ', wu.lastName) AS workerName
+                FROM bookings b
+                JOIN booking_details bd ON b.bookingID = bd.bookingID
+                JOIN customer c ON b.customerID = c.customerID
+                JOIN users cu ON c.userID = cu.userID
+                JOIN worker w ON b.workerID = w.workerID
+                JOIN users wu ON w.userID = wu.userID
+                WHERE $whereClause";
+            
+                return $this->get_all($sql, $params); 
+            }
+            
+
     public function deleteUnconfirmedBooking($bookingID)
     {
         $this->setTable('bookings');

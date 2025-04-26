@@ -36,7 +36,7 @@ a {
   overflow-x: auto;
   padding: 16px;
   padding-left: 0px;
-  margin: 8% auto 5% auto;
+  margin: 5% auto 5% auto;
 }
 
 .role-table {
@@ -70,6 +70,50 @@ a {
 
 .role-table tbody tr:hover {
   background-color: rgb(229, 234, 238);
+}
+
+/* Employee Controls */
+.employee-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8% 5% 0% 5%;
+  padding: 16px;
+}
+
+.search-filters {
+  display: flex;
+  gap: 24px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-group label {
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.id-input {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+}
+
+.search-btn {
+  padding: 8px 24px;
+  background-color: #e2e2e2;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.search-btn-container .search-btn:hover {
+  background-color: #00FF00;
 }
 
 /* Button Styles */
