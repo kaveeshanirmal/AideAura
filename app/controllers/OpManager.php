@@ -7,9 +7,11 @@ class OpManager extends Controller
         $this->view('opm/opmWorkerInquiries');
     }
 
-    public function specialRequests()
+    public function bookingDetails()
     {
-        $this->view('opm/specialRequests');
+        $bookingModel = new BookingModel();
+        $bookingDetails = $bookingModel->getBookingAllDetails();
+        $this->view('opm/opmBookingDetails', ['bookingDetails'=>  $bookingDetails]);
     }
 
     // public function workerSchedules()

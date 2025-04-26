@@ -33,7 +33,7 @@ class App
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'getScheduleView', 'workerMatching', 'workerInquiries'],
+            'OpManager' => ['index', 'bookingDetails', 'workerSchedules', 'getScheduleView', 'workerMatching', 'workerInquiries'],
 
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
