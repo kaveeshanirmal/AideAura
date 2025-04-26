@@ -16,17 +16,19 @@ class BookingReviewModel
      * @return array List of completed bookings without reviews
      */
     public function getCompletedBookingsWithoutReviews($customerID)
-    {
-        $query = "SELECT b.bookingID, b.workerID, b.serviceType 
-                  FROM bookings b
-                  LEFT JOIN booking_reviews r ON b.bookingID = r.bookingID
-                  WHERE b.customerID = :customerID 
-                  AND b.status = 'completed' 
-                  AND r.reviewID IS NULL";
-        
-        $params = [':customerID' => $customerID];
-        return $this->get_all($query, $params);
-    }
+{
+    $query = "SELECT b.bookingID, b.workerID, b.serviceType, b.bookingDate 
+              FROM bookings b 
+              LEFT JOIN booking_reviews r ON b.bookingID = r.bookingID 
+              WHERE b.customerID = :customerID 
+              AND b.status = 'completed' 
+              AND r.reviewID IS NULL 
+              ORDER BY b.bookingDate DESC, b.bookingID DESC 
+              LIMIT 10"; // Limit to 10 but we'll only show the first one in JS
+    
+    $params = [':customerID' => $customerID];
+    return $this->get_all($query, $params);
+}
 
     /**
      * Create a new review

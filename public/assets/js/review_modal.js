@@ -1,6 +1,13 @@
+console.log("Review modal JS loaded!");
+
 document.addEventListener('DOMContentLoaded', function() {
+
+    console.log("DOMContentLoaded in review_modal.js");
+
     //had to add this since i dont have separate dashboards for customers and workers
     const isCustomer = sessionStorage.getItem('role') === 'customer';
+    //debug line
+    console.log("Modal element found:", !!modalElement);
     
     // Only run for customers - removed duplicate call
     if (isCustomer) {
@@ -111,21 +118,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function checkForPendingReviews() {
-        // AJAX call to backend to check for pending reviews
+        // Only check once per login session
+        const reviewsCheckedThisSession = sessionStorage.getItem('reviewsCheckedThisSession');
+        if (reviewsCheckedThisSession === 'true') {
+            return; // Already checked this session
+        }
+    
         fetch(`${ROOT_URL}/public/bookingReview/checkPendingReviews`)
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.pendingReviews && data.pendingReviews.length > 0) {
-                    // Get first pending review that hasn't been shown yet
-                    const reviewToShow = data.pendingReviews.find(review => !isReviewShown(review.bookingID));
+                    // Sort by booking date/completion date (if available) to get latest
+                    // Alternatively, we could modify the backend to send sorted results
+                    
+                    // Find first pending review that hasn't been previously dismissed or reviewed
+                    const reviewToShow = data.pendingReviews.find(review => 
+                        !isReviewShown(review.bookingID)
+                    );
                     
                     if (reviewToShow) {
                         showModal(reviewToShow);
                     }
+                    
+                    // Mark that we've checked reviews this session
+                    sessionStorage.setItem('reviewsCheckedThisSession', 'true');
                 }
             })
             .catch(error => console.error('Error checking for pending reviews:', error));
     }
+    
+    // Close modal function
+    function hideModal() {
+        modal.style.display = 'none';
+    }
+    
+   
     
     function submitReview(formData) {
         fetch(`${ROOT_URL}/public/bookingReview/submitReview`, {

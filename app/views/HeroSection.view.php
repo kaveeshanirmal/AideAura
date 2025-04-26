@@ -172,8 +172,7 @@ if (isset($_SESSION['customerID']) && isset($_SESSION['loggedIn'])) {
     // Add JavaScript 
     echo '<script>
             // Pass PHP root URL to JavaScript
-            const ROOT_URL = "<?=ROOT?>";
-        </script>';
+            const ROOT_URL = "' . ROOT . '";        </script>';
     echo '<script src="' . ROOT . '/public/assets/js/review_modal.js"></script>';
 }
 ?>
