@@ -1,8 +1,5 @@
 <?php
 
-// Define the ROOT constant
-define('ROOT', '/aideAura');
-
 class App
 {
     // Default controller and method
