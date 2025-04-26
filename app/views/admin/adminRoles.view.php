@@ -3,32 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Roles</title>
+    <title>Admin Roles</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminRoles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Add basic styles for pagination buttons */
-        .pagination {
-            margin-top: 15px;
-            text-align: center;
-        }
-        .pagination button {
-            margin: 0 5px;
-            padding: 5px 12px;
-            border: 1px solid #ccc;
-            background: #f1f1f1;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .pagination button.active {
-            background-color: #7f5539;
-            color: white;
-        }
-        .pagination button:hover {
-            background-color: #7f5539;
-            color: white;
-        }
-    </style>
 </head>
 <body>
     <!-- Notification container -->
@@ -206,10 +183,16 @@
             const roleName = document.getElementById('roleName').value;
             const roleDescription = document.getElementById('roleDescription').value;
             
+            // validate details befor update 
             if(!roleName || !roleDescription) {
                 showNotification('Please fill all required fields', 'error');
                 return;
             }
+
+            if (!/^[a-zA-Z0-9]+$/.test(roleName)) {
+    showNotification('Role name must consist of only letters and digits.', 'error');
+    return;
+}
 
             fetch(`<?=ROOT?>/public/Admin/updateRole`, {
                 method: 'POST',
@@ -224,7 +207,7 @@
             .then(result => {
                 if(result.success) {
                     showNotification('Role updated successfully', 'success');
-                    setTimeout(() => location.reload(), 2000);
+                    setTimeout(() => location.reload(), 3000);
                 } else {
                     showNotification(result.message || 'Update failed', 'error');
                 }
