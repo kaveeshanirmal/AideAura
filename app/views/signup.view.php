@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="assets/css/signup.css">
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/signup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="assets/js/signup.js" defer></script>
+    <script src="<?=ROOT?>/public/assets/js/signup.js" defer></script>
 </head>
 <body>
     <?php include(ROOT_PATH . '/app/views/components/signupNavbar.view.php'); ?>

@@ -36,6 +36,19 @@
                     <span class="rating-text"><?= htmlspecialchars(number_format($worker->avg_rating, 1)) ?> (<?= htmlspecialchars($worker->total_reviews) ?> reviews)</span>
                 </span>
             </p>
+            <p class="score-container">
+                <strong><span class="aide">Aide</span><span class="aura">Aura</span>Score: </strong>
+                <span class="score-value" data-score="<?= htmlspecialchars(round($worker->score)) ?>">
+                    <?= htmlspecialchars(round($worker->score)).'%' ?>
+                </span>
+                            <span class="score-tooltip">
+                    Our smart matching score considers:<br>
+                    • Rating quality (45%)<br>
+                    • Completion rate (25%)<br>
+                    • Review count (20%)<br>
+                    • Recent activity (10%)
+                </span>
+            </p>
         </div>
         <div class="buttons">
             <button class="accept-btn">Book Now</button>
@@ -60,21 +73,20 @@
         })
             .then(response => response.json())
             .then(data => {
-            if (data.status === 'success') {
-                window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/waitingForResponse";
-            } else {
-                alert("Error: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("An error occurred while booking the worker.");
-        });
+                if (data.status === 'success') {
+                    window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/waitingForResponse";
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while booking the worker.");
+            });
     });
     document.querySelector('.reject-btn').addEventListener('click', function() {
         window.location.href = "<?php echo ROOT; ?>/public/searchForWorker/browseWorkers";
     });
-
 </script>
 </body>
 </html>

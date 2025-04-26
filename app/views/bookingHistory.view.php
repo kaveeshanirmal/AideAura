@@ -244,7 +244,7 @@
                         <?php foreach ($bookings as $booking): ?>
                             <tr>
                                 <td>#<?= htmlspecialchars($booking->bookingID) ?></td>
-                                <td><img src="<?= ROOT ?><?= htmlspecialchars($booking->workerImage) ?>" alt="Worker" class="worker-avatar"></td>
+                                <td><img src="<?= ROOT ?>/<?= htmlspecialchars($booking->workerImage) ?>" alt="Worker" class="worker-avatar"></td>
                                 <td><?= htmlspecialchars($booking->workerName) ?></td>
                                 <td><?= htmlspecialchars($booking->serviceType) ?></td>
                                 <td><?= date("M j, Y", strtotime($booking->bookingDate)) ?></td>
