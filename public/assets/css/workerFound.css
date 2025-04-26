@@ -207,6 +207,116 @@ button {
   font-weight: 400;
 }
 
+/* AideAura Score Styles */
+.score-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 2px 0;
+  /*padding: 8px 0;*/
+  font-size: 16px;
+}
+
+.score-container strong {
+  font-weight: bold;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Style AideAura similar to the logo */
+.score-container strong {
+  font-size: 17px;
+}
+
+.score-container strong .aide {
+  color: #000;
+}
+
+.score-container strong .aura {
+  color: #b8860b;
+  margin-right: 4px;
+}
+
+/* Add trademark symbol */
+.score-container strong::after {
+  content: "™";
+  font-size: 10px;
+  vertical-align: super;
+  margin-left: 2px;
+  color: #b8860b;
+}
+
+.score-value {
+  font-weight: 700;
+  font-size: 17px;
+  color: #5a3a24;
+  padding: 3px 25px;
+  border-radius: 10px;
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+  /*box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);*/
+}
+
+.score-container:hover .score-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.score-tooltip {
+  visibility: hidden;
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #5a3a24;
+  color: #fff;
+  text-align: left;
+  padding: 12px 15px;
+  border-radius: 8px;
+  width: max-content;
+  max-width: 250px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  line-height: 1.5;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Arrow pointing down from tooltip */
+.score-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -8px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #5a3a24 transparent transparent transparent;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .score-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .score-value {
+    margin-top: 5px;
+  }
+
+  .score-tooltip {
+    left: 0;
+    transform: translateX(0);
+  }
+
+  .score-tooltip::after {
+    left: 20px;
+  }
+}
 /* Animations */
 @keyframes fadeIn {
   from {
