@@ -163,6 +163,24 @@
         </div>
     </div>
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
+
+    <!-- Login detection for review modal -->
+<script>
+// Pass login information to JavaScript for review modal
+window.loginTimestamp = <?php echo isset($_SESSION['login_timestamp']) ? $_SESSION['login_timestamp'] : 0; ?>;
+window.forceShowReview = <?php echo isset($_SESSION['show_reviews_after_login']) && $_SESSION['show_reviews_after_login'] ? 'true' : 'false'; ?>;
+
+<?php 
+// Reset the show reviews flag after passing it to JavaScript
+if (isset($_SESSION['show_reviews_after_login'])) {
+    $_SESSION['show_reviews_after_login'] = false;
+}
+?>
+
+// Debug info
+console.log("DEBUG: Login timestamp:", window.loginTimestamp);
+console.log("DEBUG: Force show review:", window.forceShowReview);
+</script>
    
     <?php
 // Add review modal for customers to rate workers

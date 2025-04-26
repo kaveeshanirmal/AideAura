@@ -40,6 +40,10 @@ class Login extends Controller
                 $_SESSION['customerID'] = isset($user->customerID) ? $user->customerID : null;
                 $_SESSION['username'] = $user->username;
                 $_SESSION['isVerified'] = isset($user->isVerified) ? $user->isVerified : null;
+
+                // IMPORTANT: Add these lines for review modal detection
+                $_SESSION['login_timestamp'] = time();
+                $_SESSION['show_reviews_after_login'] = true;
                 
                 //echo "Role: " . $_SESSION['role']; //debugging
                 //echo "User role from DB: " . $user->role;
