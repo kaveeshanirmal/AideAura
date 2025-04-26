@@ -24,13 +24,13 @@
                     <thead>
                         <tr>
                             <th>Detail Name</th>
-                            <th>Price</th>
                             <th>Description</th>
                             <th>Role</th>
                             <th>Category Name</th>
                             <th>Category Description</th>
                             <th>Category Display Name</th>
                             <th>UpdateAt</th></th>
+                            <th>Price</th>
                             <!-- <th>CreateAt</th> -->
                             <th>Update</th>
                             <!-- <th>Delete</th> -->
@@ -48,13 +48,14 @@
                         <?php foreach ($priceData as $priceD): ?>
                         <tr data-detailID="<?= htmlspecialchars($priceD->detailID) ?>" data-catergoryID="<?= htmlspecialchars($priceD->categoryID) ?>" data-detailName="<?= htmlspecialchars($priceD->detailName) ?>" data-price="<?= htmlspecialchars($priceD->price) ?>" data-description="<?= htmlspecialchars($priceD->description) ?>" data-categoryDisplayName="<?= htmlspecialchars($priceD->categoryDisplayName) ?>" data-roleName="<?= htmlspecialchars($priceD->roleName) ?>" data-categoryName="<?= htmlspecialchars($priceD-> categoryName) ?>" data-categoryDescription="<?= htmlspecialchars($priceD->categoryDescription) ?>" data-updateAt="<?= htmlspecialchars($priceD->updateAt) ?>" data-createdAt="<?= htmlspecialchars($priceD->createdAt) ?>">
                             <td><?= htmlspecialchars($priceD->detailName) ?></td>
-                            <td><?= htmlspecialchars($priceD->price) ?></td>
                             <td><?= htmlspecialchars($priceD->description) ?></td>
                             <td><?= htmlspecialchars($priceD->roleName) ?></td>
                             <td><?= htmlspecialchars($priceD-> categoryName) ?></td>
                             <td><?= htmlspecialchars($priceD->categoryDescription) ?></td>
                             <td><?= htmlspecialchars($priceD->categoryDisplayName) ?></td>
                             <td><?= htmlspecialchars($priceD->updatedAt) ?></td>
+                            <td><?= htmlspecialchars($priceD->price) ?></td>
+
                             <!-- <td> htmlspecialchars($priceD->createdAt) ?></td> -->
                             <td>
                                 <button class="update-btn" onclick="showUpdateModal(this)">

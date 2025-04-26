@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Customer Details</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminCustomerDetails.css">
+    <title>OPM - Customer Details</title>
+    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/opmCustomerDetails.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -91,7 +91,7 @@
     // Function to load all employees initially
     function loadEmployees() {
         try {
-        fetch('<?=ROOT?>/public/admin/customers')
+        fetch('<?=ROOT?>/public/opManager/customers')
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
@@ -144,7 +144,7 @@ function searchCustomer() {
     };
     
     // Send reque+st to search endpoint
-    fetch('<?=ROOT?>/public/admin/searchCustomers', {
+    fetch('<?=ROOT?>/public/opManager/searchCustomers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(filters)
