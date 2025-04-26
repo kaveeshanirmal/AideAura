@@ -617,11 +617,13 @@ body {
 
 .modal-content {
   background-color: #fff;
-  margin: 5% auto;
+  top: 20px;
+  margin: auto;
   padding: 20px;
   border-radius: var(--border-radius);
   width: 90%;
   max-width: 600px;
+  /*max-height: 600px;*/
   box-shadow: var(--shadow-lg);
   position: relative;
 }
@@ -705,6 +707,31 @@ body {
 
 .detail-item.total .detail-value {
   font-size: 1.2em;
+}
+/* Verification Modal Styles */
+.verification-form {
+  top: 20px;
+  padding: 20px 0;
+}
+
+.verification-form p {
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+}
+
+.btn-secondary {
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--text-secondary);
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background-color: var(--text-primary);
 }
 
 @media (max-width: 600px) {

@@ -91,33 +91,7 @@ class BookingModel
         return $status ? $status->status : null;
     }
 
-    public function hasUnconfirmedBookings($customerID) {
-        $this->setTable('bookings');
-        $query = "SELECT * FROM bookings 
-              WHERE customerID = :customerID 
-                AND (status = 'pending' OR status = 'accepted')";
-        $result = $this->get_all($query, ['customerID' => $customerID]);
-        return ($result !== false) && !empty($result);
-    }
-
-    public function getUnconfirmedBookings($customerID)
-    {
-        $this->setTable('bookings');
-        $query = "SELECT * FROM bookings WHERE customerID = :customerID AND status = 'pending' OR status = 'accepted'";
-        return $this->get_all($query, ['customerID' => $customerID]);
-    }
-
-    public function getBasicBookingData($bookingID)
-    {
-        $this->setTable('bookings');
-        return $this->find($bookingID, 'bookingID');
-    }
-
-    public function deleteUnconfirmedBooking($bookingID)
-    {
-        $this->setTable('bookings');
-        return $this->delete($bookingID, 'bookingID');
-    }
+    
 
     //REPORTS
     /**
@@ -349,5 +323,155 @@ class BookingModel
         }
     }
 
-    
+    public function hasUnconfirmedBookings($customerID) {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings 
+              WHERE customerID = :customerID 
+                AND (status = 'pending' OR status = 'accepted')";
+        $result = $this->get_all($query, ['customerID' => $customerID]);
+        return ($result !== false) && !empty($result);
+    }
+
+    public function getUnconfirmedBookings($customerID)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings WHERE customerID = :customerID AND status = 'pending' OR status = 'accepted'";
+        return $this->get_all($query, ['customerID' => $customerID]);
+    }
+
+    public function getBasicBookingData($bookingID)
+    {
+        $this->setTable('bookings');
+        return $this->find($bookingID, 'bookingID');
+    }
+
+    public function getBookingAllDetails()
+    {
+    $this->setTable('bookings');
+    $sql = "SELECT 
+        b.*, -- All columns from bookings table
+        bd.*, -- All columns from booking_details table
+        CONCAT(cu.firstName, ' ', cu.lastName) AS customerName,
+        CONCAT(wu.firstName, ' ', wu.lastName) AS workerName
+    FROM bookings b
+    JOIN booking_details bd ON b.bookingID = bd.bookingID
+    JOIN customer c ON b.customerID = c.customerID
+    JOIN users cu ON c.userID = cu.userID
+    JOIN worker w ON b.workerID = w.workerID
+    JOIN users wu ON w.userID = wu.userID;
+    ";
+
+        return $this->get_all($sql,[]);
+            } 
+
+            public function searchBookingDetails($filters) 
+            {
+                $this->setTable('bookings');
+                
+                $where = [];
+                $params = [];
+            
+                if (!empty($filters['bookingID'])) {
+                    $where[] = "b.bookingID = :bookingID";
+                    $params['bookingID'] = $filters['bookingID'];
+                }
+            
+                if (!empty($filters['customerID'])) {
+                    $where[] = "b.customerID = :customerID";
+                    $params['customerID'] = $filters['customerID'];
+                }
+            
+                if (!empty($filters['workerID'])) {
+                    $where[] = "b.workerID = :workerID";
+                    $params['workerID'] = $filters['workerID'];
+                }
+            
+                $whereClause = implode(' OR ', $where);
+            
+                $sql = "SELECT 
+                    b.*, 
+                    bd.*, 
+                    CONCAT(cu.firstName, ' ', cu.lastName) AS customerName,
+                    CONCAT(wu.firstName, ' ', wu.lastName) AS workerName
+                FROM bookings b
+                JOIN booking_details bd ON b.bookingID = bd.bookingID
+                JOIN customer c ON b.customerID = c.customerID
+                JOIN users cu ON c.userID = cu.userID
+                JOIN worker w ON b.workerID = w.workerID
+                JOIN users wu ON w.userID = wu.userID
+                WHERE $whereClause";
+            
+                return $this->get_all($sql, $params); 
+            }
+            
+
+    public function deleteUnconfirmedBooking($bookingID)
+    {
+        $this->setTable('bookings');
+        return $this->delete($bookingID, 'bookingID');
+    }
+
+    public function verifyAndCompleteBooking($bookingID, $verificationCode)
+    {
+        $this->setTable('bookings');
+        $booking = $this->find($bookingID, 'bookingID');
+
+        // if verificationCode is valid and bookingDate is 2 days within past
+        if ($booking && $booking->verificationCode === $verificationCode) {
+            $currentDate = new DateTime();
+            $bookingDate = new DateTime($booking->bookingDate);
+            $interval = $currentDate->diff($bookingDate);
+
+            // Check if booking date is within the past 2 days
+            if ($interval->days <= 2 && $interval->invert == 1) {
+                // Update booking status to 'confirmed'
+                $this->updateBookingStatus($bookingID, 'completed');
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasExpiredBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Check for bookings those which bookingDate is past 2 days
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                         AND bookingDate < NOW() - INTERVAL 2 DAY
+                         AND status = 'expired'";
+        $result = $this->get_all($query, ['workerID' => $workerID]);
+        return ($result !== false) && !empty($result);
+    }
+    public function getExpiredBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Get all expired bookings
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                         AND bookingDate < NOW() - INTERVAL 2 DAY
+                         AND status = 'expired'";
+        return $this->get_all($query, ['workerID' => $workerID]);
+    }
+
+    public function hasUncompletedBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Check for confirmed bookings that happened in the past 2 days
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                 AND bookingDate > (NOW() - INTERVAL 2 DAY)
+                 AND bookingDate < NOW()
+                 AND status = 'confirmed'";
+        $result = $this->get_all($query, ['workerID' => $workerID]);
+        return ($result !== false) && !empty($result);
+    }
+
+    public function getUncompletedBookings($workerID)
+    {
+        $this->setTable('bookings');
+        // Get confirmed bookings that happened in the past 2 days
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID 
+                 AND bookingDate > (NOW() - INTERVAL 2 DAY)
+                 AND bookingDate < NOW()
+                 AND status = 'confirmed'";
+        return $this->get_all($query, ['workerID' => $workerID]);
+    }
 }

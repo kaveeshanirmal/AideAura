@@ -58,18 +58,18 @@
                     <!-- Worker specific schedule will be dynamically populated here -->
                 </div>
             </div>
-            <div class="worker-details-container" id="worker-details">
+            <!-- <div class="worker-details-container" id="worker-details">
                 <div class="customer-match-section">
                     <div class="field-group1">
                         <label for="customer-id">Customer ID:</label>
                         <input type="number" id="customer-id" class="field-input">
                     </div>
                     <button class="match-btn" id="match-customer-btn">Match</button>
-                </div>
+                </div> -->
                 <!-- <div class="worker-info-section" id="worker-info">
                     // Worker details will be dynamically populated here 
                 </div> -->
-            </div>
+            <!-- </div> -->
         </div>
     </div>
     

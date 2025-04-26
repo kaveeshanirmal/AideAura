@@ -9,10 +9,7 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData','storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentDetails', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint'],
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 
-            'paymentRates', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint', 'bookingReports', 'worker_stats', 'service_stats', 'revenue_trend'],
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData','storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentHistory', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'searchCustomers',  'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData', 'bookingDetails','searchBookingDetails', 'storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentDetails', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint','bookingReports', 'worker_stats', 'service_stats', 'revenue_trend'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
@@ -36,13 +33,13 @@ class App
         ],
 
         'opManager' => [
-            'OpManager' => ['index', 'specialRequests', 'workerSchedules', 'getScheduleView', 'workerMatching', 'workerInquiries'],
+            'OpManager' => ['index', 'bookingDetails', 'searchBookingDetails', 'workerSchedules', 'getScheduleView', 'workerMatching', 'workerInquiries'],
 
             'Complaint' => ['opIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
         ],
 
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentHistory','priceData','updatePriceDetails', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
+            'FinanceManager' => ['index', 'paymentDetails','priceData','updatePriceDetails', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
 
             'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
@@ -67,8 +64,8 @@ class App
             'WorkerVerification' => ['index', 'submitVerificationForm', 'editVerificationRequest', 'update', 'deleteVerificationRequest', 'verificationStatus', 'clearSessionMessage'],
             'WorkingSchedule'=> ['index', 'getSchedule', 'saveSchedule', 'deleteSchedule', 'testDatabase'],
             'Home'=> ['findJobs'],
-            'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation'],
-            'Booking' => ['getBooking', 'accept', 'reject', 'getBookingState'],
+            'Dashboard' => ['index', 'availability', 'getJobRequests', 'updateLocation', 'getLatestBookings'],
+            'Booking' => ['getBooking', 'accept', 'reject', 'getBookingState', 'completeBooking'],
             'WorkerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage', 'getConversation', 'submitReply'],
         ]
     ];
@@ -81,7 +78,7 @@ class App
         'ResetPassword' => ['index'],
         'ResetPasswordEnd' => ['index'],
         'Signup' => ['index'],
-        'Login' => ['index', 'logout'],
+        'Login' => ['index', 'logout', 'restoreBookingSession', 'checkForExpiredBookings', 'checkForUncompletedBookings'],
         'Unauthorized' => ['index'],
         'SearchForWorker' => ['index', 'find', 'workerFound'],
         'Notifications' => ['index', 'poll', 'markAsRead', 'markAllAsRead', 'renderItem'],

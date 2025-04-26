@@ -451,4 +451,47 @@ class Booking extends Controller
         $this->view('orderSummary', ['worker' => $workerData]);
     }
 
+    public function completeBooking()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method. POST required.']);
+            exit;
+        }
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $bookingID = $data['bookingID'] ?? null;
+        $verificationCode = $data['verificationCode'] ?? null;
+        if (!$bookingID || !$verificationCode) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Booking ID and verification code are required']);
+            exit;
+        }
+        $updateSuccess = $this->bookingModel->verifyAndCompleteBooking($bookingID, $verificationCode);
+        if (!$updateSuccess) {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to complete booking']);
+            exit;
+        }
+        // create notifications for both customer and worker
+        $this->notificationModel->create(
+            $_SESSION['userID'],
+            'Booking Completed',
+            'Booking has been completed.',
+            'Your booking with Booking ID: ' . $bookingID . ' has been completed successfully.'
+        );
+        $customerID = $this->bookingModel->getCustomerIdByBookingId($bookingID);
+        $this->notificationModel->create(
+            $this->userModel->getUserID($customerID, 'customer'),
+            'Booking Completed',
+            'Booking Completed.',
+            'Your booking with Booking ID: ' . $bookingID . ' has been completed successfully.'
+        );
+        // send email to the worker
+//        $workerID = $_SESSION['workerID'];
+//        $workerEmail = $this->userModel->findWorkerByID($workerID)->email;
+        // send success to fetch
+        echo json_encode(['status' => 'success', 'message' => 'Booking completed successfully']);
+        exit;
+    }
 }

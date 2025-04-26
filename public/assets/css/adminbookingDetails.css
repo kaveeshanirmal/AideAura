@@ -12,7 +12,7 @@
   flex: 1;
   background-color: #FFF;
   box-sizing: border-box;
-  margin: 7% 3% 3% 3%;
+  margin: 3% 3% 3% 3%;
 }
 
 a {
@@ -29,33 +29,20 @@ a {
   padding: 16px;
 }
 
-.add-role-btn {
-  padding: 8px 16px;
-  background-color: #00FF00;
-  color: black;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.add-role-btn:hover {
-  background-color: #4CAF50;
-  transition: background-color 0.3s ease;
-}
-
 /* Table Styles - Added for roles table */
 .table-container {
   background-color: white;
   border-radius: 8px;
   overflow-x: auto;
   padding: 16px;
+  padding-left: 0px;
+  margin: 5% auto 5% auto;
 }
 
 .role-table {
   align-items: center;
-  width: 85%;
-  margin: 0% 0% 0% 8%;
+  width: 95%;
+  margin: 0% 0% 0% 2%;
   border-collapse: collapse;
 }
 
@@ -83,6 +70,50 @@ a {
 
 .role-table tbody tr:hover {
   background-color: rgb(229, 234, 238);
+}
+
+/* Employee Controls */
+.employee-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8% 5% 0% 5%;
+  padding: 16px;
+}
+
+.search-filters {
+  display: flex;
+  gap: 24px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-group label {
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.id-input {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+}
+
+.search-btn {
+  padding: 8px 24px;
+  background-color: #e2e2e2;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.search-btn-container .search-btn:hover {
+  background-color: #00FF00;
 }
 
 /* Button Styles */
@@ -136,22 +167,18 @@ a {
 /* Modal Content Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto; /* 10% from top and centered */
+  margin: 0.1% auto; /* 10% from top and centered */
   padding: 20px;
   border: 1px solid #888;
   border-radius: 8px;
-  width: 50%; /* Reduced width for better appearance */
-  max-width: 500px; /* Maximum width */
+  width: 65%; /* Could be more or less, depending on screen size */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
 }
 
 /* Close Button */
 .close {
   color: #aaa;
-  position: absolute;
-  top: 10px;
-  right: 15px;
+  float: right;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
@@ -165,67 +192,64 @@ a {
 }
 
 .topic {
-  text-align: center;
-  margin: 0 0 20px 0;
+  align-items: center;
+  margin-left: 24%;
   font-size: 24px;
 }
 
 /* Form Styling */
 .form-group {
   display: flex;
-  flex-direction: column;
-  margin: 0 0 15px 0;
-  width: 100%;
+  margin: 0% 0% 1% 20%;
 }
 
 .modal-content form {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  align-items: center;
   gap: 5px;
 }
 
 .form-input {
-  width: 90%;
-  padding: 10px;
+  width: 50%;
+  padding: 1% 0% 1% 4%;
+  margin: 0% 0% 0% 5%;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
 }
 
 .form-textarea {
-  width: 90%;
-  padding: 10px;
+  width: 50%;
+  padding: 1% 0% 1% 4%;
+  margin: 0% 0% 0% 4%;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
   height: 100px;
-  resize: vertical;
 }
 
 /* Labels */
 .form-group label {
   font-size: 14px;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
+  margin-left: 1%;
+  margin-top: 2%;
+  display: block;
   color: #333;
-  align-self: flex-start;
-  margin-left: 5%;
 }
 
 /* Submit Button */
 .submit-btn {
   background-color: #4CAF50; /* Green */
   color: white;
-  padding: 10px 20px;
-  margin: 15px 0;
+  padding: 5px 15px;
+  margin: 1% 28% 1% 28%;
   border: none;
   border-radius: 12px;
   cursor: pointer;
   font-size: 16px;
-  width: 80%;
-  max-width: 250px;
+  width: auto;
 }
 
 .submit-btn:hover {
@@ -390,6 +414,18 @@ a {
       margin: 0 auto;
   }
 }
+
+/* @media screen and (max-width: 1200px) {
+  .table-container {
+    overflow-x: auto;
+    width: 96%;
+  }
+  
+  .role-table {
+    width: 100%; /* Make table take full width of container on smaller screens */
+    /* margin-left: 0; /* Remove left margin on smaller screens */
+   /* }
+}  */ 
 
 /* Form Controls */
 input:focus,
