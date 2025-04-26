@@ -10,6 +10,7 @@
     </div>
     <div class="menubar-content">
         <ul class="menu-items">
+        <li><a href="<?=ROOT?>/public/opManager/customers"><img src="<?=ROOT?>/public/assets/images/Roles.png" alt=""> Customers </a></li>
             <li><a href="<?=ROOT?>/public/opManager/workerSchedules"><img src="<?=ROOT?>/public/assets/images/worker-schedule.png" alt=""> Worker Schedules</a></li>
             <li><a href="<?=ROOT?>/public/opManager/bookingDetails"><img src="<?=ROOT?>/public/assets/images/booking-history-icon.png" alt=""> Booking Details </a></li>
             <li><a href="<?=ROOT?>/public/opManager/workerInquiries"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Complaints </a></li>

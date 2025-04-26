@@ -26,10 +26,13 @@
                     <option value="Maid">Maid</option>
                 </select>
             </div>
-
+            
             <div class="workers-list" id="workers-list">
                 <!-- Workers will be rendered dynamically -->
             </div>
+            
+            <!-- Added pagination container -->
+            <div id="pagination" class="pagination"></div>
         </main>
     </div>
 </body>

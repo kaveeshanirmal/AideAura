@@ -62,52 +62,17 @@
           <tbody id="employeeTableBody">
             <?php if (empty($bookingDetails)): ?>
               <tr>
-                <td colspan="18" style="text-align: center; font-style: italic;">
+                <td colspan="15" style="text-align: center; font-style: italic;">
                   No Booking Details found.
                 </td>
               </tr>
-            <?php else: ?>
-              <?php
-                $groupedBookings = [];
-                foreach ($bookingDetails as $detail) {
-                  $bookingID = $detail->bookingID;
-                  if (!isset($groupedBookings[$bookingID])) {
-                    $groupedBookings[$bookingID] = [
-                      'info' => $detail,
-                      'details' => []
-                    ];
-                  }
-                  $groupedBookings[$bookingID]['details'][$detail->detailType] = $detail->detailValue;
-                }
-              ?>
-
-              <?php foreach ($groupedBookings as $booking): ?>
-                <?php
-                  $info = $booking['info'];
-                  $details = $booking['details'];
-                ?>
-                <tr>
-                  <td><?= htmlspecialchars($info->bookingID) ?></td>
-                  <td><?= htmlspecialchars($info->bookingDate) ?></td>
-                  <td><?= htmlspecialchars($info->customerName) ?></td>
-                  <td><?= htmlspecialchars($info->workerName) ?></td>
-                  <td><?= htmlspecialchars($info->serviceType) ?></td>
-                  <td><?= htmlspecialchars($info->status) ?></td>
-                  <td><?= htmlspecialchars($info->startTime . ' - ' . $info->endTime) ?></td>
-                  <td><?= htmlspecialchars($info->location) ?></td>
-                  <td><?= htmlspecialchars($details['num_people'] ?? '-') ?></td>
-                  <td><?= htmlspecialchars(is_array(json_decode($details['num_meals'] ?? '', true)) ? implode(', ', json_decode($details['num_meals'], true)) : ($details['num_meals'] ?? '-')) ?></td>
-                  <td><?= htmlspecialchars($details['diet'] ?? '-') ?></td>
-                  <td><?= htmlspecialchars(is_array(json_decode($details['addons'] ?? '', true)) ? implode(', ', json_decode($details['addons'], true)) : ($details['addons'] ?? '-')) ?></td>
-                  <td><?= htmlspecialchars($details['base_price'] ?? '-') ?></td>
-                  <td><?= htmlspecialchars($details['addon_price'] ?? '-') ?></td>
-                  <td><?= htmlspecialchars($info->totalCost) ?></td>
-                </tr>
-              <?php endforeach; ?>
             <?php endif; ?>
+            <!-- Table content will be loaded dynamically on page load -->
           </tbody>
-
         </table>
+        
+        <!-- Add pagination container -->
+        <div id="pagination" class="pagination"></div>
       </div>
     </div>
   </div>
@@ -120,8 +85,12 @@
       setTimeout(() => notification.className = 'notification hidden', 2000);
     };
 
-    const bookings = <?= json_encode($bookingDetails) ?>;
-    console.log(bookings);
+    const initialBookings = <?= json_encode($bookingDetails) ?>;
+    
+    // Pagination variables
+    const rowsPerPage = 2;
+    let currentPage = 1;
+    let currentData = initialBookings || [];
 
     function searchCustomer() {
       const customerID = document.getElementById('customerId').value.trim();
@@ -136,13 +105,17 @@
       .then(res => res.json())
       .then(result => {
         if (result.success) {
+          currentPage = 1; // Reset to first page when searching
+          currentData = result.bookingDetails;
           renderTable(result.bookingDetails);
         } else {
+          currentData = [];
           renderTable([]);
           showNotification(result.message || 'Search failed', 'error');
         }
       })
       .catch(() => {
+        currentData = [];
         renderTable([]);
         showNotification('An unexpected error occurred', 'error');
       });
@@ -152,73 +125,131 @@
       location.reload();
     }
 
-    function loadBookings() {
-    try {
-        fetch('<?=ROOT?>/public/opManager/bookingDetails')
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    renderTable(result.bookingDetails);
-                } else {
-                    showNotification('Failed to load booking Details.', 'error');
-                }
-            });
-    } catch (error) {
-        showNotification('An unexpected error occurred', 'error');
+    function renderTable(data) {
+      const tbody = document.getElementById('employeeTableBody');
+      tbody.innerHTML = '';
+
+      if (!data || !data.length) {
+        tbody.innerHTML = `<tr><td colspan="15" style="text-align: center; font-style: italic;">No Booking Details found.</td></tr>`;
+        // Clear pagination if no data
+        renderPagination(0);
+        return;
+      }
+
+      // Group data by bookingID
+      const groupedBookings = {};
+      data.forEach(detail => {
+        const bookingID = detail.bookingID;
+        if (!groupedBookings[bookingID]) {
+          groupedBookings[bookingID] = {
+            info: detail,
+            details: {}
+          };
+        }
+        groupedBookings[bookingID].details[detail.detailType] = detail.detailValue;
+      });
+
+      // Convert to array for pagination
+      const bookingsArray = Object.values(groupedBookings);
+      
+      // Apply pagination
+      const start = (currentPage - 1) * rowsPerPage;
+      const paginatedBookings = bookingsArray.slice(start, start + rowsPerPage);
+
+      // Render each row
+      paginatedBookings.forEach(({ info, details }) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${info.bookingID}</td>
+          <td>${info.bookingDate}</td>
+          <td>${info.customerName}</td>
+          <td>${info.workerName}</td>
+          <td>${info.serviceType}</td>
+          <td>${info.status}</td>
+          <td>${info.startTime} - ${info.endTime}</td>
+          <td>${info.location}</td>
+          <td>${details['num_people'] ?? '-'}</td>
+          <td>${parseDetailValue(details['num_meals'])}</td>
+          <td>${details['diet'] ?? '-'}</td>
+          <td>${parseDetailValue(details['addons'])}</td>
+          <td>${details['base_price'] ?? '-'}</td>
+          <td>${details['addon_price'] ?? '-'}</td>
+          <td>${info.totalCost}</td>
+        `;
+        tbody.appendChild(row);
+      });
+      
+      // Update pagination
+      renderPagination(bookingsArray.length);
     }
-}
-
-
-function renderTable(data) {
-  const tbody = document.getElementById('employeeTableBody');
-  tbody.innerHTML = '';
-
-  if (!data.length) {
-    tbody.innerHTML = `<tr><td colspan="15" style="text-align: center; font-style: italic;">No Booking Details found.</td></tr>`;
-    return;
-  }
-
-  // Group data by bookingID
-  const groupedBookings = {};
-  data.forEach(detail => {
-    const bookingID = detail.bookingID;
-    if (!groupedBookings[bookingID]) {
-      groupedBookings[bookingID] = {
-        info: detail,
-        details: {}
-      };
+    
+    // Helper function to safely parse JSON values
+    function parseDetailValue(value) {
+      if (!value) return '-';
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed.join(', ') : value;
+      } catch (e) {
+        return value;
+      }
     }
-    groupedBookings[bookingID].details[detail.detailType] = detail.detailValue;
-  });
-
-  // Render each row
-  Object.values(groupedBookings).forEach(({ info, details }) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${info.bookingID}</td>
-      <td>${info.bookingDate}</td>
-      <td>${info.customerName}</td>
-      <td>${info.workerName}</td>
-      <td>${info.serviceType}</td>
-      <td>${info.status}</td>
-      <td>${info.startTime} - ${info.endTime}</td>
-      <td>${info.location}</td>
-      <td>${details['num_people'] ?? '-'}</td>
-      <td>${Array.isArray(JSON.parse(details['num_meals'] || '[]')) ? JSON.parse(details['num_meals']).join(', ') : (details['num_meals'] ?? '-')}</td>
-      <td>${details['diet'] ?? '-'}</td>
-      <td>${Array.isArray(JSON.parse(details['addons'] || '[]')) ? JSON.parse(details['addons']).join(', ') : (details['addons'] ?? '-')}</td>
-      <td>${details['base_price'] ?? '-'}</td>
-      <td>${details['addon_price'] ?? '-'}</td>
-      <td>${info.totalCost}</td>
-    `;
-    tbody.appendChild(row);
-  });
-}
-
+    
+    function renderPagination(totalItems) {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+      
+      // Calculate total pages
+      const pageCount = Math.ceil(totalItems / rowsPerPage);
+      
+      // Don't show pagination if only one page or no items
+      if (pageCount <= 1) return;
+      
+      // Add Previous button if not on first page
+      if (currentPage > 1) {
+        pagination.innerHTML += `<button onclick="changePage(${currentPage - 1})">Previous</button>`;
+      }
+      
+      // Add numbered page buttons
+      for (let i = 1; i <= pageCount; i++) {
+        pagination.innerHTML += `<button onclick="changePage(${i})" class="${currentPage === i ? 'active' : ''}">${i}</button>`;
+      }
+      
+      // Add Next button if not on last page
+      if (currentPage < pageCount) {
+        pagination.innerHTML += `<button onclick="changePage(${currentPage + 1})">Next</button>`;
+      }
+    }
+    
+    function changePage(page) {
+      currentPage = page;
+      renderTable(currentData);
+    }
 
     window.onload = () => {
-      loadBookings();
+      // Use the data from PHP first, then call renderTable
+      if (initialBookings && initialBookings.length) {
+        renderTable(initialBookings);
+      } else {
+        loadBookings();
+      }
     };
+    
+    function loadBookings() {
+      try {
+        fetch('<?=ROOT?>/public/opManager/bookingDetails')
+          .then(response => response.json())
+          .then(result => {
+            if (result.success) {
+              currentData = result.bookingDetails;
+              renderTable(result.bookingDetails);
+            } else {
+              showNotification('Failed to load booking Details.', 'error');
+            }
+          });
+      } catch (error) {
+        showNotification('An unexpected error occurred', 'error');
+      }
+    }
   </script>
 </body>
 </html>
