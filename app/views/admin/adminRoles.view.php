@@ -6,6 +6,29 @@
     <title>Admin - Roles</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminRoles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Add basic styles for pagination buttons */
+        .pagination {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 12px;
+            border: 1px solid #ccc;
+            background: #f1f1f1;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .pagination button.active {
+            background-color: #7f5539;
+            color: white;
+        }
+        .pagination button:hover {
+            background-color: #7f5539;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <!-- Notification container -->
@@ -32,33 +55,12 @@
                         </tr>
                     </thead>
                     <tbody id="roleTableBody">
-                        <?php if (empty($roles)): ?>
-                            <tr>
-                                <td colspan="5" style="text-align: center; font-style: italic;">
-                                    No roles found.
-                                </td>
-                            </tr>
-                        <?php else: ?>
-                            <?php foreach ($roles as $role): ?>
-                            <tr data-role-id="<?= $role->roleID ?>" data-role-name="<?= htmlspecialchars($role->name) ?>" data-role-description="<?= htmlspecialchars($role->description) ?>">
-                                <td><?= htmlspecialchars($role->roleID) ?></td>
-                                <td><?= htmlspecialchars($role->name) ?></td>
-                                <td><?= htmlspecialchars($role->description) ?></td>
-                                <td>
-                                    <button class="update-btn" onclick="showUpdateModal(this)">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete-btn" onclick="deleteRole('<?= $role->roleID ?>')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                        <!-- Role data will be populated here -->
                     </tbody>
                 </table>
+                
+                <!-- Add pagination div -->
+                <div id="pagination" class="pagination"></div>
             </div>
         </div>
     </div>
@@ -93,6 +95,95 @@
             setTimeout(() => notification.className = 'notification hidden', 2000);
         };
 
+        const roles = <?= isset($roles) ? json_encode($roles) : '[]' ?>;
+        const tableBody = document.getElementById('roleTableBody');
+        const pagination = document.getElementById('pagination');
+
+        // Make sure roles is an array
+        let rolesArray = Array.isArray(roles) ? roles : 
+                        (typeof roles === 'object' ? Object.values(roles) : []);
+
+        // Pagination settings
+        const rowsPerPage = 3;
+        let currentPage = 1;
+
+        // Render roles table with pagination
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+            
+            // Ensure data is an array
+            const dataArray = Array.isArray(data) ? data : [];
+            
+            if (dataArray.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; font-style: italic;">No roles found.</td></tr>`;
+                pagination.innerHTML = ''; // Clear pagination if no roles
+                return;
+            }
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const paginatedItems = dataArray.slice(start, start + rowsPerPage);
+
+            paginatedItems.forEach(role => {
+                tableBody.innerHTML += `
+                    <tr data-role-id="${role.roleID}" data-role-name="${role.name}" data-role-description="${role.description}">
+                        <td>${role.roleID}</td>
+                        <td>${role.name}</td>
+                        <td>${role.description}</td>
+                        <td>
+                            <button class="update-btn" onclick="showUpdateModal(this)">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteRole('${role.roleID}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+
+            renderPagination(dataArray.length);
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderTable(rolesArray);
+        }
+
+        function renderPagination(totalItems) {
+    pagination.innerHTML = '';
+
+    const pageCount = Math.ceil(totalItems / rowsPerPage);
+
+    if (pageCount <= 1) return;
+
+    // Previous button
+    if (currentPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.onclick = () => changePage(currentPage - 1);
+        pagination.appendChild(prevButton);
+    }
+
+    // Numbered buttons
+    for (let i = 1; i <= pageCount; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.classList.toggle('active', i === currentPage);
+        btn.onclick = () => changePage(i);
+        pagination.appendChild(btn);
+    }
+
+    // Next button
+    if (currentPage < pageCount) {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.onclick = () => changePage(currentPage + 1);
+        pagination.appendChild(nextButton);
+    }
+}
+
+
         // Function to update the role
         function showUpdateModal(button) {
             const row = button.closest('tr');
@@ -100,18 +191,10 @@
             const roleName = row.getAttribute('data-role-name');
             const roleDescription = row.getAttribute('data-role-description');
 
-            // Debugging: Log variable values to the console
-            console.log('Role ID:', roleID);
-            console.log('Role Name:', roleName);
-            console.log('Role Description:', roleDescription);
-
             document.getElementById('roleID').value = roleID;
             document.getElementById('roleName').value = roleName;
             document.getElementById('roleDescription').value = roleDescription;
             document.getElementById('updateModel').style.display = 'block';
-
-            // Debugging: Confirm modal visibility
-            console.log('Update modal displayed');
         }
 
         function closeUpdateModal() {
@@ -125,15 +208,8 @@
             
             if(!roleName || !roleDescription) {
                 showNotification('Please fill all required fields', 'error');
-                console.error('Validation Error: Missing required fields');
                 return;
             }
-
-            console.log('Preparing to send update request with data:', {
-                roleID: roleID,
-                name: roleName,
-                description: roleDescription
-            });
 
             fetch(`<?=ROOT?>/public/Admin/updateRole`, {
                 method: 'POST',
@@ -144,27 +220,20 @@
                     description: roleDescription 
                 })
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json();
-            })
+            .then(response => response.json())
             .then(result => {
-                console.log('Server response:', result);
                 if(result.success) {
                     showNotification('Role updated successfully', 'success');
                     setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification(result.message || 'Update failed', 'error');
-                    console.error('Update failed:', result.message || 'Unknown error');
                 }
             })
             .catch(error => {
                 showNotification('An unexpected error occurred', 'error');
-                console.error('Fetch Error:', error);
             });
 
             closeUpdateModal();
-            console.log('Update modal closed');
         }
 
         function deleteRole(roleID) {
@@ -178,8 +247,8 @@
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
-                    showNotification('Role deleted successfully', 'success'); // Temporary notification
-                    setTimeout(() => location.reload(), 2000); // Reload after 2 seconds
+                    showNotification('Role deleted successfully', 'success');
+                    setTimeout(() => location.reload(), 2000);
                 } else {
                     showNotification('Delete failed', 'error');
                 }
@@ -188,6 +257,8 @@
                 showNotification('An unexpected error occurred', 'error');
             });
         }
+
+        renderTable(rolesArray);
     </script>
 </body>
 </html>
