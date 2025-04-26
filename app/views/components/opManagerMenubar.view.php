@@ -11,7 +11,7 @@
     <div class="menubar-content">
         <ul class="menu-items">
             <li><a href="<?=ROOT?>/public/opManager/workerSchedules"><img src="<?=ROOT?>/public/assets/images/worker-schedule.png" alt=""> Worker Schedules</a></li>
-            <li><a href="<?=ROOT?>/public/opManager/bookingDetails"><img src="<?=ROOT?>/public/assets/images/booking-history-icon.png" alt=""> booking Details </a></li>
+            <li><a href="<?=ROOT?>/public/opManager/bookingDetails"><img src="<?=ROOT?>/public/assets/images/booking-history-icon.png" alt=""> Booking Details </a></li>
             <li><a href="<?=ROOT?>/public/opManager/workerInquiries"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Complaints </a></li>
         </ul>
     </div>
