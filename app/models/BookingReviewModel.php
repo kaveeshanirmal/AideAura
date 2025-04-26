@@ -60,15 +60,18 @@ class BookingReviewModel
     }
 
     /**
-     * Get worker name from the users table
-     * 
+     * Get worker name from the users table by properly joining with workers table
+     *
      * @param int $workerID The worker ID
      * @return object|null Worker name object with firstName and lastName properties
      */
     public function getWorkerName($workerID)
     {
-        $this->setTable('users');
-        $query = "SELECT firstName, lastName FROM users WHERE userID = :workerID";
+        $query = "SELECT u.firstName, u.lastName 
+                FROM users u
+                JOIN worker w ON u.userID = w.userID
+                WHERE w.workerID = :workerID";
+        
         return $this->get_row($query, [':workerID' => $workerID]);
     }
 

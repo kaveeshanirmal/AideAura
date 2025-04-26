@@ -60,8 +60,7 @@ class App
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
             'Booking' => ['index', 'bookWorker', 'getBooking', 'getBookingState', 'noResponse', 'orderSummary', 'acceptanceTimeout', 'workerRejected', 'orderTimeout', 'cancelBooking'],
-            'BookingReview' => ['index', 'checkPendingReviews', 'submitReview', 'getWorkerName'],
-        ],
+            'BookingReview' => ['index', 'checkPendingReviews', 'submitReview', 'getWorkerName', 'getPendingReviews', 'markAsShown', 'resetReviewShownFlag'],        ],
 
         'worker' => [
             'WorkerProfile' => ['index', 'personalInfo', 'update', 'workingSchedule', 'faqworker'],
