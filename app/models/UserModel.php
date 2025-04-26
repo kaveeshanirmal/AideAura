@@ -313,6 +313,7 @@ class UserModel
         return null; // Return null if user not found
     }
 
+    
     public function findWorkerByID($workerID)
     {
         $this->setTable('worker');

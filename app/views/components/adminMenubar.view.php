@@ -16,6 +16,8 @@
             <li><a href="<?=ROOT?>/public/admin/workerRoles"><img src="<?=ROOT?>/public/assets/images/Roles.png" alt=""> Roles </a></li>
             <li><a href="<?=ROOT?>/public/admin/priceData"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Price Details </a></li>
             <li><a href="<?=ROOT?>/public/admin/paymentDetails"><img src="<?=ROOT?>/public/assets/images/order history.png" alt=""> Payment Details </a></li>
+            <li><a href="<?=ROOT?>/public/admin/bookingDetails"><img src="<?=ROOT?>/public/assets/images/booking-history-icon.png" alt=""> booking Details </a></li>
+     
             <li><a href="<?=ROOT?>/public/admin/workerInquiries"><img src="<?=ROOT?>/public/assets/images/Inquiry.png" alt=""> Customer Inquiries </a></li>
             <li><a href="<?=ROOT?>/public/admin/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
             <li><a href="<?=ROOT?>/public/admin/bookingReports"><img src="<?=ROOT?>/public/assets/images/Report.png" alt=""> Reports </a></li>
