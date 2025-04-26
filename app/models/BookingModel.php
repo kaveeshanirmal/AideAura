@@ -124,6 +124,8 @@ class BookingModel
         return $status ? $status->status : null;
     }
 
+    
+
     //REPORTS
     /**
      * Get booking statistics for a specific worker

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addNewDayBtn.addEventListener("click", addNewScheduleRow);
   }
 
-  // Function to get remaining available days
+  // Function to get remaining available days...
   function getRemainingDays() {
     const existingDays = Array.from(
       document.querySelectorAll(".schedule-table tbody tr"),
