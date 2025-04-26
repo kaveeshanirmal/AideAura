@@ -13,7 +13,8 @@
         
             <li><a href="<?=ROOT?>/public/admin/workers"><img src="<?=ROOT?>/public/assets/images/worker-profile.png" alt=""> Worker Profiles </a></li>
             <li><a href="<?=ROOT?>/public/adminEmployees"><img src="<?=ROOT?>/public/assets/images/Admin.png" alt=""> Employees </a></li>
-            <li><a href="<?=ROOT?>/public/admin/workerRoles"><img src="<?=ROOT?>/public/assets/images/Roles.png" alt=""> Roles </a></li>
+            <li><a href="<?=ROOT?>/public/admin/customers"><img src="<?=ROOT?>/public/assets/images/Roles.png" alt=""> Customers </a></li>
+            <li><a href="<?=ROOT?>/public/admin/workerRoles"><img src="<?=ROOT?>/public/assets/images/Vector.png" alt=""> Roles </a></li>
             <li><a href="<?=ROOT?>/public/admin/priceData"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Price Details </a></li>
             <li><a href="<?=ROOT?>/public/admin/paymentDetails"><img src="<?=ROOT?>/public/assets/images/order history.png" alt=""> Payment Details </a></li>
             <li><a href="<?=ROOT?>/public/admin/bookingDetails"><img src="<?=ROOT?>/public/assets/images/booking-history-icon.png" alt=""> booking Details </a></li>

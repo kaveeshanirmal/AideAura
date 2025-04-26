@@ -9,6 +9,25 @@ class CustomerModel
     }
 
     public function getAllCustomerDetails(){
-        return $this->all();
+        $this->setTable('customer');
+
+        $sql = "SELECT 
+        c.*, 
+        u.*
+    FROM  customer c
+  JOIN users u ON c.userID =  u.userID;";
+return $this->get_all($sql, []);
     }
+
+    public function searchCustomer($customerID){
+        $this->setTable('customer');
+        $sql = "SELECT 
+        c.*, 
+        u.*
+    FROM  customer c
+  JOIN users u ON c.userID =  u.userID WHERE c.customerID = :customerID;";
+return $this->get_all($sql, ['customerID' => $customerID]);
+
+}
+
 }
