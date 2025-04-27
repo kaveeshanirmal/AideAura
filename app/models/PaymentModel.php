@@ -148,5 +148,18 @@ class PaymentModel
     
               // perform soft delete
               return $this->softDelete($paymentID, 'paymentID' , 'isDelete');
+        }  
+
+
+        public function getPaymentHistory() {
+
+            $this->setTable('payments');
+
+            $query = "SELECT p.paymentID,p.bookingID,p.transactionID, p.amount, p.currency, p.paymentMethod,p.paymentStatus, p.paymentDate, p.lastUpdated, b.serviceType 
+              FROM payments p
+              JOIN bookings b ON b.bookingID = p.bookingID
+              ORDER BY paymentDate DESC";
+
+            return $this->get_all($query);
         }
 }

@@ -100,7 +100,10 @@ class BookingModel
         // Soft-delete from bookings (or you can just delete if no "is_deleted" flag is used)
         // $this->setTable('bookings');
         // return $this->delete($bookingID, 'bookingID');
-    }
+    } 
+
+    
+
 
     
     public function getCustomerIdByBookingId($bookingID)

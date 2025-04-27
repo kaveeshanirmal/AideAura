@@ -9,13 +9,13 @@
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   background-image:
-    linear-gradient(to bottom, #3d0505, #834d2bdc),
+    linear-gradient(to bottom, #442b18, #834d2bdc),
     url(../../images/Verification_Request_Background_2.jpg);
   background-size: cover;
   background-position: center;
