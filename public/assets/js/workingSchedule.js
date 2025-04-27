@@ -279,7 +279,7 @@ function saveSchedules() {
 
     // Add to schedules array
     schedules.push({
-      days_of_week: day,
+      day_of_week: day,
       startTime: startTime,
       endTime: endTime,
       scheduleID: row.dataset.scheduleId || null,
@@ -427,7 +427,7 @@ function debugScheduleData(schedules) {
   console.log("Schedules to be saved:", schedules);
   schedules.forEach((schedule, index) => {
     console.log(`Schedule ${index + 1}:`, {
-      day: schedule.days_of_week,
+      day: schedule.day_of_week,
       start: schedule.startTime,
       end: schedule.endTime,
       id: schedule.scheduleID || "new",
@@ -460,8 +460,8 @@ function loadSchedules() {
         const row = document.createElement("tr");
         row.dataset.scheduleId = schedule.scheduleID;
         const capitalizedDay =
-          schedule.days_of_week.charAt(0).toUpperCase() +
-          schedule.days_of_week.slice(1);
+          schedule.day_of_week.charAt(0).toUpperCase() +
+          schedule.day_of_week.slice(1);
 
         row.innerHTML = `
                     <td>${capitalizedDay}</td>
