@@ -48,6 +48,7 @@
         const ROOT_URL = '<?=ROOT?>/public';
         const userID = <?= json_encode($userID) ?>;
         const schedules = <?= json_encode($schedule) ?>;
+        console.log(schedules);
     </script>
     
     <!-- Include the JavaScript file -->

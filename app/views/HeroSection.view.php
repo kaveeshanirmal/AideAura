@@ -163,5 +163,74 @@
         </div>
     </div>
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
+
+    <!-- Login detection for review modal -->
+<script>
+// Pass login information to JavaScript for review modal
+window.loginTimestamp = <?php echo isset($_SESSION['login_timestamp']) ? $_SESSION['login_timestamp'] : 0; ?>;
+window.forceShowReview = <?php echo isset($_SESSION['show_reviews_after_login']) && $_SESSION['show_reviews_after_login'] ? 'true' : 'false'; ?>;
+
+<?php 
+// Reset the show reviews flag after passing it to JavaScript
+if (isset($_SESSION['show_reviews_after_login'])) {
+    $_SESSION['show_reviews_after_login'] = false;
+}
+?>
+
+// Debug info
+console.log("DEBUG: Login timestamp:", window.loginTimestamp);
+console.log("DEBUG: Force show review:", window.forceShowReview);
+</script>
+   
+    <?php
+// Add review modal for customers to rate workers
+if (isset($_SESSION['userID']) && isset($_SESSION['role']) && $_SESSION['role'] == 'customer') {
+    // Save role in session storage for JavaScript to access
+    echo "<script>
+        // Store user role in sessionStorage for JavaScript access
+        sessionStorage.setItem('role', '{$_SESSION['role']}');
+        // Store customer ID if needed
+        sessionStorage.setItem('customerID', '{$_SESSION['userID']}');
+        // Define ROOT_URL for JavaScript
+        const ROOT_URL = '" . ROOT . "';
+    </script>";
+    
+    // Include the review modal HTML
+    if (file_exists(ROOT_PATH . '/app/views/review_modal.view.php')) {
+        include_once ROOT_PATH . '/app/views/review_modal.view.php';
+    } else {
+        echo "<!-- Review modal file not found! -->";
+    }
+    
+    // Include the review modal JavaScript
+    if (file_exists(ROOT_PATH . '/public/assets/js/review_modal.js')) {
+        echo '<script src="' . ROOT . '/public/assets/js/review_modal.js"></script>';
+    } else {
+        echo "<!-- Review modal JS file not found! -->";
+    }
+}
+?>
+
+<!-- Add console debugging to check if the review modal is properly initialized -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DEBUG: Home page fully loaded");
+    
+    // Check if user is a customer
+    const isCustomer = sessionStorage.getItem('role') === 'customer';
+    console.log("DEBUG: Is customer?", isCustomer);
+    
+    // Check if review modal exists
+    const reviewModal = document.getElementById('reviewModalOverlay');
+    console.log("DEBUG: Review modal exists?", !!reviewModal);
+    
+    // Check if the review modal JS is loaded
+    const reviewModalJSLoaded = typeof window.testReviewModal === 'function';
+    console.log("DEBUG: Review modal JS loaded?", reviewModalJSLoaded);
+});
+</script>
+
 </body>
 </html>
+
+

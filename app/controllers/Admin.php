@@ -10,9 +10,10 @@ class Admin extends Controller
     {
         $this->customerComplaintModel = new CustomerComplaintModel();
     }
+
     public function index($a = '', $b = '', $c = '')
     {
-        $this->view('admin/adminReports');
+        $this->workers();
     }
 
     public function employees($a = '', $b = '', $c = '')
@@ -21,31 +22,29 @@ class Admin extends Controller
     }
 
     public function workers()
-{
-    $userModel = new UserModel();
-    $allEmployees = $userModel->getAllEmployees(); // Fetch all Workers from the database
-    error_log("Workers in controller: " . json_encode($allEmployees));
+    {
+        $userModel = new UserModel();
+        $allEmployees = $userModel->getAllEmployees(); // Fetch all Workers from the database
+        error_log("Workers in controller: " . json_encode($allEmployees));
 
-    // Define the allowed roles for filtering
-    $allowedRoles = ['worker'];
+        // Define the allowed roles for filtering
+        $allowedRoles = ['worker'];
 
-    // Filter Workers based on allowed roles
-    $filteredWorkers = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-        return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
-    });
+        // Filter Workers based on allowed roles
+        $filteredWorkers = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
+            return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
+        });
 
-    if (!$filteredWorkers) {
-        error_log("No Workers with specified roles retrieved or query failed");
-        $filteredWorkers = []; // Ensuring the variable is always an array
+        if (!$filteredWorkers) {
+            error_log("No Workers with specified roles retrieved or query failed");
+            $filteredWorkers = []; // Ensuring the variable is always an array
+        }
+
+        // Dynamically update roles for filtered workers 
+        $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
+
+        $this->view('admin/adminWorkerProfile', ['workers' => $updatedWorkers]);
     }
-
-    //$workerClicked = $filteredWorkers;
-
-    // Dynamically update roles for filtered workers 
-    $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
-
-    $this->view('admin/adminWorkerProfile', ['workers' => $updatedWorkers]);
-}
 
 
 //Assign dynamic roles to filtered workers in worker array role element from jobroles table
@@ -60,6 +59,51 @@ private function assignDynamicRoles($filteredWorkers)
         return $worker;
     }, $filteredWorkers);
 }
+
+
+public function customers(){
+    $customerModel = new CustomerModel();
+    $customers = $customerModel->getAllCustomerDetails(); // Fetch all Workers from the database
+    error_log("Workers in controller: " . json_encode($customers));
+    $this->view('admin/adminCustomerDetails', ['customers' => $customers]);
+   
+}
+
+public function searchCustomers(){
+        header('Content-Type: application/json');
+    
+        try {
+            // Decode the JSON input from the request body
+            $data = json_decode(file_get_contents('php://input'), true);
+    
+            // Validate and extract filters from the input
+            $filters = [
+                'customerID' => !empty($data['customerID']) ? trim($data['customerID']) : null
+            ];
+    
+            // Ensure at least one filter is provided
+            if (empty($filters['customerID'])) {
+                throw new Exception('CustomerID must be provided.');
+            }
+    
+
+            $customerModel = new CustomerModel();
+            $customers = $customerModel->searchCustomer($filters['customerID']);
+    
+            echo json_encode([
+                'success' => true,
+                'customers' => $customers
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400); // Bad request
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+// I was add some comments to the code
+        exit; // Ensure no further output
+    }
 
 public function workerDetails()
 {
@@ -327,7 +371,7 @@ private function generateScheduleView($schedules, $view, $currentDate)
         
         // Organize schedules by day of the week
         foreach ($schedules as $schedule) {
-            $dayOfWeek = $schedule->day_of_week;
+            $dayOfWeek = isset($schedule->day_of_week) ? $schedule->day_of_week : null;
             if (isset($schedulesByDay[$dayOfWeek])) {
                 $schedulesByDay[$dayOfWeek][] = $schedule;
             }
@@ -522,11 +566,6 @@ public function updateVerificationStatus() {
         $this->view('admin/adminWorkerProfileSchedule');
     }
 
-    public function customers()
-    {
-        $this->view('admin/customerProfiles');
-    }
-
     public function workerRoles()
     {
 
@@ -567,9 +606,10 @@ public function updateVerificationStatus() {
                 throw new Exception('Role name and description are required');
             }
     
+            //ensure security and prevent malicious attacks like Cross-Site Scripting (XSS) or injection attack
             // Sanitize inputs
-            $roleName = trim(filter_var($_POST['roleName'], FILTER_SANITIZE_STRING));
-            $roleDescription = trim(filter_var($_POST['roleDescription'], FILTER_SANITIZE_STRING));
+            $roleName = trim(filter_var($_POST['roleName'], FILTER_SANITIZE_SPECIAL_CHARS));
+            $roleDescription = trim(filter_var($_POST['roleDescription'], FILTER_SANITIZE_SPECIAL_CHARS));
     
             // Validate file upload
             if (!isset($_FILES['roleImage']) || $_FILES['roleImage']['error'] !== UPLOAD_ERR_OK) {
@@ -822,124 +862,57 @@ public function updateVerificationStatus() {
         }
     }
 
-    // public function updatePaymentRates() {
-    //     try {
-    //         // Ensure proper content type header is set first
-    //         header('Content-Type: application/json');
-            
-    //         // Read raw POST data
-    //         $rawData = file_get_contents('php://input');
-    //         if (!$rawData) {
-    //             throw new Exception('No data received');
-    //         }
-            
-    //         // Decode JSON data
-    //         $data = json_decode($rawData, true);
-    //         if (json_last_error() !== JSON_ERROR_NONE) {
-    //             throw new Exception('Invalid JSON data: ' . json_last_error_msg());
-    //         }
-            
-    //         // Validate required fields
-    //         if (!$data || !isset($data['ServiceID'])) {
-    //             throw new Exception('Invalid data. ServiceID is required.');
-    //         }
-            
-    //         // Extract and validate data
-    //         $ServiceID = $data['ServiceID'];
-    //         $updateData = [
-    //             'BasePrice' => isset($data['BasePrice']) ? (float) $data['BasePrice'] : null,
-    //             'BaseHours' => isset($data['BaseHours']) ? (float) $data['BaseHours'] : null
-    //         ];
-            
-    //         // Validate numeric values
-    //         if ($updateData['BasePrice'] === null || $updateData['BaseHours'] === null) {
-    //             throw new Exception('BasePrice and BaseHours are required and must be numeric.');
-    //         }
-            
-    //         // Update payment rate
-    //         $paymentRateModel = new PaymentRateModel();
-    //         $success = $paymentRateModel->updatePayrate($ServiceID, $updateData);
-            
-    //         if (!$success) {
-    //             throw new Exception('Failed to update payment rate.');
-    //         }
-            
-    //         echo json_encode([
-    //             'success' => true,
-    //             'message' => 'Payment rates updated successfully'
-    //         ]);
-            
-    //     } catch (Exception $e) {
-    //         http_response_code(500);
-    //         echo json_encode([
-    //             'success' => false,
-    //             'message' => $e->getMessage()
-    //         ]);
-    //     }
-    // }
-
-
-    // create new price record in price_details table 
-      // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     header('Content-Type: application/json'); // Ensure JSON response
-        //     $_POST = filter_input_array(INPUT_POST);
-    
-        //     $data = [
-        //         'firstName' => trim($_POST['firstName']),
-        //         'lastName' => trim($_POST['lastName']),
-        //         'username' => trim($_POST['username']),
-        //         'phone' => trim($_POST['phone']),
-        //         'email' => trim($_POST['email']),
-        //         'password' => trim($_POST['password']),
-        //         'role' => trim($_POST['role']),
-        //     ];
-
-        //     $result = $this->UserModel->registerEmployee($data);
-
-        //     if ($result) {
-        //         echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
-        //     } else {
-        //         echo json_encode(['status' => 'error', 'message' => 'Failed to add user. Please try again.']);
-        //     }
-        // } else {
-        //     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
-        // }
-        // exit;
-    // }
-
-    // create new price category record in price_category table
-    // public function storePriceCategoryDetails()
-    // {
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     header('Content-Type: application/json'); // Ensure JSON response
-        //     $_POST = filter_input_array(INPUT_POST);
-    
-        //     $data = [
-        //         'firstName' => trim($_POST['firstName']),
-        //         'lastName' => trim($_POST['lastName']),
-        //         'username' => trim($_POST['username']),
-        //         'phone' => trim($_POST['phone']),
-        //         'email' => trim($_POST['email']),
-        //         'password' => trim($_POST['password']),
-        //         'role' => trim($_POST['role']),
-        //     ];
-
-        //     $result = $this->userModel->registerEmployee($data);
-
-        //     if ($result) {
-        //         echo json_encode(['status' => 'success', 'message' => 'User added successfully!']);
-        //     } else {
-        //         echo json_encode(['status' => 'error', 'message' => 'Failed to add user. Please try again.']);
-        //     }
-        // } else {
-        //     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
-        // }
-        // exit;
-    // }
-
-    public function paymentHistory()
+    public function bookingDetails()
     {
-        $this->view('admin/adminPaymentHistory');
+        $bookingModel = new BookingModel();
+        $bookingDetails = $bookingModel->getBookingAllDetails();
+        $this->view('admin/adminBookingDetails', ['bookingDetails'=>  $bookingDetails]);
+    }
+
+    public function searchBookingDetails() 
+    {
+        header('Content-Type: application/json');
+    
+        try {
+            // Decode the JSON input from the request body
+            $data = json_decode(file_get_contents('php://input'), true);
+    
+            // Validate and extract filters from the input
+            $filters = [
+                'bookingID' => !empty($data['bookingID']) ? trim($data['bookingID']) : null,
+                'customerID' => !empty($data['customerID']) ? trim($data['customerID']) : null,
+                'workerID' => !empty($data['workerID']) ? trim($data['workerID']) : null,
+            ];
+              // Ensure at least one filter is provided
+            if (empty($filters['bookingID']) && empty($filters['customerID'])  && empty($filters['workerID'])) {
+                throw new Exception('At least one of BookinID or CustomerID or WorkerID must be provided.');
+            }
+    
+            $bookingModel = new BookingModel();
+            $bookingDetails = $bookingModel->searchBookingDetails($filters);
+    
+            echo json_encode([
+                'success' => true,
+                'bookingDetails' => $bookingDetails
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400); // Bad request
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+// I was add some comments to the code
+        exit; // Ensure no further output
+    }
+
+    public function paymentDetails()
+
+    {
+
+        $paymentModel = new PaymentModel();
+        $paymentDetails = $paymentModel->getAllPaymentsWithBookingDetails(); // Fetch all payment details from the database
+        $this->view('admin/adminPaymentDetails',['paymentDetails'=>$paymentDetails]);
     }
 
     
@@ -965,5 +938,12 @@ public function workerComplaints()
     $workerComplaintController->adminIndex();
 }
 
+public function bookingReports()
+    {
+        
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->roleIndex();
+    }
    
 }

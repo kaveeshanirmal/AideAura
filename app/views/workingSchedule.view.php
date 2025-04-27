@@ -32,15 +32,15 @@
                             <tr data-schedule-id="<?= $schedule->scheduleID ?>">
                                 <td>
                                     <input type="hidden" name="schedules[<?= $schedule->scheduleID ?>][id]" value="<?= $schedule->scheduleID ?>">
-                                    <span class="display-text"><?= htmlspecialchars($schedule->days_of_week) ?></span>
+                                    <span class="display-text"><?= htmlspecialchars($schedule->day_of_week) ?></span>
                                     <select class="day-select" name="schedules[<?= $schedule->scheduleID ?>][days_of_week]" style="display: none">
-                                        <option value="monday" <?= $schedule->days_of_week == 'monday' ? 'selected' : '' ?>>Monday</option>
-                                        <option value="tuesday" <?= $schedule->days_of_week == 'tuesday' ? 'selected' : '' ?>>Tuesday</option>
-                                        <option value="wednesday" <?= $schedule->days_of_week == 'wednesday' ? 'selected' : '' ?>>Wednesday</option>
-                                        <option value="thursday" <?= $schedule->days_of_week == 'thursday' ? 'selected' : '' ?>>Thursday</option>
-                                        <option value="friday" <?= $schedule->days_of_week == 'friday' ? 'selected' : '' ?>>Friday</option>
-                                        <option value="saturday" <?= $schedule->days_of_week == 'saturday' ? 'selected' : '' ?>>Saturday</option>
-                                        <option value="sunday" <?= $schedule->days_of_week == 'sunday' ? 'selected' : '' ?>>Sunday</option>
+                                        <option value="monday" <?= $schedule->day_of_week == 'monday' ? 'selected' : '' ?>>Monday</option>
+                                        <option value="tuesday" <?= $schedule->day_of_week == 'tuesday' ? 'selected' : '' ?>>Tuesday</option>
+                                        <option value="wednesday" <?= $schedule->day_of_week == 'wednesday' ? 'selected' : '' ?>>Wednesday</option>
+                                        <option value="thursday" <?= $schedule->day_of_week == 'thursday' ? 'selected' : '' ?>>Thursday</option>
+                                        <option value="friday" <?= $schedule->day_of_week == 'friday' ? 'selected' : '' ?>>Friday</option>
+                                        <option value="saturday" <?= $schedule->day_of_week == 'saturday' ? 'selected' : '' ?>>Saturday</option>
+                                        <option value="sunday" <?= $schedule->day_of_week == 'sunday' ? 'selected' : '' ?>>Sunday</option>
                                     </select>
                                 </td>
                                 <td>
@@ -88,7 +88,6 @@
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
     
     <script>
-        const ROOT = '<?=ROOT?>';
         const FULL_URL = window.location.href;
         console.log('Debug info:', {
             ROOT: ROOT,

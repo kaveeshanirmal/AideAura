@@ -199,7 +199,7 @@ class WorkerModel
     public function getAllBookings($workerID)
     {
         $this->setTable('bookings');
-        $query = "SELECT * FROM bookings WHERE workerID = :workerID";
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID order by bookingDate ASC";
         $bookings = $this->get_all($query, ['workerID' => $workerID]);
 
         $result = [];
@@ -216,5 +216,21 @@ class WorkerModel
     {
         $this->setTable('verified_workers');
         return $this->update($workerID, ['workLocations' => $newLocation], 'workerID');
+    }
+
+    public function getLatestBookings($workerID)
+    {
+        $this->setTable('bookings');
+        $query = "SELECT * FROM bookings WHERE workerID = :workerID ORDER BY bookingDate DESC LIMIT 20";
+        $bookings = $this->get_all($query, ['workerID' => $workerID]);
+
+        $result = [];
+        foreach ($bookings as $booking) {
+            $result[] = [
+                'key' => $booking->bookingID,
+                'value' => $this->bookingModel->getBookingDetails($booking->bookingID)
+            ];
+        }
+        return $result;
     }
 }

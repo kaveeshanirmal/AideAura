@@ -3,10 +3,12 @@
 class Dashboard extends Controller
 {
     private $workerModel;
+    private $paymentModel;
 
     public function __construct()
     {
         $this->workerModel = new WorkerModel();
+        $this->paymentModel = new PaymentModel();
     }
     public function index()
     {
@@ -56,6 +58,7 @@ class Dashboard extends Controller
                     break;
             }
         }
+        $incomeData = $this->calculateLastMonthEarnings();
 
         // Pass all data to the view
         $this->view('workerDashboard', [
@@ -65,6 +68,7 @@ class Dashboard extends Controller
             'confirmedBookings' => $confirmedBookings,
             'completedBookings' => $completedBookings,
             'cancelledBookings' => $cancelledBookings,
+            'incomeData' => $incomeData,
         ]);
     }
 
@@ -113,5 +117,44 @@ class Dashboard extends Controller
                 exit;
             }
         }
+    }
+
+    // In your Dashboard controller:
+
+    public function calculateLastMonthEarnings()
+    {
+        $workerID = $_SESSION['workerID'];
+
+        // Get current month's earnings
+        $currentMonth = date('Y-m');
+        $lastMonth = date('Y-m', strtotime('-1 month'));
+
+        $currentMonthEarnings = $this->paymentModel->getEarningsByMonth($workerID, $currentMonth);
+        $lastMonthEarnings = $this->paymentModel->getEarningsByMonth($workerID, $lastMonth);
+
+        // Calculate percentage change
+        $percentChange = 0;
+        if ($lastMonthEarnings > 0) {
+            $percentChange = (($currentMonthEarnings - $lastMonthEarnings) / $lastMonthEarnings) * 100;
+        }
+
+        return [
+            'currentMonth' => $currentMonthEarnings,
+            'lastMonth' => $lastMonthEarnings,
+            'percentChange' => round($percentChange, 2)
+        ];
+    }
+
+    public function getLatestBookings()
+    {
+        // Accept fetch requests
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $workerID = $_SESSION['workerID'];
+            $latestBookings = $this->workerModel->getLatestBookings($workerID);
+            echo json_encode(['status' => 'success', 'data' => $latestBookings]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+        }
+        exit;
     }
 }

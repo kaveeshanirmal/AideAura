@@ -149,6 +149,9 @@
         </main>
     </div>
 </body> 
-<script>const ROOT = "<?=ROOT?>";</script>
+<script>const ROOT = "<?=ROOT?>";
+        const worker = <?= json_encode($worker) ?>;
+        console.log(worker);
+        </script>
 <script src="<?=ROOT?>/public/assets/js/admin/adminWorkerProfile1.js"></script>
 </html>

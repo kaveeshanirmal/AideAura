@@ -347,132 +347,6 @@ function filterBookings(filter) {
   }
 }
 
-// Complete booking
-function completeBooking(button, bookingId) {
-  const bookingItem = button.closest(".booking-item");
-  const bookingTitle = bookingItem.querySelector(".booking-title").textContent;
-
-  // Change status to completed
-  bookingItem.classList.remove("upcoming");
-  bookingItem.classList.add("completed");
-
-  // Remove action buttons and add status indicator
-  const actionsDiv = bookingItem.querySelector(".booking-actions");
-  actionsDiv.innerHTML = `
-        <div class="booking-status completed">
-            <i class='bx bx-check-circle'></i> Completed
-        </div>
-    `;
-
-  // Send completion to server
-  fetch("<?= ROOT ?>/bookings/complete", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      bookingId: bookingId,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status !== "success") {
-        alert("Failed to mark booking as completed");
-        // Revert UI changes if failed
-        bookingItem.classList.remove("completed");
-        bookingItem.classList.add("upcoming");
-        actionsDiv.innerHTML = `
-                <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
-                    <i class='bx bx-check-circle'></i> Complete
-                </button>
-                <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
-                    <i class='bx bx-x-circle'></i> Cancel
-                </button>
-            `;
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Failed to mark booking as completed");
-      // Revert UI changes if failed
-      bookingItem.classList.remove("completed");
-      bookingItem.classList.add("upcoming");
-      actionsDiv.innerHTML = `
-            <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
-                <i class='bx bx-check-circle'></i> Complete
-            </button>
-            <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
-                <i class='bx bx-x-circle'></i> Cancel
-            </button>
-        `;
-    });
-}
-
-// Cancel booking
-function cancelBooking(button, bookingId) {
-  const bookingItem = button.closest(".booking-item");
-  const bookingTitle = bookingItem.querySelector(".booking-title").textContent;
-
-  if (!confirm(`Are you sure you want to cancel "${bookingTitle}"?`)) {
-    return;
-  }
-
-  // Change status to cancelled
-  bookingItem.classList.remove("upcoming");
-  bookingItem.classList.add("cancelled");
-
-  // Remove action buttons and add status indicator
-  const actionsDiv = bookingItem.querySelector(".booking-actions");
-  actionsDiv.innerHTML = `
-        <div class="booking-status cancelled">
-            <i class='bx bx-x-circle'></i> Cancelled
-        </div>
-    `;
-
-  // Send cancellation to server
-  fetch("<?= ROOT ?>/bookings/cancel", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      bookingId: bookingId,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status !== "success") {
-        alert("Failed to cancel booking");
-        // Revert UI changes if failed
-        bookingItem.classList.remove("cancelled");
-        bookingItem.classList.add("upcoming");
-        actionsDiv.innerHTML = `
-                <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
-                    <i class='bx bx-check-circle'></i> Complete
-                </button>
-                <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
-                    <i class='bx bx-x-circle'></i> Cancel
-                </button>
-            `;
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Failed to cancel booking");
-      // Revert UI changes if failed
-      bookingItem.classList.remove("cancelled");
-      bookingItem.classList.add("upcoming");
-      actionsDiv.innerHTML = `
-            <button class="btn-complete" onclick="completeBooking(this, ${bookingId})">
-                <i class='bx bx-check-circle'></i> Complete
-            </button>
-            <button class="btn-cancel" onclick="cancelBooking(this, ${bookingId})">
-                <i class='bx bx-x-circle'></i> Cancel
-            </button>
-        `;
-    });
-}
-
 // View job details
 function viewJobDetails(jobItem, jobId) {
   if (!window.latestRequests) {
@@ -571,7 +445,6 @@ function viewJobDetails(jobItem, jobId) {
       }
     });
 
-    // Add this helper function
     function tryParseJson(value) {
       try {
         return JSON.parse(value);
@@ -614,26 +487,6 @@ function viewJobDetails(jobItem, jobId) {
   } else {
     console.error("No match found in local data for jobId:", jobId);
   }
-  // else {
-  //   console.log("No match found in local data, fetching from server...");
-  //   // Fallback to fetch if the data isn't available locally
-  //   fetch(`${ROOT}/public/booking/getBooking/${jobId}`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (data.status === "success") {
-  //         // Handle the detailed view with fetched data
-  //         // (similar implementation here with the dynamic approach)
-  //         // ...
-  //         modal.style.display = "block";
-  //       } else {
-  //         alert("Failed to load job details 2");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //       alert("Failed to load job details 3");
-  //     });
-  // }
 }
 
 // Helper function to format the label from camelCase or snake_case
@@ -730,3 +583,348 @@ document.addEventListener("DOMContentLoaded", function () {
       closeModal();
     });
 });
+
+// Functionality needed for viewing booking details
+function viewBookingDetails(bookingItem, bookingId) {
+  // Poll for new data if needed
+  if (!window.latestBookings) {
+    // Create a global array to store booking data if it doesn't exist
+    window.latestBookings = [];
+
+    // Fetch booking data
+    fetch(`${ROOT}/public/dashboard/getAllBookings`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success" && data.data.length > 0) {
+          window.latestBookings = data.data;
+          viewBookingDetails(bookingItem, bookingId); // Retry after data is loaded
+        } else {
+          console.error("No bookings data available");
+          alert("Failed to load booking details");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to load booking details");
+      });
+    return;
+  }
+
+  // Find the booking in our data
+  const bookings = window.latestBookings || [];
+  const matchingBooking = bookings.find(
+    (booking) =>
+      booking.key == bookingId ||
+      (booking.value &&
+        booking.value.booking &&
+        booking.value.booking.bookingID == bookingId),
+  );
+
+  if (matchingBooking) {
+    console.log("Match found in local data:", matchingBooking);
+    const bookingData = matchingBooking.value.booking;
+    const bookingDetails = matchingBooking.value.details;
+
+    // Create a details map for easier access
+    const detailsMap = bookingDetails.reduce((acc, detail) => {
+      acc[detail.detailType] = detail.detailValue;
+      return acc;
+    }, {});
+
+    // Clear previous content
+    const detailsGrid = document.querySelector(".job-details-grid");
+    detailsGrid.innerHTML = "";
+
+    // Parse date
+    const date = new Date(bookingData.bookingDate);
+
+    // Standard fields
+    const standardFields = {
+      Customer: detailsMap.customer_name,
+      Contact: detailsMap.contact_phone,
+      Email: detailsMap.contact_email,
+      "Service Type": bookingData.serviceType,
+      Date: date.toLocaleDateString(),
+      "Time Slot": bookingData.startTime,
+      Location: bookingData.location,
+    };
+
+    // Add price fields
+    const priceFields = [
+      {
+        label: "Base Price",
+        value: `Rs. ${Number(detailsMap.base_price || 0).toFixed(2)}`,
+      },
+      {
+        label: "Add-on Price",
+        value: `Rs. ${Number(detailsMap.addon_price || 0).toFixed(2)}`,
+      },
+      {
+        label: "Total Price",
+        value: `Rs. ${Number(bookingData.totalCost || 0).toFixed(2)}`,
+        isTotal: true,
+      },
+    ];
+
+    // Add standard fields to grid
+    for (const [label, value] of Object.entries(standardFields)) {
+      if (value) {
+        addDetailItem(detailsGrid, label, value);
+      }
+    }
+
+    // Add special requests if any
+    if (detailsMap.special_requests) {
+      addDetailItem(
+        detailsGrid,
+        "Special Requests",
+        detailsMap.special_requests,
+      );
+    }
+
+    // Excluded keys (already handled or system fields)
+    const excludedKeys = [
+      "bookingID",
+      "customer_name",
+      "contact_phone",
+      "contact_email",
+      "serviceType",
+      "bookingDate",
+      "startTime",
+      "endTime",
+      "location",
+      "status",
+      "workerID",
+      "customerID",
+      "createdAt",
+      "base_price",
+      "addon_price",
+      "special_requests",
+    ];
+
+    // Add any remaining fields from bookingDetails
+    bookingDetails.forEach((detail) => {
+      const key = detail.detailType;
+      const value = detail.detailValue;
+
+      if (!excludedKeys.includes(key) && value && value !== "") {
+        const label = formatLabel(key);
+
+        // Parse JSON arrays if needed
+        const parsedValue = tryParseJson(value) || value;
+
+        addDetailItem(detailsGrid, label, formatValue(parsedValue));
+      }
+    });
+
+    // Add price section
+    const priceContainer = document.createElement("div");
+    priceContainer.className = "price-section";
+
+    priceFields.forEach((field) => {
+      const item = document.createElement("div");
+      item.className = `detail-item${field.isTotal ? " total" : ""}`;
+
+      item.innerHTML = `
+                <span class="detail-label">${field.label}:</span>
+                <span class="detail-value">${field.value}</span>
+            `;
+
+      priceContainer.appendChild(item);
+    });
+
+    detailsGrid.appendChild(priceContainer);
+
+    // Reference the modal and set properties
+    const modal = document.getElementById("jobDetailsModal");
+
+    // Update the modal title
+    const modalTitle = modal.querySelector("h3");
+    modalTitle.textContent = "Booking Details";
+
+    // Hide or modify action buttons for bookings
+    const modalActions = modal.querySelector(".modal-actions");
+
+    // For upcoming bookings, show "Mark as Complete" button
+    if (bookingItem.classList.contains("upcoming")) {
+      modalActions.innerHTML = `
+                <button class="btn-complete" onclick="completeBookingFromModal(${bookingId})">
+                    <i class='bx bx-check-circle'></i> Mark as Complete
+                </button>
+            `;
+    } else {
+      // For completed or cancelled bookings, hide action buttons
+      modalActions.style.display = "none";
+    }
+
+    // Show the modal
+    modal.style.display = "block";
+  } else {
+    console.error("No match found for bookingId:", bookingId);
+    console.log("bookings dump ", bookings);
+    alert("Failed to load booking details");
+  }
+}
+
+// Function to complete a booking from the modal
+function completeBookingFromModal(bookingId) {
+  currentBookingIdForVerification = bookingId;
+  closeModal(); // Close the details modal
+  document.getElementById("verificationModal").style.display = "block"; // Open verification modal
+}
+
+// Helper function to try parsing JSON
+function tryParseJson(value) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+// Modify the DOMContentLoaded event listener to initialize modal
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("jobDetailsModal");
+  const closeBtn = document.querySelector(".close-modal");
+
+  // Close modal when X is clicked
+  closeBtn.addEventListener("click", closeModal);
+
+  // Close modal when clicking outside content
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Modify the event listeners for modal action buttons
+  // These will be set dynamically when opening the modal now
+
+  // Add function to fetch all bookings at page load
+  fetchAllBookings();
+
+  // Poll for new requests
+  setInterval(pollForNewRequests, 20000);
+});
+
+// Function to fetch all bookings
+function fetchAllBookings() {
+  fetch(`${ROOT}/public/dashboard/getLatestBookings`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success" && data.data.length > 0) {
+        window.latestBookings = data.data;
+        console.log("Saved all bookings to the window", data);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching bookings:", error);
+    });
+}
+
+// Functionality to handle booking completion
+let currentBookingIdForVerification = null;
+
+function completeBooking(button, bookingId) {
+  // Store the booking ID for verification
+  currentBookingIdForVerification = bookingId;
+
+  // Show the verification modal
+  document.getElementById("verificationModal").style.display = "block";
+}
+
+function closeVerificationModal() {
+  document.getElementById("verificationModal").style.display = "none";
+  currentBookingIdForVerification = null;
+  document.getElementById("verificationError").style.display = "none";
+}
+
+function verifyCompletion() {
+  const verificationCode = document
+    .getElementById("verificationCode")
+    .value.trim();
+  const errorElement = document.getElementById("verificationError");
+
+  if (!verificationCode) {
+    errorElement.textContent = "Please enter the verification code";
+    errorElement.style.display = "block";
+    return;
+  }
+
+  // Find the booking item in the DOM
+  const bookingItem = document.querySelector(
+    `.booking-item[data-booking-id="${currentBookingIdForVerification}"]`,
+  );
+
+  if (bookingItem) {
+    // Change status to completed
+    bookingItem.classList.remove("upcoming");
+    bookingItem.classList.add("completed");
+
+    // Remove action buttons and add status indicator
+    const actionsDiv = bookingItem.querySelector(".booking-actions");
+    actionsDiv.innerHTML = `
+            <div class="booking-status completed">
+                <i class='bx bx-check-circle'></i> Completed
+            </div>
+        `;
+
+    // Send completion to server with verification code
+    fetch(`${ROOT}/public/booking/completeBooking`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookingID: currentBookingIdForVerification,
+        verificationCode: verificationCode,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          closeVerificationModal();
+        } else {
+          // Revert UI changes if failed
+          bookingItem.classList.remove("completed");
+          bookingItem.classList.add("upcoming");
+          actionsDiv.innerHTML = `
+                    <button class="btn-complete" onclick="completeBooking(this, ${currentBookingIdForVerification})">
+                        <i class='bx bx-check-circle'></i> Complete
+                    </button>
+                `;
+
+          errorElement.textContent =
+            data.message ||
+            "Verification failed. Please check the code and try again.";
+          errorElement.style.display = "block";
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Revert UI changes if failed
+        bookingItem.classList.remove("completed");
+        bookingItem.classList.add("upcoming");
+        actionsDiv.innerHTML = `
+                <button class="btn-complete" onclick="completeBooking(this, ${currentBookingIdForVerification})">
+                    <i class='bx bx-check-circle'></i> Complete
+                </button>
+            `;
+
+        errorElement.textContent = "An error occurred. Please try again.";
+        errorElement.style.display = "block";
+      });
+  }
+}

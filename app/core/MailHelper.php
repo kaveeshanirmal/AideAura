@@ -1,0 +1,40 @@
+<?php
+
+class MailHelper
+{
+    public static function sendMail($to, $subject, $message) {
+        // Set the headers
+        $headers = "From: no-reply@aideaura.com\r\n";
+        return mail($to, $subject, $message, $headers);
+    }
+
+    public static function sendBookingConfirmation($to, $bookingDetails, $role) {
+        $headers = "From: no-reply@aideaura.com\r\n";
+        $subject = "Booking Confirmation";
+
+        if ($role == 'worker') {
+            $message = "Dear Service Provider,\n\n";
+            $message .= "You have a new booking!\n\n";
+            $message .= "Booking Details:\n";
+            $message .= "Booking ID: " . $bookingDetails->bookingID . "\n";
+            $message .= "Date: " . $bookingDetails->bookingDate . "\n";
+            $message .= "Location: " . $bookingDetails->location . "\n";
+            $message .= "Time: " . $bookingDetails->startTime . "\n";
+            $message .= "Booking Amount: LKR " . number_format($bookingDetails->totalCost, 2) . "\n";
+            $message .= "Service: " . $bookingDetails->serviceType . "\n";
+            $message .= "Thank you for using our service.";
+        } elseif ($role == 'customer') {
+            $message = "Dear Customer,\n\n";
+            $message .= "Your booking has been confirmed.\n\n";
+            $message .= "Booking Details:\n";
+            $message .= "Booking ID: " . $bookingDetails->bookingID . "\n";
+            $message .= "Service Type: " . $bookingDetails->serviceType . "\n";
+            $message .= "Date: " . $bookingDetails->bookingDate . "\n";
+            $message .= "Time: " . $bookingDetails->startTime . "\n";
+            $message .= "Amount Paid: LKR " . number_format($bookingDetails->totalCost, 2) . "\n";
+            $message .= "Thank you for using our service.";
+        }
+
+        return self::sendMail($to, $subject, $message);
+    }
+}

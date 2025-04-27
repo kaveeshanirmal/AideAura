@@ -7,15 +7,101 @@ class OpManager extends Controller
         $this->view('opm/opmWorkerInquiries');
     }
 
-    public function specialRequests()
+
+    public function customers(){
+        $customerModel = new CustomerModel();
+        $customers = $customerModel->getAllCustomerDetails(); // Fetch all Workers from the database
+        error_log("Workers in controller: " . json_encode($customers));
+        $this->view('opm/opmCustomerDetails', ['customers' => $customers]);
+       
+    }
+    
+    public function searchCustomers(){
+            header('Content-Type: application/json');
+        
+            try {
+                // Decode the JSON input from the request body
+                $data = json_decode(file_get_contents('php://input'), true);
+        
+                // Validate and extract filters from the input
+                $filters = [
+                    'customerID' => !empty($data['customerID']) ? trim($data['customerID']) : null
+                ];
+        
+                // Ensure at least one filter is provided
+                if (empty($filters['customerID'])) {
+                    throw new Exception('CustomerID must be provided.');
+                }
+        
+    
+                $customerModel = new CustomerModel();
+                $customers = $customerModel->searchCustomer($filters['customerID']);
+        
+                echo json_encode([
+                    'success' => true,
+                    'customers' => $customers
+                ]);
+            } catch (Exception $e) {
+                http_response_code(400); // Bad request
+                echo json_encode([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]);
+            }
+    // I was add some comments to the code
+            exit; // Ensure no further output
+        }
+    
+
+    public function bookingDetails()
     {
-        $this->view('opm/specialRequests');
+        $bookingModel = new BookingModel();
+        $bookingDetails = $bookingModel->getBookingAllDetails();
+        $this->view('opm/opmBookingDetails', ['bookingDetails'=>  $bookingDetails]);
     }
 
     // public function workerSchedules()
     // {
     //     $this->view('opm/workerSchedules');
     // }
+
+    public function searchBookingDetails() 
+    {
+        header('Content-Type: application/json');
+    
+        try {
+            // Decode the JSON input from the request body
+            $data = json_decode(file_get_contents('php://input'), true);
+    
+            // Validate and extract filters from the input
+            $filters = [
+                'bookingID' => !empty($data['bookingID']) ? trim($data['bookingID']) : null,
+                'customerID' => !empty($data['customerID']) ? trim($data['customerID']) : null,
+                'workerID' => !empty($data['workerID']) ? trim($data['workerID']) : null,
+            ];
+              // Ensure at least one filter is provided
+            if (empty($filters['bookingID']) && empty($filters['customerID'])  && empty($filters['workerID'])) {
+                throw new Exception('At least one of BookinID or CustomerID or WorkerID must be provided.');
+            }
+    
+            $bookingModel = new BookingModel();
+            $bookingDetails = $bookingModel->searchBookingDetails($filters);
+    
+            echo json_encode([
+                'success' => true,
+                'bookingDetails' => $bookingDetails
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400); // Bad request
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+// I was add some comments to the code
+        exit; // Ensure no further output
+    }
+
 
     public function workerSchedules()
     {

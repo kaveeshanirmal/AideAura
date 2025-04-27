@@ -62,12 +62,12 @@ a {
 
 /* Employee Form Container */
 .employee-form-container {
-  background-color: white;
+  background-color: #FFF5F9;
   border-radius: 10px;
   padding: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 600px;
-  margin: 0 auto;
+  margin: 2% auto;
 }
 
 .employee-form {
@@ -83,7 +83,7 @@ a {
 }
 
 .form-group label {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: #333;
 }
@@ -101,7 +101,7 @@ a {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
   width: 89.5%;
   margin: 0% 5% 0% 5%;
   appearance: none;
@@ -118,7 +118,7 @@ a {
 }
 
 .add-btn {
-  background-color: #e6e6e6;
+  background-color: #00FF1A;
   color: black;
   padding: 10px 40px;
   border: none;
@@ -130,7 +130,7 @@ a {
 }
 
 .add-btn:hover {
-  background-color: #d4d4d4;
+  background-color: #4CAF50;
 }
 
 /* Form Input Focus States */

@@ -10,9 +10,9 @@
     </div>
     <div class="menubar-content">
         <ul class="menu-items">
-            <li><a href="<?=ROOT?>/public/FinanceManager/reports"><img src="<?=ROOT?>/public/assets/images/Report.png" alt=""> Reports </a></li>
-            <li><a href="<?=ROOT?>/public/FinanceManager/paymentRates"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt=""> Payment Rates </a></li>
-            <li><a href="<?=ROOT?>/public/FinanceManager/paymentHistory"><img src="<?=ROOT?>/public/assets/images/paymentHistory_icon.png" alt=""> Payment History </a></li>
+            <li><a href="<?=ROOT?>/public/FinanceManager/bookingReports"><img src="<?=ROOT?>/public/assets/images/Report.png" alt=""> Reports </a></li>
+            <li><a href="<?=ROOT?>/public/FinanceManager/priceData"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt="">Price Details</a></li>
+            <li><a href="<?=ROOT?>/public/FinanceManager/paymentHistory"><img src="<?=ROOT?>/public/assets/images/paymentHistory_icon.png" alt=""> Payment Details </a></li>
             <li><a href="<?=ROOT?>/public/FinanceManager/workerInquiries"><img src="<?=ROOT?>/public/assets/images/Inquiry.png" alt=""> Customer Payment Issues </a></li>
             <li><a href="<?=ROOT?>/public/FinanceManager/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Payment Issues </a></li>
         </ul>

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addNewDayBtn.addEventListener("click", addNewScheduleRow);
   }
 
-  // Function to get remaining available days
+  // Function to get remaining available days...
   function getRemainingDays() {
     const existingDays = Array.from(
       document.querySelectorAll(".schedule-table tbody tr"),
@@ -279,11 +279,11 @@ function saveSchedules() {
 
     // Add to schedules array
     schedules.push({
-      days_of_week: day,
-      startTime: startTime,
-      endTime: endTime,
+      day_of_week: day.charAt(0).toUpperCase() + day.slice(1), // Capitalize first letter
+      start_time: startTime,       // FIXED: Changed from startTime to start_time
+      end_time: endTime,           // FIXED: Changed from endTime to end_time
       scheduleID: row.dataset.scheduleId || null,
-      workerId: workerID,
+      workerId: workerID,          // This is already correct
     });
   }
 
@@ -309,8 +309,10 @@ function saveSchedules() {
   })
     .then((response) => {
       if (!response.ok) {
-        return response.json().then(data => {
-          throw new Error(data.message || `HTTP error! Status: ${response.status}`);
+        return response.json().then((data) => {
+          throw new Error(
+            data.message || `HTTP error! Status: ${response.status}`,
+          );
         });
       }
       return response.json();
@@ -427,7 +429,7 @@ function debugScheduleData(schedules) {
   console.log("Schedules to be saved:", schedules);
   schedules.forEach((schedule, index) => {
     console.log(`Schedule ${index + 1}:`, {
-      day: schedule.days_of_week,
+      day: schedule.day_of_week,
       start: schedule.startTime,
       end: schedule.endTime,
       id: schedule.scheduleID || "new",
@@ -446,7 +448,6 @@ function loadSchedules() {
     .then((schedules) => {
       const tableBody = document.querySelector(".schedule-table tbody");
       tableBody.innerHTML = "";
-
       if (!schedules || schedules.length === 0) {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -455,18 +456,18 @@ function loadSchedules() {
         tableBody.appendChild(row);
         return;
       }
-
       schedules.forEach((schedule) => {
         const row = document.createElement("tr");
         row.dataset.scheduleId = schedule.scheduleID;
+
         const capitalizedDay =
-          schedule.days_of_week.charAt(0).toUpperCase() +
-          schedule.days_of_week.slice(1);
+          schedule.day_of_week.charAt(0).toUpperCase() +
+          schedule.day_of_week.slice(1);
 
         row.innerHTML = `
                     <td>${capitalizedDay}</td>
-                    <td>${schedule.startTime}</td>
-                    <td>${schedule.endTime}</td>
+                    <td>${schedule.start_time}</td>
+                    <td>${schedule.end_time}</td>
                     <td class="action-column">
                         <i class="fas fa-edit update-btn" title="Edit Schedule"></i>
                         <i class="fas fa-trash-alt delete-btn" title="Delete Schedule"></i>
@@ -533,7 +534,9 @@ function handleDelete(event) {
           row.remove();
           showAlert("Schedule deleted successfully!", "success");
         } else {
-          showAlert("Error deleting schedule: " + (data.error || "Unknown error"));
+          showAlert(
+            "Error deleting schedule: " + (data.error || "Unknown error"),
+          );
         }
       })
       .catch((error) => {
@@ -609,13 +612,13 @@ function makeRowEditable(row) {
     const currentDay = dayCell.textContent.trim().toLowerCase();
     const daySelectHTML = `
       <select class="day-select" name="day_of_week" required>
-        <option value="monday" ${currentDay === 'monday' ? 'selected' : ''}>Monday</option>
-        <option value="tuesday" ${currentDay === 'tuesday' ? 'selected' : ''}>Tuesday</option>
-        <option value="wednesday" ${currentDay === 'wednesday' ? 'selected' : ''}>Wednesday</option>
-        <option value="thursday" ${currentDay === 'thursday' ? 'selected' : ''}>Thursday</option>
-        <option value="friday" ${currentDay === 'friday' ? 'selected' : ''}>Friday</option>
-        <option value="saturday" ${currentDay === 'saturday' ? 'selected' : ''}>Saturday</option>
-        <option value="sunday" ${currentDay === 'sunday' ? 'selected' : ''}>Sunday</option>
+        <option value="monday" ${currentDay === "monday" ? "selected" : ""}>Monday</option>
+        <option value="tuesday" ${currentDay === "tuesday" ? "selected" : ""}>Tuesday</option>
+        <option value="wednesday" ${currentDay === "wednesday" ? "selected" : ""}>Wednesday</option>
+        <option value="thursday" ${currentDay === "thursday" ? "selected" : ""}>Thursday</option>
+        <option value="friday" ${currentDay === "friday" ? "selected" : ""}>Friday</option>
+        <option value="saturday" ${currentDay === "saturday" ? "selected" : ""}>Saturday</option>
+        <option value="sunday" ${currentDay === "sunday" ? "selected" : ""}>Sunday</option>
       </select>
     `;
     dayCell.innerHTML = daySelectHTML;
@@ -810,7 +813,7 @@ function checkForOverlaps(changedRow) {
 // Add event listeners for immediate validation
 document.addEventListener("DOMContentLoaded", function () {
   const scheduleTable = document.querySelector(".schedule-table");
-  
+
   if (scheduleTable) {
     scheduleTable.addEventListener("input", function (e) {
       if (e.target.classList.contains("time-input")) {

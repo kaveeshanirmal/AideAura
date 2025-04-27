@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Add Role</title>
+    <title>Admin Add Role</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminRoles1.css">
 </head>
 <body>
@@ -41,9 +41,19 @@
     <script>
 const form = document.getElementById('roleForm');
 const notification = document.getElementById('notification');
+const roleNameInput = document.getElementById('roleName')
+
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+        // Validate role name
+        const roleName = roleNameInput.value.trim();
+if (!/^[a-zA-Z0-9]+$/.test(roleName)) {
+    showNotification('Role name must consist of only letters and digits.', 'error');
+    return;
+}
+
+
     const formData = new FormData(form);
     
     try {
@@ -59,7 +69,7 @@ form.addEventListener('submit', async (e) => {
         const responseText = await response.text();
         console.log('Raw server response:', responseText);
         
-        // Try to parse the response as JSON
+        // // Try to parse the response as JSON
         let result;
         try {
             result = JSON.parse(responseText);

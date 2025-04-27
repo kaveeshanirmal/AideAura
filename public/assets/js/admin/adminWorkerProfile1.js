@@ -15,7 +15,7 @@ function viewAvailabilitySchedule(userID) {
     // Alternative approach: Submit a form to use POST method
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = `${ROOT}/public/Admin/getAvailabilitySchedule`;
+    form.action = `${ROOT}/public/admin/getAvailabilitySchedule`;
     
     const userIDInput = document.createElement('input');
     userIDInput.type = 'hidden';
@@ -39,7 +39,7 @@ function updateStatus(status) {
     const userID = document.getElementById('userID').value;
     console.log(requestID, userID, status);
     
-    fetch(`${ROOT}/public/admin/updateVerificationStatus`, {
+    fetch(`${ROOT}/public/Admin/updateVerificationStatus`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

@@ -7,36 +7,110 @@ class FinanceManager extends Controller
         //session_start();
         //echo "SESSION ROLE: " . ($_SESSION['role'] ?? 'not set');
         //exit;
-        $this->view('fm/paymentHistory');
+        $this->paymentDetails();
     }
 
-    public function paymentHistory()
+    public function paymentDetails()
+
     {
-        $this->view('fm/paymentHistory');
-    }
 
+        $paymentModel = new PaymentModel();
+        $paymentDetails = $paymentModel->getAllPaymentsWithBookingDetails(); // Fetch all payment details from the database
+        $this->view('fm/paymentDetails',['paymentDetails'=>$paymentDetails]);
+    }
 
     // public function paymentRates()
     // {
     //     $this->view('fm/paymentRates');
     // }
 
-    public function paymentRates()
-    {
-        $paymentRateModel = new PaymentRateModel();
-        $allRates = $paymentRateModel->getAllPaymentRates(); // Fetch all payment rateas from the database
+    // public function paymentRates()
+    // {
+    //     $paymentRateModel = new PaymentRateModel();
+    //     $allRates = $paymentRateModel->getAllPaymentRates(); // Fetch all payment rateas from the database
         
-         // Filter roles that doesn't delete 
-         $filteredRates = array_filter($allRates, function($rate){
-            return $rate->isDelete == 0;
-        });
+    //      // Filter roles that doesn't delete 
+    //      $filteredRates = array_filter($allRates, function($rate){
+    //         return $rate->isDelete == 0;
+    //     });
 
-        if(empty($filteredRates)){
-            error_log("No roles with specified roles retrieved or query failed");
+    //     if(empty($filteredRates)){
+    //         error_log("No roles with specified roles retrieved or query failed");
+    //     }
+        
+        
+    //     $this->view('fm/paymentRates',['rates'=>$filteredRates]);
+    // }
+
+    public function priceData()
+    {
+
+        $pricingModel = new PricingModel();
+        $priceData = $pricingModel->getAllPriceDetails(); // Fetch all payment rateas from the database
+        
+        //  // Filter roles that doesn't delete 
+        // //  $filteredRates = array_filter($allRates, function($rate){
+        // //     return $rate->isDelete == 0;
+        // // });
+
+        // if(empty($filteredRates)){
+        //     error_log("No roles with specified roles retrieved or query failed");
+        // }
+        
+        
+        $this->view('fm/priceDetails', ['priceData' => $priceData]);
+
+    }
+
+    public function updatePriceDetails()
+    {
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (!isset($data['detailID'])) {
+                throw new Exception('DetailID is required');
+            }
+            // if (!isset($data['categoryID'])) {
+            //     throw new Exception('categoryID is required');
+            // }
+
+            $detailID = $data['detailID'];
+            unset($data['detailID']); // Remove userID from update data
+            // $categoryID = $data['categoryID'];
+            // unset($data['categoryID']); // Remove userID from update data
+
+            $priceData =[
+                'detailName' => $data['detailName'] ?? NULL,
+                'price' => $data['price'] ?? NULL,
+                'description' => $data['description'] ?? NULL,
+            ];
+
+            // $categoryData = [
+            //     'categoryName' => $data['categoryName'] ?? NULL,
+            //     'description' => $data['categoryDescription'] ?? NULL,
+            //     'displayName' => $data['categoryDisplayName'] ?? NULL,
+            // ];
+
+            $pricingModel = new PricingModel();
+            $success = $pricingModel->updatePriceDetails($detailID, $priceData);
+            // $success1 = $pricingModel->updatePriceDetails($detailID, $priceData);
+            // $success2 = $pricingModel->updateCategoryDetails($categoryID, $categoryData);
+
+            // $success = $success1 && $success2; // Combine both success statuses
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => $success,
+                'message' => $success ? 'Price details updated successfully' : 'Failed to update price details'
+            ]);
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
         }
-        
-        
-        $this->view('fm/paymentRates',['rates'=>$filteredRates]);
     }
 
     public function updatePaymentRates() {
@@ -96,9 +170,12 @@ class FinanceManager extends Controller
     }
 
 
-    public function reports()
+    public function bookingReports()
     {
-        $this->view('fm/reports');
+        
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->roleIndex();
     }
 
         //payment issues function ..name might confuse lolz

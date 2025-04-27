@@ -38,52 +38,75 @@ class customerHelpDesk extends Controller
     }
 
     public function submitComplaint()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Sanitize input data
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            
-            // Extract values with fallbacks
-            $issueType = isset($_POST['issue_type']) ? $_POST['issue_type'] : '';
-            $issue = isset($_POST['issue']) ? $_POST['issue'] : '';
-            $description = isset($_POST['description']) ? $_POST['description'] : '';
-            
-            // Validate required fields
-            if (empty($issue) || empty($description)) {
-                $_SESSION['complaint_message'] = 'Please fill in all required fields';
-                header('Location: ' . ROOT . '/customerHelpDesk/operationalHelp');
-                exit();
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Sanitize input data - Updated to use FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        $_POST = filter_input_array(INPUT_POST, [
+            'issue_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'issue' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'description' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
+            'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'help_desk_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS  // Add this line to capture help desk type
+        ]);
+        
+        // Extract values with fallbacks
+        $issueType = isset($_POST['issue_type']) ? $_POST['issue_type'] : '';
+        $issue = isset($_POST['issue']) ? $_POST['issue'] : '';
+        $description = isset($_POST['description']) ? $_POST['description'] : '';
+        $helpDeskType = isset($_POST['help_desk_type']) ? $_POST['help_desk_type'] : '';
+        
+        // Determine which help desk to redirect to
+        $redirectUrl = ROOT . '/public/customerHelpDesk/operationalHelp'; // Default
+        
+        // If it's from payment help desk, set payment redirect URL
+        if ($helpDeskType === 'payment') {
+            $redirectUrl = ROOT . '/public/customerHelpDesk/paymentHelp';
+        }
+        
+        // You can also check the HTTP referer as a fallback
+        if (empty($helpDeskType) && isset($_SERVER['HTTP_REFERER'])) {
+            if (strpos($_SERVER['HTTP_REFERER'], 'paymentHelp') !== false) {
+                $redirectUrl = ROOT . '/public/customerHelpDesk/paymentHelp';
             }
-            
-            $data = [
-                'customerID' => $_SESSION['customerID'],
-                'issue_type' => $issueType,
-                'issue' => $issue,
-                'description' => $description,
-                'status' => 'Pending',
-                'priority' => $this->getComplaintPriority($issue),
-                'submitted_at' => date('Y-m-d H:i:s') // Ensure current timestamp
-            ];
-
-            $result = $this->customerComplaintModel->addComplaint($data);
-
-            if ($result) {
-                // Get the complaint ID from the result
-                $complaintID = $result;
-                $_SESSION['complaint_message'] = "Your complaint (#$complaintID) has been submitted successfully. We'll get back to you as soon as possible.";
-            } else {
-                $_SESSION['complaint_message'] = 'Failed to submit your complaint. Please try again or contact support directly.';
-            }
-
-            // Redirect to the operational help page
-            header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
-            exit();
-        } else {
-            // If not a POST request, redirect to the form
-            header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+        }
+        
+        // Validate required fields
+        if (empty($issue) || empty($description)) {
+            $_SESSION['complaint_message'] = 'Please fill in all required fields';
+            header('Location: ' . $redirectUrl);
             exit();
         }
+        
+        $data = [
+            'customerID' => $_SESSION['customerID'],
+            'issue_type' => $issueType,
+            'issue' => $issue,
+            'description' => $description,
+            'status' => 'Pending',
+            'priority' => $this->getComplaintPriority($issue),
+            'submitted_at' => date('Y-m-d H:i:s') // Ensure current timestamp
+        ];
+        
+        $result = $this->customerComplaintModel->addComplaint($data);
+        
+        if ($result) {
+            // Get the complaint ID from the result
+            $complaintID = $result;
+            $_SESSION['complaint_message'] = "Your complaint (#$complaintID) has been submitted successfully. We'll get back to you as soon as possible.";
+        } else {
+            $_SESSION['complaint_message'] = 'Failed to submit your complaint. Please try again or contact support directly.';
+        }
+        
+        // Redirect to the appropriate help page
+        header('Location: ' . $redirectUrl);
+        exit();
+    } else {
+        // If not a POST request, redirect to the form
+        header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+        exit();
     }
+}
 
     /**
      * Determine the priority of a complaint based on the issue type
@@ -202,60 +225,61 @@ class customerHelpDesk extends Controller
         }
         exit();
     }
-/**
- * Get conversation history for a complaint
- * @param string $complaintId - The ID of the complaint
- */
-public function getConversation($complaintId = null)
-{
-    // Set content type to JSON
-    header('Content-Type: application/json');
-    
-    // Validate complaint ID
-    if (!$complaintId) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Invalid complaint ID']);
-        exit;
-    }
-    
-    // Verify the complaint belongs to the logged-in user
-    $complaint = $this->customerComplaintModel->getComplaintById($complaintId);
-    
-    if (!$complaint || $complaint->customerID != $_SESSION['customerID']) {
-        http_response_code(403); // Forbidden
-        echo json_encode(['error' => 'You do not have permission to view this conversation']);
-        exit;
-    }
-    
-    // Get all updates for this complaint using a custom query
-    $this->customerComplaintModel->setTable('customercomplaints_updates');
-    $query = "SELECT * FROM customercomplaints_updates 
-              WHERE complaintID = :complaintID
-              ORDER BY updated_at ASC";
-              
-    $params = [
-        'complaintID' => $complaintId
-    ];
-    
-    $updates = $this->customerComplaintModel->get_all($query, $params);
-    
-    // Format timestamps for display
-    foreach ($updates as &$update) {
-        $update->timestamp = date('F j, Y \a\t g:i a', strtotime($update->updated_at));
-    }
-    
-    // Return as JSON
-    echo json_encode([
-        'success' => true,
-        'updates' => $updates
-    ]);
-    exit;
-}
 
-/**
- * Submit a customer reply to a complaint
- */
-public function submitReply()
+    /**
+     * Get conversation history for a complaint
+     * @param string $complaintId - The ID of the complaint
+     */
+    public function getConversation($complaintId = null)
+    {
+        // Set content type to JSON
+        header('Content-Type: application/json');
+        
+        // Validate complaint ID
+        if (!$complaintId) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid complaint ID']);
+            exit;
+        }
+        
+        // Verify the complaint belongs to the logged-in user
+        $complaint = $this->customerComplaintModel->getComplaintById($complaintId);
+        
+        if (!$complaint || $complaint->customerID != $_SESSION['customerID']) {
+            http_response_code(403); // Forbidden
+            echo json_encode(['error' => 'You do not have permission to view this conversation']);
+            exit;
+        }
+        
+        // Get all updates for this complaint using a custom query
+        $this->customerComplaintModel->setTable('customercomplaints_updates');
+        $query = "SELECT * FROM customercomplaints_updates 
+                WHERE complaintID = :complaintID
+                ORDER BY updated_at ASC";
+                
+        $params = [
+            'complaintID' => $complaintId
+        ];
+        
+        $updates = $this->customerComplaintModel->get_all($query, $params);
+        
+        // Format timestamps for display
+        foreach ($updates as &$update) {
+            $update->timestamp = date('F j, Y \a\t g:i a', strtotime($update->updated_at));
+        }
+        
+        // Return as JSON
+        echo json_encode([
+            'success' => true,
+            'updates' => $updates
+        ]);
+        exit;
+    }
+
+    /**
+     * Submit a customer reply to a complaint
+     */
+    public function submitReply()
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
@@ -263,7 +287,10 @@ public function submitReply()
     }
     
     // Sanitize and get input
-    $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+    $_POST = filter_input_array(INPUT_POST, [
+        'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
+        'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
+    ]);
     
     $complaintId = $_POST['complaint_id'] ?? '';
     $comments = $_POST['comments'] ?? '';
@@ -284,13 +311,22 @@ public function submitReply()
         exit();
     }
     
-    // Create update data
+    // Get the corresponding userID for this customer
+    $userID = $this->getUserIdForCustomer($_SESSION['customerID']);
+    
+    if (!$userID) {
+        $_SESSION['complaint_message'] = 'User ID not found. Please contact support.';
+        header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+        exit();
+    }
+    
+    // Create update data with the correct userID
     $updateData = [
         'complaintID' => $complaintId,
-        'status' => 'In Progress', // Set to In Progress when customer replies
+        'status' => 'In Progress', 
         'comments' => $comments,
-        'userID' => $_SESSION['customerID'],
-        'role' => 'Customer', // Set role as Customer
+        'userID' => $userID, // Use the correct userID from users table
+        'role' => 'Customer', 
         'updated_at' => date('Y-m-d H:i:s')
     ];
     
@@ -312,6 +348,14 @@ public function submitReply()
     exit();
 }
 
-
-
+/**
+ * Helper method to get the userID for a customerID
+ * 
+ * @param int $customerID The customer ID
+ * @return int|null The corresponding user ID or null if not found
+ */
+private function getUserIdForCustomer($customerID)
+{
+    return $this->customerComplaintModel->getUserIdByCustomerId($customerID);
+}
 }
