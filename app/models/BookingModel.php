@@ -473,8 +473,8 @@ class BookingModel
         $this->setTable('bookings');
         // Check for bookings those which bookingDate is past 2 days
         $query = "SELECT * FROM bookings WHERE workerID = :workerID 
-                         AND bookingDate < NOW() - INTERVAL 2 DAY
-                         AND status = 'expired'";
+                         AND bookingDate < (NOW() - INTERVAL 2 DAY)
+                         AND status = 'confirmed'";
         $result = $this->get_all($query, ['workerID' => $workerID]);
         return ($result !== false) && !empty($result);
     }
@@ -483,8 +483,8 @@ class BookingModel
         $this->setTable('bookings');
         // Get all expired bookings
         $query = "SELECT * FROM bookings WHERE workerID = :workerID 
-                         AND bookingDate < NOW() - INTERVAL 2 DAY
-                         AND status = 'expired'";
+                         AND bookingDate < (NOW() - INTERVAL 2 DAY)
+                         AND status = 'confirmed'";
         return $this->get_all($query, ['workerID' => $workerID]);
     }
 

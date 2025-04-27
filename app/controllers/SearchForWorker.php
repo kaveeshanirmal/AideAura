@@ -16,8 +16,15 @@ class SearchForWorker extends Controller
 
     public function find()
     {
+        // check if the session is set
+        if (!isset($_SESSION['booking_info'])) {
+            // Redirect to the booking page if session is not set
+            header("Location: " . ROOT . "/public/selectService");
+            exit;
+        }
+
         $date = $_SESSION['booking_info']['preferred_date'] ?? '';
-// Extract weekday from the date
+        // Extract weekday from the date
         $weekday = '';
         if ($date) {
             $dateObj = new DateTime($date);
@@ -46,71 +53,42 @@ class SearchForWorker extends Controller
         $locationPattern = '%' . $district . '%';
 
         $jobType = $_SESSION['booking_info']['serviceType'] ?? '';
+        // Set job type detached from booking info
+        $_SESSION['serviceType'] = $jobType;
+
         $gender = $_SESSION['booking_info']['gender'] ?? '';
 
-        // SQL query to find verified workers who match the criteria
-
-//      Weighted score calculation to sort the workers
-//      Weighted Score =
-//      (avg_rating / 5) * 60 +          -- 60% weight for rating quality
-//      (LOG(total_reviews + 1) * 20) +  -- 20% weight for review count (log-scaled for fairness)
-//      (IF last_activity < 7 days ago: 20 ELSE 0) -- 20% for recent activity
-
-
-        $query = "SELECT
-            vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
-            vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
-            ((wst.avg_rating / 5) * 45) + 
-            ((wst.completion_rate / 100) * 25) +
-            LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 + 
-            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 10, 0)) AS score,
-            wst.avg_rating, wst.total_reviews
-          FROM verified_workers vw
-          JOIN worker w ON vw.workerID = w.workerID
-          JOIN users u ON w.userID = u.userID
-          JOIN worker_roles wr ON vw.workerID = wr.workerID
-          JOIN jobroles j ON wr.roleID = j.roleID
-          JOIN workingschedule ws ON vw.workerID = ws.workerID
-          JOIN worker_stats wst ON w.workerID = wst.workerID
-          WHERE w.availability_status = 'online'
-          AND vw.gender = :gender
-          AND j.name = :jobType
-          AND vw.workLocations LIKE :location
-          AND ws.day_of_week = :weekday
-          AND ws.start_time <= TIME(:startTime)
-          AND ws.end_time >= TIME(:startTime)
-          ORDER BY score DESC";
-
-        // Fetch all matching workers using get_all()
-        $data = $this->get_all($query, [
+        $data =  [
             'gender'    => $gender,
             'jobType'   => $jobType,
             'location'  => $locationPattern,
             'weekday'   => $weekday,
             'startTime' => $startTime,
             'endTime'   => $startTime
-        ]);
+        ];
+
+        $results = $this->findExactMatch($data);
 
         // Check if any workers were found
-        if (empty($data)) {
+        if (empty($results)) {
             // No workers found, redirect to noMatchApology view
             header("Location: " . ROOT . "/public/SearchForWorker/noWorkersFound");
             exit;
         }
 
         // For all found workers check whether they are already booked
-        foreach ($data as $key => $worker) {
+        foreach ($results as $key => $worker) {
             error_log("Worker ID: " . $worker->workerID);
             $workerID = $worker->workerID;
             $isBooked = $this->workerModel->isBooked($workerID, $date, $startTime);
             if ($isBooked) {
-                unset($data[$key]); // Remove booked workers from the result
+                unset($results[$key]); // Remove booked workers from the result
             }
         }
         // reindex the array
-        $data = array_values($data);
+        $results = array_values($results);
         // Store results in session
-        $_SESSION['workers'] = $data;
+        $_SESSION['workers'] = $results;
 
         // Redirect to workerFound view
         header("Location: " . ROOT . "/public/SearchForWorker/searchResults");
@@ -135,7 +113,16 @@ class SearchForWorker extends Controller
 
     public function browseWorkers()
     {
-        $this->view('browseWorkers');
+        // Check if the session is set
+        if (!isset($_SESSION['serviceType'])) {
+            // Redirect to the booking page if session is not set
+            header("Location: " . ROOT . "/public/selectService");
+            exit;
+        }
+        $data = ['jobType' => $_SESSION['booking_info']['serviceType'] ?? ''];
+        $results = $this->findAlternatives($data);
+
+        $this->view('browseWorkers', ['workers' => $results]);
     }
 
     public function waitingForResponse()
@@ -145,7 +132,77 @@ class SearchForWorker extends Controller
 
     public function noWorkersFound()
     {
-        $this->view('noMatchApology');
+        $this->view('noMatchApology', ['redirectUrl' => ROOT . '/public/SearchForWorker/browseWorkers']);
+    }
+
+    public function noAlternativesFound()
+    {
+        $this->view('noMatchApology', ['redirectUrl' => ROOT . '/public/']);
+    }
+
+    public function findExactMatch($data)
+    {
+        // SQL query to find verified workers who match the criteria
+
+//      Weighted score calculation to sort the workers
+//      Weighted Score =
+//      (avg_rating / 5) * 60 +          -- 45% weight for rating quality
+//      (completion_rate / 100) * 25 +   -- 25% weight for completion rate
+//      LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 +  -- 20% weight for review count (log-scaled for fairness)
+//      (IF last_activity < 7 days ago: 20 ELSE 0) -- 10% for recent activity
+
+
+        $query = "SELECT
+            vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
+            vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
+            ((wst.avg_rating / 5) * 45) + 
+            ((wst.completion_rate / 100) * 25) +
+            LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 + 
+            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 10, 0)) AS score,
+            wst.avg_rating, wst.total_reviews
+          FROM verified_workers vw
+          JOIN worker w ON vw.workerID = w.workerID
+          JOIN users u ON w.userID = u.userID
+          JOIN worker_roles wr ON vw.workerID = wr.workerID
+          JOIN jobroles j ON wr.roleID = j.roleID
+          JOIN workingschedule ws ON vw.workerID = ws.workerID
+          JOIN worker_stats wst ON w.workerID = wst.workerID
+          WHERE w.availability_status = 'online'
+          AND vw.gender = :gender
+          AND j.name = :jobType
+          AND vw.workLocations LIKE :location
+          AND ws.day_of_week = :weekday
+          AND ws.start_time <= TIME(:startTime)
+          AND ws.end_time >= TIME(:startTime)
+          GROUP BY vw.workerID
+          ORDER BY score DESC";
+
+        return $this->get_all($query, $data);
+    }
+
+    public function findAlternatives($data)
+    {
+        $query = "SELECT
+            vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
+            vw.profileImage, vw.address, j.name AS jobRole, w.availability_status, vw.workLocations,
+            ((wst.avg_rating / 5) * 45) + 
+            ((wst.completion_rate / 100) * 25) +
+            LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 + 
+            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 10, 0)) AS score,
+            wst.avg_rating, wst.total_reviews
+          FROM verified_workers vw
+          JOIN worker w ON vw.workerID = w.workerID
+          JOIN users u ON w.userID = u.userID
+          JOIN worker_roles wr ON vw.workerID = wr.workerID
+          JOIN jobroles j ON wr.roleID = j.roleID
+          JOIN workingschedule ws ON vw.workerID = ws.workerID
+          JOIN worker_stats wst ON w.workerID = wst.workerID
+          WHERE w.availability_status = 'online'
+          AND j.name = :jobType
+          GROUP BY vw.workerID
+          ORDER BY score DESC";
+
+        return $this->get_all($query, $data);
     }
 }
 

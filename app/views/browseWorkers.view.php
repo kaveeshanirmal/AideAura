@@ -1,11 +1,3 @@
-<?php
-if (!isset($_SESSION['workers'] ) || empty($_SESSION['workers'])) {
-    // No workers found, redirect to noWorkersPage
-    header("Location: " . ROOT . "/public/searchForWorker/noWorkersFound");
-    exit;
-}
-$workers = $_SESSION['workers'];
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +52,7 @@ $workers = $_SESSION['workers'];
                     </p>
                     <p><strong>Role:</strong> <?= htmlspecialchars($worker->jobRole) ?></p>
                     <p><strong>Gender:</strong> <?= htmlspecialchars($worker->gender) ?></p>
-                    <p><strong>Location:</strong> <?= htmlspecialchars($worker->location ?? 'Not specified') ?></p>
+                    <p><strong>Location:</strong> <?= htmlspecialchars($worker->workLocations ?? 'Not specified') ?></p>
                     <p class="score-container">
                         <strong><span class="aide">Aide</span><span class="aura">Aura</span>Score: </strong>
                         <span class="score-value" data-score="<?= htmlspecialchars(round($worker->score)) ?>">

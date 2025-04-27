@@ -52,7 +52,7 @@ class App
             'BookingHistory' => ['index'],
             'CustomerHelpDesk' => ['index', 'operationalHelp', 'paymentHelp', 'submitComplaint', 'getComplaintPriority', 'getSolution', 'clearSessionMessage', 'getConversation', 'submitReply'],
             'CustomerProfile'=> ['index', 'personalInfo', 'update', 'bookingHistory', 'cancellingBooking','paymentHistory', 'faq'],
-            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'noWorkersFound'],
+            'SearchForWorker' => ['index', 'find', 'searchResults', 'processing', 'browseWorkers', 'waitingForResponse', 'noWorkersFound', 'noAlternativesFound', 'findExactMatch', 'findAlternatives'],
             'Payment' => ['authorize', 'success', 'cancel', 'notify', 'jsonResponse', 'clearSessionMessage'],
             'Home' => ['findWorkers'],
             'SelectService' => ['index', 'cook', 'maid', 'nanny', 'cook24', 'allRounder', 'bookingInfo', 'bookingSummary', 'submitBookingInfo', 'cookPricing', 'maidPricing', 'nannyPricing', 'cook24Pricing', 'allRounderPricing'],
