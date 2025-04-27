@@ -78,7 +78,7 @@ class BookingModel
             FROM bookings b
             JOIN verified_workers vw ON b.workerID = vw.workerID
             WHERE b.customerID = :customerID
-            ORDER BY b.bookingDate DESC";
+            ORDER BY b.createdAt ASC";
 
         return $this->get_all($query, ['customerID' => $customerID]);
     }
