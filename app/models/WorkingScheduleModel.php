@@ -14,13 +14,13 @@ class WorkingScheduleModel
     {
         try {
             // Validate data
-            if (!isset($data['workerId'], $data['days_of_week'], $data['startTime'], $data['endTime'])) {
+            if (!isset($data['workerID'], $data['day_of_week'], $data['start_time'], $data['end_time'])) {
                 error_log("Missing required fields for schedule");
                 return false;
             }
             
             // Validate day of week - capitalize first letter to match enum format
-            $day = ucfirst(strtolower($data['days_of_week']));
+            $day = ucfirst(strtolower($data['day_of_week']));
             if (!in_array($day, $this->validDays)) {
                 error_log("Invalid day of week: " . $day);
                 return false;
@@ -34,8 +34,8 @@ class WorkingScheduleModel
             $params = [
                 ':workerId' => $data['workerId'],
                 ':day_of_week' => $day,
-                ':start_time' => $data['startTime'],
-                ':end_time' => $data['endTime']
+                ':start_time' => $data['start_time'],
+                ':end_time' => $data['end_time']
             ];
             
             error_log("Adding new schedule for worker: " . $data['workerId']);
@@ -94,13 +94,13 @@ class WorkingScheduleModel
     {
         try {
             // Validate data
-            if (!isset($data['workerId'], $data['days_of_week'], $data['startTime'], $data['endTime'])) {
+            if (!isset($data['workerId'], $data['day_of_week'], $data['start_time'], $data['end_time'])) {
                 error_log("Missing required fields for schedule update");
                 return false;
             }
             
             // Validate day of week - capitalize first letter to match enum format
-            $day = ucfirst(strtolower($data['days_of_week']));
+            $day = ucfirst(strtolower($data['day_of_week']));
             if (!in_array($day, $this->validDays)) {
                 error_log("Invalid day of week for update: " . $day);
                 return false;
@@ -115,8 +115,8 @@ class WorkingScheduleModel
                      
             $params = [
                 ':day_of_week' => $day,
-                ':start_time' => $data['startTime'],
-                ':end_time' => $data['endTime'],
+                ':start_time' => $data['start_time'],
+                ':end_time' => $data['end_time'],
                 ':scheduleID' => $scheduleId,
                 ':workerId' => $data['workerId']
             ];

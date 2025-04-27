@@ -279,7 +279,7 @@ function saveSchedules() {
 
     // Add to schedules array
     schedules.push({
-      day_of_week: day,
+      day_of_week: day.charAt(0).toUpperCase() + day.slice(1), // Capitalize first letter
       startTime: startTime,
       endTime: endTime,
       scheduleID: row.dataset.scheduleId || null,
