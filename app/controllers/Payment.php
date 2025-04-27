@@ -205,6 +205,11 @@ class Payment extends Controller
             'customer'
         );
 
+        MailHelper::sendJobCompletionCode(
+            $this->userModel->findUserByUsername($_SESSION['username'])->email,
+            $code
+        );
+
         // Unset the booking session to prevent reprocessing
         unset($_SESSION['booking']);
 

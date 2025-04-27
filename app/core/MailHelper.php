@@ -52,4 +52,27 @@ class MailHelper
 
         return self::sendMail($to, $subject, $message);
     }
+
+    public static function sendInLocationCode($to, $code)
+    {
+        $subject = "Verification Code";
+        $message = "Dear Service Provider,\n\n";
+        $message .= "Your verification reference code is: " . $code . "\n\n";
+        $message .= "Please use this code along with your verification request.\n\n";
+        $message .= "Thank you for using our service.";
+
+        return self::sendMail($to, $subject, $message);
+
+    }
+
+    public static function sendJobCompletionCode($to, $code)
+    {
+        $subject = "Job Completion Code";
+        $message = "Dear Customer,\n\n";
+        $message .= "Completion code for your booking is: " . $code . "\n\n";
+        $message .= "Please hand this over to your service provider once the job is done.\n\n";
+        $message .= "Thank you for using our service.";
+
+        return self::sendMail($to, $subject, $message);
+    }
 }
