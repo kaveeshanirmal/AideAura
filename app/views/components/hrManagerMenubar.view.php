@@ -4,7 +4,7 @@
 <div class="menubar-header">
         <img src="<?=ROOT?>/public/assets/images/profile1.jpg" alt="Profile" class="profile-image">
         <div class="profile-info">
-            <h4>Amal Presan</h4>
+            <h4><?= $_SESSION['user_name'] ?? 'HR Manager' ?></h4>
             </div>
         <button class="menubar-close" id="menubar-close">×</button>
     </div>
