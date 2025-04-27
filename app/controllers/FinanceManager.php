@@ -170,9 +170,12 @@ class FinanceManager extends Controller
     }
 
 
-    public function reports()
+    public function bookingReports()
     {
-        $this->view('fm/reports');
+        
+        require_once "../app/controllers/BookingReports.php";
+        $bookingReportsController = new BookingReports();
+        $bookingReportsController->roleIndex();
     }
 
         //payment issues function ..name might confuse lolz

@@ -1,110 +1,126 @@
 <?php
+
 class BookingReports extends Controller
 {
+    private $reportsModel;
+
+    public function __construct()
+    {
+        
+        
+        $this->reportsModel = new BookingReportsModel();
+    }
+
     public function roleIndex()
     {
-        // Render the booking reports view
-        $this->view('admin/adminReports');
-    }
-    
-    // API endpoint for worker booking statistics
-    public function worker_stats()
-    {
-        // Set response header to JSON
-        header('Content-Type: application/json');
+        // Get date range for the form default values
+        $dateRange = $this->reportsModel->getBookingDateRange();
         
-        // Check if request is POST
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'error' => 'Method not allowed']);
-            return;
-        }
-        
-        // Get POST data
-        $data = json_decode(file_get_contents('php://input'), true);
-        
-        // Initialize booking model
-        $bookingModel = new BookingModel();
-        
-        // Get worker booking statistics
-        $stats = $bookingModel->getWorkerBookingStats(
-            $data['workerID'] ?? null,
-            $data['startDate'] ?? null,
-            $data['endDate'] ?? null
-        );
-        
-        // Return JSON response
-        echo json_encode([
-            'success' => true,
-            'data' => $stats
-        ]);
-    }
-    
-    // API endpoint for service category statistics
-    public function service_stats()
-    {
-        // Set response header to JSON
-        header('Content-Type: application/json');
-        
-        // Check if request is POST
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'error' => 'Method not allowed']);
-            return;
-        }
-        
-        // Get POST data
-        $data = json_decode(file_get_contents('php://input'), true);
-        
-        // Initialize booking model
-        $bookingModel = new BookingModel();
-        
-        // Get service category statistics
-        $stats = $bookingModel->getServiceCategoryStats(
-            $data['serviceType'] ?? null,
-            $data['startDate'] ?? null,
-            $data['endDate'] ?? null
-        );
-        
-        // Return JSON response
-        echo json_encode([
-            'success' => true,
-            'data' => $stats
-        ]);
-    }
-    
-    // API endpoint for revenue trend data
-    public function revenue_trend()
-    {
-        // Set response header to JSON
-        header('Content-Type: application/json');
-        
-        // Check if request is POST
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'error' => 'Method not allowed']);
-            return;
-        }
-        
-        
-        // Get POST data
-        $data = json_decode(file_get_contents('php://input'), true);
-        
-        // Initialize booking model
-        $bookingModel = new BookingModel();
-        
-        // Get revenue trend data
-        $stats = $bookingModel->getRevenueTrend(
-            $data['period'] ?? 'weekly',
-            $data['startDate'] ?? null,
-            $data['endDate'] ?? null
-        );
-        
-        // Return JSON response
-        echo json_encode([
-            'success' => true,
-            'data' => $stats
-        ]);
+        $data = [
+            'minDate' => $dateRange ? $dateRange->minDate : date('Y-m-d', strtotime('-1 year')),
+            'maxDate' => $dateRange ? $dateRange->maxDate : date('Y-m-d')
+        ];
+
+        $this->view('admin/adminReports', $data);
     }
 
-    
-    
+    public function getTotalRevenue()
+    {
+        header('Content-Type: application/json');
+        
+        try {
+            // Validate input
+            $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : date('Y-m-d', strtotime('-1 year'));
+            $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : date('Y-m-d');
+            
+            // Validate date format
+            if (!$this->validateDate($startDate) || !$this->validateDate($endDate)) {
+                throw new Exception('Invalid date format');
+            }
+            
+            $revenue = $this->reportsModel->getTotalRevenue($startDate, $endDate);
+            
+            echo json_encode([
+                'success' => true,
+                'data' => $revenue
+            ]);
+            
+        } catch (Exception $e) {
+            error_log("Error in getTotalRevenue: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 
+    public function getServiceTypeRevenue()
+    {
+        header('Content-Type: application/json');
+        
+        try {
+            // Validate input
+            $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : date('Y-m-d', strtotime('-1 year'));
+            $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : date('Y-m-d');
+            
+            // Validate date format
+            if (!$this->validateDate($startDate) || !$this->validateDate($endDate)) {
+                throw new Exception('Invalid date format');
+            }
+            
+            $revenue = $this->reportsModel->getServiceTypeRevenue($startDate, $endDate);
+            
+            echo json_encode([
+                'success' => true,
+                'data' => $revenue
+            ]);
+            
+        } catch (Exception $e) {
+            error_log("Error in getServiceTypeRevenue: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+    
+    public function getDailyRevenue()
+    {
+        header('Content-Type: application/json');
+        
+        try {
+            // Validate input
+            $year = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
+            $month = isset($_GET['month']) ? (int)$_GET['month'] : (int)date('m');
+            
+            // Validate year and month
+            if ($year < 2000 || $year > 2100 || $month < 1 || $month > 12) {
+                throw new Exception('Invalid year or month');
+            }
+            
+            $revenue = $this->reportsModel->getDailyRevenue($year, $month);
+            
+            echo json_encode([
+                'success' => true,
+                'data' => $revenue
+            ]);
+            
+        } catch (Exception $e) {
+            error_log("Error in getDailyRevenue: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+    
+    // Helper function to validate date format
+    private function validateDate($date, $format = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) === $date;
+    }
 }

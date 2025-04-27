@@ -12,7 +12,7 @@
   flex: 1;
   background-color: #FFF;
   box-sizing: border-box;
-  margin: 3% 3% 3% 3%;
+  margin: 3% 3% 3% 1%;
 }
 
 a {
@@ -33,15 +33,15 @@ a {
 .table-container {
   background-color: white;
   border-radius: 8px;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding: 16px;
   padding-left: 0px;
-  margin: 5% auto 5% auto;
+  margin: 2% auto 5% auto;
 }
 
 .role-table {
   align-items: center;
-  width: 95%;
+  width: 100%;
   margin: 0% 0% 0% 2%;
   border-collapse: collapse;
 }
@@ -295,6 +295,28 @@ a {
   display: block;
 }
 
+/* Add basic styles for pagination buttons */
+.pagination {
+  margin-top: 15px;
+  text-align: center;
+}
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 12px;
+  border: 1px solid #ccc;
+  background: #f1f1f1;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.pagination button.active {
+  background-color: #7f5539;
+  color: white;
+}
+.pagination button:hover {
+  background-color: #7f5539;
+  color: white;
+}
+
 /* Responsive Media Queries */
 
 /* Small Mobile Devices (480px) */
@@ -369,6 +391,10 @@ a {
       padding: 10px;
       width: 100%;
   }
+  .search-filters {
+    flex-direction: column;
+    align-items: flex-start;
+}
 
   /* Notification */
   .notification {
@@ -391,6 +417,11 @@ a {
       width: 94%;
   }
 
+  .employee-controls {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
   .role-table {
       width: 100%;
       margin: 0;
@@ -401,6 +432,10 @@ a {
       width: 85%;
       margin: 15% auto;
   }
+  .search-filters {
+    flex-direction: column;
+    align-items: flex-start;
+}
 }
 
 /* Large Mobile and Small Desktop (769px - 1024px) */
@@ -413,6 +448,21 @@ a {
       width: 95%;
       margin: 0 auto;
   }
+
+  .employee-controls {
+    flex-direction: column;
+    align-items: flex-start;
+}
+  .search-filters {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.table-container {
+    overflow-x: auto;
+  }
+
+
 }
 
 /* @media screen and (max-width: 1200px) {

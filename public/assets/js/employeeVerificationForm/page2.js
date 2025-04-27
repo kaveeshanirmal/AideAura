@@ -119,6 +119,13 @@ function validateInput(input) {
       }
       break;
 
+    case "locationVerificationCode":
+      if (!/^\d{6}$/.test(value.trim())) {
+        showError(input, "Invalid in-location verification code");
+        return false;
+      }
+      break;
+
     case "certificateFile":
       const certFileInput = input;
       if (certFileInput.files.length > 0) {

@@ -38,6 +38,7 @@ function saveFormData(page) {
       description: document.getElementById("description")?.value || "",
       bankNameCode: document.getElementById("bankNameCode")?.value || "",
       accountNumber: document.getElementById("accountNumber")?.value || "",
+      locationVerificationCode: document.getElementById("locationVerificationCode")?.value || "",
     };
 
     // File inputs are handled separately at submission time
@@ -157,6 +158,9 @@ function restoreFormData(page) {
 
     const accountNumberField = document.getElementById("accountNumber");
     if (accountNumberField) accountNumberField.value = formData.page2?.accountNumber || "";
+
+    const locationVerificationCodeField = document.getElementById("locationVerificationCode");
+    if (locationVerificationCodeField) locationVerificationCodeField.value = formData.page2?.locationVerificationCode || "";
 
     // Note: We don't restore file inputs as they can't be stored in localStorage
     // File inputs will be handled at submission time

@@ -279,11 +279,11 @@ function saveSchedules() {
 
     // Add to schedules array
     schedules.push({
-      days_of_week: day,
-      startTime: startTime,
-      endTime: endTime,
+      day_of_week: day.charAt(0).toUpperCase() + day.slice(1), // Capitalize first letter
+      start_time: startTime,       // FIXED: Changed from startTime to start_time
+      end_time: endTime,           // FIXED: Changed from endTime to end_time
       scheduleID: row.dataset.scheduleId || null,
-      workerId: workerID,
+      workerId: workerID,          // This is already correct
     });
   }
 
@@ -429,7 +429,7 @@ function debugScheduleData(schedules) {
   console.log("Schedules to be saved:", schedules);
   schedules.forEach((schedule, index) => {
     console.log(`Schedule ${index + 1}:`, {
-      day: schedule.days_of_week,
+      day: schedule.day_of_week,
       start: schedule.startTime,
       end: schedule.endTime,
       id: schedule.scheduleID || "new",
