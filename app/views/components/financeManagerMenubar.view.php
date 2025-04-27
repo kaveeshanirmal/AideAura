@@ -12,6 +12,7 @@
         <ul class="menu-items">
             <li><a href="<?=ROOT?>/public/FinanceManager/reports"><img src="<?=ROOT?>/public/assets/images/Report.png" alt=""> Reports </a></li>
             <li><a href="<?=ROOT?>/public/FinanceManager/priceData"><img src="<?=ROOT?>/public/assets/images/Currency Exchange.png" alt="">Price Details</a></li>
+            <li><a href="<?=ROOT?>/public/FinanceManager/cancelledBookings"><img src="<?=ROOT?>/public/assets/images/order history.png" alt="">Cancelled Bookings </a></li>
             <li><a href="<?=ROOT?>/public/FinanceManager/paymentHistory"><img src="<?=ROOT?>/public/assets/images/paymentHistory_icon.png" alt=""> Payment Details </a></li>
             <li><a href="<?=ROOT?>/public/FinanceManager/workerInquiries"><img src="<?=ROOT?>/public/assets/images/Inquiry.png" alt=""> Customer Payment Issues </a></li>
             <li><a href="<?=ROOT?>/public/FinanceManager/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Payment Issues </a></li>

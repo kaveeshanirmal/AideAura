@@ -40,26 +40,36 @@ class VerificationRequestModel
     }
 
     public function updateRequest($data, $id)
-{
-    try {
-        // Log the update operation
-        error_log("Updating request: ID=$id, Data=" . json_encode($data));
-        
-        // Add debugging for the exact data format
-        error_log("Status value: " . $data['Status']);
-        
-        $result = $this->update($id, $data, 'requestID');
-        
-        // Log the result
-        error_log("Update result: " . ($result ? "Success" : "Failed"));
-        
-        return $result;
-    } catch (Exception $e) {
-        $this->lastError = $e->getMessage();
-        error_log("Exception in updateRequest: " . $e->getMessage());
-        return false;
-    } // This closing brace was missing
-}
+    {
+        try {
+            // Log the update operation
+            error_log("Updating request: ID=$id, Data=" . json_encode($data));
+            
+            $dataforupdate = [
+                'Status' => $data['Status']
+            ];
+    
+            // Fix here: use userID directly
+            $userID = $data['userID'];
+    
+            $result = $this->update($id, $dataforupdate, 'requestID');
+            
+            error_log("Update result: " . ($result ? "Success" : "Failed"));
+            
+            if ($result) {
+                $notificationModel = new NotificationModel();
+                $notificationModel->create($userID, 'worker', 'Verification Request Status Updated', 'Your verification request is ' . $data['Status'] . '.');
+                return $result;
+            }
+    
+
+        } catch (Exception $e) {
+            $this->lastError = $e->getMessage();
+            error_log("Exception in updateRequest: " . $e->getMessage());
+            return false;
+        }
+    }
+    
 
     public function deleteRequest($id)
     {

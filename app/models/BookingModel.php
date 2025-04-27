@@ -507,4 +507,11 @@ class BookingModel
                  AND status = 'confirmed'";
         return $this->get_all($query, ['workerID' => $workerID]);
     }
+
+    public function getCancelledBookings()
+    {
+        $this->setTable('cancelled_bookings');
+        return $this->all();
+
+    }
 }

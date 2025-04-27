@@ -16,6 +16,20 @@ class WorkerModel
         return $this->all();
     }
 
+    public function getAllWorkerDetails(){
+        $this->setTable('worker');
+
+        $sql = "SELECT 
+        w.*, 
+        u.*,
+        j.name AS roleName
+    FROM  worker w
+  JOIN users u ON w.userID =  u.userID
+  JOIN worker_roles wr ON w.workerID = wr.workerID
+  JOIN jobroles j ON wr.roleID = j.roleID;";
+return $this->get_all($sql, []);
+    }
+
     public function getWorkerDetails($id){
         // to find the workerID of worker using his userID
         $this->setTable('worker');

@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                     <div class="worker-details">
                         <h3>${worker.firstName} ${worker.lastName}</h3>
-                        <p>${worker.role}</p>
+                         <p>WorkerID : ${worker.workerID}</p>
+                        <p>${worker.roleName}</p>
                     </div>
                 </div>
             `;
