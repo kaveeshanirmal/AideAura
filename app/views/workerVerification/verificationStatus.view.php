@@ -94,8 +94,18 @@
                         Prior to submitting your verification request, you are required to visit our Head Office branch for an in-person interview & have the <strong>In-Location Reference Code</strong> with you, which is issued after the interview!
                     </p>
                     <p>
-                        <strong>Head Office Address:</strong><br>
-                        No. 20, Reid Avenue, Colombo 07, Sri Lanka.
+                        <strong>Head Office Address :</strong><br>
+                        No. 20, Reid Avenue, Colombo 07, Sri Lanka.<br>
+                        <strong>Open Hours :</strong><br>
+                        09.00 AM to 6.00 PM<br>
+                        <strong>Hotline 1 :</strong><br>
+                        +94 11 2 223 223<br>
+                        <strong>Hotline 2 :</strong><br>
+                        +94 11 2 223 223<br>
+                        <strong>For Inquiries : </strong><br>
+                        hello@aideaura.lk<br>
+                        <strong>Scan below code for location on Google Maps :</strong><br>
+                        <img src="<?= ROOT ?>/public/assets/images/locationQR.png" alt="Google Maps Location QR" style="margin-top:10px; width:100px; height:auto;">
                     </p>
                     <button class="acknowledge-button" onclick="closeInitialPopup()">Acknowledged</button>
                 </div>
