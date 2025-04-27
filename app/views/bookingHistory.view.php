@@ -214,11 +214,36 @@
             box-shadow: 0 0 5px rgba(220, 53, 69, 0.8), 0 0 5px rgba(220, 53, 69, 0.8), 0 0 5px rgba(220, 53, 69, 0.8);
         }
 
+        #alertBox {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(82, 9, 9, 0.68); 
+            border: 1px solid rgba(255, 0, 0, 0.4);
+            padding: 15px 30px;
+            border-radius: 8px;
+            color:rgb(255, 255, 255); 
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, 0); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
 
     </style>
 </head>
 <body>
     <?php include(ROOT_PATH . '/app/views/components/navbar.view.php'); ?>
+    <div id="alertBox" style="display: none;">
+        <p id="alertMessage"></p>
+    </div>
     <div id="booking-body">
         <div class="booking-container">
             <p>Booking History</p>
@@ -315,15 +340,28 @@
             body: formData,
         }).then(response => {
             if (response.ok) {
-                // Update the UI
+                
                 document.getElementById(`cancel-section-${bookingID}`).innerHTML = '<span>Inactive</span>';
+                showAlert('Your booking has been cancelled!');
             } else {
-                alert('Failed to cancel booking.');
+                alert('Failed to cancel booking!');
             }
         }).catch(err => {
             console.error(err);
-            alert('Something went wrong.');
+            alert('Something went wrong!');
         });
+    }
+
+    function showAlert(message) {
+        const alertBox = document.getElementById('alertBox');
+        const alertMessage = document.getElementById('alertMessage');
+        
+        alertMessage.innerText = message;
+        alertBox.style.display = 'block';
+
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 3000); 
     }
 </script>
 
