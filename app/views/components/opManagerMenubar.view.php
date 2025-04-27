@@ -2,12 +2,6 @@
 <script src="<?=ROOT?>/public/assets/js/menubar.js"></script>
 <div class="menubar">
 <div class="menubar-header">
-        <img src="<?=ROOT?>/public/assets/images/profile2.jpg" alt="Profile" class="profile-image">
-        <div class="profile-info">
-            <h4><link rel="stylesheet" href="<?=ROOT?>/public/assets/css/admin_menubar.css">
-<script src="<?=ROOT?>/public/assets/js/menubar.js"></script>
-<div class="menubar">
-    <div class="menubar-header">
         <img src="<?=ROOT?>/public/assets/images/womenprofile1.png" alt="Profile" class="profile-image">
         <div class="profile-info">
             <h4><?= $_SESSION['user_name'] ?? 'Oparational Manager' ?></h4>
