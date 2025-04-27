@@ -289,11 +289,28 @@ class customerHelpDesk extends Controller
     // Sanitize and get input
     $_POST = filter_input_array(INPUT_POST, [
         'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
-        'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'help_desk_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS  // Add this line to capture help desk type
     ]);
     
     $complaintId = $_POST['complaint_id'] ?? '';
     $comments = $_POST['comments'] ?? '';
+    $helpDeskType = $_POST['help_desk_type'] ?? '';
+    
+    // Determine which help desk to redirect to
+    $redirectUrl = ROOT . '/public/customerHelpDesk/operationalHelp'; // Default
+    
+    // If it's from payment help desk, set payment redirect URL
+    if ($helpDeskType === 'payment') {
+        $redirectUrl = ROOT . '/public/customerHelpDesk/paymentHelp';
+    }
+    
+    // You can also check the HTTP referer as a fallback
+    if (empty($helpDeskType) && isset($_SERVER['HTTP_REFERER'])) {
+        if (strpos($_SERVER['HTTP_REFERER'], 'paymentHelp') !== false) {
+            $redirectUrl = ROOT . '/public/customerHelpDesk/paymentHelp';
+        }
+    }
     
     // Validate required fields
     if (empty($complaintId) || empty($comments)) {
@@ -344,7 +361,7 @@ class customerHelpDesk extends Controller
         $_SESSION['complaint_message'] = 'Failed to submit your reply. Please try again.';
     }
     
-    header('Location: ' . ROOT . '/public/customerHelpDesk/operationalHelp');
+    header('Location: ' . $redirectUrl);
     exit();
 }
 
