@@ -654,7 +654,7 @@ class HrManager extends Controller
 
                 $this->view('hr/managePhysicalVerifications', [
                     'records' => $this->physicalModel->getAllRecords(),
-                    'message' => "Record added successfully! Verification Code: $verificationCode",
+                    'message' => "In-Location reference code generated successfully & mailed to $email! Reference Code: $verificationCode",
                 ]);
                 return;
             }
