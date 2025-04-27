@@ -13,9 +13,9 @@ class WorkingScheduleModel
     public function addSchedule($data)
     {
         try {
-            // Validate data
-            if (!isset($data['workerID'], $data['day_of_week'], $data['start_time'], $data['end_time'])) {
-                error_log("Missing required fields for schedule");
+            // Validate data - FIXED: Checking for workerId instead of workerID
+            if (!isset($data['workerId'], $data['day_of_week'], $data['start_time'], $data['end_time'])) {
+                error_log("Missing required fields for schedule: " . print_r($data, true));
                 return false;
             }
             
@@ -93,7 +93,7 @@ class WorkingScheduleModel
     public function updateSchedule($scheduleId, $data)
     {
         try {
-            // Validate data
+            // Validate data - FIXED: Checking for workerId instead of workerID
             if (!isset($data['workerId'], $data['day_of_week'], $data['start_time'], $data['end_time'])) {
                 error_log("Missing required fields for schedule update");
                 return false;

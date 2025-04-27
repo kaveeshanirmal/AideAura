@@ -280,10 +280,10 @@ function saveSchedules() {
     // Add to schedules array
     schedules.push({
       day_of_week: day.charAt(0).toUpperCase() + day.slice(1), // Capitalize first letter
-      startTime: startTime,
-      endTime: endTime,
+      start_time: startTime,       // FIXED: Changed from startTime to start_time
+      end_time: endTime,           // FIXED: Changed from endTime to end_time
       scheduleID: row.dataset.scheduleId || null,
-      workerId: workerID,
+      workerId: workerID,          // This is already correct
     });
   }
 
