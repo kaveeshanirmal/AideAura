@@ -9,7 +9,7 @@ class App
     // 'admin','hrManager','opManager','financeManager','customer','worker'
     private $roleAccess = [
         'admin' => [
-            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'searchCustomers',  'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData', 'bookingDetails','searchBookingDetails', 'storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentDetails', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint','bookingReports', 'worker_stats', 'service_stats', 'revenue_trend'],
+            'Admin' => ['index', 'employees', 'workers', 'workerDetails', 'getAvailabilitySchedule', 'generateScheduleView', 'getScheduleView','assignDynamicRoles','updateVerificationStatus', 'workerCertificates', 'workerSchedule', 'customers', 'searchCustomers',  'workerRoles', 'workerRoles1', 'addRole' , 'updateRole', 'deleteRoles', 'priceData', 'bookingDetails','searchBookingDetails', 'storePriceDetails', 'priceCategoryDetails', 'updatePriceDetails', 'updatePaymentRates', 'paymentDetails', 'workerInquiries', 'workerComplaints', 'replyComplaint', 'deleteComplaint','bookingReports'],
 
             'AdminEmployeeAdd' => ['index', 'store'],
 
@@ -21,7 +21,7 @@ class App
 
             'workerComplaint' => ['adminIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
-            'BookingReports' => ['roleIndex', 'worker_stats', 'service_stats', 'revenue_trend'],
+            'BookingReports' => ['roleIndex', '', 'getTotalRevenue', 'getServiceTypeRevenue', 'getDailyRevenue'],
         ],
 
         'hrManager' => [
