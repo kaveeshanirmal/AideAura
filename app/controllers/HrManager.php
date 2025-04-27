@@ -1,51 +1,44 @@
 <?php
 
 class HrManager extends Controller
-{
-    // public function index()
+{   // public function index()
     // {
     //     $this->view('hr/workerProfiles');
     // }
+    private $physicalModel;
+
+    public function __construct()
+    {
+        $this->physicalModel = new PhysicallyVisitedUnverifiedCustomersModel();
+    }
 
     public function index()
     {
-        $userModel = new UserModel();
-        $allEmployees = $userModel->getAllEmployees(); // Fetch all Workers from the database
-        error_log("Workers in controller: " . json_encode($allEmployees));
-    
-        // Define the allowed roles for filtering
-        $allowedRoles = ['worker'];
-    
-        // Filter Workers based on allowed roles
-        $filteredWorkers = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-            return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
-        });
-    
-        if (!$filteredWorkers) {
-            error_log("No Workers with specified roles retrieved or query failed");
-            $filteredWorkers = []; // Ensuring the variable is always an array
+        // Determine greeting based on current time
+        $hour = date('H');
+        if ($hour >= 5 && $hour < 12) {
+            $greeting = "Good Morning";
+        } elseif ($hour >= 12 && $hour < 17) {
+            $greeting = "Good Afternoon";
+        } elseif ($hour >= 17 && $hour < 21) {
+            $greeting = "Good Evening";
+        } else {
+            $greeting = "Good Evening";
         }
-    
-        //$workerClicked = $filteredWorkers;
-    
-        // Dynamically update roles for filtered workers 
-        $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
-    
-        $this->view('hr/workerProfiles', ['workers' => $updatedWorkers]);
+
+        $this->view('hr/hrWelcomeScreen', [
+            'greeting' => $greeting
+        ]);
     }
     
-    
-    //Assign dynamic roles to filtered workers in worker array role element from jobroles table
-    private function assignDynamicRoles($filteredWorkers)
+    public function workerProfiles()
     {
-        $userModel = new UserModel();
+        {
+            $workerModel = new WorkerModel();
+            $workers = $workerModel->getAllWorkerDetails(); // Fetch all Workers from the database
+        }
     
-        // Map through each worker and update the role dynamically
-        return array_map(function ($worker) use ($userModel) {
-            $dynamicRole = $userModel->getWorkerRole($worker->userID);
-            $worker->role = $dynamicRole;
-            return $worker;
-        }, $filteredWorkers);
+        $this->view('hr/workerProfiles', ['workers' => $workers]);
     }
 
     // fetch details of worker from verification request table if not the users table
@@ -90,6 +83,7 @@ class HrManager extends Controller
                     'WorkingWeekDays'=> 'N/A',
                     'WorkingWeekEnds'=> 'N/A',
                     'Notes' => 'N/A',
+                    'locationVerificationCode' => 'N/A',
                     'Status' => 'Not verified',
                 ];
             }
@@ -117,13 +111,31 @@ class HrManager extends Controller
             $requestID = isset($_POST['requestID']) ? $_POST['requestID'] : null;
 
             $status = isset($_POST['status']) ? strtolower($_POST['status']) : null; // Force lowercase            
+            
+            
+            $userID = isset($_POST['userID']) ? $_POST['userID'] : null; // Get userID from POST data
             // Validate input
 
                     // Validate input
-        if (!$requestID || !$status) {
+        if (!$requestID) {
             echo json_encode([
                 'success' => false,
-                'message' => 'Missing required parameters.'
+                'message' => 'Missing requestID parameters.'
+            ]);
+            return;
+        }
+        if (!$status) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Missing status parameters.'
+            ]);
+            return;
+        }
+                    // Validate input
+        if (!$userID) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Missing userID parameters.'
             ]);
             return;
         }
@@ -140,7 +152,10 @@ class HrManager extends Controller
             error_log("Updating verification status: requestID=$requestID, status=$status");
             
             $requestModel = new VerificationRequestModel();
-            $data = ['Status' => $status];
+            $data = [
+                'Status' => $status,
+                'userID' => $userID, 
+            ]; // Add userID to the data array
             $updated = $requestModel->updateRequest($data, $requestID);
             
             // Log the value of $updated for debugging
@@ -621,6 +636,63 @@ class HrManager extends Controller
             $this->view('hr/verificationRequests', ['verificationRequests' => []]);
          }
 
+    }
+
+    //Maneth's deleopings
+
+    public function managePhysicalVerifications()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['add_record'])) {
+                $nic = $_POST['nic'];
+                $email = $_POST['email'];
+                $verificationCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+                $this->physicalModel->insertRecord($nic, $email, $verificationCode);
+
+                $this->view('hr/managePhysicalVerifications', [
+                    'records' => $this->physicalModel->getAllRecords(),
+                    'message' => "Record added successfully! Verification Code: $verificationCode",
+                ]);
+                return;
+            }
+
+            if (isset($_POST['check_code'])) {
+                $code = $_POST['verification_code'];
+                $foundRecord = $this->physicalModel->findByVerificationCode($code);
+
+                $message = $foundRecord
+                    ? "Worker found: NIC {$foundRecord->nic}, Email {$foundRecord->email}"
+                    : "No worker found with the provided code :(";
+
+                $this->view('hr/managePhysicalVerifications', [
+                    'records' => $this->physicalModel->getAllRecords(),
+                    'check_message' => $message,
+                ]);
+                return;
+            }
+
+            if (isset($_POST['delete_record'])) {
+                $nic = $_POST['nic_to_delete'];
+    
+                $deleteSuccess = $this->physicalModel->deleteByNIC($nic);
+    
+                $message = $deleteSuccess
+                    ? "Record with NIC {$nic} deleted successfully!"
+                    : "No record found with NIC {$nic} :(";
+    
+                $this->view('hr/managePhysicalVerifications', [
+                    'records' => $this->physicalModel->getAllRecords(),
+                    'delete_message' => $message,
+                ]);
+                return;
+            }
+        }
+
+        // Default page load
+        $this->view('hr/managePhysicalVerifications', [
+            'records' => $this->physicalModel->getAllRecords()
+        ]);
     }
 
 

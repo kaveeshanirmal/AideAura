@@ -4,15 +4,16 @@
 <div class="menubar-header">
         <img src="<?=ROOT?>/public/assets/images/profile1.jpg" alt="Profile" class="profile-image">
         <div class="profile-info">
-            <h4>Amal Presan</h4>
+            <h4><?= $_SESSION['user_name'] ?? 'HR Manager' ?></h4>
             </div>
         <button class="menubar-close" id="menubar-close">×</button>
     </div>
     <div class="menubar-content">
         <ul class="menu-items">
-            <li><a href="<?=ROOT?>/public/HrManager"><img src="<?=ROOT?>/public/assets/images/worker-profile.png" alt=""> Worker Profiles </a></li>
+            <li><a href="<?=ROOT?>/public/HrManager/workerProfiles"><img src="<?=ROOT?>/public/assets/images/worker-profile.png" alt=""> Worker Profiles </a></li>
             <li><a href="<?=ROOT?>/public/HrManager/workerSchedules"><img src="<?=ROOT?>/public/assets/images/worker-schedule.png" alt=""> Worker Schedules</a></li>
             <li><a href="<?=ROOT?>/public/HrManager/verificationRequests"><img src="<?=ROOT?>/public/assets/images/verification-request.png" alt="">Verification Requests</a></li>
+            <li><a href="<?=ROOT?>/public/HrManager/managePhysicalVerifications"><img src="<?=ROOT?>/public/assets/images/visiting_worker.webp" alt="">Manage Physical Verifications</a></li>
             <li><a href="<?=ROOT?>/public/HrManager/workerComplaints"><img src="<?=ROOT?>/public/assets/images/help-icon.png" alt=""> Worker Inquiries </a></li>
         </ul>
     </div>

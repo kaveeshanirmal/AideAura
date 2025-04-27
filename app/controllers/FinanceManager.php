@@ -19,6 +19,13 @@ class FinanceManager extends Controller
         $this->view('fm/paymentDetails',['paymentDetails'=>$paymentDetails]);
     }
 
+    public function cancelledBookings()
+    {
+        $bookingModel = new BookingModel();
+        $cancelledBookings = $bookingModel->getCancelledBookings();
+        $this->view('fm/cancelledBookings',['cancelledBookings'=>$cancelledBookings]);
+    }
+
     // public function paymentRates()
     // {
     //     $this->view('fm/paymentRates');

@@ -118,9 +118,18 @@
                         <span class="value"><?= htmlspecialchars($worker['Notes']) ?></span>
                     </div>
                     <div class="detail-item">
+                        <span class="label">In-Location Reference Code:</span>
+                        <span class="value">
+                            <?= !empty($worker['locationVerificationCode']) 
+                                ? htmlspecialchars($worker['locationVerificationCode']) 
+                                : '<span style="color: brown;">Not Provided</span>'; ?>
+                        </span>
+                    </div>
+                    <div class="detail-item">
                         <span class="label">Verification Status :</span>
                         <span class="value"><?= htmlspecialchars($worker['Status']) ?></span>
                     </div>
+                    
                 </div>
             </div>
 

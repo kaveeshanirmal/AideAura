@@ -119,10 +119,12 @@ function toggleSolution(complaintId) {
                     const isStaffRole = staffRoles.includes(update.role);
 
                     // Determine the CSS class based on role 
-                    const updateClass = update.role === 'customer' ? 'customer-update' : 
+                    const updateClass = update.role.toLowerCase() === 'customer' ? 'customer-update' : 
                                       (update.role === 'system' ? 'system-update' : 
                                         (isStaffRole ? 'staff-update' : 'system-update'));
-                    
+                                        console.log(`Role: ${update.role}, Class: ${updateClass}`);
+
+
                     conversationHTML += `
                         <div class="update ${updateClass}">
                             <div class="update-header">

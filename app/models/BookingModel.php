@@ -78,7 +78,7 @@ class BookingModel
             FROM bookings b
             JOIN verified_workers vw ON b.workerID = vw.workerID
             WHERE b.customerID = :customerID
-            ORDER BY b.bookingDate DESC";
+            ORDER BY b.createdAt ASC";
 
         return $this->get_all($query, ['customerID' => $customerID]);
     }
@@ -100,7 +100,10 @@ class BookingModel
         // Soft-delete from bookings (or you can just delete if no "is_deleted" flag is used)
         // $this->setTable('bookings');
         // return $this->delete($bookingID, 'bookingID');
-    }
+    } 
+
+    
+
 
     
     public function getCustomerIdByBookingId($bookingID)
@@ -506,5 +509,12 @@ class BookingModel
                  AND bookingDate < NOW()
                  AND status = 'confirmed'";
         return $this->get_all($query, ['workerID' => $workerID]);
+    }
+
+    public function getCancelledBookings()
+    {
+        $this->setTable('cancelled_bookings');
+        return $this->all();
+
     }
 }

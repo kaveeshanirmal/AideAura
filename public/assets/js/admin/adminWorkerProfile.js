@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                     <div class="worker-details">
                         <h3>${worker.firstName} ${worker.lastName}</h3>
-                        <p>${worker.role}</p>
+                        <p>WorkerID : ${worker.workerID}</p>
+                        <p>${worker.roleName}</p>
                     </div>
                 </div>
             `;
@@ -122,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         filteredWorkers = selectedField === 'all'
             ? workers
-            : workers.filter(worker => worker.role.toLowerCase() === selectedField);
+            : workers.filter(worker => worker.roleName.toLowerCase() === selectedField);
         
         // Reset to first page when filter changes
         currentPage = 1;
