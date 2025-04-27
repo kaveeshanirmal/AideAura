@@ -8,7 +8,7 @@
 
 body {
   background-image:
-    linear-gradient(to right, rgba(90, 58, 36, 0.8), rgba(139, 94, 60, 0.8)),
+    linear-gradient(to right, #5b3a24cc, rgba(139, 94, 60, 0.8)),
     url("../../../public/assets/images/browseWorkerBackground.jpg");
   background-size: cover;
   background-position: center;

@@ -57,6 +57,7 @@ class WorkerModel
                 'WorkingWeekDays'=> $workerDetails->working_weekdays,
                 'WorkingWeekEnds'=> $workerDetails->working_weekends,
                 'Notes' => $workerDetails->special_notes,
+                'locationVerificationCode' => $workerDetails->in_location_verification_code,
                 'Status' => $workerDetails->status,
                  ];
             return $data;
