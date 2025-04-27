@@ -373,7 +373,14 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.customer-update .worker-update {
+.customer-update {
+  background-color: #d9f2ff !important;
+  border-right: 4px solid #1a89c4 !important;
+  margin-left: 20px !important;
+  margin-right: 5px !important;
+}
+
+.worker-update {
   background-color: #d9f2ff !important;
   border-right: 4px solid #1a89c4 !important;
   margin-left: 20px !important;
