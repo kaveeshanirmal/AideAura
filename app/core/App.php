@@ -39,13 +39,13 @@ class App
         ],
 
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentDetails','priceData','updatePriceDetails', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'reports', 'workerComplaints'],
+            'FinanceManager' => ['index', 'paymentDetails','priceData','updatePriceDetails', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'bookingReports', 'workerComplaints'],
 
             'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
             'workerComplaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
-            'BookingReports' => ['roleIndex', 'worker_stats', 'service_stats', 'revenue_trend'],
+            'BookingReports' => ['roleIndex', '', 'getTotalRevenue', 'getServiceTypeRevenue', 'getDailyRevenue'],
         ],
 
         'customer'=> [
