@@ -39,7 +39,7 @@ class App
         ],
 
         'financeManager' => [
-            'FinanceManager' => ['index', 'paymentDetails','priceData','updatePriceDetails', 'paymentRates', 'updatePaymentRates', 'workerInquiries', 'bookingReports', 'workerComplaints'],
+            'FinanceManager' => ['index', 'paymentDetails','priceData','updatePriceDetails', 'cancelledBookings', 'updatePaymentRates', 'workerInquiries', 'bookingReports', 'workerComplaints'],
 
             'Complaint' => ['financeIndex', 'details', 'chat', 'respond', 'resolve', 'delete', 'filter'],
 
