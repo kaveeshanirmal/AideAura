@@ -11,157 +11,121 @@
     
 </head>
 <body>
-    <div class="dashboard-container">
-        <?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
-        <div class="main-content">
-            <div class="content-area">
-                <!-- Worker Performance Reports Section -->
-                <div class="report-section">
-                    <h1 class="section-title">Worker Performance Reports</h1>
-                    <div class="filter-section">
-                        <div class="input-group">
-                            <label>Worker ID:</label>
-                            <input type="text" placeholder="#345784" id="worker-id-input" class="worker-input">
-                        </div>
-                        <div class="input-group">
-                            <label>Start Date:</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="worker-start-date" class="date-input">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>End Date:</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="worker-end-date" class="date-input">
-                            </div>
-                        </div>
-                        <button class="generate-btn" id="generate-worker-report">Generate Report</button>
-                        <button class="export-btn" id="export-worker-report">Export as PDF</button>
-                    </div>
+<?php include(ROOT_PATH . '/app/views/components/employeeNavbar.view.php'); ?>
 
-                    <div class="charts-grid">
-                        <!-- Booking Status Chart -->
-                        <div class="chart-card">
-                            <h2>Booking Status Distribution</h2>
-                            <div class="chart-container">
-                                <canvas id="bookingStatusChart"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Weekly Bookings Chart -->
-                        <div class="chart-card">
-                            <h2>Bookings Per Day</h2>
-                            <canvas id="weeklyBookingsChart"></canvas>
-                        </div>
-                    </div>
+<div class="reports-container">
+    <h1>Booking Revenue Reports</h1>
+    
+    <div class="report-controls">
+        <div class="date-filter">
+            <h3>Filter by Date Range</h3>
+            <div class="date-inputs">
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate" value="<?= date('Y-m-d', strtotime('-1 year')) ?>" min="<?= $data['minDate'] ?>" max="<?= $data['maxDate'] ?>">
                 </div>
-
-                <!-- Service Category Reports Section -->
-                <div class="report-section">
-                    <h1 class="section-title">Service Category Reports</h1>
-                    <div class="filter-section">
-                        <div class="input-group">
-                            <label for="service-type">Select Service Type:</label>
-                            <select id="service-type" class="worker-input">
-                                <option value="all">All Services</option>
-                                <option value="Cook">Cook</option>
-                                <option value="Cook 24-hour Live in">Cook 24-hour Live in</option>
-                                <option value="Maid">Maid</option>
-                                <option value="Nanny">Nanny</option>
-                                <option value="All rounder">All Rounder</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Start Date:</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="service-start-date" class="date-input">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>End Date:</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="service-end-date" class="date-input">
-                            </div>
-                        </div>
-                        <button class="generate-btn" id="generate-service-report">Generate Report</button>
-                        <button class="export-btn" id="export-service-report">Export as PDF</button>
-                    </div>
-
-                    <div class="charts-grid">
-                        <!-- Service Category Sales Bar Chart -->
-                        <div class="chart-card">
-                            <h2>Est. Total Cost by Service Category</h2>
-                            <canvas id="serviceCategoryBarChart"></canvas>
-                        </div>
-
-                        <!-- Service Category Distribution Pie Chart -->
-                        <div class="chart-card">
-                            <h2>Service Category Distribution</h2>
-                            <div class="chart-container">
-                                <canvas id="serviceCategoryPieChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="endDate" value="<?= date('Y-m-d') ?>" min="<?= $data['minDate'] ?>" max="<?= $data['maxDate'] ?>">
                 </div>
-
-                <!-- Revenue Reports Section -->
-                <div class="report-section">
-                    <h1 class="section-title">Booking Revenue Reports</h1>
-                    <div class="filter-section">
-                        <div class="input-group">
-                            <label>Period:</label>
-                            <select id="period-select" class="worker-input">
-                                <option value="daily">Daily</option>
-                                <option value="weekly" selected>Weekly</option>
-                                <option value="monthly">Monthly</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Start Date:</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="revenue-start-date" class="date-input">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>End Date:</label>
-                            <div class="date-input-wrapper">
-                                <input type="date" id="revenue-end-date" class="date-input">
-                            </div>
-                        </div>
-                        <button class="generate-btn" id="generate-revenue-report">Generate Report</button>
-                        <button class="export-btn" id="export-revenue-report">Export as PDF</button>
-                    </div>
-
-                    <div class="charts-grid">
-                        <!-- Revenue Trend Line Chart -->
-                        <div class="chart-card wide">
-                            <h2>Est. Total Cost Trend</h2>
-                            <canvas id="revenueTrendChart"></canvas>
-                        </div>
-                        
-                        <!-- Est. Revenue Summary -->
-                        <div class="chart-card wide">
-                            <h2>Est. Total Cost Summary</h2>
-                            <div class="summary-stats">
-                                <div class="stat-item">
-                                    <h3>Total Est. Cost</h3>
-                                    <p id="total-revenue">$0.00</p>
-                                </div>
-                                <div class="stat-item">
-                                    <h3>Avg. Booking Value</h3>
-                                    <p id="avg-booking-value">$0.00</p>
-                                </div>
-                                <div class="stat-item">
-                                    <h3>Total Bookings</h3>
-                                    <p id="total-bookings">0</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button id="filterBtn" class="btn">Apply Filter</button>
+            </div>
+        </div>
+        
+        <div class="report-type-selector">
+            <h3>Report Type</h3>
+            <div class="report-types">
+                <button id="totalRevenueBtn" class="btn report-btn active">Total Revenue</button>
+                <button id="serviceRevenueBtn" class="btn report-btn">Service Type Revenue</button>
             </div>
         </div>
     </div>
+    
+    <div class="report-sections">
+        <!-- Total Revenue Report Section -->
+        <div id="totalRevenueSection" class="report-section active">
+            <div class="report-header">
+                <h2>Total Revenue Report</h2>
+                <div class="export-buttons">
+                    <button id="exportTotalRevenuePDF" class="btn export-btn">Export as PDF</button>
+                    <button id="exportTotalRevenueCSV" class="btn export-btn">Export as CSV</button>
+                </div>
+            </div>
+            
+            <div class="report-chart-container">
+                <canvas id="totalRevenueChart"></canvas>
+            </div>
+            
+            <div class="report-table-container">
+                <h3>Monthly Revenue Breakdown</h3>
+                <table id="totalRevenueTable" class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Month/Year</th>
+                            <th>Total Revenue</th>
+                            <th>Total Bookings</th>
+                            <th>Average Revenue per Booking</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th id="grandTotalRevenue">Rs.0.00</th>
+                            <th id="grandTotalBookings">0</th>
+                            <th id="grandAverageRevenue">₹0.00</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Service Type Revenue Report Section -->
+        <div id="serviceRevenueSection" class="report-section">
+            <div class="report-header">
+                <h2>Service Type Revenue Report</h2>
+                <div class="export-buttons">
+                    <button id="exportServiceRevenuePDF" class="btn export-btn">Export as PDF</button>
+                    <button id="exportServiceRevenueCSV" class="btn export-btn">Export as CSV</button>
+                </div>
+            </div>
+            
+            <div class="report-chart-container">
+                <canvas id="serviceRevenueChart"></canvas>
+            </div>
+            
+            <div class="report-table-container">
+                <h3>Service Type Revenue Breakdown</h3>
+                <table id="serviceRevenueTable" class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Service Type</th>
+                            <th>Total Revenue</th>
+                            <th>Total Bookings</th>
+                            <th>Average Revenue per Booking</th>
+                            <th>Revenue Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th id="serviceTotalRevenue">RS.0.00</th>
+                            <th id="serviceTotalBookings">0</th>
+                            <th id="serviceAverageRevenue">Rs.0.00</th>
+                            <th>100%</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script>
         const ROOT = '<?=ROOT?>';
     </script>

@@ -940,32 +940,10 @@ public function workerComplaints()
 
 public function bookingReports()
     {
+        
         require_once "../app/controllers/BookingReports.php";
         $bookingReportsController = new BookingReports();
         $bookingReportsController->roleIndex();
     }
-
-    // API endpoints for booking reports
-    public function worker_stats()
-    {
-        require_once "../app/controllers/BookingReports.php";
-        $bookingReportsController = new BookingReports();
-        $bookingReportsController->worker_stats();
-    }
-
-    public function service_stats()
-    {
-        require_once "../app/controllers/BookingReports.php";
-        $bookingReportsController = new BookingReports();
-        $bookingReportsController->service_stats();
-    }
-
-    public function revenue_trend()
-    {
-        require_once "../app/controllers/BookingReports.php";
-        $bookingReportsController = new BookingReports();
-        $bookingReportsController->revenue_trend();
-    }
-
    
 }
