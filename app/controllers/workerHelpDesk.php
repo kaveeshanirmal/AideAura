@@ -286,65 +286,82 @@ class workerHelpDesk extends Controller
     }
 
     /**
-     * Submit a worker reply to a complaint
-     */
-    public function submitReply()
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
-            exit();
-        }
-
-        // Sanitize and get input
-        $_POST = filter_input_array(INPUT_POST, [
-            'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
-            'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
-        ]);
-
-        $complaintId = $_POST['complaint_id'] ?? '';
-        $comments = $_POST['comments'] ?? '';
-
-        // Validate required fields
-        if (empty($complaintId) || empty($comments)) {
-            $_SESSION['complaint_message'] = 'Please provide a message for your reply.';
-            header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
-            exit();
-        }
-
-        // Verify the complaint belongs to the logged-in user
-        $complaint = $this->workerComplaintModel->getComplaintById($complaintId);
-
-        if (!$complaint || $complaint->workerID != $_SESSION['workerID']) {
-            $_SESSION['complaint_message'] = 'Complaint not found or unauthorized access.';
-            header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
-            exit();
-        }
-
-        // Create update data
-        $updateData = [
-            'complaintID' => $complaintId,
-            'status' => 'In Progress', // Set to In Progress when worker replies
-            'comments' => $comments,
-            'userID' => $_SESSION['workerID'],
-            'role' => 'Worker', // Set role as Worker
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
-
-        // Add the update using existing method
-        $result = $this->workerComplaintModel->submitComplaintUpdates($updateData);
-
-        if ($result) {
-            // Update the main complaint status if needed
-            if ($complaint->status === 'Pending') {
-                $this->workerComplaintModel->updateComplaint($complaintId, ['status' => 'In Progress']);
-            }
-
-            $_SESSION['complaint_message'] = 'Your reply has been submitted successfully.';
-        } else {
-            $_SESSION['complaint_message'] = 'Failed to submit your reply. Please try again.';
-        }
-
+ * Submit a worker reply to a complaint
+ */
+public function submitReply()
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ' . ROOT . '/public/workerHelpDesk/operationalHelp');
         exit();
     }
+
+    // Sanitize and get input
+    $_POST = filter_input_array(INPUT_POST, [
+        'complaint_id' => FILTER_SANITIZE_NUMBER_INT,
+        'comments' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'help_desk_type' => FILTER_SANITIZE_FULL_SPECIAL_CHARS  // Add this line to capture help desk type
+    ]);
+
+    $complaintId = $_POST['complaint_id'] ?? '';
+    $comments = $_POST['comments'] ?? '';
+    $helpDeskType = $_POST['help_desk_type'] ?? '';
+    
+    // Determine which help desk to redirect to
+    $redirectUrl = ROOT . '/public/workerHelpDesk/operationalHelp'; // Default
+    
+    // If it's from payment help desk, set payment redirect URL
+    if ($helpDeskType === 'payment') {
+        $redirectUrl = ROOT . '/public/workerHelpDesk/paymentHelp';
+    }
+    
+    // You can also check the HTTP referer as a fallback
+    if (empty($helpDeskType) && isset($_SERVER['HTTP_REFERER'])) {
+        if (strpos($_SERVER['HTTP_REFERER'], 'paymentHelp') !== false) {
+            $redirectUrl = ROOT . '/public/workerHelpDesk/paymentHelp';
+        }
+    }
+
+    // Validate required fields
+    if (empty($complaintId) || empty($comments)) {
+        $_SESSION['complaint_message'] = 'Please provide a message for your reply.';
+        header('Location: ' . $redirectUrl);
+        exit();
+    }
+
+    // Verify the complaint belongs to the logged-in user
+    $complaint = $this->workerComplaintModel->getComplaintById($complaintId);
+
+    if (!$complaint || $complaint->workerID != $_SESSION['workerID']) {
+        $_SESSION['complaint_message'] = 'Complaint not found or unauthorized access.';
+        header('Location: ' . $redirectUrl);
+        exit();
+    }
+
+    // Create update data
+    $updateData = [
+        'complaintID' => $complaintId,
+        'status' => 'In Progress', // Set to In Progress when worker replies
+        'comments' => $comments,
+        'userID' => $_SESSION['workerID'],
+        'role' => 'Worker', // Set role as Worker
+        'updated_at' => date('Y-m-d H:i:s')
+    ];
+
+    // Add the update using existing method
+    $result = $this->workerComplaintModel->submitComplaintUpdates($updateData);
+
+    if ($result) {
+        // Update the main complaint status if needed
+        if ($complaint->status === 'Pending') {
+            $this->workerComplaintModel->updateComplaint($complaintId, ['status' => 'In Progress']);
+        }
+
+        $_SESSION['complaint_message'] = 'Your reply has been submitted successfully.';
+    } else {
+        $_SESSION['complaint_message'] = 'Failed to submit your reply. Please try again.';
+    }
+
+    header('Location: ' . $redirectUrl);
+    exit();
+}
 }

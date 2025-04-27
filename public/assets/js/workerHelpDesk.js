@@ -117,9 +117,9 @@ function toggleSolution(complaintId) {
 
                     // Check if the current role is in the staff roles array
                     const isStaffRole = staffRoles.includes(update.role);
-                    
+
                     // Determine the CSS class based on role but don't display the role
-                    const updateClass = update.role.toLowerCase() === 'customer' ? 'customer-update' : 
+                    const updateClass = update.role.toLowerCase() === 'worker' ? 'worker-update' : 
                                       (update.role === 'system' ? 'system-update' : 
                                         (isStaffRole ? 'staff-update' : 'system-update'));
                                         console.log(`Role: ${update.role}, Class: ${updateClass}`);
