@@ -136,6 +136,7 @@ class Login extends Controller
     public function checkForExpiredBookings()
     {
         if($this->bookingModel->hasExpiredBookings($_SESSION['workerID'])) {
+            error_log('Worker has expired bookings');
             $expiredBookings = $this->bookingModel->getExpiredBookings($_SESSION['workerID']);
             if (!empty($expiredBookings)) {
                 foreach ($expiredBookings as $booking) {
@@ -149,6 +150,9 @@ class Login extends Controller
                     );
                 }
             }
+        }
+        else {
+            error_log('Worker has no expired bookings');
         }
     }
 

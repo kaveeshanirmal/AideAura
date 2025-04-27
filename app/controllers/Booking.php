@@ -119,6 +119,10 @@ class Booking extends Controller
             'Navigate to your dashboard to accept or reject the request.'
         );
 
+        MailHelper::sendJobRequest(
+            $this->userModel->findWorkerByID($workerID)->email,
+            $bookingData);
+
         $this->notificationModel->create(
             $this->userModel->getUserID($customerID, 'customer'),
             'Booking Confirmation',

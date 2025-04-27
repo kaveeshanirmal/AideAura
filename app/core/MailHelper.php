@@ -9,7 +9,6 @@ class MailHelper
     }
 
     public static function sendBookingConfirmation($to, $bookingDetails, $role) {
-        $headers = "From: no-reply@aideaura.com\r\n";
         $subject = "Booking Confirmation";
 
         if ($role == 'worker') {
@@ -34,6 +33,22 @@ class MailHelper
             $message .= "Amount Paid: LKR " . number_format($bookingDetails->totalCost, 2) . "\n";
             $message .= "Thank you for using our service.";
         }
+
+        return self::sendMail($to, $subject, $message);
+    }
+
+    public static function sendJobRequest($to, $bookingDetails)
+    {
+        $subject = "You have a new Job Request";
+        $message = "Dear Service Provider,\n\n";
+        $message .= "You have a new job request!\n\n";
+        $message .= "Booking Details:\n";
+        $message .= "Service Type: " . $bookingDetails->serviceType . "\n";
+        $message .= "Date: " . $bookingDetails->bookingDate . "\n";
+        $message .= "Time: " . $bookingDetails->startTime . "\n";
+        $message .= "Location: " . $bookingDetails->location . "\n\n";
+        $message .= "Thank you for using our service.\n\n";
+        $message .= "We kindly request you to accept or reject the job request before it gets auto-rejected.\n";
 
         return self::sendMail($to, $subject, $message);
     }
