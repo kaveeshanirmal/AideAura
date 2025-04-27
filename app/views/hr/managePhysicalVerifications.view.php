@@ -135,7 +135,7 @@
                 <tr>
                     <th>NIC</th>
                     <th>Email</th>
-                    <th>Verification Code</th>
+                    <th>Reference Code</Code> Code</th>
                 </tr>
             </thead>
             <tbody>

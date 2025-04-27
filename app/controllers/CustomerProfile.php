@@ -4,11 +4,13 @@ class CustomerProfile extends Controller
 {
     private $userModel;
     private $bookingModel;
+    private $paymentModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel(); // Instantiate UserModel
         $this->bookingModel = new BookingModel();
+        $this->paymentModel = new PaymentModel();
     }
 
     public function index()
@@ -141,7 +143,7 @@ class CustomerProfile extends Controller
     public function paymentHistory()
     {
         
-        $paymentsListing = $this->bookingModel->getCompletedOrConfirmedBookings();
+        $paymentsListing = $this->paymentModel->getPaymentHistory();
         $this->view('customerPaymentHistory',['payments'=> $paymentsListing]);
     }
     

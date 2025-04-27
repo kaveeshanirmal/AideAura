@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Payment History</title>
+    <title>Payment History</title>
     <style>
         /* [Your original CSS here — unchanged] */
         * {
@@ -125,15 +125,15 @@
                     <table class="payment-table">
                         <thead>
                             <tr>
+                                <th>Payment ID</th>
                                 <th>Booking ID</th>
-                                <th>Worker Image</th>
-                                <th>Worker Name</th>
+                                <th>Transaction ID</th>
+                                <th>Currency</th>
+                                <th>Payment Status</th>
+                                <th>Payment Date</th>
+                                <th>Last Updated</th>
                                 <th>Service Type</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
                                 <th>Payment Method</th>
-                                <th>Booking Date</th>
-                                <th>Created At</th>
                                 <th>Total Payment</th>
                             </tr>
                         </thead>
@@ -141,17 +141,16 @@
                             <?php if (!empty($payments)): ?>
                                 <?php foreach ($payments as $payment): ?>
                                     <tr>
+                                        <td>#<?= htmlspecialchars($payment->paymentID) ?></td>
                                         <td>#<?= htmlspecialchars($payment->bookingID) ?></td>
-                                        <td><img src="<?= ROOT ?>/<?= htmlspecialchars($payment->workerImage) ?>" alt='Worker Image' style='width:40px; height:40px; border-radius:50%; object-fit:cover;'></td>
-                                        <td><?= htmlspecialchars($payment->workerName) ?></td>
-                                        <td><?= htmlspecialchars($payment->serviceType) ?></td>
-                                        <td><?= htmlspecialchars($payment->startTime)?></td>
-                                        <td><?= htmlspecialchars($payment->endTime) ?></td>
-                                        <td>Credit/Debit Card</td>
-                                        <td><?= htmlspecialchars($payment->bookingDate) ?>"</td>
-                                        <td><?= htmlspecialchars($payment->createdAt) ?></td>
-                                        <td><?= htmlspecialchars($payment->status) ?></td>
-                                        <td><?= htmlspecialchars($payment->totalCost) ?></td>
+                                        <td>#<?= htmlspecialchars($payment->transactionID) ?></td>
+                                        <td><?= htmlspecialchars($payment->currency) ?></td>
+                                        <td><?= htmlspecialchars($payment->paymentStatus)?></td>
+                                        <td><?= htmlspecialchars($payment->paymentDate) ?></td>
+                                        <td><?= htmlspecialchars($payment->lastUpdated) ?>"</td>
+                                        <td><?= htmlspecialchars($payment->serviceType) ?>"</td>
+                                        <td><?= htmlspecialchars($payment->paymentMethod) ?></td>
+                                        <td><?= htmlspecialchars($payment->amount) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>

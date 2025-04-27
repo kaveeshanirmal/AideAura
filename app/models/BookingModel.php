@@ -102,20 +102,7 @@ class BookingModel
         // return $this->delete($bookingID, 'bookingID');
     } 
 
-    public function getCompletedOrConfirmedBookings()
-    {
-        $this->setTable('bookings');
-        $query =  $query = "SELECT 
-        b.*, 
-        vw.full_name AS workerName, 
-        vw.profileImage AS workerImage 
-        FROM bookings b
-        JOIN verified_workers vw ON b.workerID = vw.workerID
-        WHERE b.status = 'completed' OR b.status = 'confirmed'
-        ORDER BY b.bookingDate DESC";
-        
-        return $this->get_all($query);
-    }
+    
 
 
     

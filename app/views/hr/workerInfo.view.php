@@ -118,7 +118,7 @@
                         <span class="value"><?= htmlspecialchars($worker['Notes']) ?></span>
                     </div>
                     <div class="detail-item">
-                        <span class="label">In-Location Verification Request Code:</span>
+                        <span class="label">In-Location Reference Code:</span>
                         <span class="value">
                             <?= !empty($worker['locationVerificationCode']) 
                                 ? htmlspecialchars($worker['locationVerificationCode']) 
