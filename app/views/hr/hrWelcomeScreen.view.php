@@ -1,6 +1,6 @@
 <style>
     body {
-        background: linear-gradient(to bottom right,rgb(65, 35, 13),#5b3a24cc,rgba(124, 70, 16, 0.83));
+        background: linear-gradient(to bottom right,rgb(189, 153, 127),#5b3a24cc,rgba(227, 173, 118, 0.83));
         font-family: 'Poppins', sans-serif;
         color: #ffffff;
         margin: 0;
