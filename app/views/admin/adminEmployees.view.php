@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Employee Management</title>
+    <title>Admin Employees</title>
     <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployees.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -38,7 +38,7 @@
         <div class="main-content">
             <div class="employee-details">
                 <button class="add-employee-btn">
-                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add User</a>
+                    <a href="<?=ROOT?>/public/adminEmployeeAdd">Add Employee</a>
                 </button>
             </div>
             <div class="employee-controls">
@@ -106,19 +106,19 @@
                 <input type="hidden" id="updateEmployeeId">
                 <div class="form-item">
                     <label for="updateUserName">Username:</label>
-                    <input class="inputc1" type="text" id="updateUserName">
+                    <input class="inputc1" type="text" id="updateUserName" required>
                 </div>
                 <div class="form-item">
                     <label for="updatefirstName">First Name:</label>
-                    <input class="inputc2" type="text" id="updatefirstName">
+                    <input class="inputc2" type="text" id="updatefirstName" required>
                 </div>
                 <div class="form-item">
                     <label for="updatelastName">Last Name:</label>
-                    <input class="inputc3" type="text" id="updatelastName">
+                    <input class="inputc3" type="text" id="updatelastName" required>
                 </div>
                 <div class="form-item">
                     <label for="updateRole">Role:</label>
-                    <select class="inputc4" id="updateRole">
+                    <select class="inputc4" id="updateRole" required>
                         <option value="hrManager">hrManager</option>
                         <option value="financeManager">financeManager</option>
                         <option value="opManager">opManager</option>
@@ -127,11 +127,11 @@
                 </div>
                 <div class="form-item">
                     <label for="updatePhone">Phone:</label>
-                    <input class="inputc5" type="text" id="updatePhone">
+                    <input class="inputc5" type="text" id="updatePhone" required>
                 </div>
                 <div class="form-item">
                     <label for="updateEmail">Email:</label>
-                    <input class="inputc6" type="email" id="updateEmail">
+                    <input class="inputc6" type="email" id="updateEmail" required>
                 </div>
                 <button type="submit">Update</button>
             </form>
@@ -185,12 +185,53 @@
          document.getElementById('updateModal').style.display = 'block';
      }
 
+
+     const validateUpdateForm = () => {
+    const username = document.getElementById('updateUserName').value.trim();
+    const firstName = document.getElementById('updatefirstName').value.trim();
+    const lastName = document.getElementById('updatelastName').value.trim();
+    const role = document.getElementById('updateRole').value.trim();
+    const phone = document.getElementById('updatePhone').value.trim();
+    const email = document.getElementById('updateEmail').value.trim();
+
+    if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+        showNotification('First name must contain only letters.', 'error');
+        return false;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+        showNotification('Last name must contain only letters.', 'error');
+        return false;
+    }
+
+    if (!username) {
+        showNotification('Username is required.', 'error');
+        return false;
+    }
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+        showNotification('Contact number must be exactly 10 digits.', 'error');
+        return false;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showNotification('Please enter a valid email address.', 'error');
+        return false;
+    }
+
+    return true;
+};
+
+
      function closeUpdateModal() {
          document.getElementById('updateModal').style.display = 'none';
      }
 
      function updateEmployee() {
          try {
+            if (!validateUpdateForm()) {
+            return; // Stop the function if validation fails
+        }
          const userID = document.getElementById('updateEmployeeId').value;
          const data = {
              userID,
@@ -210,9 +251,9 @@
          .then(response => response.json())
          .then(result => {
              if (result.success) {
-                 closeUpdateModal();
                  showNotification('Employee updated successfully', 'success');
-                 setTimeout(() => location.reload(), 2000);
+                 setTimeout(() => location.reload(), 3000);
+                 closeUpdateModal();
              } else {
                  showNotification('Update failed', 'error');
              }

@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="add-btn">Add User</button>
+                            <button type="submit" class="add-btn">Add</button>
                         </div>
                     </form>
                 </div>
@@ -88,18 +88,18 @@
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const username = document.getElementById('username').value.trim();
-            const email = document.getElementById('email').value.trim();
+            // const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const password = document.getElementById('password').value.trim();
             const role = document.getElementById('role').value.trim();
 
             if (!/^[a-zA-Z\s]+$/.test(firstName)) {
-                showNotification('First name must contain only letters and spaces.', 'error');
+                showNotification('First name must contain only letters.', 'error');
                 return false;
             }
 
             if (!/^[a-zA-Z\s]+$/.test(lastName)) {
-                showNotification('Last name must contain only letters and spaces.', 'error');
+                showNotification('Last name must contain only letters.', 'error');
                 return false;
             }
 
@@ -108,10 +108,10 @@
                 return false;
             }
 
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showNotification('Please enter a valid email address.', 'error');
-                return false;
-            }
+            // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            //     showNotification('Please enter a valid email address including @', 'error');
+            //     return false;
+            // }
 
             if (!/^[0-9]{10}$/.test(phone)) {
                 showNotification('Contact number must be exactly 10 digits.', 'error');
@@ -151,7 +151,7 @@
             showNotification(result.message, 'success');
             setTimeout(() => {
                 window.location.href = '<?=ROOT?>/public/AdminEmployees';
-            }, 2000);
+            }, 3000);
         } else {
             showNotification(result.message, 'error');
         }
