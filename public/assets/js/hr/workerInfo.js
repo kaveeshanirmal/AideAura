@@ -44,12 +44,15 @@ function updateStatus(status) {
 
     console.log(requestID, userID, status);
     
+    const formData = new FormData();
+formData.append('requestID', requestID);
+formData.append('status', status);
+formData.append('userID', userID);
+
+
     fetch(`${ROOT}/public/HrManager/updateVerificationStatus`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `requestID=${requestID}&status=${status}`
+        body: formData,
     })
     .then(response => {
         if (!response.ok) {

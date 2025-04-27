@@ -16,10 +16,10 @@
         
         <div class="main-content">
             <div class="dashboard-container">
+            <div class="back-button" id="back-button">
+                        <  
+                    </div>
                 <div class="scheduling-controls">
-                <button class="back-button" id="back-button">
-                        &lt;
-                    </button>
                     
                     <div class="view-controls">
                         <button class="view-btn" data-view="day">Day</button>
