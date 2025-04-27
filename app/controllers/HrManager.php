@@ -1,13 +1,37 @@
 <?php
 
 class HrManager extends Controller
-{
-    // public function index()
+{   // public function index()
     // {
     //     $this->view('hr/workerProfiles');
     // }
+    private $physicalModel;
+
+    public function __construct()
+    {
+        $this->physicalModel = new PhysicallyVisitedUnverifiedCustomersModel();
+    }
 
     public function index()
+    {
+        // Determine greeting based on current time
+        $hour = date('H');
+        if ($hour >= 5 && $hour < 12) {
+            $greeting = "Good Morning";
+        } elseif ($hour >= 12 && $hour < 17) {
+            $greeting = "Good Afternoon";
+        } elseif ($hour >= 17 && $hour < 21) {
+            $greeting = "Good Evening";
+        } else {
+            $greeting = "Good Evening";
+        }
+
+        $this->view('hr/hrWelcomeScreen', [
+            'greeting' => $greeting
+        ]);
+    }
+    
+    public function workerProfiles()
     {
         $userModel = new UserModel();
         $allEmployees = $userModel->getAllEmployees(); // Fetch all Workers from the database
@@ -26,14 +50,13 @@ class HrManager extends Controller
             $filteredWorkers = []; // Ensuring the variable is always an array
         }
     
-        //$workerClicked = $filteredWorkers;
+        $workerClicked = $filteredWorkers;
     
         // Dynamically update roles for filtered workers 
         $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
     
         $this->view('hr/workerProfiles', ['workers' => $updatedWorkers]);
     }
-    
     
     //Assign dynamic roles to filtered workers in worker array role element from jobroles table
     private function assignDynamicRoles($filteredWorkers)
@@ -90,6 +113,7 @@ class HrManager extends Controller
                     'WorkingWeekDays'=> 'N/A',
                     'WorkingWeekEnds'=> 'N/A',
                     'Notes' => 'N/A',
+                    'locationVerificationCode' => 'N/A',
                     'Status' => 'Not verified',
                 ];
             }
@@ -621,6 +645,63 @@ class HrManager extends Controller
             $this->view('hr/verificationRequests', ['verificationRequests' => []]);
          }
 
+    }
+
+    //Maneth's deleopings
+
+    public function managePhysicalVerifications()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['add_record'])) {
+                $nic = $_POST['nic'];
+                $email = $_POST['email'];
+                $verificationCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+                $this->physicalModel->insertRecord($nic, $email, $verificationCode);
+
+                $this->view('hr/managePhysicalVerifications', [
+                    'records' => $this->physicalModel->getAllRecords(),
+                    'message' => "Record added successfully! Verification Code: $verificationCode",
+                ]);
+                return;
+            }
+
+            if (isset($_POST['check_code'])) {
+                $code = $_POST['verification_code'];
+                $foundRecord = $this->physicalModel->findByVerificationCode($code);
+
+                $message = $foundRecord
+                    ? "Worker found: NIC {$foundRecord->nic}, Email {$foundRecord->email}"
+                    : "No worker found with the provided code :(";
+
+                $this->view('hr/managePhysicalVerifications', [
+                    'records' => $this->physicalModel->getAllRecords(),
+                    'check_message' => $message,
+                ]);
+                return;
+            }
+
+            if (isset($_POST['delete_record'])) {
+                $nic = $_POST['nic_to_delete'];
+    
+                $deleteSuccess = $this->physicalModel->deleteByNIC($nic);
+    
+                $message = $deleteSuccess
+                    ? "Record with NIC {$nic} deleted successfully!"
+                    : "No record found with NIC {$nic} :(";
+    
+                $this->view('hr/managePhysicalVerifications', [
+                    'records' => $this->physicalModel->getAllRecords(),
+                    'delete_message' => $message,
+                ]);
+                return;
+            }
+        }
+
+        // Default page load
+        $this->view('hr/managePhysicalVerifications', [
+            'records' => $this->physicalModel->getAllRecords()
+        ]);
     }
 
 
