@@ -94,15 +94,15 @@ class WorkingSchedule extends Controller
 
             foreach ($data['schedules'] as $schedule) {
                 // Validate schedule data
-                if (!isset($schedule['days_of_week'], $schedule['startTime'], $schedule['endTime'])) {
+                if (!isset($schedule['day_of_week'], $schedule['start_time'], $schedule['end_time'])) {
                     throw new Exception('Missing required fields in schedule');
                 }
 
                 $scheduleData = [
                     'workerId' => $workerId,
-                    'days_of_week' => ucfirst(strtolower($schedule['days_of_week'])), // Capitalize first letter
-                    'startTime' => $schedule['startTime'],
-                    'endTime' => $schedule['endTime']
+                    'day_of_week' => ucfirst(strtolower($schedule['day_of_week'])), // Capitalize first letter
+                    'start_time' => $schedule['start_time'],
+                    'end_time' => $schedule['end_time']
                 ];
 
                 error_log("Processing schedule: " . print_r($scheduleData, true)); // Debug log
@@ -112,17 +112,17 @@ class WorkingSchedule extends Controller
                     // Update an existing schedule
                     if (!$this->scheduleModel->updateSchedule($schedule['scheduleID'], $scheduleData)) {
                         $success = false;
-                        $messages[] = "Failed to update schedule for {$schedule['days_of_week']}";
+                        $messages[] = "Failed to update schedule for {$schedule['day_of_week']}";
                     } else {
-                        $messages[] = "Updated schedule for {$schedule['days_of_week']}";
+                        $messages[] = "Updated schedule for {$schedule['day_of_week']}";
                     }
                 } else {
                     // Add a new schedule
                     if (!$this->scheduleModel->addSchedule($scheduleData)) {
                         $success = false;
-                        $messages[] = "Failed to add schedule for {$schedule['days_of_week']}";
+                        $messages[] = "Failed to add schedule for {$schedule['day_of_week']}";
                     } else {
-                        $messages[] = "Added schedule for {$schedule['days_of_week']}";
+                        $messages[] = "Added schedule for {$schedule['day_of_week']}";
                     }
                 }
             }
