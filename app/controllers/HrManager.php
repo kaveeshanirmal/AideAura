@@ -648,6 +648,8 @@ class HrManager extends Controller
                 $email = $_POST['email'];
                 $verificationCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
+                MailHelper::sendInLocationCode($email,$verificationCode);
+
                 $this->physicalModel->insertRecord($nic, $email, $verificationCode);
 
                 $this->view('hr/managePhysicalVerifications', [
