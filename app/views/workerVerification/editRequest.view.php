@@ -167,10 +167,16 @@
                 <span class="details">Bank Name and Branch Code</span>
                 <textarea name="bankNameCode" readonly><?= htmlspecialchars($requestData->bankNameCode ?? '') ?></textarea>
             </div>
+
             <div class="input-box full-width">
                 <span class="details">Account Number</span>
                 <input type="number" name="accountNumber" value="<?= htmlspecialchars($requestData->accountNumber ?? '') ?>" readonly>
-                </div>
+            </div>
+
+            <div class="input-box full-width">
+                <span class="details">In Location Verification Code</span>
+                <input type="text" name="locationVerificationCode" value="<?= htmlspecialchars($requestData->in_location_verification_code ?? '') ?>" required pattern="\d{6}" maxlength="6" readonly>
+            </div>
                         <!-- Section: Work Preferences -->
                 <div class="input-box">
                     <span class="details">Working Hours (Week Days)</span>

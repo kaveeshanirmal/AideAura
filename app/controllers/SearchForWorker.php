@@ -60,9 +60,10 @@ class SearchForWorker extends Controller
         $query = "SELECT
             vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
             vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
-            ((wst.avg_rating / 5) * 60) + 
-            (LOG(wst.total_reviews + 1) * 20) + 
-            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 20, 0)) AS score,
+            ((wst.avg_rating / 5) * 45) + 
+            ((wst.completion_rate / 100) * 25) +
+            LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 + 
+            (IF(wst.last_activity >= NOW() - INTERVAL 7 DAY, 10, 0)) AS score,
             wst.avg_rating, wst.total_reviews
           FROM verified_workers vw
           JOIN worker w ON vw.workerID = w.workerID
@@ -99,6 +100,7 @@ class SearchForWorker extends Controller
 
         // For all found workers check whether they are already booked
         foreach ($data as $key => $worker) {
+            error_log("Worker ID: " . $worker->workerID);
             $workerID = $worker->workerID;
             $isBooked = $this->workerModel->isBooked($workerID, $date, $startTime);
             if ($isBooked) {
@@ -133,7 +135,7 @@ class SearchForWorker extends Controller
 
     public function browseWorkers()
     {
-        $this->view('BrowseWorker');
+        $this->view('browseWorkers');
     }
 
     public function waitingForResponse()

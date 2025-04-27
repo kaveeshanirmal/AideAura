@@ -88,7 +88,6 @@
     <?php include(ROOT_PATH . '/app/views/components/footer.view.php'); ?>
     
     <script>
-        const ROOT = '<?=ROOT?>';
         const FULL_URL = window.location.href;
         console.log('Debug info:', {
             ROOT: ROOT,

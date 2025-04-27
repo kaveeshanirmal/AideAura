@@ -8,6 +8,7 @@
     <script>
         const WORKERS_DATA = <?= isset($workers) ? json_encode($workers, JSON_HEX_TAG) : '[]'; ?>;
         const ROOT_PATH = "<?= htmlspecialchars(ROOT) ?>";
+        console.log(WORKERS_DATA);
     </script>
     <script src="<?= htmlspecialchars(ROOT) ?>/public/assets/js/admin/adminWorkerProfile.js" defer></script>
 </head>
@@ -26,10 +27,13 @@
                     <option value="Maid">Maid</option>
                 </select>
             </div>
-
+            
             <div class="workers-list" id="workers-list">
                 <!-- Workers will be rendered dynamically -->
             </div>
+            
+            <!-- Added pagination container -->
+            <div id="pagination" class="pagination"></div>
         </main>
     </div>
 </body>

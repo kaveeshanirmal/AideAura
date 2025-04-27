@@ -606,9 +606,10 @@ public function updateVerificationStatus() {
                 throw new Exception('Role name and description are required');
             }
     
+            //ensure security and prevent malicious attacks like Cross-Site Scripting (XSS) or injection attack
             // Sanitize inputs
-            $roleName = trim(filter_var($_POST['roleName'], FILTER_SANITIZE_STRING));
-            $roleDescription = trim(filter_var($_POST['roleDescription'], FILTER_SANITIZE_STRING));
+            $roleName = trim(filter_var($_POST['roleName'], FILTER_SANITIZE_SPECIAL_CHARS));
+            $roleDescription = trim(filter_var($_POST['roleDescription'], FILTER_SANITIZE_SPECIAL_CHARS));
     
             // Validate file upload
             if (!isset($_FILES['roleImage']) || $_FILES['roleImage']['error'] !== UPLOAD_ERR_OK) {

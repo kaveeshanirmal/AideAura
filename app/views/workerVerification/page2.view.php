@@ -107,33 +107,38 @@
           </div>
 
           <div class="input-box full-width">
-    <span class="details">Upload Certificates (If Any)</span>
-    <input type="file" name="certificateFile" id="certificateFile" accept=".pdf,.doc,.docx,.jpg,.png">
-</div>
+              <span class="details">Upload Certificates (If Any)</span>
+              <input type="file" name="certificateFile" id="certificateFile" accept=".pdf,.doc,.docx,.jpg,.png">
+          </div>
 
-<div class="input-box full-width">
-    <span class="details">Medical and Fitness Certificate</span>
-    <input type="file" name="medicalFile" id="medicalFile" accept=".pdf,.doc,.docx,.jpg,.png">
-</div>
+          <div class="input-box full-width">
+              <span class="details">Medical and Fitness Certificate</span>
+              <input type="file" name="medicalFile" id="medicalFile" accept=".pdf,.doc,.docx,.jpg,.png">
+          </div>
 
-      <div class="input-box full-width">
-        <span class="details">Description</span>
-            <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
-      </div>
+          <div class="input-box full-width">
+            <span class="details">Description</span>
+                <textarea id="description" placeholder="Write a brief description about your qualifications" required></textarea>
+          </div>
 
-      <div class="input-box full-width">
-        <span class="details">Bank Name and Branch code</span>
-            <textarea id="bankNameCode" placeholder="Commercial Bank of Ceylon PLC 172" required></textarea>
-      </div>
+          <div class="input-box full-width">
+            <span class="details">Bank Name and Branch code</span>
+                <textarea id="bankNameCode" placeholder="Commercial Bank of Ceylon PLC 172" required></textarea>
+          </div>
 
 
-      <div class="input-box">
+          <div class="input-box">
             <span class="details">Bank Account Number</span>
-            <input type="text" id="accountNumber" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}" maxlength="16" inputmode="numeric">        </div>
+            <input type="text" id="accountNumber" placeholder="2002 xxxx xxxx xxxx" required pattern="\d{16}" maxlength="16" inputmode="numeric">
+          </div>
 
-      </div>
+
+          <div class="input-box">
+              <span class="details">In Location Verification Code</span>
+              <input type="text" id="locationVerificationCode" placeholder="Enter the code here" required pattern="\d{6}" maxlength="6" inputmode="numeric">        
+          </div>
+        </div>
         
-         
         <div class="user_buttons">
           <div class="next_button_container">
             <button class="next_button" id="back2">Back</button>

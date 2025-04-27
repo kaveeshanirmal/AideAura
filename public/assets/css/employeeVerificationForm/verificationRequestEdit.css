@@ -135,9 +135,11 @@ form .category label .dot {
 
 .user_buttons {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   margin-top: 30px;
 }
+
+
 
 .next_button {
   padding: 8px 15px;
@@ -149,6 +151,8 @@ form .category label .dot {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  justify-content: left;
+  
 }
 
 .next_button:hover {
