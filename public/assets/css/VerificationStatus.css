@@ -146,6 +146,54 @@ a {
   transform: translateY(-2px);
 }
 
+.popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    min-width:  100%; min-height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    font-family: 'Segoe UI', Tahoma,Verdana, sans-serif;
+    background: rgb(149, 76, 76);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: justify;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+.acknowledge-button {
+    margin-top: 20px;
+    justify-content: center;
+    padding: 10px 20px;
+    background: #cfd8d0;
+    color: rgb(5, 5, 5);
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.acknowledge-button:hover {
+    color: white;
+    background: #545854;
+    transition: 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
 /* Rest of the previous overlay styles remain the same */
 .overlay {
   position: fixed;

@@ -33,16 +33,18 @@ body {
 }
 
 .greeting {
-  color: #666;
+  color: #583909;
   text-align: center;
   margin-bottom: 30px;
   font-size: 2em;
-  font-weight: 600;
+  font-weight: 400;
+  font-family: 'Segoe UI', Tahoma, sans-serif, Verdana;
 }
 
 /* Form Input Styling */
 .input-group {
   margin-bottom: 25px;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
 }
 
 .input-group label {
@@ -108,12 +110,13 @@ body {
 .login-button {
   width: 100%;
   padding: 14px;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
   background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1.1em;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 20px;
@@ -148,9 +151,11 @@ body {
   flex: 1;
   background: linear-gradient(135deg, #9d7d4a 0%, #3d0e07 100%);
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* changed from center to start */
   justify-content: center;
   padding: 40px;
+  overflow: hidden; /* <<< this hides the overflowing bottom part */
+  position: relative; /* needed if you tweak absolute positioning later */
   animation: slideInRight 0.5s ease-out;
 }
 
@@ -159,6 +164,7 @@ body {
   height: auto;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(50px); /* <<< this moves it slightly down */
 }
 
 /* Animation Keyframes */

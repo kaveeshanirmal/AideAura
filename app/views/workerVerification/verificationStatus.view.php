@@ -20,6 +20,7 @@
         <?php if ($displayMessage): ?>
             <!-- Session Message Display -->
             <div class="no-verification-request">
+                
                 <div class="message-box <?= $messageType ?>">
                     <h2>
                         <?php 
@@ -86,6 +87,19 @@
             </div>
 
         <?php else: ?>
+            <div id="initialPopup" class="popup-overlay">
+                <div class="popup-content">
+                    <h2>Disclaimer!</h2>
+                    <p>
+                        Prior to submitting your verification request, you are required to visit our Head Office branch for an in-person interview & have the <strong>In-Location Reference Code</strong> with you, which is issued after the interview!
+                    </p>
+                    <p>
+                        <strong>Head Office Address:</strong><br>
+                        No. 20, Reid Avenue, Colombo 07, Sri Lanka.
+                    </p>
+                    <button class="acknowledge-button" onclick="closeInitialPopup()">Acknowledged</button>
+                </div>
+            </div>
             <!-- No verification request found -->
             <div class="no-verification-request">
                 <div class="message-box">
@@ -125,6 +139,10 @@
 
         function confirmDeletion() {
             window.location.href = '<?=ROOT?>/public/workerVerification/deleteVerificationRequest';
+        }
+
+        function closeInitialPopup() {
+            document.getElementById('initialPopup').style.display = 'none';
         }
     </script>
 </body>

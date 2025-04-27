@@ -5,32 +5,17 @@
     <title>Manage Physical Verifications</title>
     <style>
         body {
-            background: linear-gradient(to bottom right, #f5f0eb, #fdf6ef);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #5c4033;
-            padding: 0 20px 20px 20px;
+        background: linear-gradient(to bottom right, #f5f0eb, #fdf6ef);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #5c4033;
+        padding: 20px;
         }
-
-        h1 {
-            color: #5c4033;
+        h1, h2 {
+            color: #8b5e3c;
+            text-shadow: 1px 1px 2px #cbb59c;
         }
-        h2 {
-            color:rgb(255, 255, 255);
-            font-weight: 200;
-        } 
-
-        .sections-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .sections-container > div {
-            flex: 1;
-        }
-
         .form-section, .records-section, .check-section {
-            background: linear-gradient(to bottom right,rgb(108, 71, 25),rgb(57, 34, 6));
+            background: linear-gradient(to bottom right,rgb(219, 188, 149), #ffefdb);
             padding: 20px;
             margin-bottom: 30px;
             border: 1px solid #d2b48c;
@@ -43,13 +28,10 @@
             box-shadow: 0 8px 16px rgba(139, 94, 60, 0.3);
         }
         input[type="text"], input[type="email"], input[type="number"] {
-            right: 5px;
-            width: 96%;
+            width: 98%;
             padding: 10px;
-            margin-right: auto;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            display: block;
+            margin-top: 8px;
+            margin-bottom: 15px;
             border: 1px solid #c2a278;
             border-radius: 6px;
             background-color: #fff8f1;
@@ -68,7 +50,6 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.3s, transform 0.2s;
-            box-shadow: 0 8px 16px rgba(139, 94, 60, 0.3);
         }
         button:hover {
             background: linear-gradient(to right, #915f46, #75462e);
@@ -107,6 +88,16 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sections-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .sections-container > div {
+            flex: 1;
         }
     </style>
 </head>
