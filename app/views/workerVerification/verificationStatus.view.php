@@ -101,7 +101,7 @@
                         <strong>Hotline 1 :</strong><br>
                         +94 11 2 223 223<br>
                         <strong>Hotline 2 :</strong><br>
-                        +94 11 2 223 223<br>
+                        +94 11 2 223 225<br>
                         <strong>For Inquiries : </strong><br>
                         hello@aideaura.lk<br>
                         <strong>Scan below code for location on Google Maps :</strong><br>

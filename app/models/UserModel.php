@@ -2,7 +2,7 @@
 class UserModel
 {
     use Model; // Use the Model trait
-    
+
     public function __construct()
     {
         $this->setTable('users');
@@ -10,91 +10,91 @@ class UserModel
 
     // Register a new user
     public function register($data, $role)
-{
-    // Set the table to 'users' for inserting the base user data
-    $this->setTable('users');
+    {
+        // Set the table to 'users' for inserting the base user data
+        $this->setTable('users');
 
-    // User data to be entered into the 'users' table
-    $userData = [
-        'firstName' => $data['firstName'],
-        'lastName' => $data['lastName'],
-        'username' => $data['username'],
-        'phone' => $data['phone'],
-        'email' => $data['email'],
-        'password' => password_hash($data['password'], PASSWORD_BCRYPT),
-        'role' => $role,
-    ];
-    
-    // Insert the base user data and get the newly created userID
-    $userID = $this->insertAndGetId($userData);
-
-    // Check if user was created successfully
-    if (!$userID) {
-        return false; // User creation failed
-    }
-
-    // If role is 'worker', add data to 'worker' and 'worker_roles' tables
-    if ($role === 'worker') {
-        $this->setTable('worker');
-
-        // Insert worker-specific data, including foreign key reference to users
-        $workerData = [
-            'userID' => $userID,
-            'address' => $data['address'],
+        // User data to be entered into the 'users' table
+        $userData = [
+            'firstName' => $data['firstName'],
+            'lastName' => $data['lastName'],
+            'username' => $data['username'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+            'role' => $role,
         ];
-        $workerID = $this->insertAndGetId($workerData);
 
-        // Retrieve role IDs from jobRoles table based on provided job role names
-        if ($workerID && !empty($data['servicesOffer'])) {
-            $roleIDs = [];
-            foreach ($data['servicesOffer'] as $roleName) {
-                $query = "SELECT roleID FROM jobRoles WHERE name = :name LIMIT 1";
-                $role = $this->get_row($query, ['name' => $roleName]);
-                
-                if ($role) {
-                    $roleIDs[] = $role->roleID; // Collect the roleID if found
+        // Insert the base user data and get the newly created userID
+        $userID = $this->insertAndGetId($userData);
+
+        // Check if user was created successfully
+        if (!$userID) {
+            return false; // User creation failed
+        }
+
+        // If role is 'worker', add data to 'worker' and 'worker_roles' tables
+        if ($role === 'worker') {
+            $this->setTable('worker');
+
+            // Insert worker-specific data, including foreign key reference to users
+            $workerData = [
+                'userID' => $userID,
+                'address' => $data['address'],
+            ];
+            $workerID = $this->insertAndGetId($workerData);
+
+            // Retrieve role IDs from jobRoles table based on provided job role names
+            if ($workerID && !empty($data['servicesOffer'])) {
+                $roleIDs = [];
+                foreach ($data['servicesOffer'] as $roleName) {
+                    $query = "SELECT roleID FROM jobRoles WHERE name = :name LIMIT 1";
+                    $role = $this->get_row($query, ['name' => $roleName]);
+
+                    if ($role) {
+                        $roleIDs[] = $role->roleID; // Collect the roleID if found
+                    }
                 }
-            }
 
-            // Insert job roles for the worker if role IDs were found
-            if (!empty($roleIDs)) {
-                $this->setTable('worker_roles');
-                foreach ($roleIDs as $roleID) {
-                    $this->insert([
-                        'workerID' => $workerID,
-                        'roleID' => $roleID
-                    ]);
+                // Insert job roles for the worker if role IDs were found
+                if (!empty($roleIDs)) {
+                    $this->setTable('worker_roles');
+                    foreach ($roleIDs as $roleID) {
+                        $this->insert([
+                            'workerID' => $workerID,
+                            'roleID' => $roleID
+                        ]);
+                    }
                 }
             }
         }
-    }
-    // If role is 'customer', add data to 'customer' table
-    else if ($role === 'customer') {
-        $this->setTable('customer');
+        // If role is 'customer', add data to 'customer' table
+        else if ($role === 'customer') {
+            $this->setTable('customer');
 
-        // Insert customer-specific data
-        $customerData = [
-            'userID' => $userID,
-            'address' => $data['address']
-        ];
-        $this->insert($customerData);
-    }
-    // If role is 'hrManager', add data to 'hrManager' table
-    else if ($role === 'hrManager') {
-        $this->setTable('hrManager');
+            // Insert customer-specific data
+            $customerData = [
+                'userID' => $userID,
+                'address' => $data['address']
+            ];
+            $this->insert($customerData);
+        }
+        // If role is 'hrManager', add data to 'hrManager' table
+        else if ($role === 'hrManager') {
+            $this->setTable('hrManager');
 
-        // Insert customer-specific data
-        $hrManagerData = [
-            'userID' => $userID,
-            'address' => $data['address']
-        ];
-        $this->insert($hrManagerData);
+            // Insert customer-specific data
+            $hrManagerData = [
+                'userID' => $userID,
+                'address' => $data['address']
+            ];
+            $this->insert($hrManagerData);
+        }
+        return $userID; // Return the userID of the newly created user
     }
-    return $userID; // Return the userID of the newly created user
-}
     public function registerEmployee($data)
     {
-         // Set the table to 'users' for inserting the base user data
+        // Set the table to 'users' for inserting the base user data
         $this->setTable('users');
 
         // User data to be entered into the 'users' table
@@ -145,7 +145,7 @@ class UserModel
             // Merge the role-specific data with the user data
             if ($roleData) {
                 $user = (object) array_merge((array) $user, (array) $roleData);
-            }else {
+            } else {
                 // Handle other roles like admin, financeManager, HR, operationalManager
                 // No need for extra queries for these roles; just return the user
                 $roleData = null;
@@ -158,7 +158,8 @@ class UserModel
     }
 
 
-    public function getAllEmployees() {
+    public function getAllEmployees()
+    {
         $this->setTable('users');
         return $this->all(); // Use the get_all method from the Database trait
     }
@@ -181,7 +182,7 @@ class UserModel
         }
         return null; // Default if worker or role not found
     }
-    
+
 
     // Update user information
     public function updateUserInfo($id, $data)
@@ -206,7 +207,7 @@ class UserModel
         ];
 
         if ($_SESSION['role'] === 'worker') {
-            $this->setTable('worker'); 
+            $this->setTable('worker');
             return $this->update($id, $roleData, 'userID');
         } elseif ($_SESSION['role'] === 'customer') {
             $this->setTable('customer');
@@ -222,48 +223,41 @@ class UserModel
     {
         $this->setTable('users'); // Update user information in the 'users' table
 
-        // Update the 'users' table
-        $userData = [
-            'firstName' => $data['firstName'],
-            'lastName' => $data['lastName'],
-            'username' => $data['username'],
-            'phone' => $data['phone'],
-            'email' => $data['email'],
-            'role' => $data['role'],
-        ];
-        
-        $result = $this->update($id, $userData, 'userID');
+        $result = $this->update($id, $data, 'userID');
 
         if (!$result) {
             return false;
         }
-        return true; // Update failed
+        return true; // Update successful
     }
 
- 
-    public function searchEmployees($filters = []) {
+
+    public function searchEmployees($filters = [])
+    {
         $this->setTable('users');
-        
+
         // Make sure we're only getting non-deleted employees
-        return $this->filter($filters, "isDelete = 0"); 
+        return $this->filter($filters, "isDelete = 0");
     }
 
     // Updated delete method with validatio+n
-    public function deleteEmployee($userID) {
-    $this->setTable('users');
-    
-    // Check if employee exists before deletion
-    $employee = $this->find($userID,'userID');
-    if (!$employee) {
-        return false;
-    }
-    
-    return $this->delete($userID, 'userID'); // Ensure 'userID' is the correct column name in your table
+    public function deleteEmployee($userID)
+    {
+        $this->setTable('users');
+
+        // Check if employee exists before deletion
+        $employee = $this->find($userID, 'userID');
+        if (!$employee) {
+            return false;
+        }
+
+        return $this->delete($userID, 'userID'); // Ensure 'userID' is the correct column name in your table
     }
 
 
     // Updated delete method with validation for soft delete
-    public function softDeleteEmployee($userID) {
+    public function softDeleteEmployee($userID)
+    {
         $this->setTable('users');
 
         // Check if employee exists before deletion
@@ -288,7 +282,7 @@ class UserModel
 
     public function getUserID($id, $role)
     {
-        if($role === 'worker') {
+        if ($role === 'worker') {
             $this->setTable('worker');
             $worker = $this->find($id, 'workerID');
             if ($worker) {
@@ -313,7 +307,7 @@ class UserModel
         return null; // Return null if user not found
     }
 
-    
+
     public function findWorkerByID($workerID)
     {
         $this->setTable('worker');
