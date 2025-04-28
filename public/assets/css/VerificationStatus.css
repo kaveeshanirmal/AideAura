@@ -150,7 +150,7 @@ a {
   position: fixed;
   padding-top: 10px;
   padding-bottom: 10px;
-  top: 0; left: 40px;
+  top: 0; left: 0px;
   min-width:  100%; min-height: 100%;
   background: rgba(0,0,0,0.5);
   display: flex;
