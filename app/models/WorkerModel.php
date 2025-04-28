@@ -53,7 +53,7 @@ return $this->get_all($sql, []);
                 'username' => $workerDetails->username,
                 'certificates' => $workerDetails-> certificates_path,
                 'medical' => $workerDetails-> medical_path,
-
+                 'profileImage' => $this->getWorkerImage($workerID),
                 'Nationality' => $workerDetails->nationality,
                 'Gender' => $workerDetails->gender,
                 'Contact' => $workerDetails->phone_number,
@@ -81,6 +81,15 @@ return $this->get_all($sql, []);
         }
 
     }
+
+     public function getWorkerImage($id){
+        $this->setTable('worker');
+        $worker = $this->find($id, 'workerID');
+        if($worker){
+            return $worker->profileImage;
+        }
+        return null;
+     }
 
     public function findWorkerIDbyUserID($id){
         $this->setTable('worker');

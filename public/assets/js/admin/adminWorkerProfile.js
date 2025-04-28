@@ -83,10 +83,14 @@ document.addEventListener('DOMContentLoaded', function () {
             workerInput.name = "worker";
             workerInput.value = JSON.stringify(worker);
             
+            const profileImagePath = worker.profileImage.startsWith('/')
+                ? `${ROOT_PATH}${worker.profileImage}`
+                : `${ROOT_PATH}/${worker.profileImage}`;
+            
             workerCard.innerHTML = `
                 <div class="worker-info">
                     <div class="worker-avatar">
-                        <img src="${ROOT_PATH}/public/assets/images/user_icon.png" alt="Worker Avatar">
+                        <img src="${profileImagePath}" alt="Worker Avatar">
                     </div>
                     <div class="worker-details">
                         <h3>${worker.firstName} ${worker.lastName}</h3>
