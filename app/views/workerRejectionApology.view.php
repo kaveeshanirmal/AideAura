@@ -100,7 +100,7 @@
     // Countdown and redirect script
     let countdown = 5; // seconds
     const timerElement = document.getElementById('timer');
-    const redirectURL = '<?=ROOT?>/public/searchForWorker/browseWorkers'; // Change this to the desired redirect URL
+    const redirectURL = '<?=ROOT?>/public/searchForWorker/browseWorkers';
 
     const countdownInterval = setInterval(() => {
         countdown--;

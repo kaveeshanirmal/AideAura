@@ -133,7 +133,7 @@ class Payment extends Controller
 
         if (empty($existingPayment)) {
             // Generate a temporary transaction ID if none provided from PayHere
-            $paymentId = $paymentId ?? 'TEMP_' . uniqid();
+            $paymentId = $paymentId ?? uniqid();
 
             // Create payment record
             $paymentData = [
@@ -174,7 +174,7 @@ class Payment extends Controller
         $this->bookingModel->updateBookingStatus($orderId, 'confirmed');
 
         // create booking confirmation OTP with 4 digits
-        $code = str_pad(random_int(0, 999999), 4, '0', STR_PAD_LEFT);
+        $code = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
         $this->bookingModel->setTable('bookings');
         $this->bookingModel->update($booking->bookingID, ['verificationCode' => $code], 'bookingID');
 

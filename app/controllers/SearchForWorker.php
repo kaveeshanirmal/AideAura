@@ -115,6 +115,7 @@ class SearchForWorker extends Controller
     {
         // Check if the session is set
         if (!isset($_SESSION['serviceType'])) {
+            error_log("Session not set for browseWorkers");
             // Redirect to the booking page if session is not set
             header("Location: " . ROOT . "/public/selectService");
             exit;
@@ -154,7 +155,7 @@ class SearchForWorker extends Controller
 
         $query = "SELECT
             vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
-            vw.profileImage, vw.address, j.name AS jobRole, w.availability_status,
+            w.profileImage, vw.address, j.name AS jobRole, w.availability_status,
             ((wst.avg_rating / 5) * 45) + 
             ((wst.completion_rate / 100) * 25) +
             LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 + 
@@ -184,7 +185,7 @@ class SearchForWorker extends Controller
     {
         $query = "SELECT
             vw.workerID, u.username, u.firstName, u.lastName, vw.gender, u.phone AS phone, u.email,
-            vw.profileImage, vw.address, j.name AS jobRole, w.availability_status, vw.workLocations,
+            w.profileImage, vw.address, j.name AS jobRole, w.availability_status, vw.workLocations,
             ((wst.avg_rating / 5) * 45) + 
             ((wst.completion_rate / 100) * 25) +
             LEAST(LOG(wst.total_reviews + 1) / LOG(100), 1) * 20 + 

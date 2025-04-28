@@ -12,7 +12,7 @@
         const totalCountdownSeconds = 240; // 4 minutes in seconds
         let currentStatus = 'pending'; // Initial status
         let countdown; // Will be calculated based on createdAt
-        let pollingInterval = 5000; // 5 seconds
+        let pollingInterval = 10000; // 10 seconds
         let pollingTimer;
         let countdownTimer;
         let cancelButton;
