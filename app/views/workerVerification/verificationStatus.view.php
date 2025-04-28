@@ -94,6 +94,11 @@
                         Prior to submitting your verification request, you are required to visit our Head Office branch for an in-person interview & have the <strong>In-Location Reference Code</strong> with you, which is issued after the interview!
                     </p>
                     <p>
+                        <strong>Documents Required :</strong><br>
+                        1.Documents to verify identity (NIC, Birth Certificates etc.)<br>
+                        2.Documents to verify criminal record clearance (Police Report)<br>
+                        3.Certificates you have acquired in your working field (If you have any)<br>
+                        4.A complete medical report<br>
                         <strong>Head Office Address :</strong><br>
                         No. 20, Reid Avenue, Colombo 07, Sri Lanka.<br>
                         <strong>Open Hours :</strong><br>
