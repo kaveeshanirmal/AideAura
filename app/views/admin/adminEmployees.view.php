@@ -235,7 +235,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(data),
+                        body: JSON.stringify(data),  //serializes a JavaScript object or array into a JSON string
                     })
                     .then(response => response.json())
                     .then(result => {
@@ -285,7 +285,7 @@
         // Function to load all employees initially
         function loadEmployees() {
             try {
-                fetch('<?= ROOT ?>/public/adminEmployees/all')  //initiates a GET request to the specified URL.
+                fetch('<?= ROOT ?>/public/adminEmployees/index')  //initiates a GET request to the index function of the adminEmployees controller.
                     .then(response => response.json())   //once the server responds, the then method processes the response. The response.json() method parses the response body as JSON,
                     .then(result => {   // parsed JSON data (result)
                         if (result.success) {
@@ -357,6 +357,8 @@
             renderPagination(employees.length);
         }
 
+
+        // function to render pagination controles
         function renderPagination(totalItems) {
             const pagination = document.getElementById('pagination');
             pagination.innerHTML = '';

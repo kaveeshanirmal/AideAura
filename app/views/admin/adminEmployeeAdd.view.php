@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Add Employee</title>
-    <link rel="stylesheet" href="<?=ROOT?>/public/assets/css/adminEmployeeAdd.css">
+    <link rel="stylesheet" href="<?= ROOT ?>/public/assets/css/adminEmployeeAdd.css">
 </head>
+
 <body>
     <div id="notification" class="notification hidden"></div>
     <div class="dashboard-container">
@@ -15,7 +17,7 @@
         <div class="main-content">
             <div class="content-wrapper">
                 <div class="employee-form-container">
-                    <form action="<?=ROOT?>/public/AdminEmployeeAdd/store" method="POST" class="employee-form" id="employeeForm">
+                    <form action="<?= ROOT ?>/public/AdminEmployeeAdd/store" method="POST" class="employee-form" id="employeeForm">
                         <div id="formMessage" class="form-message"></div> <!-- Message container -->
 
                         <div class="form-group">
@@ -49,7 +51,8 @@
                                 <option value="financeManager">financeManager</option>
                                 <option value="hrManager">hrManager</option>
                                 <option value="opManager">opManager</option>
-                                <option value="admin">admin</option>                            </select>
+                                <option value="admin">admin</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -85,7 +88,7 @@
         };
 
         const validateForm = () => {
-            const firstName = document.getElementById('firstName').value.trim();
+            const firstName = document.getElementById('firstName').value.trim();   //  retrieves the current value   , removes any whitespace characters (spaces, tabs, or newlines
             const lastName = document.getElementById('lastName').value.trim();
             const username = document.getElementById('username').value.trim();
             // const email = document.getElementById('email').value.trim();
@@ -93,7 +96,9 @@
             const password = document.getElementById('password').value.trim();
             const role = document.getElementById('role').value.trim();
 
-            if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+            if (!/^[a-zA-Z\s]+$/.test(firstName)) {    // ^ and $: These anchors ensure that the entire string is checked, from start (^) to end ($).
+// [a-zA-Z\s]: This character set allows uppercase letters (A-Z), lowercase letters (a-z), and whitespace characters (\s).
+// +: This quantifier ensures that the input contains one or more valid characters.
                 showNotification('First name must contain only letters.', 'error');
                 return false;
             }
@@ -108,10 +113,6 @@
                 return false;
             }
 
-            // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            //     showNotification('Please enter a valid email address including @', 'error');
-            //     return false;
-            // }
 
             if (!/^[0-9]{10}$/.test(phone)) {
                 showNotification('Contact number must be exactly 10 digits.', 'error');
@@ -130,42 +131,43 @@
         };
 
         form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+            e.preventDefault();            // stops the browser from reloading the page.
 
-    if (!validateForm()) return;
+            if (!validateForm()) return;
 
-    const formData = new FormData(form);
-    try {
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json(); // Parse the response as JSON
+
+                if (result.status === 'success') {
+                    showNotification(result.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = '<?= ROOT ?>/public/AdminEmployees';
+                    }, 3000);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification(`Error: ${error.message}`, 'error');
+                console.error('Fetch error:', error); // Log the error for debugging
+            }
         });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json(); // Parse the response as JSON
-
-        if (result.status === 'success') {
-            showNotification(result.message, 'success');
-            setTimeout(() => {
-                window.location.href = '<?=ROOT?>/public/AdminEmployees';
-            }, 3000);
-        } else {
-            showNotification(result.message, 'error');
-        }
-    } catch (error) {
-        showNotification(`Error: ${error.message}`, 'error');
-        console.error('Fetch error:', error); // Log the error for debugging
-    }
-});
 
         togglePassword.addEventListener('click', () => {
             const type = passwordField.type === 'password' ? 'text' : 'password';
             passwordField.type = type;
             togglePassword.textContent = type === 'password' ? '\uD83D\uDC41' : '\uD83D\uDC41\u200D\uD83D\uDDE8';
-        });
-    </script>
+        });                                                      //  "eye" emoji (👁)           "eye with a strikethrough" emoji (👁️‍🗨)
+    </script>                  
 </body>
+
 </html>

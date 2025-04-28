@@ -47,7 +47,7 @@ class AdminEmployees extends Controller
     public function update()
     {
         try {
-            $data = json_decode(file_get_contents('php://input'), true);
+            $data = json_decode(file_get_contents('php://input'), true);  // retrieve and decode raw JSON data 
 
             if (!isset($data['userID'])) {
                 throw new Exception('Employee userID is required');
@@ -172,23 +172,23 @@ class AdminEmployees extends Controller
         exit; // Ensure no further output
     }
 
-    public function all()
-    {
-        try {
-            $filteredEmployees = $this->getFilteredEmployees();
+    // public function all()
+    // {
+    //     try {
+    //         $filteredEmployees = $this->getFilteredEmployees();
 
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => true,
-                'employees' => $filteredEmployees
-            ]);
-        } catch (Exception $e) {
-            header('Content-Type: application/json');
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
+    //         header('Content-Type: application/json');
+    //         echo json_encode([
+    //             'success' => true,
+    //             'employees' => $filteredEmployees
+    //         ]);
+    //     } catch (Exception $e) {
+    //         header('Content-Type: application/json');
+    //         http_response_code(500);
+    //         echo json_encode([
+    //             'success' => false,
+    //             'message' => $e->getMessage()
+    //         ]);
+    //     }
+    // }
 }

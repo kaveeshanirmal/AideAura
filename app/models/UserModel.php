@@ -223,22 +223,12 @@ class UserModel
     {
         $this->setTable('users'); // Update user information in the 'users' table
 
-        // Update the 'users' table
-        $userData = [
-            'firstName' => $data['firstName'],
-            'lastName' => $data['lastName'],
-            'username' => $data['username'],
-            'phone' => $data['phone'],
-            'email' => $data['email'],
-            'role' => $data['role'],
-        ];
-
-        $result = $this->update($id, $userData, 'userID');
+        $result = $this->update($id, $data, 'userID');
 
         if (!$result) {
             return false;
         }
-        return true; // Update failed
+        return true; // Update successful
     }
 
 
