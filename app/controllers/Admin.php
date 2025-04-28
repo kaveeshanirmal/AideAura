@@ -21,45 +21,6 @@ class Admin extends Controller
         $this->view('admin/adminEmployees');
     }
 
-//     public function workers()
-//     {
-//         $userModel = new UserModel();
-//         $allEmployees = $userModel->getAllEmployees(); // Fetch all Workers from the database
-//         error_log("Workers in controller: " . json_encode($allEmployees));
-
-//         // Define the allowed roles for filtering
-//         $allowedRoles = ['worker'];
-
-//         // Filter Workers based on allowed roles
-//         $filteredWorkers = array_filter($allEmployees, function ($employee) use ($allowedRoles) {
-//             return in_array($employee->role, $allowedRoles) && ($employee->isDelete == 0); // Access object property using '->'
-//         });
-
-//         if (!$filteredWorkers) {
-//             error_log("No Workers with specified roles retrieved or query failed");
-//             $filteredWorkers = []; // Ensuring the variable is always an array
-//         }
-
-//         // Dynamically update roles for filtered workers 
-//         $updatedWorkers = $this->assignDynamicRoles($filteredWorkers);
-
-//         $this->view('admin/adminWorkerProfile', ['workers' => $updatedWorkers]);
-//     }
-
-
-// //Assign dynamic roles to filtered workers in worker array role element from jobroles table
-// private function assignDynamicRoles($filteredWorkers)
-// {
-//     $userModel = new UserModel();
-
-//     // Map through each worker and update the role dynamically
-//     return array_map(function ($worker) use ($userModel) {
-//         $dynamicRole = $userModel->getWorkerRole($worker->userID);
-//         $worker->role = $dynamicRole;
-//         return $worker;
-//     }, $filteredWorkers);
-// }
-
 
 public function workers() 
 {

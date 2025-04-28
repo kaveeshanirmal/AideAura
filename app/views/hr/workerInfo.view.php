@@ -22,8 +22,17 @@
         <a href="index" class="back-button">‹</a>
     <?php endif; ?>
                 <div class="worker-header">
-                    <div class="worker-avatar">
-                        <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker Avatar">
+                <div class="worker-avatar">
+                        <?php if (!empty($worker['profileImage'])): ?>
+                            <?php 
+                                $profileImagePath = strpos($worker['profileImage'], '/') === 0 
+                                    ? ROOT . $worker['profileImage'] 
+                                    : ROOT . '/' . $worker['profileImage']; 
+                            ?>
+                            <img src="<?= htmlspecialchars($profileImagePath) ?>" alt="Worker Avatar">
+                        <?php else: ?>
+                            <img src="<?=ROOT?>/public/assets/images/user_icon.png" alt="Worker Avatar">
+                        <?php endif; ?>
                     </div>
                     <div class="worker-title">
                         <h2>MR. <?= htmlspecialchars($worker['fullName']) ?></h2>

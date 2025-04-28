@@ -3,15 +3,16 @@
   display: flex;
   flex-direction: row;
   min-height: 100vh;
-  background-color: #FFF;
+  background: linear-gradient(to bottom right, #f5f0eb, #fdf6ef);
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #5c4033;
 }
 
 .main-content {
-  //display: flex;
   flex: 1;
-  background-color: #FFF;
+  background-color: transparent;
   box-sizing: border-box;
   margin: 7% 3% 3% 3%;
 }
@@ -22,9 +23,9 @@ a {
 }
 
 .content-area {
-  //flex: 1;
-  padding: 16px;
-  background-color: #fff;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
 }
 
 /* Employee Controls */
@@ -32,13 +33,13 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 2% 5% 2% 5%;
+  margin: 2% 5%;
   padding: 16px;
 }
 
 .search-filters {
   display: flex;
-  gap: 14px;
+  gap: 24px;
 }
 
 .input-group {
@@ -50,66 +51,76 @@ a {
 .input-group label {
   white-space: nowrap;
   font-size: 15px;
+  font-weight: 500;
+  color: #5c4033;
 }
 
 .id-input {
   padding: 8px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #c2a278;
   border-radius: 12px;
-  background-color: #f8f9fa;
+  background-color: #fff8f1;
+  color: #5c4033;
+  transition: border-color 0.3s;
 }
 
+/* Add Employee Button */
 .add-employee-btn {
-  padding: 8px 16px;
-  background-color: #00FF00;
-  color: black;
+  padding: 12px 24px;
+  background: linear-gradient(to right, #a9745a, #8b5e3c);
+  color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .add-employee-btn:hover {
-  background-color: #4CAF50;
-  transition: background-color 0.3s ease;
+  background: linear-gradient(to right, #915f46, #75462e);
+  transform: scale(1.05);
 }
 
 /* Employee Details */
 .employee-details {
-  left: 90%;
-  top: 10%;
   display: flex;
-  //gap: 24px;
- // margin: 2% 5% 8% 5%;
   align-items: center;
   padding: 16px;
 }
 
+/* Search Button */
 .search-btn {
-  padding: 8px 24px;
-  background-color: #e2e2e2;
+  padding: 10px 24px;
+  background: linear-gradient(to right, #d2b48c, #c2a278);
+  color: #5c4033;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .search-btn-container .search-btn:hover {
-  background-color: #00FF00;
+  background: linear-gradient(to right, #a9745a, #8b5e3c);
+  color: white;
+  transform: scale(1.05);
 }
-
 
 /* Table Styles */
 .table-container {
-  background-color: white;
-  border-radius: 8px;
+  background: linear-gradient(to bottom right, #fff8f1, #ffefdb);
+  border-radius: 12px;
   overflow-x: auto;
-  padding: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(139, 94, 60, 0.2);
+  border: 1px solid #d2b48c;
+  margin: 5% auto;
 }
 
 .employee-table {
   align-items: center;
   width: 85%;
-  margin: 0% 0% 0% 8%;
+  margin: 0 auto;
   border-collapse: collapse;
 }
 
@@ -117,17 +128,19 @@ a {
 .employee-table td {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #d2b48c;
 }
 
 .employee-table th {
-  background-color: #FFF5F9;
-  font-weight: 550;
+  background-color: rgba(139, 94, 60, 0.1);
+  font-weight: 600;
+  color: #8b5e3c;
 }
 
 .employee-table td {
-  font-weight: 100;
+  font-weight: 400;
   font-size: 14px;
+  color: #5c4033;
 }
 
 .employee-table tbody tr {
@@ -136,15 +149,16 @@ a {
 }
 
 .employee-table tbody tr:hover {
-  background-color: rgb(229, 234, 238);
+  background-color: rgba(169, 116, 90, 0.1);
 }
 
-
+/* Status */
 .status-active {
-  color: #FF0000;
+  color: #a55042;
   font-weight: 500;
 }
 
+/* Update/Delete Buttons */
 .update-btn,
 .delete-btn {
   padding: 6px;
@@ -152,33 +166,28 @@ a {
   border-radius: 4px;
   cursor: pointer;
   background: none;
+  transition: transform 0.2s;
 }
 
 .update-btn i {
-  color: #666;
+  color: #8b5e3c;
 }
 
 .delete-btn i {
-  color: #666;
-}
-
-.update-btn:hover {
-  background-color: none;
+  color: #a55042;
 }
 
 .update-btn:hover i {
-  color: #FF8C00; /* Orange */
+  color: #a9745a;
   transform: scale(1.1);
-  transition: color 0.3s ease;
 }
 
 .delete-btn:hover i {
-  color: #FF0000;
-  background-color: none;
+  color: #843c31;
   transform: scale(1.1);
-  transition: color transform 0.3s ease;
 }
 
+/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -186,301 +195,63 @@ a {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(92, 64, 51, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
-  background-color: white;
-  margin: 15% auto;
-  padding: 20px;
-  width: 70%;
+  background: linear-gradient(to bottom right, #fff8f1, #ffefdb);
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 10px;
+  width: 50%;
   max-width: 500px;
-  border-radius: 5px;
+  box-shadow: 0 6px 12px rgba(139, 94, 60, 0.25);
+  border: 1px solid #d2b48c;
+  position: relative;
 }
 
+/* Close Modal Button */
 .close-modal {
   float: right;
+  font-size: 28px;
+  color: #a9745a;
   cursor: pointer;
-  font-size: 24px;
+  transition: transform 0.2s;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.close-modal:hover {
+  color: #75462e;
+  transform: scale(1.1);
 }
 
-/* Add basic styles for pagination buttons */
-.pagination {
-  margin-top: 15px;
-  text-align: center;
-}
-.pagination button {
-  margin: 0 5px;
-  padding: 5px 12px;
-  border: 1px solid #ccc;
-  background: #f1f1f1;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.pagination button.active {
-  background-color: #7f5539;
-  color: white;
-}
-.pagination button:hover {
-  background-color: #7f5539;
-  color: white;
-}
-
-
-
-/* Notification styles */
-.notification {
-  position: fixed;
-  top: 20px;          /* Position from top */
-  right: 20px;        /* Position from right */
-  min-width: 300px;   /* Set minimum width */
-  max-width: 400px;   /* Set maximum width to prevent too wide notifications */
-  padding: 15px 20px;
-  border-radius: 8px;
-  color: white;
-  font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;      /* Ensure it stays on top */
-  opacity: 0;
-  transform: translateY(-20px) translateX(100%);  /* Start off-screen to right */
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.notification.success {
-  background-color: #4caf50;
-}
-
-.notification.error {
-  background-color: #f44336;
-}
-
-.notification.hidden {
-  display: none;
-}
-
-.notification.show {
-  opacity: 1;
-  transform: translateY(0) translateX(0);  /* Slide in from right */
-  display: block;
-}
-/* Responsive Media Queries */
-
-/* Small Mobile Devices (480px) */
-@media screen and (max-width: 480px) {
-  /* Dashboard Container */
-  .dashboard-container {
-      flex-direction: column;
-      padding: 10px;
+  /* Pagination Styles */
+  .pagination {
+    margin-top: 15px;
+    text-align: center;
   }
-
-  /* Main Content Area */
-  .main-content {
-      margin: 20% 2% 2% 2%;
-      width: 100%;
-      overflow-x: hidden;
+  
+  .pagination button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    border: 1px solid #d2b48c;
+    background-color: #fff8f1;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #5c4033;
+    transition: background 0.3s, transform 0.2s;
   }
-
-  /* Employee Controls */
-  .employee-controls {
-      flex-direction: column;
-      margin: 2% 2% 2% 2%;
-      padding: 10px;
-      gap: 15px;
+  
+  .pagination button.active {
+    background: linear-gradient(to right, #a9745a, #8b5e3c);
+    color: white;
   }
-
-  .search-filters {
-      flex-direction: column;
-      width: 100%;
-      gap: 10px;
+  
+  .pagination button:hover {
+    background: linear-gradient(to right, #a9745a, #8b5e3c);
+    color: white;
+    transform: scale(1.05);
   }
-
-  .input-group {
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-  }
-
-  .input-group label {
-      margin-bottom: 5px;
-  }
-
-  .role-select{
-      width: 100%;
-      padding: 8px;
-      margin: 0;
-  }
-
-  .id-input, 
-  .email-input {
-      width: 96%;
-      padding: 8px;
-      margin: 0;
-  }
-
-  /* Table Styles */
-  .table-container {
-      padding: 10px;
-      overflow-x: scroll;
-  }
-
-  .employee-table {
-      width: 100%;
-      margin: 0;
-      font-size: 12px;
-  }
-
-  .employee-table th,
-  .employee-table td {
-      padding: 8px 4px;
-  }
-
-  /* Buttons */
-  .add-employee-btn,
-  .search-btn {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-  }
-
-  /* Modal Styles */
-  .modal-content {
-      width: 95%;
-      margin: 20% auto;
-      padding: 15px;
-  }
-
-  .modal-content form {
-      gap: 10px;
-  }
-
-  .form-item {
-      margin: 0 5%;
-      flex-direction: column;
-  }
-
-  .modal-content form label {
-      margin-bottom: 5px;
-      margin-left: 0;
-  }
-
-  .inputc1, .inputc2, .inputc3, 
-  .modal-content form select {
-      width: 100%;
-      margin: 0;
-      padding: 8px;
-  }
-
-  .modal-content form button {
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-  }
-
-  /* Notification */
-  .notification {
-      min-width: 90%;
-      max-width: 95%;
-      right: 5px;
-      font-size: 14px;
-      padding: 10px;
-  }
-}
-
-/* Tablets and Medium Devices (481px - 768px) */
-@media screen and (min-width: 481px) and (max-width: 768px) {
-  .dashboard-container {
-      flex-direction: column;
-  }
-
-  .main-content {
-      margin: 14% 3% 5% 3%;
-      width: 94%;
-  }
-
-  .employee-controls {
-      flex-wrap: wrap;
-      justify-content: center;
-  }
-
-  .search-filters {
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-left: 5%;
-      //justify-content: center;
-  }
-
-  .input-group {
-      flex-direction: column;
-      align-items: stretch;
-  }
-
-  .employee-table {
-      width: 100%;
-      margin: 0;
-      font-size: 13px;
-  }
-
-  .modal-content {
-      width: 85%;
-      margin: 15% auto;
-  }
-
-  .search-btn {
-        width: 170%;
-        margin-top: 28%;
-  }
-}
-
-/* Large Mobile and Small Desktop (769px - 1024px) */
-@media screen and (min-width: 769px) and (max-width: 1024px) {
-  .main-content {
-      margin: 10% 3% 3% 3%;
-  }
-
-  .employee-controls {
-      flex-wrap: wrap;
-      gap: 15px;
-  }
-
-  .search-filters {
-      flex-wrap: wrap;
-      justify-content: center;
-  }
-
-  .employee-table {
-      width: 95%;
-      margin: 0 auto;
-  }
-}
-
-/* Form Controls */
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 16px;
-  padding-right: 32px;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #FF8C00;
-}
-
-/* Hover Effects */
-.add-employee-btn:hover {
-  background-color: #00DD00;
-}
-
-.search-btn:hover {
-  background-color: #d0d0d0;
-}
+  

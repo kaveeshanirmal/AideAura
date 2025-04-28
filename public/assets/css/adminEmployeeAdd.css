@@ -1,18 +1,18 @@
 /* Notification styles */
 .notification {
   position: fixed;
-  top: 20px; /* Position from top */
-  right: 20px; /* Position from right */
-  min-width: 300px; /* Set minimum width */
-  max-width: 400px; /* Set maximum width to prevent too wide notifications */
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  max-width: 400px;
   padding: 15px 20px;
   border-radius: 8px;
   color: white;
   font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000; /* Ensure it stays on top */
+  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.25);
+  z-index: 1000;
   opacity: 0;
-  transform: translateY(-20px) translateX(100%); /* Start off-screen to right */
+  transform: translateY(-20px) translateX(100%);
   transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
@@ -20,11 +20,18 @@
 }
 
 .notification.success {
-  background-color: #4caf50;
+  background: linear-gradient(to right, #8b5e3c, #a9745a);
+  border-left: 6px solid #5c4033;
 }
 
 .notification.error {
-  background-color: #f44336;
+  background: linear-gradient(to right, #a55042, #843c31);
+  border-left: 6px solid #5c2f28;
+}
+
+.notification.warning {
+  background: linear-gradient(to right, #d4a76a, #c2913c);
+  border-left: 6px solid #a67729;
 }
 
 .notification.hidden {
@@ -33,22 +40,25 @@
 
 .notification.show {
   opacity: 1;
-  transform: translateY(0) translateX(0); /* Slide in from right */
+  transform: translateY(0) translateX(0);
   display: block;
+  animation: fadeIn 0.6s ease-out;
 }
+
+
 /* Main Layout */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
-  background-color: #fff;
+  background: linear-gradient(to bottom right, #f5f0eb, #fdf6ef);
 }
 
 .main-content {
   flex: 1;
   margin: 7% 3% 3% 3%;
-  background-color: #fff;
-  //margin-left: 250px; /* Adjust based on your sidebar width */
-  //padding: 20px;
+  background: linear-gradient(to bottom right, #fdf6ef, #fff8f1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(139, 94, 60, 0.2);
 }
 
 .content-wrapper {
@@ -62,11 +72,11 @@ a {
 
 /* Employee Form Container */
 .employee-form-container {
-  background-color: #FFF5F9;
+  background: linear-gradient(to bottom right, #ffefdb, rgb(219, 188, 149));
   border-radius: 10px;
   padding: 30px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(139, 94, 60, 0.2);
+  max-width: 650px;
   margin: 2% auto;
 }
 
@@ -84,26 +94,30 @@ a {
 
 .form-group label {
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-weight: bold;
+  color: #5c4033;
 }
 
-.form-input {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  width: 85%;
-  margin: 0% 5% 0% 5%;
-}
-
+.form-input,
 .form-select {
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #c2a278;
+  border-radius: 6px;
   font-size: 14px;
-  width: 89.5%;
+  background-color: #fff8f1;
+  transition: border-color 0.3s;
   margin: 0% 5% 0% 5%;
+  width: 90%;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #a9745a;
+  outline: none;
+}
+
+/* Form Select Styling */
+.form-select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -111,6 +125,7 @@ a {
   background-size: 18px;
 }
 
+/* Form Actions */
 .form-actions {
   display: flex;
   justify-content: center;
@@ -118,30 +133,23 @@ a {
 }
 
 .add-btn {
-  background-color: #00FF1A;
-  color: black;
-  padding: 10px 40px;
+  background: linear-gradient(to right, #a9745a, #8b5e3c);
+  color: white;
+  padding: 12px 40px;
   border: none;
-  border-radius: 13px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .add-btn:hover {
-  background-color: #4CAF50;
+  background: linear-gradient(to right, #915f46, #75462e);
+  transform: scale(1.05);
 }
 
-/* Form Input Focus States */
-.form-input:focus,
-.form-select:focus {
-  outline: none;
-  border-color: #ff6b00;
-  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
-}
-
-/* Add styles for the eye icon */
+/* Password Toggle Container */
 .password-container {
   position: relative;
   display: flex;
@@ -150,7 +158,7 @@ a {
 
 .password-container .form-input {
   flex: 1;
-  padding-right: 40px; /* Adjust for icon space */
+  padding-right: 40px;
 }
 
 .toggle-password {
@@ -158,11 +166,12 @@ a {
   right: 7%;
   cursor: pointer;
   font-size: 1.2rem;
-  color: #888;
+  color: #8b5e3c;
+  transition: color 0.3s;
 }
 
 .toggle-password:hover {
-  color: #555;
+  color: #5c4033;
 }
 
 /* Responsive Design */
@@ -193,10 +202,12 @@ a {
   .toggle-password {
     right: 12%;
   }
+
   .password-container .form-input {
     padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #c2a278;
+    border-radius: 6px;
+    background-color: #fff8f1;
     font-size: 16px;
     width: 85%;
     margin: 0% 10% 0% 5%;
@@ -204,10 +215,10 @@ a {
 
   .notification {
     min-width: 200px;
-    max-width: 90%; /* Take up most of screen width on mobile */
+    max-width: 90%;
     top: 10px;
     right: 10px;
-    left: 10px; /* Stretch across on mobile */
+    left: 10px;
     margin: 0 auto;
   }
 }
